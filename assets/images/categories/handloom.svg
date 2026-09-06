@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Handloom textiles">
+  <path fill="#e6b386" stroke="#050505" stroke-width="7" d="M62 28h52a22 22 0 0 1 0 44H62a22 22 0 0 1 0-44z"/>
+  <path fill="#2a93c9" stroke="#050505" stroke-width="7" d="M62 72h52a22 22 0 0 1 0 44H62a22 22 0 0 1 0-44z"/>
+  <path fill="none" stroke="#0d5d86" stroke-width="5" d="M68 78v32m12-32v32m12-32v32m12-32v32"/>
+  <path fill="#e6b386" stroke="#050505" stroke-width="7" d="M54 40h18v88H54z"/>
+  <path fill="none" stroke="#2a93c9" stroke-width="8" stroke-linecap="round" d="M50 120c-12 8-22 8-34 2"/>
+</svg>

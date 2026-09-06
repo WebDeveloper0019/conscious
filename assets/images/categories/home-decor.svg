@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Home decor">
+  <path fill="#313131" stroke="#050505" stroke-width="8" d="M56 22h48l8 18H48z"/>
+  <path fill="#d9202f" stroke="#050505" stroke-width="8" d="M50 40h60l12 76a10 10 0 0 1-10 12H48a10 10 0 0 1-10-12z"/>
+  <path fill="none" stroke="#7a0710" stroke-width="5" d="M45 59h70M42 75h76M40 91h80M38 107h84"/>
+  <path fill="#f65654" d="M62 48h36l8 65H54z" opacity=".55"/>
+</svg>

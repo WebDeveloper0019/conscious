@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FF9933" />
+  <title>Profile Settings — Conscious Indi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/bharatcraft.css" />
+  <link rel="stylesheet" href="../assets/css/conscious-pages.css" />
+  <link rel="stylesheet" href="../assets/css/influencer-panel.css" />
+</head>
+<body>
+<div class="ci-dash-wrap">
+  <aside class="ci-dash-sidebar" id="ci-sidebar">
+    <div class="ci-sidebar-brand"><div class="ci-sidebar-brand-icon"><i class="fa-solid fa-star"></i></div><div class="ci-sidebar-brand-text"><div class="ci-sidebar-brand-name">Conscious Indi</div><div class="ci-sidebar-brand-role">Influencer Hub</div></div></div>
+    <div class="ci-sidebar-user"><div class="ci-sidebar-avatar">R</div><div class="ci-sidebar-user-info"><div class="ci-sidebar-user-name">Rahul Sharma</div><div class="ci-sidebar-user-email">rahul@example.com</div></div></div>
+    <nav class="ci-sidebar-nav">
+      <div class="ci-sidebar-section-label">Overview</div>
+      <a href="dashboard.html" class="ci-sidebar-nav-item"><i class="fa-solid fa-chart-pie"></i><span>Dashboard</span></a>
+      <a href="profile.html" class="ci-sidebar-nav-item"><i class="fa-solid fa-user"></i><span>Profile Management</span></a>
+      <a href="packages.html" class="ci-sidebar-nav-item"><i class="fa-solid fa-box-open"></i><span>Packages</span></a>
+      <a href="notifications.html" class="ci-sidebar-nav-item"><i class="fa-solid fa-bell"></i><span>Notifications</span><span class="ci-sidebar-nav-badge">3</span></a>
+      <a href="settings.html" class="ci-sidebar-nav-item active"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+      <a href="../index.html" class="ci-sidebar-nav-item"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a>
+    </nav>
+    <div style="padding:12px 20px 20px;border-top:1px solid rgba(255,255,255,0.07);"><a href="../index.html" class="ci-sidebar-nav-item" style="border-radius:var(--r-sm);"><i class="fa-solid fa-arrow-left"></i><span>Back to Store</span></a></div>
+  </aside>
+  <div class="ci-sidebar-overlay" id="ci-sidebar-overlay"></div>
+  <main class="ci-dash-main">
+    <header class="ci-dash-topbar">
+      <div style="display:flex;align-items:center;gap:16px;"><button class="ci-sidebar-hamburger" id="ci-sidebar-hamburger" aria-label="Open navigation menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button><div><div class="ci-dash-page-title">Profile Settings</div><div class="ci-dash-page-sub">Shape how brands and collaborators discover your work.</div></div></div>
+      <div class="ci-dash-topbar-actions"><button class="bc-btn bc-btn-outline bc-btn-sm" onclick="document.getElementById('ci-sidebar').classList.toggle('collapsed')" aria-label="Toggle sidebar"><i class="fa-solid fa-bars"></i></button></div>
+    </header>
+    <section class="ci-profile-settings" aria-labelledby="profile-settings-title">
+      <div class="ci-profile-settings-intro"><div><p class="ci-profile-settings-kicker">Creator workspace</p><h1 id="profile-settings-title">Your profile, in focus.</h1><p>Keep the details that represent your creative practice current and easy to trust.</p></div><div class="ci-profile-completion"><span>Profile readiness</span><strong>82%</strong><div class="ci-profile-progress" aria-label="Profile readiness 82 percent"><span></span></div></div></div>
+      <form class="ci-profile-settings-form">
+        <section class="ci-profile-image-card" aria-labelledby="profile-image-title"><div class="ci-profile-photo-wrap"><div class="ci-profile-photo" aria-label="Current profile image">R</div><button type="button" class="ci-profile-photo-edit" aria-label="Change profile image"><i class="fa-solid fa-camera"></i></button></div><div><p class="ci-profile-settings-kicker">Profile image</p><h2 id="profile-image-title">Make a familiar first impression</h2><p>Use a clear, well-lit photo that helps partners recognize you.</p><button type="button" class="bc-btn bc-btn-outline bc-btn-sm"><i class="fa-solid fa-arrow-up-from-bracket"></i> Change Profile Image</button></div></section>
+        <section class="ci-settings-section"><div class="ci-settings-section-head"><div><p class="ci-profile-settings-kicker">Identity</p><h2>Who you are</h2></div><p>These details appear on your creator profile.</p></div><div class="ci-form-row"><div class="ci-form-group"><label class="ci-form-label" for="full-name">Full Name</label><input id="full-name" class="ci-form-input" type="text" value="Rahul Sharma" /></div><div class="ci-form-group"><label class="ci-form-label" for="creator-name">Creator / Brand Name</label><input id="creator-name" class="ci-form-input" type="text" value="Rahul Creates" /></div></div><div class="ci-form-row"><div class="ci-form-group"><label class="ci-form-label" for="city">City</label><input id="city" class="ci-form-input" type="text" value="Jaipur, Rajasthan" /></div><div class="ci-form-group"><label class="ci-form-label" for="niche">Category / Niche</label><select id="niche" class="ci-form-input"><option selected>Craft, culture &amp; conscious living</option><option>Fashion &amp; lifestyle</option><option>Food &amp; travel</option><option>Art &amp; design</option></select></div></div><div class="ci-form-group"><label class="ci-form-label" for="about">About Yourself</label><textarea id="about" class="ci-form-input" rows="4">I create thoughtful stories around Indian craft, local makers, and the rituals that make everyday life feel more intentional.</textarea><small>Keep it warm, specific, and true to the work you want to be known for.</small></div></section>
+        <section class="ci-settings-section"><div class="ci-settings-section-head"><div><p class="ci-profile-settings-kicker">Contact</p><h2>How partners reach you</h2></div></div><div class="ci-form-row"><div class="ci-form-group"><label class="ci-form-label" for="email">Email Address</label><input id="email" class="ci-form-input" type="email" value="rahul@example.com" /></div><div class="ci-form-group"><label class="ci-form-label" for="mobile">Mobile Number</label><input id="mobile" class="ci-form-input" type="tel" value="+91 98765 43210" /></div></div></section>
+        <section class="ci-settings-section"><div class="ci-settings-section-head"><div><p class="ci-profile-settings-kicker">Work showcase</p><h2>Show your world</h2></div><p>Add places where people can explore your work in more depth.</p></div><div class="ci-form-row"><div class="ci-form-group"><label class="ci-form-label" for="instagram">Social Media Links</label><input id="instagram" class="ci-form-input" type="url" value="https://instagram.com/rahulcreates" /></div><div class="ci-form-group"><label class="ci-form-label" for="portfolio-url">Portfolio URL</label><input id="portfolio-url" class="ci-form-input" type="url" placeholder="https://yourportfolio.com" /></div></div><div class="ci-portfolio-upload"><div class="ci-portfolio-upload-icon"><i class="fa-solid fa-file-arrow-up"></i></div><div><strong>Portfolio file</strong><p>PDF or presentation, up to 10 MB.</p></div><button type="button" class="bc-btn bc-btn-outline bc-btn-sm">Upload File</button></div></section>
+        <section class="ci-settings-section"><div class="ci-settings-section-head"><div><p class="ci-profile-settings-kicker">Availability</p><h2>Set your pace</h2></div><p>Choose the collaboration rhythm that fits your current season.</p></div><div class="ci-availability-options"><label><input type="radio" name="availability" /> <span><i class="fa-solid fa-sun"></i><strong>Full Time</strong><small>Open to ongoing work</small></span></label><label><input type="radio" name="availability" /> <span><i class="fa-solid fa-clock"></i><strong>Part Time</strong><small>Selective collaborations</small></span></label><label><input type="radio" name="availability" checked /> <span><i class="fa-solid fa-wand-magic-sparkles"></i><strong>Freelance</strong><small>Project-based work</small></span></label></div></section>
+        <section class="ci-settings-section"><div class="ci-settings-section-head"><div><p class="ci-profile-settings-kicker">Visibility</p><h2>Hide profile</h2></div><p>When enabled, your profile disappears from public creators and search results until an admin re-enables it.</p></div><div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" id="hide-profile-toggle" /><label class="form-check-label" for="hide-profile-toggle">Hide Profile</label></div></section>
+        <div class="ci-profile-settings-actions"><button type="submit" class="bc-btn bc-btn-primary"><i class="fa-solid fa-check"></i> Save Changes</button><button type="reset" class="bc-btn bc-btn-outline">Cancel</button></div>
+      </form>
+    </section>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/bharatcraft.js"></script>
+<script src="../assets/js/influencer-panel.js"></script>
+</body>
+</html>
