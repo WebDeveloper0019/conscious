@@ -1,0 +1,1 @@
+<?php $pageTitle='Inventory';$pageSubtitle='Stock, reservations, adjustments, transfers, batches, and expiry';$activePage='inventory';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/inventory.php';require __DIR__.'/layouts/foot.php';

@@ -1,0 +1,1 @@
+<?php $pageTitle='Secure Checkout';$pageSubtitle='Address, vendor delivery options, payment and review';$activePage='cart';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/checkout.php';require __DIR__.'/layouts/foot.php';

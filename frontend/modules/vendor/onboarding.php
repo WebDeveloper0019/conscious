@@ -1,0 +1,1 @@
+<?php $pageTitle='Vendor Onboarding';$pageSubtitle='Complete business, compliance, payment, store, and delivery setup';$activePage='account';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/onboarding.php';require __DIR__.'/layouts/foot.php';

@@ -1,0 +1,1 @@
+<?php $pageTitle='Profile & Privacy';$pageSubtitle='Identity, addresses, preferences, security and data controls';$activePage='account';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/account.php';require __DIR__.'/layouts/foot.php';

@@ -1,0 +1,1 @@
+<?php $pageTitle='Store Management';$pageSubtitle='Profile, branding, policies, availability, and locations';$activePage='store';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/store.php';require __DIR__.'/layouts/foot.php';

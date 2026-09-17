@@ -1,0 +1,1 @@
+<?php $pageTitle='Saved Vendors';$pageSubtitle='Artisans, cooperatives and conscious brands you follow';$activePage='vendors';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/vendors.php';require __DIR__.'/layouts/foot.php';

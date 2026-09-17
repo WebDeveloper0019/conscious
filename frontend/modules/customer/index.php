@@ -1,0 +1,1 @@
+<?php $pageTitle='My Dashboard';$pageSubtitle='Orders, impact, rewards and recommendations';$activePage='dashboard';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/dashboard.php';require __DIR__.'/layouts/foot.php';

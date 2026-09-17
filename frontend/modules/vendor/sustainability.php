@@ -1,0 +1,1 @@
+<?php $pageTitle='Sustainability';$pageSubtitle='Manage environmental, ethical sourcing, packaging, impact, and claim evidence';$activePage='sustainability';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/sustainability.php';require __DIR__.'/layouts/foot.php';

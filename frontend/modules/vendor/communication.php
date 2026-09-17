@@ -1,0 +1,1 @@
+<?php $pageTitle='Communication';$pageSubtitle='Customer messages, reviews, questions, notifications, and announcements';$activePage='communication';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/communication.php';require __DIR__.'/layouts/foot.php';
