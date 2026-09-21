@@ -1,0 +1,1 @@
+<?php $pageTitle='Events & Workshops';$pageSubtitle='Discover, book and manage craft experiences across India';$activePage='events';require __DIR__.'/layouts/head-v2.php';require __DIR__.'/pages/events.php';require __DIR__.'/layouts/foot-v2.php';

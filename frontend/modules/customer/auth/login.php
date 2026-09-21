@@ -1,1 +1,6 @@
-<?php $pageTitle='Customer sign in';require __DIR__.'/../layouts/auth-head.php';?><h2>Welcome back</h2><p class="cc-help">Sign in to manage orders, manual delivery updates, returns, rewards and impact.</p><form data-customer-form="login" data-success="Login fields validated. Secure authentication requires the separate backend."><div class="cc-field"><label for="login-email">Email or mobile *</label><input class="cc-input" id="login-email" name="identifier" required maxlength="120" autocomplete="username"></div><div class="cc-field mt-3"><label for="login-password">Password *</label><input class="cc-input" id="login-password" name="password" type="password" required minlength="12" maxlength="128" autocomplete="current-password"></div><label class="cc-check mt-3"><input name="remember" type="checkbox"> Remember this private device</label><button class="cc-btn primary mt-3" style="width:100%" type="submit">Continue securely</button></form><div class="ca-links"><a href="forgot-password.php">Forgot password?</a><a href="register.php">Create account</a></div><div class="cc-callout warning mt-3">Production login requires secure sessions, rate limits, MFA options and anti-forgery protection from the separate backend.</div><?php require __DIR__.'/../layouts/auth-foot.php';?>
+<?php
+$pageTitle = 'Customer sign in';
+$authPage = 'login';
+require __DIR__ . '/../layouts/auth-head-v2.php';
+require __DIR__ . '/../pages/auth-login.php';
+require __DIR__ . '/../layouts/auth-foot-v2.php';
