@@ -19,6 +19,7 @@ $activePage = $activePage ?? 'dashboard';
   <link rel="stylesheet" href="../../shared/assets/css/tokens.css">
   
   <link rel="stylesheet" href="assets/css/app.css">
+  <?php if (!empty($vendorOnboardingMode)): ?><link rel="stylesheet" href="assets/css/onboarding-v2.css"><?php endif; ?>
 </head>
 <body>
 <a class="vc-skip" href="#main-content">Skip to main content</a>

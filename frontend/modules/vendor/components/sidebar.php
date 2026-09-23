@@ -11,10 +11,13 @@ $navGroups = [
   'Communication' => [['communication.php','communication','fa-comments','Messages & Reviews'],['support.php','support','fa-headset','Support & Disputes']],
   'Account' => [['account.php','account','fa-id-card','Verification & Settings'],['account.php#staff','staff','fa-users-gear','Staff & Permissions'],['account.php#security','security','fa-shield-halved','Security'],['account.php#audit','audit','fa-clock-rotate-left','Audit History']],
 ];
+if (!empty($vendorOnboardingMode)) {
+  $navGroups = ['Application' => [['onboarding.php','account','fa-clipboard-check','Onboarding checklist']], 'Help' => [['support.php','support','fa-headset','Help & support']]];
+}
 ?>
 <aside class="ci-dash-sidebar" id="ci-sidebar" aria-label="Vendor navigation">
   <div class="ci-sidebar-brand"><div class="ci-sidebar-brand-icon"><i class="fa-solid fa-store"></i></div><div class="ci-sidebar-brand-text"><div class="ci-sidebar-brand-name">Conscious Indi</div><div class="ci-sidebar-brand-role">Vendor Portal</div></div></div>
-  <div class="ci-sidebar-user"><div class="ci-sidebar-avatar">RS</div><div class="ci-sidebar-user-info"><div class="ci-sidebar-user-name">Rajasthan Heritage</div><div class="ci-sidebar-user-email"><span class="vc-online"></span> Store active</div></div></div>
+  <div class="ci-sidebar-user"><div class="ci-sidebar-avatar">RS</div><div class="ci-sidebar-user-info"><div class="ci-sidebar-user-name"><?= !empty($vendorOnboardingMode) ? 'New Vendor Application' : 'Rajasthan Heritage' ?></div><div class="ci-sidebar-user-email"><span class="vc-online<?= !empty($vendorOnboardingMode) ? ' pending' : '' ?>"></span> <?= !empty($vendorOnboardingMode) ? 'Setup in progress' : 'Store active' ?></div></div></div>
   <nav class="ci-sidebar-nav">
     <?php foreach ($navGroups as $group => $items): ?>
       <div class="ci-sidebar-section-label"><?= htmlspecialchars($group, ENT_QUOTES, 'UTF-8') ?></div>
