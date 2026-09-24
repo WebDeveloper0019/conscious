@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Event Management | Conscious Indi</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/bharatcraft.css" />
+    <link rel="stylesheet" href="../assets/css/conscious-pages.css" />
+    <link rel="stylesheet" href="../assets/css/admin-panel.css" />
+    <link rel="stylesheet" href="../assets/css/event-management.css" />
+  </head>
+  <body>
+    <div class="ci-dash-wrap">
+      <aside class="ci-dash-sidebar" id="ci-sidebar">
+        <div class="ci-sidebar-brand">
+          <div class="ci-sidebar-brand-icon">
+            <i class="fa-solid fa-shield"></i>
+          </div>
+          <div class="ci-sidebar-brand-text">
+            <div class="ci-sidebar-brand-name">Conscious Indi</div>
+            <div class="ci-sidebar-brand-role">Admin Console</div>
+          </div>
+        </div>
+        <div class="ci-sidebar-user">
+          <div class="ci-sidebar-avatar">R</div>
+          <div class="ci-sidebar-user-info">
+            <div class="ci-sidebar-user-name">Rahul Sharma</div>
+            <div class="ci-sidebar-user-email"></div>
+          </div>
+        </div>
+        <nav class="ci-sidebar-nav">
+          <div class="ci-sidebar-section-label">Overview</div>
+          <a href="dashboard" class="ci-sidebar-nav-item"
+            ><i class="fa-solid fa-chart-pie"></i><span>Dashboard</span></a
+          >
+          <div class="ci-sidebar-section-label">Events</div>
+          <a href="event-management" class="ci-sidebar-nav-item active"
+            ><i class="fa-regular fa-calendar-days"></i
+            ><span>Event Management</span></a
+          >
+          <div class="ci-sidebar-sub open">
+            <a href="event-management" class="active">Overview</a
+            ><a href="add-event">Add Event</a
+            ><a href="all-events">All Events</a
+            ><a href="event-management#requests">Requests</a
+            ><a href="event-management#shop-the-event">Shop the Event</a>
+          </div>
+          <div class="ci-sidebar-section-label">Operations</div>
+          <a href="orders" class="ci-sidebar-nav-item"
+            ><i class="fa-solid fa-bag-shopping"></i><span>All Orders</span></a
+          ><a href="vendors" class="ci-sidebar-nav-item"
+            ><i class="fa-solid fa-store"></i><span>Vendors</span></a
+          ><a href="settings" class="ci-sidebar-nav-item"
+            ><i class="fa-solid fa-gear"></i><span>System Settings</span></a
+          >
+        </nav>
+      </aside>
+      <div class="ci-sidebar-overlay" id="ci-sidebar-overlay"></div>
+      <div class="ci-dash-main">
+        <header class="ci-dash-topbar">
+          <div style="display: flex; align-items: center; gap: 16px">
+            <button class="ci-sidebar-hamburger" id="ci-sidebar-hamburger">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+            <div>
+              <div class="ci-dash-page-title">Event Management</div>
+              <div class="ci-dash-page-sub">
+                Create and oversee Conscious Indi experiences
+              </div>
+            </div>
+          </div>
+          <a class="ev-btn" href="add-event"
+            ><i class="fa-solid fa-plus"></i> Add Event</a
+          >
+        </header>
+        <main class="ci-dash-content">
+          <nav class="ev-subnav" aria-label="Event Management">
+            <a class="active" href="event-management">Overview</a
+            ><a href="add-event">Add Event</a
+            ><a href="all-events">All Events</a
+            ><a href="booking-requests">Booking Requests</a>
+          </nav>
+          <section class="ev-hero">
+            <div class="ev-kicker">Events at a glance</div>
+            <h1>Craft moments that bring the community together.</h1>
+            <p>
+              Manage live experiences, review participation requests and keep
+              every detail ready for your guests.
+            </p>
+          </section>
+    <section class="ev-stats">
+            <div class="ev-stat"><b>18</b><span>Total Events</span></div>
+            <div class="ev-stat"><b>06</b><span>Live Events</span></div>
+            <div class="ev-stat"><b>128</b><span>Total Requests</span></div>
+            <div class="ev-stat"><b>24</b><span>Pending Requests</span></div>
+            <div class="ev-stat">
+              <b>37</b><span>Approved Stall Requests</span>
+            </div>
+            <div class="ev-stat"><b>19</b><span>Approved Workshops</span></div>
+    </section>
+    <section class="ev-stats" aria-label="Attendee registration statistics">
+      <div class="ev-stat"><b>86</b><span>Total Registration Requests</span></div><div class="ev-stat"><b>58</b><span>Free Registrations</span></div><div class="ev-stat"><b>28</b><span>Paid Registrations</span></div><div class="ev-stat"><b>17</b><span>Pending</span></div><div class="ev-stat"><b>54</b><span>Approved</span></div><div class="ev-stat"><b>15</b><span>Rejected</span></div>
+    </section>
+          <section class="ev-grid">
+            <article class="ev-card">
+              <div class="ev-card-hd">
+                <h2>Recent Booking Requests</h2>
+                <a href="booking-requests" class="ev-action-link"
+                  >View all <i class="fa-solid fa-arrow-right"></i
+                ></a>
+              </div>
+              <div class="ev-card-body">
+                <div class="ev-mini-row">
+                  <div class="ev-avatar">AM</div>
+                  <div>
+                    <strong
+                      >Anaya Mehta
+                      <span class="ev-status pending">Pending</span></strong
+                    ><small>Stall request · Conscious Craft Bazaar</small>
+                  </div>
+                  <b>₹1,999</b>
+                </div>
+                <div class="ev-mini-row">
+                  <div class="ev-avatar">RK</div>
+                  <div>
+                    <strong
+                      >Ravi Kumar
+                      <span class="ev-status approved">Approved</span></strong
+                    ><small>Workshop request · Slow Living Festival</small>
+                  </div>
+                  <b>₹1,599</b>
+                </div>
+                <div class="ev-mini-row">
+                  <div class="ev-avatar">SB</div>
+                  <div>
+                    <strong
+                      >Sana Bano
+                      <span class="ev-status pending">Pending</span></strong
+                    ><small>Stall request · Conscious Craft Bazaar</small>
+                  </div>
+                  <b>₹1,999</b>
+                </div>
+                <div class="ev-mini-row">
+                  <div class="ev-avatar">DV</div>
+                  <div>
+                    <strong
+                      >Dev Varma
+                      <span class="ev-status rejected">Rejected</span></strong
+                    ><small>Workshop request · Design for Earth</small>
+                  </div>
+                  <b>₹1,599</b>
+                </div>
+              </div>
+            </article>
+            <article class="ev-card">
+              <div class="ev-card-hd">
+                <h2>Upcoming Events</h2>
+                <a href="all-events" class="ev-action-link"
+                  >Manage events</a
+                >
+              </div>
+              <div class="ev-card-body">
+                <div class="ev-mini-row">
+                  <div class="ev-thumb">✦</div>
+                  <div>
+                    <strong>Conscious Craft Bazaar</strong
+                    ><small>12–13 Aug · Bengaluru</small>
+                  </div>
+                  <span class="ev-status live">Live</span>
+                </div>
+                <div class="ev-mini-row">
+                  <div
+                    class="ev-thumb"
+                    style="
+                      background: linear-gradient(135deg, #154d3d, #80a85a);
+                    "
+                  >
+                    ◌
+                  </div>
+                  <div>
+                    <strong>Slow Living Festival</strong
+                    ><small>24 Aug · Mumbai</small>
+                  </div>
+                  <span class="ev-status live">Live</span>
+                </div>
+                <div class="ev-mini-row">
+                  <div
+                    class="ev-thumb"
+                    style="
+                      background: linear-gradient(135deg, #44266e, #b45081);
+                    "
+                  >
+                    ✦
+                  </div>
+                  <div>
+                    <strong>Design for Earth</strong
+                    ><small>06 Sep · New Delhi</small>
+                  </div>
+                  <span class="ev-status draft">Draft</span>
+                </div>
+              </div>
+            </article>
+            <article class="ev-card" style="margin-top: 16px">
+              <div class="ev-card-body">
+                <div class="ev-mini-row">
+                  <div
+                    class="ev-thumb"
+                    style="
+                      background: linear-gradient(135deg, #1f5d50, #87a95d);
+                    "
+                  >
+                    ★
+                  </div>
+                  <div>
+                    <strong>Featured Event Controls</strong
+                    ><small
+                      >Moderate the main highlight card and public
+                      visibility</small
+                    >
+                  </div>
+                  <span class="ev-status live">Ready</span>
+                </div>
+                <div class="d-flex flex-wrap gap-2 mt-3">
+                  <button
+                    type="button"
+                    class="ev-btn alt"
+                    style="padding: 10px 14px; min-width: auto"
+                  >
+                    <i class="fa-solid fa-star"></i> Mark as Featured Event</button
+                  ><button
+                    type="button"
+                    class="ev-btn alt"
+                    style="padding: 10px 14px; min-width: auto"
+                  >
+                    <i class="fa-solid fa-ban"></i> Remove Featured Status</button
+                  ><button
+                    type="button"
+                    class="ev-btn"
+                    style="padding: 10px 14px; min-width: auto"
+                  >
+                    <i class="fa-solid fa-trash"></i> Delete Event
+                  </button>
+                </div>
+              </div>
+            </article>
+          </section>
+          <section class="ev-section" id="requests" style="margin-top: 24px">
+            <div class="ev-card-hd">
+              <h2>Request Management</h2>
+              <span class="text-muted"
+                >Separate workflows for stalls, workshops and attendee
+                sign-ups</span
+              >
+            </div>
+            <div class="ev-card" style="margin-top: 14px">
+              <div class="ev-card-body">
+                <ul
+                  class="nav nav-tabs"
+                  role="tablist"
+                  style="margin-bottom: 16px"
+                >
+                  <li class="nav-item">
+                    <button
+                      class="nav-link active"
+                      data-bs-toggle="tab"
+                      data-bs-target="#stall-requests"
+                      type="button"
+                    >
+                      Stall Booking Requests
+                    </button>
+                  </li>
+                  <li class="nav-item">
+                    <button
+                      class="nav-link"
+                      data-bs-toggle="tab"
+                      data-bs-target="#workshop-requests"
+                      type="button"
+                    >
+                      Workshop Requests
+                    </button>
+                  </li>
+                  <li class="nav-item">
+                    <button
+                      class="nav-link"
+                      data-bs-toggle="tab"
+                      data-bs-target="#attendee-requests"
+                      type="button"
+                    >
+                      Attendee Registration Requests
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane fade show active" id="stall-requests">
+                    <div class="table-responsive">
+                      <table class="table table-hover align-middle">
+                        <thead>
+                          <tr>
+                            <th>Brand</th>
+                            <th>Event</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <strong>Aravalli Studio</strong><br /><small
+                                >aravalli@example.com</small
+                              >
+                            </td>
+                            <td>Conscious Craft Bazaar</td>
+                            <td>02 Aug 2026</td>
+                            <td>
+                              <span class="ev-status pending">Pending</span>
+                            </td>
+                            <td>
+                              <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-secondary">
+                                  View</button
+                                ><button class="btn btn-outline-success">
+                                  Approve</button
+                                ><button class="btn btn-outline-danger">
+                                  Reject</button
+                                ><button class="btn btn-outline-dark">
+                                  Delete
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>Rasa Collective</strong><br /><small
+                                >rasa@example.com</small
+                              >
+                            </td>
+                            <td>Slow Living Festival</td>
+                            <td>12 Aug 2026</td>
+                            <td>
+                              <span class="ev-status approved">Approved</span>
+                            </td>
+                            <td>
+                              <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-secondary">
+                                  View</button
+                                ><button class="btn btn-outline-success">
+                                  Approve</button
+                                ><button class="btn btn-outline-danger">
+                                  Reject</button
+                                ><button class="btn btn-outline-dark">
+                                  Delete
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="workshop-requests">
+                    <div class="table-responsive">
+                      <table class="table table-hover align-middle">
+                        <thead>
+                          <tr>
+                            <th>Facilitator</th>
+                            <th>Event</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <strong>Meera Bhatia</strong><br /><small
+                                >meera@example.com</small
+                              >
+                            </td>
+                            <td>Design for Earth</td>
+                            <td>15 Aug 2026</td>
+                            <td>
+                              <span class="ev-status pending">Pending</span>
+                            </td>
+                            <td>
+                              <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-secondary">
+                                  View</button
+                                ><button class="btn btn-outline-success">
+                                  Approve</button
+                                ><button class="btn btn-outline-danger">
+                                  Reject</button
+                                ><button class="btn btn-outline-dark">
+                                  Delete
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>Vikram Rao</strong><br /><small
+                                >vikram@example.com</small
+                              >
+                            </td>
+                            <td>Conscious Craft Bazaar</td>
+                            <td>20 Aug 2026</td>
+                            <td>
+                              <span class="ev-status approved">Approved</span>
+                            </td>
+                            <td>
+                              <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-secondary">
+                                  View</button
+                                ><button class="btn btn-outline-success">
+                                  Approve</button
+                                ><button class="btn btn-outline-danger">
+                                  Reject</button
+                                ><button class="btn btn-outline-dark">
+                                  Delete
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="attendee-requests">
+                    <div class="table-responsive">
+                      <table class="table table-hover align-middle">
+                        <thead>
+                          <tr>
+                      <th>Event Name</th>
+                      <th>Applicant Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Registration Type</th>
+                      <th>Registration Fee</th>
+                      <th>Submission Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                      <td>Sustainable Living Summit</td>
+                      <td><strong>Shruti Desai</strong></td>
+                      <td>shruti@example.com</td>
+                      <td>+91 98765 43210</td>
+                      <td>Free</td>
+                      <td>₹0</td>
+                      <td>03 Aug 2026</td>
+                            <td>
+                              <span class="ev-status pending">Pending</span>
+                            </td>
+                            <td>
+                              <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-secondary">
+                                  View</button
+                                ><button class="btn btn-outline-success">
+                                  Approve</button
+                                ><button class="btn btn-outline-danger">
+                                  Reject</button
+                                ><button class="btn btn-outline-dark">
+                                  Delete
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                      <td>Conscious Craft Bazaar</td>
+                      <td><strong>Neeraj Patel</strong></td>
+                      <td>neeraj@example.com</td>
+                      <td>+91 99887 66554</td>
+                      <td>Paid</td>
+                      <td>₹299</td>
+                      <td>04 Aug 2026</td>
+                            <td>
+                              <span class="ev-status approved">Approved</span>
+                            </td>
+                            <td>
+                              <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-secondary">
+                                  View</button
+                                ><button class="btn btn-outline-success">
+                                  Approve</button
+                                ><button class="btn btn-outline-danger">
+                                  Reject</button
+                                ><button class="btn btn-outline-dark">
+                                  Delete
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section
+            class="ev-section"
+            id="shop-the-event"
+            style="margin-top: 24px"
+          >
+            <div class="ev-card-hd">
+              <h2>Shop the Event</h2>
+              <span class="text-muted"
+                >Approve participating brands, manage shop duration and enable
+                visibility</span
+              >
+            </div>
+            <div class="ev-card" style="margin-top: 14px">
+              <div class="ev-card-body">
+                <div class="row g-3 mb-4">
+                  <div class="col-md-3">
+                    <div class="border rounded p-3 bg-light">
+                      <div class="small text-muted">
+                        Total Participating Brands
+                      </div>
+                      <h3 class="mt-2 mb-0">12</h3>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="border rounded p-3 bg-light">
+                      <div class="small text-muted">Approved Brands</div>
+                      <h3 class="mt-2 mb-0">08</h3>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="border rounded p-3 bg-light">
+                      <div class="small text-muted">Pending Brands</div>
+                      <h3 class="mt-2 mb-0">04</h3>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="border rounded p-3 bg-light">
+                      <div class="small text-muted">Live Shops</div>
+                      <h3 class="mt-2 mb-0">06</h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="row g-3 align-items-end mb-4">
+                  <div class="col-md-4">
+                    <label class="form-label">Shop Start Date</label
+                    ><input
+                      class="form-control"
+                      type="date"
+                      value="2026-08-10"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Shop End Date</label
+                    ><input
+                      class="form-control"
+                      type="date"
+                      value="2026-08-17"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Shop Duration (Days)</label
+                    ><select class="form-select">
+                      <option>3 Days</option>
+                      <option>5 Days</option>
+                      <option selected>7 Days</option>
+                      <option>10 Days</option>
+                      <option>15 Days</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead>
+                      <tr>
+                        <th>Brand</th>
+                        <th>Approval</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <strong>Aravalli Studio</strong><br /><small
+                            >Approved Stall Booking</small
+                          >
+                        </td>
+                        <td>
+                          <span class="ev-status approved">Approved</span>
+                        </td>
+                        <td><span class="ev-status live">Live</span></td>
+                        <td>
+                          <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-success">
+                              Approve</button
+                            ><button class="btn btn-outline-warning">
+                              Disable</button
+                            ><button class="btn btn-outline-danger">
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Rasa Collective</strong><br /><small
+                            >Approved Stall Booking</small
+                          >
+                        </td>
+                        <td><span class="ev-status pending">Pending</span></td>
+                        <td><span class="ev-status draft">Paused</span></td>
+                        <td>
+                          <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-success">
+                              Approve</button
+                            ><button class="btn btn-outline-warning">
+                              Enable</button
+                            ><button class="btn btn-outline-danger">
+                              Remove
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script src="../assets/js/admin-panel.js"></script>
+    <script src="../assets/js/event-management.js"></script>
+  <script src="../assets/js/panel-auth.js"></script>
+</body>
+</html>

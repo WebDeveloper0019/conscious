@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-label="Kundan necklace set">
+  <path fill="none" stroke="#050505" stroke-width="12" stroke-linecap="round" d="M92 60c4 94 132 94 136 0"/>
+  <path fill="none" stroke="#e24b30" stroke-width="8" stroke-linecap="round" d="M106 62c12 68 96 68 108 0"/>
+  <g fill="#ffca45" stroke="#050505" stroke-width="6"><circle cx="116" cy="90" r="12"/><circle cx="140" cy="116" r="12"/><circle cx="160" cy="126" r="14"/><circle cx="180" cy="116" r="12"/><circle cx="204" cy="90" r="12"/><path d="M148 134h24l-12 48z"/></g>
+</svg>

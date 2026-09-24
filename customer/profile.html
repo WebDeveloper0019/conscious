@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FF9933" />
+  <title>My Profile — Conscious Indi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/bharatcraft.css" />
+  <link rel="stylesheet" href="../assets/css/conscious-pages.css" />
+  <link rel="stylesheet" href="../assets/css/customer-panel.css" />
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     CUSTOMER DASHBOARD SHELL
+     No storefront chrome here on purpose — a logged-in customer
+     doesn't need the buyer announcement bar, the Shop mega-menu,
+     or the marketing footer while inside their account. Just the
+     sidebar + a real app topbar (same shell as the vendor panel).
+     A "Back to Store" link lives in the profile menu instead.
+     ════════════════════════════════════════════ -->
+<div class="ci-dash-wrap">
+
+<aside class="ci-dash-sidebar" id="ci-sidebar">
+  <div class="ci-sidebar-brand">
+    <div class="ci-sidebar-brand-icon"><i class="fa-solid fa-user"></i></div>
+    <div class="ci-sidebar-brand-text">
+      <div class="ci-sidebar-brand-name">Conscious Indi</div>
+      <div class="ci-sidebar-brand-role">Customer Portal</div>
+    </div>
+  </div>
+  <div class="ci-sidebar-user">
+    <div class="ci-sidebar-avatar">R</div>
+    <div class="ci-sidebar-user-info">
+      <div class="ci-sidebar-user-name">Rahul Sharma</div>
+      <div class="ci-sidebar-user-email"></div>
+    </div>
+  </div>
+  <nav class="ci-sidebar-nav">
+    
+        <div class="ci-sidebar-section-label">Main</div>
+        <a href="dashboard" class="ci-sidebar-nav-item"><i class="fa-solid fa-chart-pie"></i><span>Dashboard</span></a>
+
+        <a href="profile" class="ci-sidebar-nav-item active"><i class="fa-solid fa-user"></i><span>My Profile</span></a>
+
+        <a href="addresses" class="ci-sidebar-nav-item"><i class="fa-solid fa-location-dot"></i><span>My Addresses</span></a>
+
+        <a href="activity-history" class="ci-sidebar-nav-item"><i class="fa-solid fa-clock-rotate-left"></i><span>Activity History</span></a>
+
+        <div class="ci-sidebar-section-label">Orders</div>
+        <a href="orders" class="ci-sidebar-nav-item"><i class="fa-solid fa-bag-shopping"></i><span>My Orders</span><span class="ci-sidebar-nav-badge">3</span></a>
+
+        <a href="order-details" class="ci-sidebar-nav-item"><i class="fa-solid fa-file-lines"></i><span>Order Details</span></a>
+
+        <a href="tracking" class="ci-sidebar-nav-item"><i class="fa-solid fa-truck"></i><span>Track Order</span></a>
+
+        <a href="invoices" class="ci-sidebar-nav-item"><i class="fa-solid fa-file-invoice"></i><span>Invoices</span></a>
+
+        <div class="ci-sidebar-section-label">Shopping</div>
+        <a href="wishlist" class="ci-sidebar-nav-item"><i class="fa-solid fa-heart"></i><span>Wishlist</span><span class="ci-sidebar-nav-badge">12</span></a>
+
+        <a href="saved-vendors" class="ci-sidebar-nav-item"><i class="fa-solid fa-store"></i><span>Saved Vendors</span></a>
+
+        <a href="coupons" class="ci-sidebar-nav-item"><i class="fa-solid fa-ticket"></i><span>My Coupons</span><span class="ci-sidebar-nav-badge">5</span></a>
+
+        <div class="ci-sidebar-section-label">Rewards</div>
+        <a href="rewards" class="ci-sidebar-nav-item"><i class="fa-solid fa-trophy"></i><span>Rewards</span></a>
+
+        <a href="referral" class="ci-sidebar-nav-item"><i class="fa-solid fa-share-nodes"></i><span>Referral Program</span></a>
+
+        <div class="ci-sidebar-section-label">Support</div>
+        <a href="reviews" class="ci-sidebar-nav-item"><i class="fa-solid fa-star"></i><span>My Reviews</span></a>
+
+        <a href="notifications" class="ci-sidebar-nav-item"><i class="fa-solid fa-bell"></i><span>Notifications</span><span class="ci-sidebar-nav-badge">2</span></a>
+
+        <a href="support" class="ci-sidebar-nav-item"><i class="fa-solid fa-headset"></i><span>Support Tickets</span></a>
+
+        <a href="settings" class="ci-sidebar-nav-item"><i class="fa-solid fa-gear"></i><span>Account Settings</span></a>
+
+        
+  </nav>
+  <div style="padding:12px 20px 20px;border-top:1px solid rgba(255,255,255,0.07);">
+    <a href="../index" class="ci-sidebar-nav-item" style="border-radius:var(--r-sm);">
+      <i class="fa-solid fa-arrow-left"></i><span>Back to Store</span>
+    </a>
+  </div>
+</aside>
+<div class="ci-sidebar-overlay" id="ci-sidebar-overlay"></div>
+<div class="ci-dash-main">
+
+<div class="ci-dash-topbar">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <button class="ci-sidebar-hamburger" id="ci-sidebar-hamburger" aria-label="Open navigation menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <div>
+    <div class="ci-dash-page-title">My Profile</div>
+    <div class="ci-dash-page-sub">Manage your personal information and preferences.</div>
+    </div>
+  </div>
+  <div class="ci-dash-topbar-actions">
+
+    <div class="ci-topbar-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="search" placeholder="Search orders, wishlist…" aria-label="Search" />
+    </div>
+
+    <div class="ci-topbar-dropdown">
+      <button class="ci-topbar-icon-btn ci-dropdown-trigger" aria-label="Notifications" aria-haspopup="true">
+        <i class="fa-solid fa-bell"></i>
+        <span class="ci-topbar-icon-badge">2</span>
+      </button>
+      <div class="ci-dropdown-panel">
+        <div class="ci-dropdown-head">
+          <span>Notifications</span>
+          <a href="notifications">View All</a>
+        </div>
+        <div class="ci-dropdown-body">
+          <div class="ci-notif-item unread">
+            <div class="ci-notif-icon" style="background:var(--navy-pale);color:var(--navy);"><i class="fa-solid fa-truck"></i></div>
+            <div>
+              <div class="ci-notif-text">Order <strong>#CI-98721</strong> is out for delivery today</div>
+              <div class="ci-notif-time">12 min ago</div>
+            </div>
+          </div>
+          <div class="ci-notif-item unread">
+            <div class="ci-notif-icon" style="background:var(--saffron-pale);color:var(--saffron);"><i class="fa-solid fa-ticket"></i></div>
+            <div>
+              <div class="ci-notif-text">Coupon <strong>CRAFT20</strong> expires in 3 days</div>
+              <div class="ci-notif-time">3 hours ago</div>
+            </div>
+          </div>
+          <div class="ci-notif-item">
+            <div class="ci-notif-icon" style="background:var(--green-pale);color:var(--green);"><i class="fa-solid fa-check-circle"></i></div>
+            <div>
+              <div class="ci-notif-text"><strong>Order #CI-98654</strong> delivered successfully</div>
+              <div class="ci-notif-time">Yesterday</div>
+            </div>
+          </div>
+          <div class="ci-notif-item">
+            <div class="ci-notif-icon" style="background:var(--gold-pale);color:var(--gold);"><i class="fa-solid fa-star"></i></div>
+            <div>
+              <div class="ci-notif-text">You earned <strong>320 reward points</strong> on your last order</div>
+              <div class="ci-notif-time">Jun 13, 2025</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ci-topbar-dropdown">
+      <button class="ci-profile-trigger" aria-label="Account menu" aria-haspopup="true">
+        <div class="ci-profile-trigger-avatar">R</div>
+        <span class="ci-profile-trigger-name">Rahul Sharma</span>
+        <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;color:var(--text-muted);"></i>
+      </button>
+      <div class="ci-dropdown-panel ci-profile-dropdown-panel">
+        <a href="profile" class="ci-profile-menu-item"><i class="fa-solid fa-user"></i> My Profile</a>
+        <a href="addresses" class="ci-profile-menu-item"><i class="fa-solid fa-location-dot"></i> My Addresses</a>
+        <a href="settings" class="ci-profile-menu-item"><i class="fa-solid fa-gear"></i> Account Settings</a>
+        <div class="ci-profile-menu-divider"></div>
+        <a href="../index" class="ci-profile-menu-item"><i class="fa-solid fa-arrow-left"></i> Back to Store</a>
+        <a href="../login" class="ci-profile-menu-item"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a>
+      </div>
+    </div>
+
+    <button class="bc-btn bc-btn-outline bc-btn-sm" id="ci-sidebar-collapse-btn" aria-label="Collapse sidebar">
+      <i class="fa-solid fa-bars-staggered"></i>
+    </button>
+
+  </div>
+</div>
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="ci-form-card">
+      <div class="ci-form-card-head"><div class="ci-form-card-title"><div class="step-icon"><i class="fa-solid fa-user"></i></div>Profile Photo</div></div>
+      <div class="ci-form-card-body" style="text-align:center;">
+        <div class="ci-sidebar-avatar mx-auto mb-3" style="width:96px;height:96px;font-size:2rem;border:3px solid var(--saffron);">R</div>
+        <div style="font-family:var(--font-display);font-weight:700;font-size:1.125rem;color:var(--text-primary);">Rahul Sharma</div>
+        <div style="font-size:.875rem;color:var(--text-muted);margin-bottom:16px;">rahul.sharma@gmail.com</div>
+        <button class="bc-btn bc-btn-outline bc-btn-sm w-100"><i class="fa-solid fa-camera"></i> Change Photo</button>
+        <div style="margin-top:16px;padding:12px;background:var(--green-pale);border-radius:var(--r-md);">
+          <div style="font-size:.75rem;color:var(--green-dark);font-weight:600;"><i class="fa-solid fa-circle-check"></i> Email Verified</div>
+          <div style="font-size:.75rem;color:var(--green-dark);font-weight:600;margin-top:4px;"><i class="fa-solid fa-circle-check"></i> Phone Verified</div>
+        </div>
+        <div style="margin-top:12px;padding:12px;background:var(--saffron-pale);border-radius:var(--r-md);">
+          <div style="font-size:.75rem;color:var(--saffron-dark);font-weight:600;">Profile Completion</div>
+          <div style="height:6px;background:var(--border-light);border-radius:3px;margin:6px 0;"><div style="width:80%;height:100%;background:var(--saffron);border-radius:3px;"></div></div>
+          <div style="font-size:.75rem;color:var(--text-muted);">80% complete · Add Date of Birth to reach 100%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="ci-form-card">
+      <div class="ci-form-card-head"><div class="ci-form-card-title"><div class="step-icon"><i class="fa-solid fa-id-card"></i></div>Personal Information</div><button class="bc-btn bc-btn-outline bc-btn-sm"><i class="fa-solid fa-pen"></i> Edit</button></div>
+      <div class="ci-form-card-body">
+        <div class="ci-form-row">
+          <div class="ci-form-group"><label class="ci-form-label">First Name</label><input type="text" class="ci-form-input" value="Rahul" /></div>
+          <div class="ci-form-group"><label class="ci-form-label">Last Name</label><input type="text" class="ci-form-input" value="Sharma" /></div>
+        </div>
+        <div class="ci-form-row">
+          <div class="ci-form-group"><label class="ci-form-label">Email Address</label><input type="email" class="ci-form-input" value="rahul.sharma@gmail.com" /></div>
+          <div class="ci-form-group"><label class="ci-form-label">Phone Number</label><input type="tel" class="ci-form-input" value="+91 98765 43210" /></div>
+        </div>
+        <div class="ci-form-row">
+          <div class="ci-form-group"><label class="ci-form-label">Date of Birth</label><input type="date" class="ci-form-input" value="1995-03-15" /></div>
+          <div class="ci-form-group"><label class="ci-form-label">Gender</label><select class="ci-form-input ci-form-select"><option>Male</option><option>Female</option><option>Non-binary</option><option>Prefer not to say</option></select></div>
+        </div>
+        <div class="ci-form-group"><label class="ci-form-label">Anniversary Date</label><input type="date" class="ci-form-input" /></div>
+        <div style="margin-top:8px;">
+          <button class="bc-btn bc-btn-primary bc-btn-sm"><i class="fa-solid fa-save"></i> Save Changes</button>
+          <button class="bc-btn bc-btn-outline bc-btn-sm ms-2">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div class="ci-form-card mt-4">
+      <div class="ci-form-card-head"><div class="ci-form-card-title"><div class="step-icon" style="background:var(--navy);"><i class="fa-solid fa-lock"></i></div>Change Password</div></div>
+      <div class="ci-form-card-body">
+        <div class="ci-form-group"><label class="ci-form-label">Current Password</label><input type="password" class="ci-form-input" placeholder="Enter current password" /></div>
+        <div class="ci-form-row">
+          <div class="ci-form-group"><label class="ci-form-label">New Password</label><input type="password" class="ci-form-input" placeholder="Min. 8 characters" /></div>
+          <div class="ci-form-group"><label class="ci-form-label">Confirm New Password</label><input type="password" class="ci-form-input" placeholder="Repeat new password" /></div>
+        </div>
+        <button class="bc-btn bc-btn-primary bc-btn-sm"><i class="fa-solid fa-lock"></i> Update Password</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     SCRIPTS
+     ════════════════════════════════════════════ -->
+<!-- Bootstrap 5 JS Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Conscious Indi Main JS -->
+<script src="../assets/js/bharatcraft.js"></script>
+<script src="../assets/js/customer-panel.js"></script>
+
+<script src="../assets/js/panel-auth.js"></script>
+</body>
+</html>

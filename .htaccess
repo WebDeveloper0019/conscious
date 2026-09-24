@@ -1,0 +1,21 @@
+# Conscious Indi — extensionless, slug-friendly page URLs
+Options -MultiViews
+DirectoryIndex index.html
+
+RewriteEngine On
+
+# Canonical: remove .html from page URLs.
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.html(?:[?\s#]|$) [NC]
+RewriteRule ^(.+)\.html$ $1 [R=301,L,NE]
+
+# Keep real files and directories (PHP API, JS, CSS, images, etc.) untouched.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# /about -> /about.html, /customer/dashboard -> /customer/dashboard.html, etc.
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
+
+# Root URL -> index.html
+RewriteRule ^$ index.html [L]

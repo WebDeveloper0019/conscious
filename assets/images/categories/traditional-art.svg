@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Traditional art">
+  <circle cx="80" cy="80" r="54" fill="#f4c15d" stroke="#050505" stroke-width="8"/>
+  <circle cx="80" cy="80" r="34" fill="#c82333" stroke="#050505" stroke-width="6"/>
+  <path fill="#111" d="M80 48l8 22 24-2-18 15 9 23-23-13-23 13 9-23-18-15 24 2z"/>
+  <circle cx="80" cy="80" r="10" fill="#f4c15d"/>
+</svg>

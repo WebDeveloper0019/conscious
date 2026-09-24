@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-label="Warli wall hanging">
+  <rect x="70" y="42" width="180" height="132" fill="#f7dfaa" stroke="#050505" stroke-width="10"/>
+  <path fill="#60b35b" d="M80 156l54-58 42 42 28-30 36 46z"/><circle cx="214" cy="68" r="18" fill="#f6c33d"/>
+  <g stroke="#050505" stroke-width="5" fill="none"><circle cx="132" cy="112" r="10"/><path d="M132 122v36m-22-18h44m-22 18-18 20m18-20 18 20"/></g>
+</svg>

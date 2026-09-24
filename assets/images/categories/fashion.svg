@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Fashion accessories">
+  <path fill="#e6508a" stroke="#050505" stroke-width="8" d="M36 66h88l-8 62H44z"/>
+  <path fill="none" stroke="#050505" stroke-width="8" stroke-linecap="round" d="M58 66c0-24 44-24 44 0"/>
+  <circle cx="60" cy="86" r="6" fill="#ffc857"/>
+  <circle cx="100" cy="86" r="6" fill="#ffc857"/>
+</svg>
