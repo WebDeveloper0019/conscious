@@ -2,3 +2,4 @@
 @media(max-width:900px){.vv-auth-shell{grid-template-columns:1fr}.vv-auth-story{min-height:auto;padding:24px}.vv-story-copy,.vv-story-points{display:none}.vv-auth-safe{margin-top:35px}.vv-auth-panel{padding:22px}.vv-auth-panel-inner{padding:24px}}
 @media(max-width:600px){.vv-auth-story{padding:18px}.vv-auth-safe,.vv-auth-logo small{display:none}.vv-auth-panel{padding:13px}.vv-auth-panel-inner{padding:19px;border-radius:18px}.vv-auth-heading h2,.vv-status-card h2{font-size:25px}.vv-demo-switch,.vv-type-picker,.vv-register-fields,.vv-status-details{grid-template-columns:1fr}.vv-type-picker legend{grid-column:auto}.vv-status-actions{align-items:stretch;flex-direction:column}.vv-review-flow>i{width:28px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+.vv-input-wrap .vc-input{border:1px solid var(--vv-line);background:#fff}

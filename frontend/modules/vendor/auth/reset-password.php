@@ -1,0 +1,1 @@
+<?php $pageTitle='Set a new vendor password';$authMode='recovery';require __DIR__.'/../layouts/auth-head-v2.php';require __DIR__.'/../pages/auth-reset-v2.php';require __DIR__.'/../layouts/auth-foot-v2.php';

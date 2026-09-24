@@ -2,7 +2,7 @@
   'use strict';
 
   var stateKey = 'conscious-vendor-ui-v1';
-  var allowedDemoKeys = ['deliveryRules', 'coverage', 'draftProducts', 'orderUpdates', 'preferences'];
+  var allowedDemoKeys = ['deliveryRules', 'coverage', 'draftProducts', 'orderUpdates', 'preferences', 'activity', 'completedActions', 'formSubmissions'];
 
   function safeReadState() {
     try {
@@ -111,6 +111,7 @@
           demoState.coverage = Object.fromEntries(new FormData(form).entries());
           safeWriteState(demoState);
         }
+        recordFormCompletion(form, purpose);
         toast(form.dataset.success || 'Saved in this frontend preview.', 'success');
       });
     });
@@ -186,13 +187,145 @@
     });
   }
 
+  function addActivity(label, detail) {
+    demoState.activity = Array.isArray(demoState.activity) ? demoState.activity : [];
+    demoState.activity.unshift({ label: String(label).slice(0, 100), detail: String(detail || 'Completed in frontend preview').slice(0, 180), at: new Date().toISOString() });
+    demoState.activity = demoState.activity.slice(0, 25);
+    safeWriteState(demoState);
+    renderDemoActivity();
+  }
+
+  function recordFormCompletion(form, purpose) {
+    demoState.formSubmissions = Array.isArray(demoState.formSubmissions) ? demoState.formSubmissions : [];
+    demoState.formSubmissions = demoState.formSubmissions.filter(function (item) { return item.purpose !== purpose; });
+    demoState.formSubmissions.unshift({ purpose: purpose, at: new Date().toISOString() });
+    demoState.formSubmissions = demoState.formSubmissions.slice(0, 40);
+    addActivity('Saved ' + purpose.replace(/-/g, ' '), 'Validated and saved for this browser preview.');
+    form.classList.add('vc-form-saved');
+    var submit = form.querySelector('[type="submit"]');
+    if (submit) { submit.dataset.originalLabel = submit.dataset.originalLabel || submit.textContent; submit.textContent = 'Saved in preview'; }
+    var dialog = form.closest('dialog');
+    if (dialog) setTimeout(function () { dialog.close(); }, 450);
+  }
+
+  function downloadPreview(action) {
+    var csv = 'Conscious Indi Vendor Preview\nAction,' + action.replace(/,/g, ' ') + '\nGenerated,' + new Date().toLocaleString('en-IN') + '\nStatus,Demo file generated successfully\n';
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = action.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-demo.csv';
+    document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(link.href);
+    addActivity(action, 'Demo download created.'); toast(action + ' downloaded as a demo file.', 'success');
+  }
+
+  function actionStatus(action) {
+    if (/accept order/i.test(action)) return 'Accepted';
+    if (/approve cancellation/i.test(action)) return 'Approved';
+    if (/approve return/i.test(action)) return 'Return approved';
+    if (/reject/i.test(action)) return 'Rejected';
+    if (/quality check/i.test(action)) return 'Quality checked';
+    if (/packed/i.test(action)) return 'Packed';
+    if (/restock/i.test(action)) return 'Restock recorded';
+    if (/submit product/i.test(action)) return 'Under review';
+    if (/waitlist/i.test(action)) return 'Waitlisted';
+    if (/re-delivery/i.test(action)) return 'Re-delivery scheduled';
+    if (/RTO/i.test(action)) return 'RTO updated';
+    if (/two-factor/i.test(action)) return '2FA setup started';
+    return 'Updated';
+  }
+
+  function completeDemoAction(button, action, detail) {
+    var isReadOnly = /^(View|Open|Preview|Review|Manage)/i.test(action);
+    if (!isReadOnly) {
+      button.classList.add('vc-demo-complete');
+      var scope = button.closest('tr, .vc-card, .vc-list-item');
+      var status = scope && scope.querySelector('.vc-status');
+      if (status) { status.textContent = actionStatus(action); status.className = 'vc-status success'; }
+    }
+    if (/mark all notifications read/i.test(action)) document.querySelectorAll('.vc-dot').forEach(function (dot) { dot.remove(); });
+    demoState.completedActions = Array.isArray(demoState.completedActions) ? demoState.completedActions : [];
+    if (!demoState.completedActions.includes(action)) demoState.completedActions.unshift(action);
+    demoState.completedActions = demoState.completedActions.slice(0, 60);
+    addActivity(action, detail || (isReadOnly ? 'Opened in frontend preview.' : 'Status updated in frontend preview.'));
+    toast(action + (isReadOnly ? ' opened.' : ' completed.'), isReadOnly ? 'info' : 'success');
+  }
+
+  function appendDemoField(container, label, type, required) {
+    var wrap = document.createElement('div'); wrap.className = 'vc-demo-field full';
+    var caption = document.createElement('label'); caption.textContent = label;
+    var control = type === 'textarea' ? document.createElement('textarea') : document.createElement('input');
+    control.className = type === 'textarea' ? 'vc-textarea' : 'vc-input'; control.required = Boolean(required);
+    if (type !== 'textarea') control.type = type || 'text';
+    control.name = 'demo_detail'; control.placeholder = required ? 'Required for this demo action' : 'Optional note';
+    wrap.append(caption, control); container.appendChild(wrap); return control;
+  }
+
+  function openDemoAction(button) {
+    var action = button.dataset.demoAction || 'Vendor action';
+    if (/^(Download|Export|Print)/i.test(action) || /template/i.test(action)) { downloadPreview(action); completeDemoAction(button, action, 'Demo file generated.'); return; }
+    var dialog = document.getElementById('vc-demo-dialog'); var title = document.getElementById('vc-demo-title');
+    var summary = document.getElementById('vc-demo-summary'); var fields = document.getElementById('vc-demo-fields'); var confirm = document.getElementById('vc-demo-confirm');
+    if (!dialog || !title || !summary || !fields || !confirm) return;
+    title.textContent = action; fields.replaceChildren();
+    summary.textContent = /^(View|Open|Preview|Review|Manage)/i.test(action) ? 'This preview shows how the vendor reaches this information. The backend will replace the sample records.' : 'Complete this sample action to see the dashboard state change. No real order, payment or customer is affected.';
+    var input;
+    if (/global search/i.test(action)) { input = appendDemoField(fields, 'Search products, orders, customers or help', 'search', true); confirm.textContent = 'Search preview'; }
+    else if (/account menu/i.test(action)) { input = appendDemoField(fields, 'Choose destination: profile, security, staff or logout', 'text', false); input.value = 'Account settings'; confirm.textContent = 'Open account settings'; }
+    else if (/reject|report|deactivation|closure|stop new orders|dispute/i.test(action)) { input = appendDemoField(fields, 'Reason and internal note', 'textarea', true); confirm.textContent = 'Confirm action'; }
+    else if (/reply|answer|invite|attach/i.test(action)) { input = appendDemoField(fields, 'Message or recipient details', 'textarea', true); confirm.textContent = 'Save response'; }
+    else if (/^(View|Open|Preview|Review|Manage)/i.test(action)) { confirm.textContent = 'Done'; }
+    else { input = appendDemoField(fields, 'Optional note', 'textarea', false); confirm.textContent = 'Complete demo action'; }
+    confirm.onclick = function () {
+      if (input && input.required && !input.value.trim()) { input.focus(); input.reportValidity(); return; }
+      if (/global search/i.test(action)) { var query = input.value.toLowerCase(); var route = /order/.test(query) ? 'orders.php' : /product|catalog/.test(query) ? 'catalog.php' : /delivery|shipping/.test(query) ? 'delivery.php' : /payment|earning|payout/.test(query) ? 'finance.php' : 'dashboard.php'; completeDemoAction(button, action, 'Search: ' + input.value); dialog.close(); location.href = route; return; }
+      if (/account menu/i.test(action)) { completeDemoAction(button, action, input ? input.value : ''); dialog.close(); location.href = 'account.php'; return; }
+      completeDemoAction(button, action, input ? input.value : ''); dialog.close();
+    };
+    dialog.showModal(); setTimeout(function () { if (input) input.focus(); }, 50);
+  }
+
+  function restoreCompletedActions() {
+    var completed = Array.isArray(demoState.completedActions) ? demoState.completedActions : [];
+    document.querySelectorAll('[data-demo-action]').forEach(function (button) { if (completed.includes(button.dataset.demoAction)) button.classList.add('vc-demo-complete'); });
+    var submitted = Array.isArray(demoState.formSubmissions) ? demoState.formSubmissions : [];
+    document.querySelectorAll('form[data-frontend-form]').forEach(function (form) { if (submitted.some(function (item) { return item.purpose === form.dataset.frontendForm; })) form.classList.add('vc-form-saved'); });
+  }
+
+  function renderDemoActivity() {
+    var container = document.querySelector('[data-demo-activity]');
+    if (!container) return;
+    var activity = Array.isArray(demoState.activity) ? demoState.activity : [];
+    if (!activity.length) return;
+    container.replaceChildren();
+    activity.slice(0, 6).forEach(function (item) {
+      var row = document.createElement('div'); row.className = 'vc-demo-activity-item';
+      var title = document.createElement('b'); title.textContent = item.label;
+      var detail = document.createElement('span'); detail.textContent = item.detail;
+      var time = document.createElement('small'); time.textContent = new Date(item.at).toLocaleString('en-IN');
+      row.append(title, detail, time); container.appendChild(row);
+    });
+  }
+
+  function initDemoReset() {
+    document.querySelectorAll('[data-reset-vendor-demo]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        if (!window.confirm('Clear all vendor preview actions and saved demo preferences?')) return;
+        localStorage.removeItem(stateKey); sessionStorage.removeItem('ci_vendor_onboarding_v2');
+        toast('Vendor preview reset. Reloading the clean dashboard.', 'success');
+        setTimeout(function () { location.reload(); }, 500);
+      });
+    });
+  }
+
   function initDialogActions() {
     document.querySelectorAll('[data-open-dialog]').forEach(function (button) { button.addEventListener('click', function () { document.getElementById(button.dataset.openDialog)?.showModal(); }); });
     document.querySelectorAll('[data-close-dialog]').forEach(function (button) { button.addEventListener('click', function () { button.closest('dialog')?.close(); }); });
-    document.querySelectorAll('[data-demo-action]').forEach(function (button) { button.addEventListener('click', function () { toast(button.dataset.demoAction + ' is ready for backend connection.', 'info'); }); });
+    document.querySelectorAll('[data-close-demo-dialog]').forEach(function (button) { button.addEventListener('click', function () { document.getElementById('vc-demo-dialog')?.close(); }); });
+    document.querySelectorAll('[data-demo-action]').forEach(function (button) { button.addEventListener('click', function () { openDemoAction(button); }); });
+    restoreCompletedActions();
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    initSidebar(); initTabs(); initValidation(); initCommerceValidation(); initSearchAndFilters(); initPincodeChecker(); initRateCalculator(); initDialogActions();
+    initSidebar(); initTabs(); initValidation(); initCommerceValidation(); initSearchAndFilters(); initPincodeChecker(); initRateCalculator(); initDialogActions(); initDemoReset(); renderDemoActivity();
   });
 })();
