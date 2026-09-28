@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#FF9933" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="Conscious Indi — the world's first story-led commerce, conscious living marketplace & events platform. Connecting sustainable brands, artisans, creators & conscious consumers across the globe." />
+  <meta name="description" content="Shop sustainable, natural and artisan-made products from independent Indian makers. Thoughtful materials, mindful packaging and beautiful everyday goods." />
   <meta name="keywords" content="conscious living, sustainable brands, handcrafted, indian crafts, artisan marketplace, creator economy, conscious commerce, corporate gifting, Conscious Indi" />
   <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Conscious Indi — Story-Led Commerce, Conscious Living Marketplace & Events Platform" />
-  <meta property="og:description" content="Connecting sustainable brands, artisans, creators & conscious consumers across the globe." />
+  <meta property="og:title" content="Conscious Indi — Better Things, Gently Made" />
+  <meta property="og:description" content="Discover sustainable, natural and artisan-made goods for a more thoughtful everyday." />
   <meta property="og:type" content="website" />
-  <title>Conscious Indi — Story-Led Commerce, Conscious Living Marketplace &amp; Events Platform</title>
+  <title>Conscious Indi — Sustainable, Natural &amp; Artisan-Made Goods</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,6 +27,7 @@
 
   <!-- Conscious Indi Design System -->
   <link rel="stylesheet" href="assets/css/bharatcraft.css" />
+  <link rel="stylesheet" href="assets/css/home-sustainable.css?v=5" />
   <style>
     /* Homepage preview intentionally mirrors the first three live-experience cards on events.html. */
     #bc-events-grid > .bc-event-card:nth-child(n+4){display:none}
@@ -35,6 +36,7 @@
 
   <!-- ── Stories That Matter — Section CSS (inline, server-safe) ── -->
   <style>
+    
     .bc-stm-section { position: relative; overflow: hidden; }
     .bc-stm-glow { position: absolute; border-radius: 50%; pointer-events: none; }
     .bc-stm-glow-l { width: 380px; height: 380px; top: -80px; left: -100px; background: radial-gradient(circle, rgba(255,153,51,.14) 0%, transparent 65%); }
@@ -524,7 +526,96 @@
 <!-- ════════════════════════════════════════════
      MAIN CONTENT
      ════════════════════════════════════════════ -->
-<main id="main-content">
+<main class="ci-home" id="main-content">
+  <section class="ci-hero" aria-label="Conscious and sustainable shopping">
+    <div class="ci-hero-shade"></div><div class="ci-hero-orb orb-one"></div><div class="ci-hero-orb orb-two"></div>
+    <div class="ci-hero-content"><div class="ci-hero-copy">
+      <p class="ci-overline">Earth-minded marketplace · India</p>
+      <h1><span>Live</span><span class="ci-script">a little lighter.</span></h1>
+      <p class="ci-hero-lead">Beautiful essentials shaped by nature, made by people, and chosen to leave less behind.</p>
+      <div class="ci-hero-actions"><a class="ci-btn ci-btn-primary" href="shop.html">Explore the collection <b>↗</b></a><a class="ci-link" href="#earth-journey">Scroll to discover <span>↓</span></a></div>
+      <div class="ci-hero-notes"><span>01 Natural materials</span><span>02 Fairly made</span><span>03 Plastic-light</span></div>
+    </div></div>
+    <div class="ci-scroll-cue"><span></span><small>SCROLL</small></div>
+  </section>
+
+  <section class="ci-manifesto">
+    <div class="ci-shell">
+      <p class="ci-overline" data-ci-reveal>Not another marketplace</p>
+      <h2 data-ci-lines>Everything here begins with one question:<br><em>is it kinder to the earth?</em></h2>
+      <div class="ci-manifesto-grid">
+        <figure class="ci-pebble p-one"><img src="assets/images/eco-scene-1.png" alt="Natural sustainable products"></figure>
+        <p data-ci-reveal>We look beyond the label—into materials, making, durability, packaging, and the people receiving value. So your everyday purchases can support a more thoughtful system.</p>
+        <figure class="ci-pebble p-two"><img src="assets/images/eco-scene-2.png" alt="Earth-friendly home essentials"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="ci-story" id="earth-journey">
+    <div class="ci-story-stage">
+      <div class="ci-story-visuals">
+        <figure class="ci-story-scene active"><img src="assets/images/eco-scene-2.png" alt="Products made with natural materials"></figure>
+        <figure class="ci-story-scene"><img src="assets/images/eco-scene-3.png" alt="Naturally dyed handloom textiles"></figure>
+        <figure class="ci-story-scene"><img src="assets/images/eco-scene-4.png" alt="Indian artisan creating sustainable goods"></figure>
+        <div class="ci-story-count"><b>01</b><span>/ 03</span></div>
+      </div>
+      <div class="ci-story-copy">
+        <article class="ci-story-panel active"><p class="ci-overline">01 · Material matters</p><h2>Born from<br>better sources.</h2><p>Natural fibres, renewable wood, recycled inputs and low-impact ingredients—chosen for how they feel today and where they go tomorrow.</p><a href="eco.html">Shop earth-kind materials <b>↗</b></a></article>
+        <article class="ci-story-panel"><p class="ci-overline">02 · Made slowly</p><h2>Craft over<br>convenience.</h2><p>Small-batch pieces preserve skill, reduce excess, and turn useful objects into things worth keeping.</p><a href="handloom.html">Explore slow-made goods <b>↗</b></a></article>
+        <article class="ci-story-panel"><p class="ci-overline">03 · People first</p><h2>Hands behind<br>every object.</h2><p>Know who made it, where it came from, and how your purchase helps independent Indian makers thrive.</p><a href="artisans.html">Meet the makers <b>↗</b></a></article>
+      </div>
+      <div class="ci-story-dots"><button class="active" aria-label="Scene 1"></button><button aria-label="Scene 2"></button><button aria-label="Scene 3"></button></div>
+    </div>
+  </section>
+
+  <section class="ci-categories" id="marketplace">
+    <div class="ci-shell">
+      <div class="ci-section-head" data-ci-reveal><div><p class="ci-overline">Shop by world</p><h2>Bring nature<br>closer to home.</h2></div><a class="ci-link dark" href="shop.html">View everything <span>↗</span></a></div>
+      <div class="ci-category-grid">
+        <a class="ci-cat tall" href="home-decor.html"><img src="assets/images/eco-scene-2.png" alt="Natural home and living collection"><span><small>01 · Home</small><strong>Objects for slower spaces</strong><b>↗</b></span></a>
+        <a class="ci-cat" href="fashion.html"><img src="assets/images/eco-scene-3.png" alt="Natural fibre fashion collection"><span><small>02 · Wear</small><strong>Natural fibre stories</strong><b>↗</b></span></a>
+        <a class="ci-cat" href="eco.html"><img src="assets/images/eco-scene-1.png" alt="Plastic-free eco essentials"><span><small>03 · Ritual</small><strong>Everyday, without waste</strong><b>↗</b></span></a>
+        <a class="ci-cat wide" href="artisans.html"><img src="assets/images/eco-scene-4.png" alt="Indian artisan-made collection"><span><small>04 · Craft</small><strong>Made by Indian hands</strong><b>↗</b></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ci-product-journey" id="trending-products">
+    <div class="ci-product-pin">
+      <div class="ci-product-heading"><p class="ci-overline">The conscious edit</p><h2>Good things,<br>in motion.</h2><p>Low-impact pieces for the rituals and rooms that make up a life.</p><a href="shop.html">Shop all products <b>↗</b></a></div>
+      <div class="ci-product-rail">
+        <a class="ci-product-card" href="product-detail.html"><figure><img src="assets/images/eco-scene-1.png" alt="Plastic-free self-care set"><em>New</em></figure><small>SELF CARE · PLASTIC FREE</small><h3>Forest ritual set</h3><p>₹1,290</p></a>
+        <a class="ci-product-card" href="product-detail.html"><figure><img src="assets/images/eco-scene-2.png" alt="Natural home collection"><em>Made slowly</em></figure><small>HOME · NATURAL MATERIALS</small><h3>Earth &amp; home edit</h3><p>₹2,450</p></a>
+        <a class="ci-product-card" href="product-detail.html"><figure><img src="assets/images/eco-scene-3.png" alt="Naturally dyed handloom textiles"><em>Handloom</em></figure><small>WEAR · NATURAL DYE</small><h3>Woven in sunlight</h3><p>₹3,190</p></a>
+        <a class="ci-product-card" href="product-detail.html"><figure><img src="assets/images/eco-scene-4.png" alt="Artisan-crafted collection"><em>Maker first</em></figure><small>CRAFT · SMALL BATCH</small><h3>Hands of India edit</h3><p>₹1,850</p></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ci-cycle">
+    <div class="ci-cycle-bg"><img src="assets/images/eco-scene-4.png" alt="Indian maker and natural craft"></div>
+    <div class="ci-cycle-content ci-shell">
+      <p class="ci-overline">From earth · through hands · back with care</p>
+      <h2 data-ci-lines>A better product<br>has a better journey.</h2>
+      <div class="ci-cycle-steps">
+        <div><b>01</b><strong>Source thoughtfully</strong><p>Renewable, reclaimed and natural inputs.</p></div>
+        <div><b>02</b><strong>Make fairly</strong><p>Human skill valued over anonymous scale.</p></div>
+        <div><b>03</b><strong>Pack lightly</strong><p>Less plastic and less unnecessary material.</p></div>
+        <div><b>04</b><strong>Keep longer</strong><p>Useful, repairable and made to be loved.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ci-impact" id="impact">
+    <div class="ci-shell"><p class="ci-overline" data-ci-reveal>Proof, not promises</p><div class="ci-impact-head"><h2 data-ci-lines>Small choices.<br><em>Real movement.</em></h2><p data-ci-reveal>We are building a marketplace where impact is visible, maker value is protected, and every parcel carries less waste.</p></div>
+      <div class="ci-impact-stats" data-ci-reveal><div><strong data-count="120" data-suffix="+">0</strong><span>conscious makers</span></div><div><strong data-count="85" data-suffix="%">0</strong><span>plastic-light packaging</span></div><div><strong data-count="24" data-suffix="">0</strong><span>heritage crafts</span></div><div><strong data-count="18" data-suffix="k+">0</strong><span>mindful orders</span></div></div>
+    </div>
+  </section>
+
+  <section class="ci-final"><div class="ci-final-image"><img src="assets/images/home-sustainable-hero.png" alt="Sustainable products in nature"></div><div class="ci-final-copy"><p class="ci-overline">Choose what stays</p><h2>Buy less.<br><em>Love it longer.</em></h2><a class="ci-btn ci-btn-primary" href="shop.html">Enter the marketplace <b>↗</b></a></div></section>
+</main>
+
+<main class="ci-old-home" aria-hidden="true">
 
 <!-- ────────────────────────────────────────────
      1. HERO
@@ -2413,6 +2504,9 @@
 
 <!-- Conscious Indi Main JS -->
 <script src="assets/js/bharatcraft.js"></script>
+<script src="assets/js/gsap.min.js?v=2"></script>
+<script src="assets/js/ScrollTrigger.min.js?v=2"></script>
+<script src="assets/js/home-sustainable.js?v=5"></script>
 
 </body>
 </html>
