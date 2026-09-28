@@ -31,11 +31,13 @@
   transition: width 0.3s var(--ease);
   position: sticky;
   top: 0;
+  align-self: flex-start;
   height: 100vh;
+  max-height: 100vh;
   z-index: 1000;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   flex-shrink: 0;
+  overscroll-behavior: contain;
 }
 
 .ci-dash-sidebar.collapsed {
@@ -128,6 +130,12 @@
 }
 
 .ci-sidebar-nav {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
   padding: 20px 0;
   flex-grow: 1;
 }

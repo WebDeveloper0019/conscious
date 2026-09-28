@@ -1,0 +1,19 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+.claude/settings.local.json
+
+# Editor settings
+.vscode/
+.idea/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,1 @@
+<?php $pageTitle='Recover vendor account';$authMode='recovery';require __DIR__.'/../layouts/auth-head-v2.php';require __DIR__.'/../pages/auth-forgot-v2.php';require __DIR__.'/../layouts/auth-foot-v2.php';

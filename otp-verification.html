@@ -65,18 +65,20 @@
   <div class="container">
     <div class="bc-auth-card">
       <h1 class="bc-section-title">Verify OTP</h1>
-      <p class="bc-section-desc mb-0">Enter the 4-digit code sent to</p>
-      <p class="fw-bold text-navy">+91 98XXX XXXXX</p>
+      <p class="bc-section-desc mb-0">Enter the 6-digit code sent to</p>
+      <p class="fw-bold text-navy" id="verifyEmail">your email</p>
       
       <div class="otp-input-group">
-        <input type="text" maxlength="1" class="otp-input" autofocus>
-        <input type="text" maxlength="1" class="otp-input">
-        <input type="text" maxlength="1" class="otp-input">
-        <input type="text" maxlength="1" class="otp-input">
-      </div>
-      
+        <input type="text" maxlength="1" inputmode="numeric" class="otp-input" autofocus>
+        <input type="text" maxlength="1" inputmode="numeric" class="otp-input">
+        <input type="text" maxlength="1" inputmode="numeric" class="otp-input">
+        <input type="text" maxlength="1" inputmode="numeric" class="otp-input">
+        <input type="text" maxlength="1" inputmode="numeric" class="otp-input">
+        <input type="text" maxlength="1" inputmode="numeric" class="otp-input">
+      </div>     
+      <div id="otpAlert" class="alert alert-danger d-none"></div>
       <div class="d-grid mb-4">
-        <button class="bc-btn bc-btn-primary" onclick="window.location.href='customer/dashboard'">Verify & Proceed</button>
+        <button id="verifyBtn" class="bc-btn bc-btn-primary">Verify & Proceed</button>
       </div>
 
       <div class="text-muted" style="font-size: 0.875rem;">
@@ -89,10 +91,15 @@
 
 <script src="assets/js/bharatcraft.js"></script>
 <script>
+  const email = sessionStorage.getItem('ci_verify_email') || '';
+  document.getElementById('verifyEmail').textContent = email || 'your email';
+  const alertBox = document.getElementById('otpAlert');
+  const showOtpError = (msg) => { alertBox.textContent = msg; alertBox.classList.remove('d-none'); };
   // OTP Input Auto-focus
   const inputs = document.querySelectorAll('.otp-input');
   inputs.forEach((input, index) => {
     input.addEventListener('keyup', (e) => {
+      if (/\D/.test(e.target.value)) e.target.value = '';
       if (e.target.value.length === 1 && index < inputs.length - 1) {
         inputs[index + 1].focus();
       }
@@ -102,11 +109,40 @@
     });
   });
 
+  document.getElementById('verifyBtn').addEventListener('click', async () => {
+    alertBox.classList.add('d-none');
+    const otp = Array.from(inputs).map(i => i.value).join('');
+    if (!email) return showOtpError('Verification email is missing. Please register again.');
+    if (otp.length !== 6) return showOtpError('Please enter the complete 6-digit OTP.');
+    const btn = document.getElementById('verifyBtn'); btn.disabled = true; btn.textContent = 'Verifying…';
+    try {
+      const res = await fetch('api/auth/verify-otp.php', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,otp})});
+      const data = await res.json();
+      if (res.ok && data.success) {
+        localStorage.setItem('ci_token', data.token); localStorage.setItem('ci_user', JSON.stringify(data.user));
+        sessionStorage.removeItem('ci_verify_email'); window.location.href='customer/dashboard'; return;
+      }
+      showOtpError(data.message || 'OTP verification failed.');
+    } catch(e) { showOtpError('Could not connect to the server.'); }
+    btn.disabled = false; btn.textContent = 'Verify & Proceed';
+  });
+
   // Timer logic
   let timeLeft = 59;
   const timerDisplay = document.getElementById('timer');
   const resendBtn = document.getElementById('resend-otp');
   
+  resendBtn.addEventListener('click', async () => {
+    resendBtn.disabled = true;
+    try {
+      const res = await fetch('api/auth/resend-otp.php', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email})});
+      const data = await res.json();
+      if (!res.ok) showOtpError(data.message || 'Could not resend OTP.');
+      else { showOtpError('OTP sent again. Check your email.'); alertBox.className='alert alert-success'; }
+    } catch(e) { showOtpError('Could not connect to the server.'); }
+    resendBtn.disabled = false;
+  });
+
   const countdown = setInterval(() => {
     if (timeLeft <= 0) {
       clearInterval(countdown);

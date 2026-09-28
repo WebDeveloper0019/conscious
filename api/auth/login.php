@@ -57,6 +57,15 @@ if (!$user || !password_verify($password, $user['password_hash'])) {
     json_response(401, $genericError);
 }
 
+if (empty($user['email_verified'])) {
+    json_response(403, [
+        'success' => false,
+        'message' => 'Please verify your email with the OTP before signing in.',
+        'code' => 'EMAIL_NOT_VERIFIED',
+        'email' => $user['email'],
+    ]);
+}
+
 $token = issue_token($user, $rememberMe);
 
 json_response(200, [

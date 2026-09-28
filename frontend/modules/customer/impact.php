@@ -1,0 +1,1 @@
+<?php $pageTitle='My Conscious Impact';$pageSubtitle='Evidence, scope and methodology behind your purchase impact';$activePage='impact';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/impact.php';require __DIR__.'/layouts/foot.php';

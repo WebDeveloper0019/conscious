@@ -1,0 +1,1 @@
+<?php $pageTitle='Returns & Refunds';$pageSubtitle='Eligibility, evidence, pickup, inspection, replacement and refund status';$activePage='returns';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/returns.php';require __DIR__.'/layouts/foot.php';

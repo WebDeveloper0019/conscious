@@ -1,0 +1,1 @@
+<?php $pageTitle='Verify vendor contact';$authMode='verify';require __DIR__.'/../layouts/auth-head-v2.php';require __DIR__.'/../pages/auth-verify-v2.php';require __DIR__.'/../layouts/auth-foot-v2.php';

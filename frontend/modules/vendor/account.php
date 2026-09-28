@@ -1,0 +1,1 @@
+<?php $pageTitle='Account';$pageSubtitle='Verification, staff, permissions, security, audit, and settings';$activePage='account';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/account.php';require __DIR__.'/layouts/foot.php';

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FF9933" />
+  <meta name="robots" content="index, follow" />
+  <meta name="description" content="Discover EarthWeave Co. — a verified sustainable fashion brand from Jaipur. GOTS & Fair Trade certified." />
+  <meta name="author" content="Conscious Indi" />
+  <meta property="og:title" content="EarthWeave Co. | Sustainable Fashion Brand | Conscious Indi" />
+  <meta property="og:description" content="Sustainable fashion brand using natural dyes and supporting 340+ weavers in Rajasthan." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Conscious Indi" />
+  <title>EarthWeave Co. — Brand Profile | Conscious Indi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/bharatcraft.css" />
+<style>
+.bc-breadcrumb-wrap{background:var(--bg-cream);border-bottom:1px solid var(--border-warm);padding:10px 0;}
+
+/* ===== Brand cover ===== */
+.bp-cover-grid{display:grid;grid-template-columns:auto 1fr auto;gap:32px;align-items:center;}
+.bp-cover-logo{width:100px;height:100px;border-radius:var(--r-xl);background:linear-gradient(135deg,#FFF3E6,#FFE0B2);display:flex;align-items:center;justify-content:center;font-size:3rem;border:3px solid rgba(255,153,51,0.4);flex-shrink:0;}
+.bp-cover-badges{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.bp-cover-title{font-family:var(--font-display);font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;color:white;margin-bottom:8px;}
+.bp-cover-meta{display:flex;gap:20px;flex-wrap:wrap;color:rgba(255,255,255,0.7);font-size:0.875rem;}
+.bp-cover-actions{display:flex;flex-direction:column;gap:10px;}
+
+/* ===== Two-column content layout (story + sidebar) ===== */
+.bp-main-grid{display:grid;grid-template-columns:2fr 1fr;gap:48px;align-items:start;}
+
+/* ===== Card grids ===== */
+.bp-cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.bp-products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.bp-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+/* ===== Responsive breakpoints ===== */
+@media (max-width:991px){
+  .bp-main-grid{grid-template-columns:1fr;gap:32px;}
+  .bp-cover-grid{grid-template-columns:1fr;text-align:center;gap:20px;}
+  .bp-cover-logo{margin:0 auto;}
+  .bp-cover-badges,.bp-cover-meta{justify-content:center;}
+  .bp-cover-actions{flex-direction:row;justify-content:center;}
+}
+@media (max-width:767px){
+  .bp-products-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:575px){
+  .bp-cert-grid{grid-template-columns:1fr;}
+  .bp-products-grid{grid-template-columns:1fr;}
+  .bp-cover-actions{flex-direction:column;width:100%;}
+  .bp-cover-actions .bc-btn{width:100%;justify-content:center;}
+  .bp-cover-meta{flex-direction:column;gap:8px;align-items:center;}
+}
+@media (max-width:420px){
+  .bp-stats-grid{gap:10px;}
+}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
+  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious Indi</div>
+  <div class="bc-preloader-chakra"></div>
+</div>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="bc-announce-bar" role="marquee" aria-live="polite">
+  <div class="bc-announce-track container">
+    <div class="bc-announce-messages">
+      <div class="bc-announce-item">
+        <span><span class="bc-announce-badge">New</span> 🌍 World's First Story-Led Commerce &amp; Conscious Living Platform</span>
+        <span class="bc-announce-dot"></span>
+        <span>Growing Community of Verified Brands &amp; Artisans</span>
+        <span class="bc-announce-dot"></span>
+        <span>Commerce + Events + Sustainability + Creator Economy</span>
+      </div>
+      <div class="bc-announce-item">
+        <span>🔒 100% Secure Payments — UPI, Cards &amp; Net Banking</span>
+        <span class="bc-announce-dot"></span>
+        <span>Every transaction protected &amp; encrypted</span>
+        <span class="bc-announce-dot"></span>
+        <span>Buyer Protection Guarantee on all orders</span>
+      </div>
+      <div class="bc-announce-item">
+        <span><span class="bc-announce-badge">Live</span> 🎪 Upcoming Pop-Ups, Exhibitions &amp; Sustainability Conferences</span>
+        <span class="bc-announce-dot"></span>
+        <span>Across 12+ cities &amp; growing</span>
+        <span class="bc-announce-dot"></span>
+        <span>Register free for early access</span>
+      </div>
+      <div class="bc-announce-item">
+        <span>✋ Support Conscious — Every purchase empowers an artisan or sustainable brand</span>
+        <span class="bc-announce-dot"></span>
+        <span>Curated, verified partners only</span>
+        <span class="bc-announce-dot"></span>
+        <span>100% Authenticity Guaranteed</span>
+      </div>
+    </div>
+    <button class="bc-announce-close" aria-label="Close announcement bar"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+</div>
+
+<!-- DESKTOP HEADER -->
+<header class="bc-header" id="bc-header" role="banner">
+  <div class="bc-header-top">
+    <div class="container">
+      <div class="bc-header-top-inner">
+        <a href="index" class="bc-logo bc-logo-real" aria-label="Conscious Indi — Story-Led Commerce, Conscious Living Marketplace &amp; Events Platform">
+          <img src="assets/images/logo-horizontal.png" alt="Conscious Indi" class="bc-logo-img bc-logo-horizontal" width="220" height="60" loading="eager" fetchpriority="high" />
+        </a>
+        <div class="bc-search-wrap">
+          <div class="bc-search-box" role="search">
+            <select class="bc-search-cat" aria-label="Search category">
+              <option value="all">All Categories</option>
+              <option value="brands">Sustainable Brands</option>
+              <option value="pottery">Pottery &amp; Ceramics</option>
+              <option value="jewelry">Handmade Jewelry</option>
+              <option value="wood">Wood Crafts</option>
+              <option value="home">Home Decor</option>
+              <option value="handloom">Handloom &amp; Textiles</option>
+              <option value="paintings">Paintings</option>
+              <option value="art">Traditional Art</option>
+              <option value="fashion">Fashion Accessories</option>
+              <option value="gifts">Gift Items</option>
+              <option value="eco">Eco Friendly</option>
+            </select>
+            <input class="bc-search-input" type="search" id="bc-search-input" placeholder="Search brands, artisans, events…" aria-label="Search products" autocomplete="off" />
+            <button class="bc-search-btn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+          </div>
+        </div>
+        <div class="bc-header-actions">
+          <a href="become-brand-partner" class="bc-btn-seller"><i class="fa-solid fa-store"></i> Sell With Us</a>
+          <a href="creators" class="bc-btn-influencer"><i class="fa-solid fa-star"></i> Become a Creator</a>
+          <a href="customer/wishlist" class="bc-header-action-link" aria-label="Wishlist"><i class="fa-regular fa-heart"></i><span>Wishlist</span></a>
+          <a href="cart" class="bc-header-action-link" aria-label="Cart (0 items)">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="bc-action-badge" aria-label="0 items in cart">0</span>
+            <span>Cart</span>
+          </a>
+          <a href="login" class="bc-header-action-link" aria-label="My Account"><i class="fa-regular fa-circle-user"></i><span>Account</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bc-header-nav">
+    <div class="container">
+      <div class="bc-nav-inner">
+        <nav aria-label="Main Navigation">
+          <ul class="bc-nav-list">
+            <li class="bc-nav-item has-mega">
+              <a href="shop">
+                <i class="fa-solid fa-grid-2" style="font-size:0.875rem;color:var(--saffron)"></i>
+                Marketplace <i class="fa-solid fa-chevron-down" style="font-size:0.625rem;margin-left:2px;"></i>
+              </a>
+              <div class="bc-mega-menu" role="region" aria-label="Marketplace mega menu">
+                <div class="bc-mega-grid">
+                  <div class="bc-mega-col">
+                    <h5>Crafts &amp; Art</h5>
+                    <ul>
+                      <li><a href="pottery"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Pottery &amp; Ceramics</a></li>
+                      <li><a href="paintings"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Madhubani Paintings</a></li>
+                      <li><a href="traditional-art"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Warli Art</a></li>
+                      <li><a href="traditional-art"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Pattachitra</a></li>
+                      <li><a href="paintings"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Tanjore Paintings</a></li>
+                      <li><a href="wood"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Wood Carving</a></li>
+                    </ul>
+                  </div>
+                  <div class="bc-mega-col">
+                    <h5>Jewelry &amp; Fashion</h5>
+                    <ul>
+                      <li><a href="jewelry"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Kundan Jewelry</a></li>
+                      <li><a href="jewelry"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Meenakari Work</a></li>
+                      <li><a href="jewelry"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Beaded Jewelry</a></li>
+                      <li><a href="jewelry"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Silver Filigree</a></li>
+                      <li><a href="fashion"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Lac Bangles</a></li>
+                      <li><a href="fashion"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Jute Accessories</a></li>
+                    </ul>
+                  </div>
+                  <div class="bc-mega-col">
+                    <h5>Textiles &amp; Decor</h5>
+                    <ul>
+                      <li><a href="handloom"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Kantha Embroidery</a></li>
+                      <li><a href="handloom"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Block Print Fabric</a></li>
+                      <li><a href="handloom"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Handloom Sarees</a></li>
+                      <li><a href="home-decor"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Dhurrie Rugs</a></li>
+                      <li><a href="home-decor"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Kashmiri Carpets</a></li>
+                      <li><a href="handloom"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Pashmina Shawls</a></li>
+                    </ul>
+                  </div>
+                  <div class="bc-mega-col">
+                    <h5>Gifting &amp; More</h5>
+                    <ul>
+                      <li><a href="corporate-gifting"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Corporate Gifts</a></li>
+                      <li><a href="gifts"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Wedding Gifts</a></li>
+                      <li><a href="brands"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Sustainable Brands</a></li>
+                      <li><a href="eco"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Eco Products</a></li>
+                      <li><a href="home-decor"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Home Decor</a></li>
+                      <li><a href="shop"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Kitchen &amp; Dining</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="bc-mega-banner">
+                  <div>
+                    <div class="bc-mega-banner-text">
+                      🌱 New: Verified Sustainable Brands Directory
+                      <span>Discover ESG, zero-waste &amp; circular economy brands</span>
+                    </div>
+                  </div>
+                  <a href="brands" class="bc-btn bc-btn-primary bc-btn-sm">Explore Brands</a>
+                </div>
+              </div>
+            </li>
+            <li class="bc-nav-item"><a href="brands" class="active">Brands</a></li>
+            <li class="bc-nav-item"><a href="artisans">Artisans</a></li>
+            <li class="bc-nav-item highlight">
+              <a href="events"><i class="fa-regular fa-calendar" style="font-size:0.75rem"></i> Events</a>
+            </li>
+            <li class="bc-nav-item"><a href="community">Community</a></li>
+            <li class="bc-nav-item"><a href="creators">Creators</a></li>
+            <li class="bc-nav-item"><a href="about">Impact</a></li>
+            <li class="bc-nav-item highlight-green">
+              <a href="become-exhibitor"><i class="fa-solid fa-store" style="font-size:0.75rem"></i>Become an Exhibitor</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="bc-nav-extras">
+          <a href="customer/tracking"><i class="fa-regular fa-clock"></i> Track Order</a>
+          <a href="help"><i class="fa-regular fa-circle-question"></i> Help</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE HEADER -->
+<header class="bc-header-mobile" role="banner">
+  <div class="bc-mobile-top">
+    <button class="bc-hamburger" id="bc-hamburger" aria-label="Open navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index" class="bc-logo bc-logo-real" aria-label="Conscious Indi">
+      <img src="assets/images/logo-horizontal.png" alt="Conscious Indi" class="bc-logo-img bc-logo-horizontal bc-logo-mobile" width="160" height="44" loading="eager" />
+    </a>
+    <div class="bc-mobile-actions">
+      <a href="customer/wishlist" class="bc-mobile-action-btn" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
+      <a href="cart" class="bc-mobile-action-btn" aria-label="Cart" style="position:relative;">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="bc-action-badge" style="top:2px;right:2px;">0</span>
+      </a>
+      <a href="login" class="bc-mobile-action-btn" aria-label="Account"><i class="fa-regular fa-circle-user"></i></a>
+    </div>
+  </div>
+  <div class="bc-mobile-search-wrap">
+    <div class="bc-mobile-search" role="search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="search" placeholder="Search brands, artisans, events…" aria-label="Search" />
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Drawer -->
+<nav class="bc-mobile-drawer" id="bc-mobile-drawer" aria-label="Mobile Navigation" aria-hidden="true">
+  <div class="bc-drawer-head">
+    <a href="index" class="bc-logo bc-logo-real" aria-label="Conscious Indi Home">
+      <img src="assets/images/logo-square.png" alt="Conscious Indi" class="bc-logo-img bc-logo-square-img" width="130" height="130" loading="lazy" />
+    </a>
+    <button class="bc-drawer-close" id="bc-drawer-close" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="bc-drawer-nav">
+    <div class="bc-drawer-section-title">Explore</div>
+    <a href="index"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="shop"><i class="fa-solid fa-store"></i> Marketplace</a>
+    <a href="brands"><i class="fa-solid fa-leaf"></i> Sustainable Brands</a>
+    <a href="artisans"><i class="fa-solid fa-hands"></i> Artisans &amp; Stories</a>
+    <a href="events"><i class="fa-regular fa-calendar"></i> Events</a>
+    <a href="community"><i class="fa-solid fa-people-group"></i> Community</a>
+    <div class="bc-drawer-divider"></div>
+    <div class="bc-drawer-section-title">Discover</div>
+    <a href="creators"><i class="fa-solid fa-star"></i> Creator Shops</a>
+    <a href="about"><i class="fa-solid fa-chart-line"></i> Our Impact</a>
+    <a href="corporate-gifting"><i class="fa-solid fa-gift"></i> Corporate Gifting</a>
+    <div class="bc-drawer-divider"></div>
+    <div class="bc-drawer-section-title">Partners</div>
+    <a href="become-brand-partner"><i class="fa-solid fa-store"></i> Sell With Us</a>
+    <a href="become-exhibitor"><i class="fa-solid fa-people-roof"></i> Exhibit With Us</a>
+    <a href="creators"><i class="fa-solid fa-star"></i> Become a Creator</a>
+    <div class="bc-drawer-divider"></div>
+    <a href="customer/tracking"><i class="fa-regular fa-clock"></i> Track Order</a>
+    <a href="login"><i class="fa-regular fa-circle-user"></i> My Account</a>
+    <a href="help"><i class="fa-regular fa-circle-question"></i> Help &amp; Support</a>
+  </div>
+</nav>
+<div class="bc-overlay" id="bc-overlay"></div>
+<main id="main-content">
+
+<div class="bc-breadcrumb-wrap">
+  <div class="container">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb mb-0" style="font-size:0.8125rem;">
+        <li class="breadcrumb-item"><a href="index">Home</a></li>
+            <li class="breadcrumb-item"><a href="brands">Brands</a></li>
+            <li class="breadcrumb-item active" aria-current="page">EarthWeave Co.</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<section class="section-py-sm" style="background:linear-gradient(135deg,var(--navy),#1A0050);" aria-label="Brand cover">
+  <div class="container">
+    <div class="bp-cover-grid bc-reveal">
+      <div class="bp-cover-logo">🌿</div>
+      <div>
+        <div class="bp-cover-badges">
+          <span class="bc-badge" style="background:rgba(19,136,8,0.2);color:#5EE85E;border:1px solid rgba(19,136,8,0.3);"><i class="fa-solid fa-circle-check"></i> Verified Brand</span>
+          <span class="bc-badge" style="background:rgba(255,153,51,0.2);color:var(--saffron-light);border:1px solid rgba(255,153,51,0.3);">🏆 ESG Certified</span>
+          <span class="bc-badge" style="background:rgba(201,164,74,0.2);color:var(--gold-light);border:1px solid rgba(201,164,74,0.3);">Conscious Indi Partner</span>
+        </div>
+        <h1 class="bp-cover-title">EarthWeave Co.</h1>
+        <div class="bp-cover-meta">
+          <span><i class="fa-solid fa-location-dot" style="color:var(--saffron-light);"></i> Jaipur, Rajasthan</span>
+          <span><i class="fa-regular fa-calendar" style="color:var(--saffron-light);"></i> Since 2018</span>
+          <span><i class="fa-solid fa-leaf" style="color:var(--saffron-light);"></i> Sustainable Fashion &amp; Textiles</span>
+          <span><i class="fa-solid fa-star" style="color:#FFC107;"></i> 4.9 (1,240 reviews)</span>
+        </div>
+      </div>
+      <div class="bp-cover-actions">
+        <a href="shop" class="bc-btn bc-btn-primary"><i class="fa-solid fa-bag-shopping"></i> Shop Brand</a>
+        <a href="contact" class="bc-btn bc-btn-outline-white bc-btn-sm"><i class="fa-regular fa-envelope"></i> Contact Brand</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-py" style="background:var(--bg-cream);">
+  <div class="container">
+    <div class="bp-main-grid">
+      <!-- Story & Mission -->
+      <div class="bc-reveal-left">
+        <div style="background:white;border-radius:var(--r-xl);border:1.5px solid var(--border-warm);padding:32px;margin-bottom:24px;">
+          <div class="bc-section-label">Brand Story</div>
+          <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--text-primary);margin-bottom:16px;">Weaving a Conscious Future</h2>
+          <p style="font-size:1rem;color:var(--text-secondary);line-height:1.8;margin-bottom:16px;">EarthWeave Co. was born in 2018 from a simple belief: fashion can be beautiful and ethical at the same time. Founder Meera Joshi quit her corporate career to work with the handloom weavers of Barmer, Rajasthan — women whose centuries-old weaving skills were at risk of disappearing.</p>
+          <p style="font-size:1rem;color:var(--text-secondary);line-height:1.8;margin-bottom:16px;">Today, EarthWeave partners with 340+ weavers across Rajasthan and Gujarat, using only natural plant-based dyes and 100% organic cotton. Every piece tells the story of the hands that made it.</p>
+          <blockquote style="border-left:4px solid var(--saffron);padding:12px 20px;background:var(--saffron-pale);border-radius:0 var(--r-md) var(--r-md) 0;font-style:italic;color:var(--text-secondary);font-size:1.0625rem;line-height:1.7;">
+            "We don't just sell clothes. We sell stories — of women who weave their dreams into every thread."
+            <cite style="display:block;margin-top:8px;font-style:normal;font-weight:700;color:var(--saffron-dark);">— Meera Joshi, Founder</cite>
+          </blockquote>
+        </div>
+
+        <!-- Certifications -->
+        <div style="background:white;border-radius:var(--r-xl);border:1.5px solid var(--border-warm);padding:28px;margin-bottom:24px;">
+          <h3 style="font-family:var(--font-display);font-size:1.125rem;font-weight:700;color:var(--text-primary);margin-bottom:20px;">Certifications &amp; Standards</h3>
+          <div class="bp-cert-grid">
+            <div style="display:flex;gap:12px;align-items:center;padding:12px;background:var(--green-pale);border-radius:var(--r-md);border:1px solid rgba(19,136,8,0.15);">
+              <div style="width:36px;height:36px;border-radius:var(--r-sm);background:var(--green);display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;flex-shrink:0;"><i class="fa-solid fa-leaf"></i></div>
+              <div><div style="font-size:0.875rem;font-weight:700;color:var(--text-primary);">GOTS Certified</div><div style="font-size:0.75rem;color:var(--text-muted);">Organic Textile Standard</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;padding:12px;background:var(--navy-pale);border-radius:var(--r-md);border:1px solid rgba(0,0,128,0.1);">
+              <div style="width:36px;height:36px;border-radius:var(--r-sm);background:var(--navy);display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;flex-shrink:0;"><i class="fa-solid fa-shield-halved"></i></div>
+              <div><div style="font-size:0.875rem;font-weight:700;color:var(--text-primary);">Fair Trade</div><div style="font-size:0.75rem;color:var(--text-muted);">Ethical Sourcing Certified</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;padding:12px;background:var(--saffron-pale);border-radius:var(--r-md);border:1px solid rgba(255,153,51,0.15);">
+              <div style="width:36px;height:36px;border-radius:var(--r-sm);background:var(--saffron);display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;flex-shrink:0;"><i class="fa-solid fa-recycle"></i></div>
+              <div><div style="font-size:0.875rem;font-weight:700;color:var(--text-primary);">B Corp Certified</div><div style="font-size:0.75rem;color:var(--text-muted);">ESG &amp; Social Impact</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;padding:12px;background:var(--gold-pale);border-radius:var(--r-md);border:1px solid rgba(201,164,74,0.15);">
+              <div style="width:36px;height:36px;border-radius:var(--r-sm);background:var(--gold-dark);display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;flex-shrink:0;"><i class="fa-solid fa-award"></i></div>
+              <div><div style="font-size:0.875rem;font-weight:700;color:var(--text-primary);">GI Tagged Products</div><div style="font-size:0.75rem;color:var(--text-muted);">Geographical Indication</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products -->
+        <div style="background:white;border-radius:var(--r-xl);border:1.5px solid var(--border-warm);padding:28px;">
+          <h3 style="font-family:var(--font-display);font-size:1.125rem;font-weight:700;color:var(--text-primary);margin-bottom:20px;">Featured Products</h3>
+          <div class="bp-products-grid">
+            <article class="bc-product-card" data-category="handloom"><div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-1" style="display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🧵</div></div><div class="bc-product-body"><h4 class="bc-product-title" style="font-size:0.8125rem;"><a href="product-detail">Natural Dye Block Print Kurta</a></h4><div class="bc-product-price-row"><span class="bc-product-price" style="font-size:0.9375rem;">₹1,899</span><button class="bc-product-add-btn" style="width:28px;height:28px;" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div></div></article>
+            <article class="bc-product-card" data-category="handloom"><div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-2" style="display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🧶</div></div><div class="bc-product-body"><h4 class="bc-product-title" style="font-size:0.8125rem;"><a href="product-detail">Kantha Stitch Tote Bag</a></h4><div class="bc-product-price-row"><span class="bc-product-price" style="font-size:0.9375rem;">₹699</span><button class="bc-product-add-btn" style="width:28px;height:28px;" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div></div></article>
+            <article class="bc-product-card" data-category="handloom"><div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-3" style="display:flex;align-items:center;justify-content:center;font-size:2.5rem;">👗</div></div><div class="bc-product-body"><h4 class="bc-product-title" style="font-size:0.8125rem;"><a href="product-detail">Indigo Ajrakh Print Dupatta</a></h4><div class="bc-product-price-row"><span class="bc-product-price" style="font-size:0.9375rem;">₹1,299</span><button class="bc-product-add-btn" style="width:28px;height:28px;" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div></div></article>
+          </div>
+          <div style="text-align:center;margin-top:16px;"><a href="shop" class="bc-btn bc-btn-outline bc-btn-sm">View All 120 Products</a></div>
+        </div>
+      </div>
+
+      <!-- Sidebar Stats & Social -->
+      <div class="bc-reveal-right">
+        <!-- Stats -->
+        <div style="background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:var(--r-xl);padding:28px;color:white;margin-bottom:20px;">
+          <h3 style="font-size:1rem;font-weight:700;margin-bottom:20px;color:white;">Brand Impact</h3>
+          <div class="bp-stats-grid">
+            <div style="text-align:center;padding:14px;background:rgba(255,255,255,0.08);border-radius:var(--r-md);">
+              <div style="font-family:var(--font-display);font-size:1.75rem;font-weight:800;color:var(--saffron-light);">340+</div>
+              <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);margin-top:4px;">Weavers Supported</div>
+            </div>
+            <div style="text-align:center;padding:14px;background:rgba(255,255,255,0.08);border-radius:var(--r-md);">
+              <div style="font-family:var(--font-display);font-size:1.75rem;font-weight:800;color:var(--saffron-light);">120+</div>
+              <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);margin-top:4px;">Products</div>
+            </div>
+            <div style="text-align:center;padding:14px;background:rgba(255,255,255,0.08);border-radius:var(--r-md);">
+              <div style="font-family:var(--font-display);font-size:1.75rem;font-weight:800;color:var(--saffron-light);">4.9★</div>
+              <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);margin-top:4px;">Customer Rating</div>
+            </div>
+            <div style="text-align:center;padding:14px;background:rgba(255,255,255,0.08);border-radius:var(--r-md);">
+              <div style="font-family:var(--font-display);font-size:1.75rem;font-weight:800;color:var(--saffron-light);">2,400+</div>
+              <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);margin-top:4px;">Happy Orders</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact & Social -->
+        <div style="background:white;border-radius:var(--r-xl);border:1.5px solid var(--border-warm);padding:24px;margin-bottom:20px;">
+          <h3 style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:16px;">Connect with Brand</h3>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="#" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r-md);border:1.5px solid var(--border-warm);color:var(--text-secondary);text-decoration:none;font-size:0.875rem;transition:all var(--t);">
+              <i class="fa-brands fa-instagram" style="color:#E4405F;font-size:1.125rem;"></i> @earthweave.co
+            </a>
+            <a href="#" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r-md);border:1.5px solid var(--border-warm);color:var(--text-secondary);text-decoration:none;font-size:0.875rem;">
+              <i class="fa-brands fa-facebook-f" style="color:#1877F2;font-size:1.125rem;"></i> EarthWeave Co.
+            </a>
+            <a href="contact" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r-md);border:1.5px solid var(--border-warm);color:var(--text-secondary);text-decoration:none;font-size:0.875rem;">
+              <i class="fa-regular fa-envelope" style="color:var(--saffron);font-size:1.125rem;"></i> Contact Brand
+            </a>
+          </div>
+        </div>
+
+        <!-- Partner Info -->
+        <div style="background:var(--saffron-pale);border-radius:var(--r-lg);border:1.5px solid rgba(255,153,51,0.2);padding:20px;">
+          <div style="font-size:0.875rem;font-weight:700;color:var(--saffron-dark);margin-bottom:8px;"><i class="fa-solid fa-certificate"></i> Conscious Indi Verified</div>
+          <p style="font-size:0.8125rem;color:var(--text-secondary);line-height:1.6;margin:0;">This brand has passed our 12-point sustainability audit covering ethical sourcing, fair wages, environmental impact, and product authenticity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bc-newsletter-section section-py" aria-labelledby="newsletter-heading">
+  <div class="container">
+    <div class="bc-newsletter-inner bc-reveal">
+      <div class="bc-section-label">Stay Connected</div>
+      <h2 class="bc-section-title" id="newsletter-heading">Join the Conscious Community</h2>
+      <p class="bc-section-desc">Get curated stories, upcoming events, exclusive offers &amp; sustainability insights delivered to your inbox.</p>
+      <form class="bc-newsletter-form" id="bc-newsletter-form" novalidate>
+        <input class="bc-newsletter-input" type="email" placeholder="Enter your email address" aria-label="Email address" required />
+        <button class="bc-newsletter-submit" type="submit"><i class="fa-solid fa-paper-plane"></i> Subscribe</button>
+      </form>
+      <div class="bc-newsletter-perks">
+        <span class="bc-newsletter-perk"><i class="fa-solid fa-check-circle"></i> No spam, ever</span>
+        <span class="bc-newsletter-perk"><i class="fa-solid fa-check-circle"></i> Unsubscribe anytime</span>
+        <span class="bc-newsletter-perk"><i class="fa-solid fa-check-circle"></i> 50,000+ conscious subscribers</span>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer class="bc-footer" role="contentinfo">
+  <div class="bc-india-pride-bar" aria-hidden="true" title="Colors of the Indian National Flag"></div>
+  <div class="bc-footer-top">
+    <div class="container">
+      <div class="bc-footer-grid">
+        <div class="bc-footer-brand">
+          <a href="index" class="bc-footer-logo-link" aria-label="Conscious Indi">
+            <div class="bc-footer-logo-pill">
+              <img src="assets/images/logo-horizontal.png" alt="Conscious Indi" class="bc-logo-img bc-logo-footer" width="200" height="54" loading="lazy" />
+            </div>
+          </a>
+          <p class="bc-footer-about">World's first story-led commerce, conscious living marketplace &amp; events platform — connecting sustainable brands, artisans, creators &amp; conscious consumers across the globe.</p>
+          <div class="bc-footer-social">
+            <a href="#" class="bc-social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="bc-social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="bc-social-btn" aria-label="Twitter/X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="bc-social-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" class="bc-social-btn" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+            <a href="#" class="bc-social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div>
+          <div class="bc-footer-col-title">Explore</div>
+          <ul class="bc-footer-links">
+            <li><a href="shop"><i class="fa-solid fa-chevron-right"></i> Marketplace</a></li>
+            <li><a href="brands"><i class="fa-solid fa-chevron-right"></i> Sustainable Brands</a></li>
+            <li><a href="stories"><i class="fa-solid fa-chevron-right"></i> Artisan Stories</a></li>
+            <li><a href="creators"><i class="fa-solid fa-chevron-right"></i> Creator Shops</a></li>
+            <li><a href="events"><i class="fa-solid fa-chevron-right"></i> Events</a></li>
+            <li><a href="community"><i class="fa-solid fa-chevron-right"></i> Community</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="bc-footer-col-title">Partners</div>
+          <ul class="bc-footer-links">
+            <li><a href="become-brand-partner"><i class="fa-solid fa-chevron-right"></i> Become a Brand Partner</a></li>
+            <li><a href="become-artisan-partner"><i class="fa-solid fa-chevron-right"></i> Become an Artisan Partner</a></li>
+            <li><a href="become-exhibitor"><i class="fa-solid fa-chevron-right"></i> Exhibitor Program</a></li>
+            <li><a href="creators"><i class="fa-solid fa-chevron-right"></i> Creator Program</a></li>
+            <li><a href="corporate-gifting"><i class="fa-solid fa-chevron-right"></i> Corporate Gifting</a></li>
+            <li><a href="partner-success"><i class="fa-solid fa-chevron-right"></i> Success Stories</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="bc-footer-col-title">Customer Care</div>
+          <ul class="bc-footer-links">
+            <li><a href="login"><i class="fa-solid fa-chevron-right"></i> My Account</a></li>
+            <li><a href="customer/tracking"><i class="fa-solid fa-chevron-right"></i> Track My Order</a></li>
+            <li><a href="returns"><i class="fa-solid fa-chevron-right"></i> Returns &amp; Refunds</a></li>
+            <li><a href="faq"><i class="fa-solid fa-chevron-right"></i> FAQs</a></li>
+            <li><a href="contact"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
+            <li><a href="help"><i class="fa-solid fa-chevron-right"></i> Help Centre</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="bc-footer-col-title">About Us</div>
+          <ul class="bc-footer-links">
+            <li><a href="about"><i class="fa-solid fa-chevron-right"></i> Our Story</a></li>
+            <li><a href="mission"><i class="fa-solid fa-chevron-right"></i> Our Mission</a></li>
+            <li><a href="impact-report"><i class="fa-solid fa-chevron-right"></i> Impact Report</a></li>
+            <li><a href="press"><i class="fa-solid fa-chevron-right"></i> Press &amp; Media</a></li>
+            <li><a href="careers"><i class="fa-solid fa-chevron-right"></i> Careers</a></li>
+            <li><a href="partnerships"><i class="fa-solid fa-chevron-right"></i> Partnerships</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bc-footer-bottom">
+    <div class="container">
+      <div class="bc-footer-bottom-inner">
+        <div class="bc-footer-copyright">
+          &copy; 2025 Conscious Indi&trade;. Made with ❤️ in India.
+          Empowering <a href="stories">artisans &amp; conscious brands</a>, one story at a time.
+        </div>
+        <div class="bc-footer-payments" aria-label="Accepted payment methods">
+          <span style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-right:4px;">We Accept:</span>
+          <span class="bc-payment-badge">UPI</span>
+          <span class="bc-payment-badge">Visa</span>
+          <span class="bc-payment-badge">Mastercard</span>
+          <span class="bc-payment-badge">RuPay</span>
+          <span class="bc-payment-badge">Net Banking</span>
+          <span class="bc-payment-badge">EMI</span>
+        </div>
+        <div class="bc-footer-legal">
+          <a href="privacy">Privacy Policy</a>
+          <a href="terms">Terms of Use</a>
+          <a href="sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="bc-back-top" id="bc-back-top" aria-label="Scroll back to top" title="Back to Top">
+  <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/bharatcraft.js"></script>
+</body>
+</html>

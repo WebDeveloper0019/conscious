@@ -1,0 +1,1 @@
+<?php $pageTitle='Conscious Marketplace';$pageSubtitle='Verified craft and sustainability information';$activePage='shop';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/shop.php';require __DIR__.'/layouts/foot.php';

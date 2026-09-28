@@ -1,0 +1,1 @@
+<?php $pageTitle='Wishlist';$pageSubtitle='Saved products, price changes, stock and claim status';$activePage='wishlist';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/wishlist.php';require __DIR__.'/layouts/foot.php';

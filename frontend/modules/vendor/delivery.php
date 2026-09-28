@@ -1,0 +1,1 @@
+<?php $pageTitle='Manual Delivery';$pageSubtitle='Pan-India coverage, rates, dispatch, attempts, proof, and RTO';$activePage='delivery';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/delivery.php';require __DIR__.'/layouts/foot.php';

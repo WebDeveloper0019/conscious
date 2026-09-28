@@ -1,0 +1,1 @@
+<?php $pageTitle='Vendor Dashboard';$pageSubtitle='Today’s operations, risks, and store performance';$activePage='dashboard';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/dashboard.php';require __DIR__.'/layouts/foot.php';

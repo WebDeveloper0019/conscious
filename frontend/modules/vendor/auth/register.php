@@ -1,0 +1,1 @@
+<?php $pageTitle='Create vendor account';$authMode='register';require __DIR__.'/../layouts/auth-head-v2.php';require __DIR__.'/../pages/auth-register-v2.php';require __DIR__.'/../layouts/auth-foot-v2.php';

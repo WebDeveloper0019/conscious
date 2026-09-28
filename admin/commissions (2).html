@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FF9933" />
+  <title>Commission Management — Conscious Indi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/bharatcraft.css" />
+  <link rel="stylesheet" href="../assets/css/conscious-pages.css" />
+  <link rel="stylesheet" href="../assets/css/admin-panel.css" />
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     ADMIN DASHBOARD SHELL
+     No storefront chrome here on purpose — a logged-in admin user
+     doesn't need the buyer announcement bar, the Shop mega-menu,
+     or the marketing footer while inside the admin console. Just the
+     sidebar + a real app topbar (same shell as the vendor panel).
+     A "Back to Store" link lives in the profile menu instead.
+     ════════════════════════════════════════════ -->
+<div class="ci-dash-wrap">
+
+<aside class="ci-dash-sidebar" id="ci-sidebar">
+  <div class="ci-sidebar-brand">
+    <div class="ci-sidebar-brand-icon"><i class="fa-solid fa-shield"></i></div>
+    <div class="ci-sidebar-brand-text">
+      <div class="ci-sidebar-brand-name">Conscious Indi</div>
+      <div class="ci-sidebar-brand-role">Admin Console</div>
+    </div>
+  </div>
+  <div class="ci-sidebar-user">
+    <div class="ci-sidebar-avatar">R</div>
+    <div class="ci-sidebar-user-info">
+      <div class="ci-sidebar-user-name">Rahul Sharma</div>
+      <div class="ci-sidebar-user-email"></div>
+    </div>
+  </div>
+  <nav class="ci-sidebar-nav">
+    
+        <div class="ci-sidebar-section-label">Overview</div>
+        <a href="dashboard" class="ci-sidebar-nav-item"><i class="fa-solid fa-chart-pie"></i><span>Dashboard</span></a>
+
+        <a href="revenue" class="ci-sidebar-nav-item"><i class="fa-solid fa-chart-line"></i><span>Revenue Analytics</span></a>
+
+        <div class="ci-sidebar-section-label">Users</div>
+        <a href="customers" class="ci-sidebar-nav-item"><i class="fa-solid fa-users"></i><span>Customers</span></a>
+
+        <a href="vendors" class="ci-sidebar-nav-item"><i class="fa-solid fa-store"></i><span>Vendors</span></a>
+
+        <a href="vendor-verification" class="ci-sidebar-nav-item"><i class="fa-solid fa-user-check"></i><span>Vendor Verification</span><span class="ci-sidebar-nav-badge">8</span></a>
+
+        <a href="influencers" class="ci-sidebar-nav-item"><i class="fa-solid fa-star"></i><span>Influencers</span></a>
+
+        <div class="ci-sidebar-section-label">Catalog</div>
+        <a href="product-approval" class="ci-sidebar-nav-item"><i class="fa-solid fa-box-open"></i><span>Product Approval</span><span class="ci-sidebar-nav-badge">14</span></a>
+
+        <a href="categories" class="ci-sidebar-nav-item"><i class="fa-solid fa-layer-group"></i><span>Categories</span></a>
+
+        <a href="sub-categories" class="ci-sidebar-nav-item"><i class="fa-solid fa-sitemap"></i><span>Sub Categories</span></a>
+
+        <div class="ci-sidebar-section-label">Orders</div>
+        <a href="orders" class="ci-sidebar-nav-item"><i class="fa-solid fa-bag-shopping"></i><span>All Orders</span></a>
+
+        <a href="returns" class="ci-sidebar-nav-item"><i class="fa-solid fa-rotate-left"></i><span>Returns</span></a>
+
+        <a href="refunds" class="ci-sidebar-nav-item"><i class="fa-solid fa-indian-rupee-sign"></i><span>Refunds</span></a>
+
+        <div class="ci-sidebar-section-label">Finance</div>
+        <a href="commissions" class="ci-sidebar-nav-item active"><i class="fa-solid fa-percent"></i><span>Commissions</span></a>
+
+
+        <a href="payouts" class="ci-sidebar-nav-item"><i class="fa-solid fa-money-bill-transfer"></i><span>Payout Management</span></a>
+
+        <div class="ci-sidebar-section-label">Marketing</div>
+        <a href="coupons" class="ci-sidebar-nav-item"><i class="fa-solid fa-ticket"></i><span>Coupons</span></a>
+
+
+
+        <a href="banners" class="ci-sidebar-nav-item"><i class="fa-solid fa-image"></i><span>Banners</span></a>
+
+        <div class="ci-sidebar-section-label">Content</div>
+        <a href="cms-pages" class="ci-sidebar-nav-item"><i class="fa-solid fa-file-lines"></i><span>CMS Pages</span></a>
+
+        <a href="blog-management" class="ci-sidebar-nav-item"><i class="fa-solid fa-newspaper"></i><span>Blog Management</span></a>
+
+        <a href="reviews" class="ci-sidebar-nav-item"><i class="fa-solid fa-star"></i><span>Reviews Moderation</span></a>
+
+        <div class="ci-sidebar-section-label">Admin</div>
+        <a href="support" class="ci-sidebar-nav-item"><i class="fa-solid fa-headset"></i><span>Support Center</span></a>
+
+        <a href="reports" class="ci-sidebar-nav-item"><i class="fa-solid fa-file-chart-column"></i><span>Reports</span></a>
+
+        <a href="settings" class="ci-sidebar-nav-item"><i class="fa-solid fa-gear"></i><span>System Settings</span></a>
+
+        
+  </nav>
+  <div style="padding:12px 20px 20px;border-top:1px solid rgba(255,255,255,0.07);">
+    <a href="../index" class="ci-sidebar-nav-item" style="border-radius:var(--r-sm);">
+      <i class="fa-solid fa-arrow-left"></i><span>Back to Store</span>
+    </a>
+  </div>
+</aside>
+<div class="ci-sidebar-overlay" id="ci-sidebar-overlay"></div>
+<div class="ci-dash-main">
+
+<div class="ci-dash-topbar">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <button class="ci-sidebar-hamburger" id="ci-sidebar-hamburger" aria-label="Open navigation menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <div>
+    <div class="ci-dash-page-title">Commission Management</div>
+    <div class="ci-dash-page-sub">Configure commission rates by category and vendor tier.</div>
+    </div>
+  </div>
+  <div class="ci-dash-topbar-actions">
+    <button class="bc-btn bc-btn-outline bc-btn-sm" onclick="document.getElementById('ci-sidebar').classList.toggle('collapsed')">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    
+  </div>
+</div>
+<div class="ci-form-card mb-4">
+  <div class="ci-form-card-head"><div class="ci-form-card-title"><div class="step-icon"><i class="fa-solid fa-percent"></i></div>Commission Rates by Category</div><button class="bc-btn bc-btn-primary bc-btn-sm">Save All Rates</button></div>
+  <div class="ci-form-card-body">
+    <div class="row g-3">
+      <div class="col-md-4"><label class="ci-form-label">Jewelry & Accessories</label><div class="d-flex gap-2 align-items-center"><input type="number" class="ci-form-input" value="12" /><span>%</span></div></div>
+      <div class="col-md-4"><label class="ci-form-label">Home Decor</label><div class="d-flex gap-2 align-items-center"><input type="number" class="ci-form-input" value="14" /><span>%</span></div></div>
+      <div class="col-md-4"><label class="ci-form-label">Textiles & Sarees</label><div class="d-flex gap-2 align-items-center"><input type="number" class="ci-form-input" value="13" /><span>%</span></div></div>
+      <div class="col-md-4"><label class="ci-form-label">Pottery & Ceramics</label><div class="d-flex gap-2 align-items-center"><input type="number" class="ci-form-input" value="15" /><span>%</span></div></div>
+      <div class="col-md-4"><label class="ci-form-label">Paintings & Folk Art</label><div class="d-flex gap-2 align-items-center"><input type="number" class="ci-form-input" value="10" /><span>%</span></div></div>
+      <div class="col-md-4"><label class="ci-form-label">GI-Tagged Products</label><div class="d-flex gap-2 align-items-center"><input type="number" class="ci-form-input" value="8" /><span>% (2% discount)</span></div></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     SCRIPTS
+     ════════════════════════════════════════════ -->
+<!-- Bootstrap 5 JS Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Conscious Indi Main JS -->
+<script src="../assets/js/bharatcraft.js"></script>
+<script src="../assets/js/admin-panel.js"></script>
+
+<script src="../assets/js/panel-auth.js"></script>
+</body>
+</html>

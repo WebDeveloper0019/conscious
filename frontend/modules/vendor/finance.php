@@ -1,0 +1,1 @@
+<?php $pageTitle='Finance';$pageSubtitle='Earnings, ledger, commission, settlements, payouts, and COD';$activePage='finance';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/finance.php';require __DIR__.'/layouts/foot.php';

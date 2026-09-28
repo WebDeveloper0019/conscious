@@ -1,0 +1,1 @@
+<?php $pageTitle='Vendor Onboarding';$pageSubtitle='Complete verification, store policies and manual delivery setup';$activePage='account';$vendorOnboardingMode=true;require __DIR__.'/layouts/head.php';require __DIR__.'/pages/onboarding-v2.php';require __DIR__.'/layouts/foot.php';

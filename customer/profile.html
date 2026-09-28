@@ -154,8 +154,8 @@
 
     <div class="ci-topbar-dropdown">
       <button class="ci-profile-trigger" aria-label="Account menu" aria-haspopup="true">
-        <div class="ci-profile-trigger-avatar">R</div>
-        <span class="ci-profile-trigger-name">Rahul Sharma</span>
+        <div class="ci-profile-trigger-avatar" data-user-initials>U</div>
+        <span class="ci-profile-trigger-name" data-user-name>User</span>
         <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;color:var(--text-muted);"></i>
       </button>
       <div class="ci-dropdown-panel ci-profile-dropdown-panel">
@@ -179,9 +179,9 @@
     <div class="ci-form-card">
       <div class="ci-form-card-head"><div class="ci-form-card-title"><div class="step-icon"><i class="fa-solid fa-user"></i></div>Profile Photo</div></div>
       <div class="ci-form-card-body" style="text-align:center;">
-        <div class="ci-sidebar-avatar mx-auto mb-3" style="width:96px;height:96px;font-size:2rem;border:3px solid var(--saffron);">R</div>
-        <div style="font-family:var(--font-display);font-weight:700;font-size:1.125rem;color:var(--text-primary);">Rahul Sharma</div>
-        <div style="font-size:.875rem;color:var(--text-muted);margin-bottom:16px;">rahul.sharma@gmail.com</div>
+        <div class="ci-sidebar-avatar mx-auto mb-3" data-user-initials style="width:96px;height:96px;font-size:2rem;border:3px solid var(--saffron);">U</div>
+        <div data-user-full-name style="font-family:var(--font-display);font-weight:700;font-size:1.125rem;color:var(--text-primary);">User</div>
+        <div data-user-email style="font-size:.875rem;color:var(--text-muted);margin-bottom:16px;"></div>
         <button class="bc-btn bc-btn-outline bc-btn-sm w-100"><i class="fa-solid fa-camera"></i> Change Photo</button>
         <div style="margin-top:16px;padding:12px;background:var(--green-pale);border-radius:var(--r-md);">
           <div style="font-size:.75rem;color:var(--green-dark);font-weight:600;"><i class="fa-solid fa-circle-check"></i> Email Verified</div>
@@ -200,12 +200,12 @@
       <div class="ci-form-card-head"><div class="ci-form-card-title"><div class="step-icon"><i class="fa-solid fa-id-card"></i></div>Personal Information</div><button class="bc-btn bc-btn-outline bc-btn-sm"><i class="fa-solid fa-pen"></i> Edit</button></div>
       <div class="ci-form-card-body">
         <div class="ci-form-row">
-          <div class="ci-form-group"><label class="ci-form-label">First Name</label><input type="text" class="ci-form-input" value="Rahul" /></div>
-          <div class="ci-form-group"><label class="ci-form-label">Last Name</label><input type="text" class="ci-form-input" value="Sharma" /></div>
+          <div class="ci-form-group"><label class="ci-form-label">First Name</label><input type="text" class="ci-form-input" data-user-field="firstName" value="" /></div>
+          <div class="ci-form-group"><label class="ci-form-label">Last Name</label><input type="text" class="ci-form-input" data-user-field="lastName" value="" /></div>
         </div>
         <div class="ci-form-row">
-          <div class="ci-form-group"><label class="ci-form-label">Email Address</label><input type="email" class="ci-form-input" value="rahul.sharma@gmail.com" /></div>
-          <div class="ci-form-group"><label class="ci-form-label">Phone Number</label><input type="tel" class="ci-form-input" value="+91 98765 43210" /></div>
+          <div class="ci-form-group"><label class="ci-form-label">Email Address</label><input type="email" class="ci-form-input" data-user-field="email" value="" /></div>
+          <div class="ci-form-group"><label class="ci-form-label">Phone Number</label><input type="tel" class="ci-form-input" data-user-field="mobile" value="" /></div>
         </div>
         <div class="ci-form-row">
           <div class="ci-form-group"><label class="ci-form-label">Date of Birth</label><input type="date" class="ci-form-input" value="1995-03-15" /></div>

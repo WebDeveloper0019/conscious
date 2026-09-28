@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-label="Madhubani painting">
+  <rect x="62" y="36" width="196" height="148" fill="#f8d86b" stroke="#050505" stroke-width="10"/>
+  <path fill="#e4442f" stroke="#050505" stroke-width="5" d="M160 74c34 18 46 44 0 80-46-36-34-62 0-80z"/>
+  <path fill="none" stroke="#0b8c57" stroke-width="5" d="M98 68c32 22 38 62 18 96m106-96c-32 22-38 62-18 96"/>
+  <circle cx="160" cy="112" r="14" fill="#1f75bc" stroke="#050505" stroke-width="5"/>
+</svg>
