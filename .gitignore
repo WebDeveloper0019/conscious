@@ -2,7 +2,11 @@
 .env
 .env.*
 !.env.example
+api/.env
 .claude/settings.local.json
+
+# Runtime data
+api/data/rate-limit/*.json
 
 # Editor settings
 .vscode/
