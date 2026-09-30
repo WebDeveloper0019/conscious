@@ -1,0 +1,21 @@
+CREATE TABLE `cod_collections` (
+  `id` CHAR(36) NOT NULL PRIMARY KEY,
+  `order_id` BIGINT UNSIGNED NOT NULL,
+  `vendor_group_id` CHAR(36) NOT NULL,
+  `vendor_id` CHAR(36) NOT NULL,
+  `amount` DECIMAL(12,2) NOT NULL,
+  `status` VARCHAR(24) NOT NULL DEFAULT 'pending',
+  `collection_method` VARCHAR(24) NULL,
+  `collection_reference` VARCHAR(180) NULL,
+  `collected_by_type` VARCHAR(24) NULL,
+  `collected_by_id` CHAR(36) NULL,
+  `collected_at` DATETIME NULL,
+  `failure_reason` VARCHAR(500) NULL,
+  `created_at` DATETIME NOT NULL,
+  `updated_at` DATETIME NULL,
+  UNIQUE KEY `uniq_cod_group` (`vendor_group_id`),
+  INDEX `idx_cod_order` (`order_id`,`status`),
+  CONSTRAINT `fk_cod_order` FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`) ON DELETE RESTRICT,
+  CONSTRAINT `fk_cod_group` FOREIGN KEY (`vendor_group_id`) REFERENCES `vendor_order_groups`(`id`) ON DELETE RESTRICT,
+  CONSTRAINT `fk_cod_vendor` FOREIGN KEY (`vendor_id`) REFERENCES `vendors`(`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

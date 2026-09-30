@@ -1,0 +1,3 @@
+<?php
+declare(strict_types=1);
+require_once __DIR__.'/../lib/helpers.php';require_once __DIR__.'/../lib/admin.php';send_cors_headers();require_admin('audit.view');$db=get_db();$action=trim((string)($_GET['action']??''));$subject=trim((string)($_GET['subject_id']??''));$limit=max(1,min(500,(int)($_GET['limit']??100)));$stmt=$db->prepare("SELECT id,actor_type,actor_id,action,subject_type,subject_id,request_id,metadata_json,created_at FROM audit_logs WHERE (:action='' OR action=:action) AND (:subject='' OR subject_id=:subject) ORDER BY created_at DESC LIMIT {$limit}");$stmt->execute(['action'=>$action,'subject'=>$subject]);json_response(200,['success'=>true,'audit_logs'=>$stmt->fetchAll()]);

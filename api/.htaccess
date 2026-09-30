@@ -1,4 +1,6 @@
 Options -Indexes
-<FilesMatch "^\.">
-  Require all denied
+<FilesMatch "^(\.env.*|config\.php|schema\.sql)$">
+    Require all denied
 </FilesMatch>
+RewriteEngine On
+RewriteRule ^(lib|database|bin|data)(/|$) - [F,L]

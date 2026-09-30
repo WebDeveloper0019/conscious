@@ -21,7 +21,10 @@ if (!$user || !password_verify($password, $user['password_hash'])) {
     json_response(401, ['success'=>false,'message'=>'The sign-in details are incorrect.']);
 }
 if (empty($user['email_verified'])) json_response(403, ['success'=>false,'message'=>'Verify your email before signing in.','code'=>'EMAIL_NOT_VERIFIED','email'=>$user['email']]);
+if (($user['status'] ?? 'active') !== 'active') json_response(403, ['success'=>false,'message'=>'This customer account is not currently permitted to sign in.','code'=>'CUSTOMER_ACCOUNT_RESTRICTED']);
 
-set_auth_cookie(issue_token($user, $remember), $remember);
-$csrf = issue_csrf_token();
+$session=create_auth_session('customer',$user['id'],$remember);
+get_db()->prepare('UPDATE users SET last_login_at=UTC_TIMESTAMP() WHERE id=:id')->execute(['id'=>$user['id']]);
+audit_event('customer.login','customer',$user['id']);
+$csrf=$session['csrf_token'];
 json_response(200, ['success'=>true,'message'=>'Signed in successfully.','user'=>public_user($user),'csrf_token'=>$csrf,'redirect'=>'../index.php']);

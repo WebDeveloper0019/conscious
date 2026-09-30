@@ -12,5 +12,5 @@ if(!$user || !empty($user['email_verified'])) json_response(400,['success'=>fals
 if((int)$user['otp_attempts']>=5 || empty($user['otp_expires_at']) || strtotime($user['otp_expires_at'])<time()) json_response(410,['success'=>false,'message'=>'This code expired. Request a new code.']);
 if(empty($user['otp_hash']) || !password_verify($otp,$user['otp_hash'])) { $db->prepare('UPDATE users SET otp_attempts=otp_attempts+1 WHERE id=:id')->execute(['id'=>$user['id']]); json_response(400,['success'=>false,'message'=>'The verification code is incorrect.']); }
 $db->prepare('UPDATE users SET email_verified=1,otp_hash=NULL,otp_expires_at=NULL,otp_attempts=0,updated_at=:updated WHERE id=:id')->execute(['updated'=>date('Y-m-d H:i:s'),'id'=>$user['id']]);
-$user['email_verified']=1; set_auth_cookie(issue_token($user,false),false); $csrf=issue_csrf_token();
+$user['email_verified']=1; $session=create_auth_session('customer',$user['id'],false); audit_event('customer.email_verified','customer',$user['id']); $csrf=$session['csrf_token'];
 json_response(200,['success'=>true,'message'=>'Email verified successfully.','user'=>public_user($user),'csrf_token'=>$csrf,'redirect'=>'../index.php']);
