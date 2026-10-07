@@ -18,6 +18,39 @@ $db->beginTransaction();try{
 }catch(Throwable $e){$db->rollBack();throw $e;}
 
 $customer=new HttpClient();[$status,$login]=$customer->request('POST',$base.'/auth/login.php',['email'=>'customer.'.$suffix.'@conscious.test','password'=>$password]);check($status===200&&isset($login['csrf_token']),'customer login issues an authenticated CSRF session');$customerCsrf=$login['csrf_token'];
+
+// Seed customer-dashboard data from real backend tables; nothing below is UI/demo data.
+$rewardId=uuid_string();
+$db->prepare('INSERT INTO customer_reward_ledger (id,user_id,points,entry_type,reference_type,reference_id,description,created_at) VALUES (:id,:user,275,"earned","test",:ref,"Dashboard API test reward",UTC_TIMESTAMP())')->execute(['id'=>$rewardId,'user'=>$userId,'ref'=>$rewardId]);
+$notificationId=uuid_string();
+$db->prepare('INSERT INTO notifications (id,recipient_type,recipient_id,type,title,message,created_at) VALUES (:id,"customer",:user,"test","Dashboard test notification","This notification belongs only to the dashboard test customer.",UTC_TIMESTAMP())')->execute(['id'=>$notificationId,'user'=>$userId]);
+$savedVendorId=$vendorId;
+$db->prepare('INSERT INTO saved_vendors (user_id,vendor_id,created_at) VALUES (:user,:vendor,UTC_TIMESTAMP())')->execute(['user'=>$userId,'vendor'=>$savedVendorId]);
+$couponId=uuid_string();
+$db->prepare('INSERT INTO coupons (id,vendor_id,code,discount_type,discount_value,min_order_amount,usage_limit,per_customer_limit,starts_at,ends_at,status,created_at) VALUES (:id,:vendor,:code,"percent",10,500,NULL,1,DATE_SUB(UTC_TIMESTAMP(),INTERVAL 1 DAY),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 30 DAY),"active",UTC_TIMESTAMP())')->execute(['id'=>$couponId,'vendor'=>$vendorId,'code'=>'DASH-'.$suffix]);
+$hostId=uuid_string();
+$db->prepare('INSERT INTO event_hosts (id,owner_type,owner_id,display_name,email,mobile,verification_status,created_at) VALUES (:id,"admin",:owner,"Dashboard Test Host",:email,"9876505555","approved",UTC_TIMESTAMP())')->execute(['id'=>$hostId,'owner'=>$userId,'email'=>'event.'.$suffix.'@conscious.test']);
+$eventId=uuid_string();
+$db->prepare('INSERT INTO events (id,host_id,title,slug,event_type,short_description,description,venue_type,venue_name,timezone,starts_at,ends_at,booking_opens_at,booking_closes_at,status,published_at,created_at) VALUES (:id,:host,"Dashboard Test Event",:slug,"workshop","Dashboard API event","Dashboard API event description","physical","Test Studio","Asia/Kolkata",DATE_ADD(UTC_TIMESTAMP(),INTERVAL 3 DAY),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 3 DAY 2 HOUR),DATE_SUB(UTC_TIMESTAMP(),INTERVAL 1 DAY),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 2 DAY),"published",UTC_TIMESTAMP(),UTC_TIMESTAMP())')->execute(['id'=>$eventId,'host'=>$hostId,'slug'=>'dashboard-test-'.$suffix]);
+$ticketId=uuid_string();
+$db->prepare('INSERT INTO event_ticket_types (id,event_id,name,description,price,capacity,reserved_quantity,sold_quantity,min_per_booking,max_per_booking,sales_start_at,sales_end_at,status,created_at) VALUES (:id,:event,"General","Dashboard test ticket",500,100,0,0,1,10,DATE_SUB(UTC_TIMESTAMP(),INTERVAL 1 DAY),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 2 DAY),"active",UTC_TIMESTAMP())')->execute(['id'=>$ticketId,'event'=>$eventId]);
+[$status,$dashboard]=$customer->request('GET',$base.'/user/dashboard.php');
+check($status===200&&$dashboard['customer']['id']===$userId,'customer dashboard returns the authenticated customer profile');
+check($dashboard['stats']['rewardPoints']===275&&$dashboard['stats']['unreadNotifications']>=1,'customer dashboard returns owned reward points and unread notification count');
+check(count($dashboard['notifications'])>=1&&count($dashboard['savedVendors'])>=1,'customer dashboard returns owned notifications and saved vendors');
+check(count($dashboard['coupons'])>=1&&$dashboard['coupons'][0]['code']==='DASH-'.$suffix,'customer dashboard returns an active usable coupon');
+check(count($dashboard['upcomingEvents'])>=1&&$dashboard['upcomingEvents'][0]['id']===$eventId,'customer dashboard returns published upcoming events');
+check(isset($dashboard['recentOrders'])&&isset($dashboard['pendingActions'])&&isset($dashboard['empty']),'customer dashboard always returns stable collection and empty-state fields');
+
+$otherUserId=uuid_string();
+$otherEmail='dashboard-other.'.$suffix.'@conscious.test';
+$db->prepare('INSERT INTO users (id,first_name,last_name,email,mobile,password_hash,email_verified,status,created_at) VALUES (:id,"Other","Dashboard",:email,"9876506666",:password,1,"active",UTC_TIMESTAMP())')->execute(['id'=>$otherUserId,'email'=>$otherEmail,'password'=>password_hash($password,PASSWORD_DEFAULT)]);
+$otherCustomer=new HttpClient();
+[$status,$otherLogin]=$otherCustomer->request('POST',$base.'/auth/login.php',['email'=>$otherEmail,'password'=>$password]);
+check($status===200,'second customer can authenticate for ownership isolation test');
+[$status,$otherDashboard]=$otherCustomer->request('GET',$base.'/user/dashboard.php');
+check($status===200&&$otherDashboard['customer']['id']===$otherUserId&&$otherDashboard['stats']['rewardPoints']===0,'customer dashboard enforces ownership and does not leak another customer reward balance');
+check(count($otherDashboard['notifications'])===0&&count($otherDashboard['savedVendors'])===0,'customer dashboard does not leak another customer notifications or saved vendors');
 [$status]=$customer->request('POST',$base.'/user/cart.php',['variant_id'=>$variantId,'quantity'=>1]);check($status===419,'state-changing request without CSRF is rejected');
 [$status,$address]=$customer->request('POST',$base.'/user/addresses.php',['label'=>'Home','fullName'=>'Backend Customer','phone'=>'9876501111','pincode'=>'560034','addressLine1'=>'12 Test Street','addressLine2'=>'','city'=>'Bengaluru','state'=>'Karnataka','landmark'=>'Test Park','isDefault'=>true],$customerCsrf);check($status===201,'customer can create an owned India delivery address');$addressId=$address['address']['id'];
 [$status,$cart]=$customer->request('POST',$base.'/user/cart.php',['variant_id'=>$variantId,'quantity'=>2],$customerCsrf);check($status===200&&$cart['cart']['item_count']===2,'cart validates product availability and quantity');

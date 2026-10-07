@@ -1,10 +1,10 @@
 window.ConsciousIndiAuthConfig = window.ConsciousIndiAuthConfig || {
-    mode: 'demo',
+    mode: 'api',
     apiBaseUrl: '',
     endpoints: {
         login: '../../../../api/auth/login.php',
         register: '../../../../api/auth/register.php'
     },
-    redirects: { afterLogin: '../index.php?demo=1', afterRegister: '../index.php?demo=1' },
+    redirects: { afterLogin: '../index.php', afterRegister: 'verify-email.php' },
     demo: { identifier: 'demo@consciousindi.test', password: 'Conscious@123' }
 };
