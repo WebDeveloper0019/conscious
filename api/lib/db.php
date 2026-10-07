@@ -6,8 +6,10 @@ require_once __DIR__ . '/../config.php';
  * Import api/schema.sql via phpMyAdmin (or the mysql CLI) before first use —
  * this file only connects, it does not create the database or table.
  */
+function get_db_if_connected(): ?PDO { return $GLOBALS['ci_database_connection'] ?? null; }
+
 function get_db(): PDO {
-    static $pdo = null;
+    $pdo = get_db_if_connected();
     if ($pdo !== null) {
         return $pdo;
     }
@@ -20,14 +22,16 @@ function get_db(): PDO {
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
         ]);
+        $pdo->exec("SET time_zone = '+00:00'");
+        $GLOBALS['ci_database_connection'] = $pdo;
     } catch (PDOException $e) {
         http_response_code(500);
         header('Content-Type: application/json');
         echo json_encode([
             'success' => false,
-            'message' => 'Database connection failed. Check api/config.php and make sure the database from api/schema.sql has been imported.',
+            'message' => 'The database is unavailable. Please try again later.',
         ]);
-        exit;
+        exit(1);
     }
 
     return $pdo;
