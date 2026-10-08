@@ -50,6 +50,13 @@
     return data;
   }
 
+  function csrfToken() {
+    var stored = window.sessionStorage.getItem('ci_csrf_token');
+    if (stored) return stored;
+    var match = document.cookie.match(/(?:^|;\s*)ci_csrf=([^;]+)/);
+    return match ? decodeURIComponent(match[1]) : '';
+  }
+
   async function hydrateIdentity() {
     try {
       var data = await getJson('../api/auth/me.php');
@@ -162,7 +169,7 @@
       link.addEventListener('click', async function (e) {
         e.preventDefault();
         try {
-          await fetch('../api/auth/logout.php', { method: 'POST', credentials: 'same-origin', headers: { Accept: 'application/json' } });
+          await fetch('../api/auth/logout.php', { method: 'POST', credentials: 'same-origin', headers: { Accept: 'application/json', 'X-CSRF-Token': csrfToken() } });
         } finally {
           window.location.href = '../login.html';
         }
@@ -180,7 +187,7 @@
       var body = {};
       form.querySelectorAll('[data-profile-field]').forEach(function (el) { body[el.getAttribute('data-profile-field')] = el.value; });
       try {
-        var response = await fetch('../api/user/profile.php', { method: 'PUT', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) });
+        var response = await fetch('../api/user/profile.php', { method: 'PUT', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'X-CSRF-Token': csrfToken() }, body: JSON.stringify(body) });
         var data = await response.json();
         if (!response.ok || data.success === false) throw new Error(data.message || 'Unable to save profile.');
         hydrateProfile(data.user || {});

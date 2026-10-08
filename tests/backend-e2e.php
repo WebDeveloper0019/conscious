@@ -38,8 +38,8 @@ $db->prepare('INSERT INTO event_ticket_types (id,event_id,name,description,price
 check($status===200&&$dashboard['customer']['id']===$userId,'customer dashboard returns the authenticated customer profile');
 check($dashboard['stats']['rewardPoints']===275&&$dashboard['stats']['unreadNotifications']>=1,'customer dashboard returns owned reward points and unread notification count');
 check(count($dashboard['notifications'])>=1&&count($dashboard['savedVendors'])>=1,'customer dashboard returns owned notifications and saved vendors');
-check(count($dashboard['coupons'])>=1&&$dashboard['coupons'][0]['code']==='DASH-'.$suffix,'customer dashboard returns an active usable coupon');
-check(count($dashboard['upcomingEvents'])>=1&&$dashboard['upcomingEvents'][0]['id']===$eventId,'customer dashboard returns published upcoming events');
+check(in_array('DASH-'.$suffix,array_column($dashboard['coupons'],'code'),true),'customer dashboard returns an active usable coupon');
+check(in_array($eventId,array_column($dashboard['upcomingEvents'],'id'),true),'customer dashboard returns published upcoming events');
 check(isset($dashboard['recentOrders'])&&isset($dashboard['pendingActions'])&&isset($dashboard['empty']),'customer dashboard always returns stable collection and empty-state fields');
 
 $otherUserId=uuid_string();

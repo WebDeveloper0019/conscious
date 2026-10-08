@@ -5,7 +5,7 @@ require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/resend.php';
 send_cors_headers();
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') json_response(405, ['success'=>false,'message'=>'Method not allowed.']);
-// if (rate_limit('register|' . request_ip(), 8, 3600)) json_response(429, ['success'=>false,'message'=>'Too many registration attempts. Try again later.']);
+if (rate_limit('register|' . request_ip(), 8, 3600)) json_response(429, ['success'=>false,'message'=>'Too many registration attempts. Try again later.']);
 
 $body=get_json_body();
 $first=trim((string)($body['first_name'] ?? $body['firstName'] ?? ''));
