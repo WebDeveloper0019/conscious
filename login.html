@@ -276,15 +276,15 @@
         <h1 style="font-family:var(--font-display);font-size:1.625rem;font-weight:800;color:var(--text-primary);margin-bottom:6px;">Welcome Back</h1>
         <p style="font-size:0.9375rem;color:var(--text-muted);">Sign in to your Conscious Indi account</p>
       </div>
-      <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:20px;">
-        <div><label class="bc-auth-label">Email Address</label><input type="email" class="bc-auth-input" placeholder="you@email.com" /></div>
+      <form id="ci-login-form" novalidate><div style="display:flex;flex-direction:column;gap:16px;margin-bottom:20px;">
+        <div><label class="bc-auth-label" for="ci-login-identifier">Email Address or Mobile</label><input id="ci-login-identifier" name="identifier" type="text" class="bc-auth-input" placeholder="you@email.com or 9876543210" required /></div>
         <div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><label class="bc-auth-label" style="margin:0;">Password</label><a href="forgot-password.html" style="font-size:0.8125rem;color:var(--saffron-dark);">Forgot password?</a></div>
-          <input type="password" class="bc-auth-input" placeholder="••••••••" />
+          <input id="ci-login-password" name="password" type="password" class="bc-auth-input" placeholder="••••••••" required minlength="12" maxlength="128" />
         </div>
-        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.875rem;color:var(--text-secondary);"><input type="checkbox" style="accent-color:var(--saffron);" /> Keep me signed in</label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.875rem;color:var(--text-secondary);"><input id="ci-login-remember" name="remember" type="checkbox" style="accent-color:var(--saffron);" /> Keep me signed in</label>
       </div>
-      <button class="bc-btn bc-btn-primary" style="width:100%;justify-content:center;font-size:1rem;padding:14px;"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In</button>
+      <div id="ci-login-message" role="alert" aria-live="polite" style="margin-bottom:12px;"></div><button type="submit" class="bc-btn bc-btn-primary" style="width:100%;justify-content:center;font-size:1rem;padding:14px;"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In</button></form>
       <div class="bc-auth-divider">or continue with</div>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
         <button class="bc-social-login-btn"><i class="fa-brands fa-google" style="color:#EA4335;font-size:1.125rem;"></i> Continue with Google</button>
@@ -397,5 +397,26 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/bharatcraft.js"></script>
+<script>
+(function(){
+  const form=document.getElementById('ci-login-form'); if(!form)return;
+  const msg=document.getElementById('ci-login-message');
+  function show(text,ok){msg.textContent=text;msg.style.color=ok?'#287a46':'#b42318';}
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    const d={identifier:form.elements.identifier.value.trim(),password:form.elements.password.value,remember:form.elements.remember.checked};
+    const button=form.querySelector('button[type=submit]'); button.disabled=true; show('Signing in…',true);
+    try{
+      const r=await fetch('api/auth/login.php',{method:'POST',credentials:'include',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify(d)});
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok)throw data;
+      if(data.csrf_token)sessionStorage.setItem('ci_csrf_token',data.csrf_token);
+      show(data.message||'Signed in successfully.',true);
+      setTimeout(()=>location.href='customer/dashboard.html',400);
+    }catch(err){show(err.message||'Sign in failed. Please try again.',false);}
+    finally{button.disabled=false;}
+  });
+})();
+</script>
 </body>
 </html>

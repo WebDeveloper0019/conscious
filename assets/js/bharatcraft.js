@@ -1233,7 +1233,6 @@ function showToast(message, type = 'info') {
   
   toastEl.addEventListener('hidden.bs.toast', () => toastEl.remove());
 }
-
 // Form Validation Logic
 document.querySelectorAll('form').forEach(form => {
   form.addEventListener('submit', function(e) {
@@ -1245,6 +1244,7 @@ document.querySelectorAll('form').forEach(form => {
     form.classList.add('was-validated');
   }, false);
 });
+
 
 // Loading Skeletons Toggle (Example)
 function toggleLoading(selector, show) {
