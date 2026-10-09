@@ -111,12 +111,104 @@ try {
         foreach($stmt->fetchAll() as $n) $notifications[]=['id'=>$n['id'],'title'=>$n['title'],'message'=>$n['message'],'type'=>$n['type'],'actionUrl'=>$n['action_url'],'readAt'=>$n['read_at'],'createdAt'=>$n['created_at']];
     }
     if (dashboard_has_columns($db,'customer_reward_ledger',['user_id','points'])) {
-        $stmt=$db->prepare('SELECT COALESCE(SUM(points),0) FROM customer_reward_ledger WHERE user_id=:user'); $stmt->execute(['user'=>$userId]); $stats['rewardPoints']=(int)$stmt->fetchColumn();
+        $stmt=$db->prepare("SELECT COALESCE(SUM(points),0) FROM customer_reward_ledger WHERE user_id=:user AND status='active' AND (points < 0 OR expires_at IS NULL OR expires_at > UTC_TIMESTAMP())"); $stmt->execute(['user'=>$userId]); $stats['rewardPoints']=(int)$stmt->fetchColumn();
     }
-    if (dashboard_has_columns($db,'coupons',['id','code','status','starts_at','ends_at'])) {
-        $sql="SELECT c.* FROM coupons c WHERE c.status='active' AND c.starts_at<=UTC_TIMESTAMP() AND c.ends_at>=UTC_TIMESTAMP() ORDER BY c.ends_at ASC LIMIT 10";
-        $stmt=$db->query($sql);
-        foreach($stmt->fetchAll() as $c) $coupons[]=['id'=>$c['id'],'code'=>$c['code'],'discountType'=>$c['discount_type']??null,'discountValue'=>(float)($c['discount_value']??0),'minOrderAmount'=>(float)($c['min_order_amount']??0),'maxDiscountAmount'=>isset($c['max_discount_amount'])?(float)$c['max_discount_amount']:null,'startsAt'=>$c['starts_at'],'endsAt'=>$c['ends_at'],'vendorName'=>null];
+   if (dashboard_has_columns($db,'coupons',['id','code','status','starts_at','ends_at'])) {
+    $sql="SELECT c.*,v.display_name AS vendor_name,
+                   (SELECT COUNT(*)
+                    FROM coupon_redemptions cr
+                    WHERE cr.coupon_id=c.id) AS total_usage,
+
+                   (SELECT COUNT(*)
+                    FROM coupon_redemptions cr
+                    WHERE cr.coupon_id=c.id
+                      AND cr.user_id=:user) AS customer_usage
+
+            FROM coupons c
+
+            LEFT JOIN vendors v
+              ON v.id=c.vendor_id
+
+            WHERE c.status='active'
+
+              AND c.starts_at<=UTC_TIMESTAMP()
+              AND c.ends_at>=UTC_TIMESTAMP()
+
+              /* Vendor must be usable */
+              AND (
+                    c.vendor_id IS NULL
+                    OR (
+                        v.status='active'
+                        AND v.verification_status='approved'
+                    )
+              )
+
+              /* Coupon must still have total usage available */
+              AND (
+                    c.usage_limit IS NULL
+                    OR (
+                        SELECT COUNT(*)
+                        FROM coupon_redemptions cr2
+                        WHERE cr2.coupon_id=c.id
+                    ) < c.usage_limit
+              )
+
+              /* Current customer must still be eligible */
+              AND (
+                    c.per_customer_limit IS NULL
+                    OR (
+                        SELECT COUNT(*)
+                        FROM coupon_redemptions cr3
+                        WHERE cr3.coupon_id=c.id
+                          AND cr3.user_id=:user2
+                    ) < c.per_customer_limit
+              )
+
+            ORDER BY c.ends_at ASC
+            LIMIT 10";
+
+    $stmt=$db->prepare($sql);
+    $stmt->execute([
+        'user'=>$userId,
+        'user2'=>$userId
+    ]);
+
+    foreach($stmt->fetchAll() as $c) {
+        $coupons[]=[
+            'id'=>$c['id'],
+            'code'=>$c['code'],
+            'discountType'=>$c['discount_type']??null,
+            'discountValue'=>(float)($c['discount_value']??0),
+            'minOrderAmount'=>(float)($c['min_order_amount']??0),
+            'maxDiscountAmount'=>isset($c['max_discount_amount'])
+                ? (float)$c['max_discount_amount']
+                : null,
+            'startsAt'=>$c['starts_at'],
+            'endsAt'=>$c['ends_at'],
+            'vendorName'=>$c['vendor_name']??null,
+
+            'usage'=>[
+                'total'=>(int)$c['total_usage'],
+                'limit'=>$c['usage_limit']===null
+                    ? null
+                    : (int)$c['usage_limit'],
+                'customer'=>(int)$c['customer_usage'],
+                'customerLimit'=>$c['per_customer_limit']===null
+                    ? null
+                    : (int)$c['per_customer_limit']
+            ]
+        ];
+    }
+
+        $stmt=$db->prepare($sql); $stmt->execute(['user'=>$userId,'user2'=>$userId]);
+        foreach($stmt->fetchAll() as $c) $coupons[]=[
+            'id'=>$c['id'],'code'=>$c['code'],'discountType'=>$c['discount_type']??null,
+            'discountValue'=>(float)($c['discount_value']??0),'minOrderAmount'=>(float)($c['min_order_amount']??0),
+            'maxDiscountAmount'=>isset($c['max_discount_amount'])?(float)$c['max_discount_amount']:null,
+            'startsAt'=>$c['starts_at'],'endsAt'=>$c['ends_at'],'vendorName'=>$c['vendor_name']??null,
+            'usage'=>['total'=>(int)$c['total_usage'],'limit'=>$c['usage_limit']===null?null:(int)$c['usage_limit'],
+                      'customer'=>(int)$c['customer_usage'],'customerLimit'=>(int)$c['per_customer_limit']]
+        ];
     }
     if (dashboard_has_columns($db,'saved_vendors',['user_id','vendor_id','created_at']) && dashboard_has_columns($db,'vendors',['id','display_name'])) {
         $stmt=$db->prepare('SELECT v.id,v.display_name,v.owner_name,v.vendor_type,sv.created_at AS saved_at FROM saved_vendors sv JOIN vendors v ON v.id=sv.vendor_id WHERE sv.user_id=:user ORDER BY sv.created_at DESC LIMIT 10'); $stmt->execute(['user'=>$userId]);

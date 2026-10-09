@@ -106,50 +106,251 @@
     <button class="bc-btn bc-btn-outline bc-btn-sm" onclick="document.getElementById('ci-sidebar').classList.toggle('collapsed')">
       <i class="fa-solid fa-bars"></i>
     </button>
-    <a href="#" class="bc-btn bc-btn-primary bc-btn-sm"><i class="fa-solid fa-plus"></i> Add New Address</a>
+<a href="#new-addr-form"
+   class="bc-btn bc-btn-primary bc-btn-sm"
+   data-add-address>
+  <i class="fa-solid fa-plus"></i> Add New Address
+</a>
   </div>
 </div>
-<div class="row g-4">
-  <div class="col-lg-4">
-    <div style="padding:24px;border:2px solid var(--saffron);border-radius:var(--r-xl);background:var(--saffron-pale);position:relative;">
-      <span style="position:absolute;top:14px;right:14px;font-size:.6875rem;background:var(--saffron);color:white;padding:3px 10px;border-radius:var(--r-full);font-weight:700;">DEFAULT</span>
-      <div style="font-size:.8125rem;font-weight:700;color:var(--saffron-dark);margin-bottom:8px;"><i class="fa-solid fa-house"></i> Home</div>
-      <div style="font-size:.9rem;color:var(--text-primary);font-weight:600;margin-bottom:4px;">Rahul Sharma</div>
-      <div style="font-size:.875rem;color:var(--text-secondary);line-height:1.7;">42 MG Road, Koramangala<br>Bengaluru, Karnataka 560034<br>+91 98765 43210</div>
-      <div class="d-flex gap-2 mt-3"><button class="bc-btn bc-btn-outline bc-btn-sm"><i class="fa-solid fa-pen"></i> Edit</button><button class="bc-btn bc-btn-outline bc-btn-sm" style="color:#E53E3E;border-color:#E53E3E;"><i class="fa-solid fa-trash-can"></i></button></div>
-    </div>
-  </div>
-  <div class="col-lg-4">
-    <div style="padding:24px;border:1.5px solid var(--border-warm);border-radius:var(--r-xl);background:var(--bg-primary);">
-      <div style="font-size:.8125rem;font-weight:700;color:var(--text-secondary);margin-bottom:8px;"><i class="fa-solid fa-briefcase"></i> Office</div>
-      <div style="font-size:.9rem;color:var(--text-primary);font-weight:600;margin-bottom:4px;">Rahul Sharma</div>
-      <div style="font-size:.875rem;color:var(--text-secondary);line-height:1.7;">Tower B, RMZ Ecospace<br>Outer Ring Road, Bengaluru 560103<br>+91 98765 43210</div>
-      <div class="d-flex gap-2 mt-3"><button class="bc-btn bc-btn-outline bc-btn-sm"><i class="fa-solid fa-pen"></i> Edit</button><button class="bc-btn bc-btn-outline bc-btn-sm"><i class="fa-solid fa-check"></i> Set Default</button><button class="bc-btn bc-btn-outline bc-btn-sm" style="color:#E53E3E;border-color:#E53E3E;"><i class="fa-solid fa-trash-can"></i></button></div>
-    </div>
-  </div>
-  <div class="col-lg-4">
-    <div style="padding:24px;border:2px dashed var(--border-warm);border-radius:var(--r-xl);background:var(--bg-cream);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;cursor:pointer;transition:all var(--t);" onclick="void(0)">
-      <i class="fa-solid fa-plus-circle" style="font-size:2rem;color:var(--saffron);margin-bottom:10px;"></i>
-      <div style="font-weight:600;color:var(--text-secondary);">Add New Address</div>
-      <div style="font-size:.8125rem;color:var(--text-muted);text-align:center;margin-top:4px;">Home, Office, or any delivery location</div>
+<div class="row g-4" id="address-list">
+  <div class="col-12">
+    <div style="
+      padding:32px;
+      text-align:center;
+      color:var(--text-muted);
+    ">
+      Loading addresses...
     </div>
   </div>
 </div>
 <!-- Add new address form -->
+<!-- Add new address form -->
 <div class="ci-form-card mt-4" id="new-addr-form" style="display:none;">
-  <div class="ci-form-card-head"><div class="ci-form-card-title"><div class="step-icon"><i class="fa-solid fa-location-dot"></i></div>Add New Address</div></div>
-  <div class="ci-form-card-body">
-    <div class="ci-form-row"><div class="ci-form-group"><label class="ci-form-label">Address Label</label><select class="ci-form-input ci-form-select"><option>Home</option><option>Office</option><option>Other</option></select></div><div class="ci-form-group"><label class="ci-form-label">Full Name <span class="req">*</span></label><input type="text" class="ci-form-input" placeholder="Recipient name" /></div></div>
-    <div class="ci-form-row"><div class="ci-form-group"><label class="ci-form-label">Phone <span class="req">*</span></label><input type="tel" class="ci-form-input" placeholder="+91" /></div><div class="ci-form-group"><label class="ci-form-label">Pincode <span class="req">*</span></label><input type="text" class="ci-form-input" placeholder="560034" /></div></div>
-    <div class="ci-form-group"><label class="ci-form-label">Address Line 1 <span class="req">*</span></label><input type="text" class="ci-form-input" placeholder="House/Flat no., Building name" /></div>
-    <div class="ci-form-group"><label class="ci-form-label">Address Line 2</label><input type="text" class="ci-form-input" placeholder="Street, area, locality" /></div>
-    <div class="ci-form-row cols-3"><div class="ci-form-group"><label class="ci-form-label">City <span class="req">*</span></label><input type="text" class="ci-form-input" /></div><div class="ci-form-group"><label class="ci-form-label">State <span class="req">*</span></label><select class="ci-form-input ci-form-select"><option>Karnataka</option><option>Maharashtra</option><option>Delhi</option><option>Rajasthan</option></select></div><div class="ci-form-group"><label class="ci-form-label">Landmark</label><input type="text" class="ci-form-input" placeholder="Near landmark" /></div></div>
-    <button class="bc-btn bc-btn-primary bc-btn-sm">Save Address</button>
+
+  <div class="ci-form-card-head">
+    <div class="ci-form-card-title">
+      <div class="step-icon">
+        <i class="fa-solid fa-location-dot"></i>
+      </div>
+      Add New Address
+    </div>
   </div>
-</div>
-</div>
-</div>
-</div>
+
+  <div class="ci-form-card-body">
+
+    <form id="address-form">
+
+      <div class="ci-form-row">
+
+        <div class="ci-form-group">
+          <label class="ci-form-label">
+            Address Label
+          </label>
+
+          <select
+            class="ci-form-input ci-form-select"
+            name="label"
+            required>
+            <option value="Home">Home</option>
+            <option value="Office">Office</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="ci-form-group">
+          <label class="ci-form-label">
+            Full Name <span class="req">*</span>
+          </label>
+
+          <input
+            type="text"
+            class="ci-form-input"
+            name="fullName"
+            placeholder="Recipient name"
+            maxlength="120"
+            required />
+        </div>
+
+      </div>
+
+      <div class="ci-form-row">
+
+        <div class="ci-form-group">
+          <label class="ci-form-label">
+            Phone <span class="req">*</span>
+          </label>
+
+          <input
+            type="tel"
+            class="ci-form-input"
+            name="phone"
+            placeholder="9876543210"
+            maxlength="10"
+            inputmode="numeric"
+            required />
+        </div>
+
+        <div class="ci-form-group">
+          <label class="ci-form-label">
+            Pincode <span class="req">*</span>
+          </label>
+
+          <input
+            type="text"
+            class="ci-form-input"
+            name="pincode"
+            placeholder="560034"
+            maxlength="6"
+            inputmode="numeric"
+            required />
+        </div>
+
+      </div>
+
+      <div class="ci-form-group">
+
+        <label class="ci-form-label">
+          Address Line 1 <span class="req">*</span>
+        </label>
+
+        <input
+          type="text"
+          class="ci-form-input"
+          name="addressLine1"
+          placeholder="House/Flat no., Building name"
+          maxlength="255"
+          required />
+
+      </div>
+
+      <div class="ci-form-group">
+
+        <label class="ci-form-label">
+          Address Line 2
+        </label>
+
+        <input
+          type="text"
+          class="ci-form-input"
+          name="addressLine2"
+          placeholder="Street, area, locality"
+          maxlength="255" />
+
+      </div>
+
+      <div class="ci-form-row cols-3">
+
+        <div class="ci-form-group">
+          <label class="ci-form-label">
+            City <span class="req">*</span>
+          </label>
+
+          <input
+            type="text"
+            class="ci-form-input"
+            name="city"
+            maxlength="100"
+            required />
+        </div>
+
+        <div class="ci-form-group">
+
+          <label class="ci-form-label">
+            State <span class="req">*</span>
+          </label>
+
+          <select
+            class="ci-form-input ci-form-select"
+            name="state"
+            required>
+
+            <option value="">Select State</option>
+            <option>Karnataka</option>
+            <option>Maharashtra</option>
+            <option>Delhi</option>
+            <option>Rajasthan</option>
+            <option>Gujarat</option>
+            <option>Tamil Nadu</option>
+            <option>Telangana</option>
+            <option>Uttar Pradesh</option>
+            <option>West Bengal</option>
+            <option>Kerala</option>
+
+          </select>
+
+        </div>
+
+        <div class="ci-form-group">
+
+          <label class="ci-form-label">
+            Landmark
+          </label>
+
+          <input
+            type="text"
+            class="ci-form-input"
+            name="landmark"
+            placeholder="Near landmark"
+            maxlength="255" />
+
+        </div>
+
+      </div>
+
+      <div class="ci-form-group mt-3">
+
+        <label style="
+          display:flex;
+          align-items:center;
+          gap:8px;
+          cursor:pointer;
+        ">
+
+          <input
+            type="checkbox"
+            name="isDefault"
+            value="1" />
+
+          <span>
+            Set this as my default address
+          </span>
+
+        </label>
+
+      </div>
+
+      <div
+        id="address-message"
+        role="alert"
+        aria-live="polite">
+      </div>
+
+      <div class="d-flex gap-2 mt-3">
+
+        <button
+          type="submit"
+          class="bc-btn bc-btn-primary bc-btn-sm">
+
+          <i class="fa-solid fa-floppy-disk"></i>
+          Save Address
+
+        </button>
+
+        <button
+          type="button"
+          class="bc-btn bc-btn-outline bc-btn-sm"
+          onclick="document.getElementById('new-addr-form').style.display='none'">
+
+          Cancel
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
 </div>
 
 
@@ -162,6 +363,7 @@
 <!-- Conscious Indi Main JS -->
 <script src="../assets/js/bharatcraft.js"></script>
 <script src="../assets/js/customer-panel.js"></script>
+<script src="../assets/js/customer-addresses.js"></script>
 
 </body>
 </html>

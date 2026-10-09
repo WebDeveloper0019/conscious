@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/../lib/coupon.php';
+
 function checkout_place_v2(): void
 {
     send_cors_headers();
@@ -41,6 +43,10 @@ function checkout_place_v2(): void
         $cart = cart_details($userId);
         if (!$cart['items']) {
             json_response(409, ['success' => false, 'message' => 'Your cart is empty.']);
+        }
+        $vendorIds = array_values(array_unique(array_map(fn($item) => (string)$item['vendor_id'], $cart['items'])));
+        if ($quote['coupon_id'] !== null) {
+            find_customer_coupon_by_id($db, (string)$quote['coupon_id'], $userId, $vendorIds, (float)$quote['subtotal']);
         }
 
         $reservationStmt = $db->prepare(

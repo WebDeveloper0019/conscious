@@ -111,8 +111,12 @@
 <div class="ci-widget-card">
   <div class="ci-widget-head">
     <div class="ci-widget-title">Recent Activity</div>
-    <select class="ci-form-select" style="width:auto;min-width:170px;" aria-label="Filter activity">
-      <option>All Activities</option>
+<select
+  class="ci-form-select"
+  style="width:auto;min-width:170px;"
+  aria-label="Filter activity"
+  data-activity-filter
+>      <option>All Activities</option>
       <option>Orders</option>
       <option>Reviews</option>
       <option>Wishlist &amp; Coupons</option>
@@ -121,110 +125,12 @@
     </select>
   </div>
 
-  <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);padding:20px 24px 4px;">Today</div>
-  <div class="ci-widget-body" style="padding-top:0;">
-
-    <div class="ci-activity-item">
-      <div class="ci-activity-icon navy"><i class="fa-solid fa-truck"></i></div>
-      <div class="ci-activity-info">
-        <div class="ci-activity-title">Order Shipped — #CI-98721</div>
-        <p class="mb-1 small text-muted">"Blue Pottery Vase" and 1 other item left the Jaipur hub, out for delivery tomorrow.</p>
-        <div class="ci-activity-time">2 hours ago</div>
-      </div>
-    </div>
-
-    <div class="ci-activity-item">
-      <div class="ci-activity-icon gold"><i class="fa-solid fa-trophy"></i></div>
-      <div class="ci-activity-info">
-        <div class="ci-activity-title">320 Reward Points Earned</div>
-        <p class="mb-1 small text-muted">Credited for order #CI-98654. Your balance is now 2,840 points.</p>
-        <div class="ci-activity-time">5 hours ago</div>
-      </div>
-    </div>
-
-  </div>
-
-  <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);padding:12px 24px 4px;border-top:1px solid var(--dash-border);">Yesterday</div>
-  <div class="ci-widget-body" style="padding-top:0;">
-
-    <div class="ci-activity-item">
-      <div class="ci-activity-icon green"><i class="fa-solid fa-star"></i></div>
-      <div class="ci-activity-info">
-        <div class="ci-activity-title">Review Submitted</div>
-        <p class="mb-1 small text-muted">You rated "Kantha Cushion" 5 stars and left a photo review.</p>
-        <div class="ci-activity-time">Yesterday · 4:30 PM</div>
-      </div>
-    </div>
-
-    <div class="ci-activity-item">
-      <div class="ci-activity-icon saffron"><i class="fa-solid fa-heart"></i></div>
-      <div class="ci-activity-info">
-        <div class="ci-activity-title">Added to Wishlist</div>
-        <p class="mb-1 small text-muted">"Meenakari Bangles" from Shilpa Crafts was added to your wishlist.</p>
-        <div class="ci-activity-time">Yesterday · 1:15 PM</div>
-      </div>
-    </div>
-
-    <div class="ci-activity-item">
-      <div class="ci-activity-icon navy"><i class="fa-solid fa-headset"></i></div>
-      <div class="ci-activity-info">
-        <div class="ci-activity-title">Support Ticket Raised — #T-4432</div>
-        <p class="mb-1 small text-muted">"Delayed delivery on order #CI-98301" — awaiting a reply from our team.</p>
-        <div class="ci-activity-time">Yesterday · 11:02 AM</div>
-      </div>
-    </div>
-
-  </div>
-
-  <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);padding:12px 24px 4px;border-top:1px solid var(--dash-border);">Earlier This Month</div>
-  <div class="ci-widget-body" style="padding-top:0;">
-
-    <div class="ci-activity-item">
-      <div class="ci-activity-icon saffron"><i class="fa-solid fa-bag-shopping"></i></div>
-      <div class="ci-activity-info">
-        <div class="ci-activity-title">Order Placed — #CI-98654</div>
-        <p class="mb-1 small text-muted">"Kundan Necklace Set" — ₹8,499, paid via UPI.</p>
-        <div class="ci-activity-time">Jun 13, 2025</div>
-      </div>
-    </div>
-
-    <div class="ci-activity-item">
-      <div class="ci-activity-icon green"><i class="fa-solid fa-ticket"></i></div>
-      <div class="ci-activity-info">
-        <div class="ci-activity-title">Coupon Applied</div>
-        <p class="mb-1 small text-muted">"CRAFT20" saved you ₹640 on order #CI-98654.</p>
-        <div class="ci-activity-time">Jun 13, 2025</div>
-      </div>
-    </div>
-
-    <div class="ci-activity-item">
-      <div class="ci-activity-icon navy"><i class="fa-solid fa-location-dot"></i></div>
-      <div class="ci-activity-info">
-        <div class="ci-activity-title">Address Updated</div>
-        <p class="mb-1 small text-muted">Your default shipping address was changed to Mumbai, Maharashtra.</p>
-        <div class="ci-activity-time">Jun 12, 2025</div>
-      </div>
-    </div>
-
-    <div class="ci-activity-item">
-      <div class="ci-activity-icon navy"><i class="fa-solid fa-lock"></i></div>
-      <div class="ci-activity-info">
-        <div class="ci-activity-title">Password Changed</div>
-        <p class="mb-1 small text-muted">Your account password was updated successfully.</p>
-        <div class="ci-activity-time">Jun 9, 2025</div>
-      </div>
-    </div>
-
-    <div class="ci-activity-item">
-      <div class="ci-activity-icon saffron"><i class="fa-solid fa-share-nodes"></i></div>
-      <div class="ci-activity-info">
-        <div class="ci-activity-title">Referral Joined</div>
-        <p class="mb-1 small text-muted">Priya S. signed up using your referral link — you both earned ₹200 credit.</p>
-        <div class="ci-activity-time">Jun 5, 2025</div>
-      </div>
-    </div>
-
-  </div>
+ <div
+  class="ci-widget-body"
+  id="activity-list"
+  data-activity-list
+  style="padding-top:0;"
+></div>
 
   <div class="ci-table-footer" style="justify-content:center;">
     <button class="bc-btn bc-btn-outline bc-btn-sm">Load More Activities</button>
@@ -243,6 +149,7 @@
 <!-- Conscious Indi Main JS -->
 <script src="../assets/js/bharatcraft.js"></script>
 <script src="../assets/js/customer-panel.js"></script>
+<script src="../assets/js/activity-history.js"></script>
 
 </body>
 </html>
