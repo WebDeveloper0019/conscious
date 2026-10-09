@@ -62,28 +62,115 @@ try {
         $row = $stmt->fetch(PDO::FETCH_NUM) ?: [0,0,0,0];
         $stats['orders']=(int)$row[0]; $stats['totalSpent']=(float)$row[1]; $stats['activeOrders']=(int)$row[2]; $stats['deliveredOrders']=(int)$row[3];
 
-        $stmt = $db->prepare('SELECT * FROM orders WHERE user_id=:user ORDER BY created_at DESC LIMIT 5');
-        $stmt->execute(['user'=>$userId]);
-        foreach ($stmt->fetchAll() as $order) {
-            $tracking = null;
-            if (dashboard_has_columns($db,'vendor_order_groups',['id','order_id','status']) && dashboard_has_columns($db,'shipment_packages',['vendor_group_id','status'])) {
-                $trackingSql = 'SELECT g.id AS group_id,g.status AS group_status,p.status AS package_status';
-                if (dashboard_has_columns($db,'shipment_packages',['expected_delivery_date'])) $trackingSql .= ',p.expected_delivery_date';
-                if (dashboard_has_columns($db,'shipment_packages',['courier_name'])) $trackingSql .= ',p.courier_name';
-                if (dashboard_has_columns($db,'shipment_packages',['tracking_reference'])) $trackingSql .= ',p.tracking_reference';
-                if (dashboard_has_columns($db,'shipment_packages',['tracking_url'])) $trackingSql .= ',p.tracking_url';
-                $trackingSql .= ' FROM vendor_order_groups g LEFT JOIN shipment_packages p ON p.vendor_group_id=g.id WHERE g.order_id=:order ORDER BY p.created_at DESC LIMIT 1';
-                $trackStmt=$db->prepare($trackingSql); $trackStmt->execute(['order'=>$order['id']]); $tracking=$trackStmt->fetch() ?: null;
-            }
-            $recentOrders[]=[
-                'id'=>(int)$order['id'],'orderNumber'=>$order['order_number'],'status'=>$order['status'],
-                'paymentStatus'=>$order['payment_status']??null,'currency'=>$order['currency']??'INR',
-                'subtotal'=>(float)($order['subtotal']??0),'shippingAmount'=>(float)($order['shipping_amount']??0),
-                'discountAmount'=>(float)($order['discount_amount']??0),'taxAmount'=>(float)($order['tax_amount']??0),
-                'totalAmount'=>(float)$order['total_amount'],'placedAt'=>$order['placed_at']??null,
-                'createdAt'=>$order['created_at'],'updatedAt'=>$order['updated_at']??null,'tracking'=>$tracking
+      
+$stmt = $db->prepare(
+    'SELECT * FROM orders
+     WHERE user_id = :user
+     ORDER BY created_at DESC, id DESC
+     LIMIT 5'
+);
+$stmt->execute(['user' => $userId]);
+
+foreach ($stmt->fetchAll() as $order) {
+    $tracking = null;
+    $items = [];
+
+    // Fetch tracking details and estimated delivery date.
+    if (
+        dashboard_has_columns($db, 'vendor_order_groups', ['id', 'order_id', 'status']) &&
+        dashboard_has_columns($db, 'shipment_packages', ['vendor_group_id', 'status'])
+    ) {
+        $trackingSql = '
+            SELECT
+                g.id AS group_id,
+                g.status AS group_status,
+                p.status AS package_status';
+
+        if (dashboard_has_columns($db, 'shipment_packages', ['expected_delivery_date'])) {
+            $trackingSql .= ', p.expected_delivery_date';
+        }
+
+        if (dashboard_has_columns($db, 'shipment_packages', ['courier_name'])) {
+            $trackingSql .= ', p.courier_name';
+        }
+
+        if (dashboard_has_columns($db, 'shipment_packages', ['tracking_reference'])) {
+            $trackingSql .= ', p.tracking_reference';
+        }
+
+        if (dashboard_has_columns($db, 'shipment_packages', ['tracking_url'])) {
+            $trackingSql .= ', p.tracking_url';
+        }
+
+        $trackingSql .= '
+            FROM vendor_order_groups g
+            LEFT JOIN shipment_packages p
+                ON p.vendor_group_id = g.id
+            WHERE g.order_id = :order
+            ORDER BY p.created_at DESC
+            LIMIT 1';
+
+        $trackStmt = $db->prepare($trackingSql);
+        $trackStmt->execute(['order' => $order['id']]);
+        $tracking = $trackStmt->fetch() ?: null;
+    }
+
+    // Fetch product names and images from order_items.
+    if (
+        dashboard_has_columns(
+            $db,
+            'order_items',
+            ['id', 'order_id', 'product_name', 'quantity']
+        )
+    ) {
+        $itemSql = '
+            SELECT id, product_name, quantity';
+
+        if (dashboard_has_columns($db, 'order_items', ['product_id'])) {
+            $itemSql .= ', product_id';
+        }
+
+        if (dashboard_has_columns($db, 'order_items', ['image'])) {
+            $itemSql .= ', image';
+        }
+
+        $itemSql .= '
+            FROM order_items
+            WHERE order_id = :order
+            ORDER BY id ASC';
+
+        $itemStmt = $db->prepare($itemSql);
+        $itemStmt->execute(['order' => $order['id']]);
+
+        foreach ($itemStmt->fetchAll() as $item) {
+            $items[] = [
+                'productId' => $item['product_id'] ?? null,
+                'productName' => $item['product_name'],
+                'quantity' => (int) $item['quantity'],
+                'image' => $item['image'] ?? null,
             ];
         }
+    }
+
+    $recentOrders[] = [
+        'id' => (int) $order['id'],
+        'orderNumber' => $order['order_number'],
+        'status' => $order['status'],
+        'paymentStatus' => $order['payment_status'] ?? null,
+        'currency' => $order['currency'] ?? 'INR',
+        'subtotal' => (float) ($order['subtotal'] ?? 0),
+        'shippingAmount' => (float) ($order['shipping_amount'] ?? 0),
+        'discountAmount' => (float) ($order['discount_amount'] ?? 0),
+        'taxAmount' => (float) ($order['tax_amount'] ?? 0),
+        'totalAmount' => (float) $order['total_amount'],
+        'placedAt' => $order['placed_at'] ?? null,
+        'createdAt' => $order['created_at'],
+        'updatedAt' => $order['updated_at'] ?? null,
+        'items' => $items,
+        'estimatedDeliveryDate' => $tracking['expected_delivery_date'] ?? null,
+        'tracking' => $tracking,
+    ];
+}
 
         if (dashboard_has_columns($db,'order_items',['id','order_id','product_name','product_id'])) {
             $stmt=$db->prepare("SELECT id,order_number,total_amount FROM orders WHERE user_id=:user AND status='payment_pending' ORDER BY created_at DESC LIMIT 10");

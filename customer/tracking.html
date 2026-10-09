@@ -93,42 +93,49 @@
 <div class="ci-dash-main">
 
 <div class="ci-dash-topbar">
-  <div style="display:flex;align-items:center;gap:16px;">
-    <button class="ci-sidebar-hamburger" id="ci-sidebar-hamburger" aria-label="Open navigation menu" aria-expanded="false">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-    <div>
-    <div class="ci-dash-page-title">Track Order</div>
-    <div class="ci-dash-page-sub">Order #CI-84729 — Real-time shipment tracking.</div>
+
+<div class="ci-dash-page-content">
+  <div id="trackingMessage" class="ci-alert mb-4">
+    Loading your order tracking information...
+  </div>
+
+  <div class="row g-4" id="trackingContent" hidden>
+    <div class="col-lg-8">
+      <div class="ci-order-detail-card">
+        <div class="ci-order-detail-head">
+          <h3>Shipment Timeline</h3>
+        </div>
+        <div style="padding:24px;" id="trackingTimeline">
+          <p>Tracking events are not available yet.</p>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="ci-dash-topbar-actions">
-    <button class="bc-btn bc-btn-outline bc-btn-sm" onclick="document.getElementById('ci-sidebar').classList.toggle('collapsed')">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-    
-  </div>
-</div>
-<div class="ci-alert ci-alert-success mb-4"><i class="fa-solid fa-truck"></i><span><strong>Your order is on the way!</strong> Expected delivery: Thursday, 19 Jun 2025 via BlueDart (AWB: 59823472984)</span></div>
-<div class="row g-4">
-  <div class="col-lg-8">
-    <div class="ci-order-detail-card">
-      <div class="ci-order-detail-head"><h3>Shipment Timeline</h3></div>
-      <div style="padding:24px;">
-        <div class="ci-tracking-timeline">
-          <div class="ci-track-step"><div class="ci-track-dot done"><i class="fa-solid fa-check"></i></div><div class="ci-track-info"><div class="ci-track-label">Order Confirmed</div><div class="ci-track-date">Jun 15, 2025 · 4:32 PM</div><div class="ci-track-note">Payment received. Order forwarded to Shilpa Crafts, Jaipur.</div></div></div>
-          <div class="ci-track-step"><div class="ci-track-dot done"><i class="fa-solid fa-hands"></i></div><div class="ci-track-info"><div class="ci-track-label">Artisan Preparing</div><div class="ci-track-date">Jun 15, 2025 · 6:45 PM</div><div class="ci-track-note">Sunita ji accepted the order and began packing your pieces individually.</div></div></div>
-          <div class="ci-track-step"><div class="ci-track-dot done"><i class="fa-solid fa-box"></i></div><div class="ci-track-info"><div class="ci-track-label">Quality Verified &amp; Dispatched</div><div class="ci-track-date">Jun 16, 2025 · 11:20 AM</div><div class="ci-track-note">All items passed authenticity check. Handed to BlueDart at Jaipur hub.</div></div></div>
-          <div class="ci-track-step"><div class="ci-track-dot current"><i class="fa-solid fa-truck"></i></div><div class="ci-track-info"><div class="ci-track-label">In Transit — Bengaluru Hub</div><div class="ci-track-date">Jun 17, 2025 · 8:15 AM</div><div class="ci-track-note">Package arrived at Bengaluru facility. Out for delivery tomorrow morning.</div></div></div>
-          <div class="ci-track-step"><div class="ci-track-dot pending"><i class="fa-solid fa-motorcycle"></i></div><div class="ci-track-info"><div class="ci-track-label" style="color:var(--text-muted);">Out for Delivery — Expected Jun 19</div></div></div>
-          <div class="ci-track-step"><div class="ci-track-dot pending"><i class="fa-solid fa-circle-check"></i></div><div class="ci-track-info"><div class="ci-track-label" style="color:var(--text-muted);">Delivered</div></div></div>
+
+    <div class="col-lg-4">
+      <div class="ci-order-detail-card mb-4">
+        <div class="ci-order-detail-head">
+          <h3>Delivery Address</h3>
+        </div>
+        <div style="padding:16px 20px;" id="trackingAddress">
+          Address information is not available.
+        </div>
+      </div>
+
+      <div class="ci-order-detail-card">
+        <div class="ci-order-detail-head">
+          <h3>Courier Info</h3>
+        </div>
+        <div style="padding:16px 20px;" id="trackingCourier">
+          Courier information is not available yet.
         </div>
       </div>
     </div>
   </div>
-  <div class="col-lg-4">
-    <div class="ci-order-detail-card mb-4"><div class="ci-order-detail-head"><h3>Delivery Address</h3></div><div style="padding:16px 20px;font-size:.875rem;color:var(--text-secondary);line-height:1.8;">Rahul Sharma<br>42 MG Road, Koramangala<br>Bengaluru, Karnataka 560034<br>+91 98765 43210</div></div>
-    <div class="ci-order-detail-card"><div class="ci-order-detail-head"><h3>Courier Info</h3></div><div style="padding:16px 20px;"><div class="ci-summary-row"><span>Courier</span><span>BlueDart</span></div><div class="ci-summary-row"><span>AWB</span><span>59823472984</span></div><div class="ci-summary-row"><span>ETA</span><span style="color:var(--green-dark);font-weight:600;">Jun 19, 2025</span></div><a href="#" class="bc-btn bc-btn-outline bc-btn-sm w-100 mt-3">Track on BlueDart →</a></div></div>
+</div>
+
+
+  </div>
+ 
   </div>
 </div>
 </div>
@@ -146,6 +153,7 @@
 <!-- Conscious Indi Main JS -->
 <script src="../assets/js/bharatcraft.js"></script>
 <script src="../assets/js/customer-panel.js"></script>
+<script src="../assets/js/tracking.js"></script>
 
 </body>
 </html>

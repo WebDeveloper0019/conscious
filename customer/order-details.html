@@ -98,8 +98,8 @@
       <i class="fa-solid fa-bars"></i>
     </button>
     <div>
-    <div class="ci-dash-page-title">Order Details</div>
-    <div class="ci-dash-page-sub">Order #CI-84729 · Placed on Jun 15, 2025</div>
+    <div class="ci-dash-page-title" id="detailPageTitle">Order Details</div>
+<div class="ci-dash-page-sub" id="detailOrderSubtitle">Loading order details...</div>
     </div>
   </div>
   <div class="ci-dash-topbar-actions">
@@ -112,47 +112,46 @@
 <div class="row g-4">
   <div class="col-lg-8">
     <div class="ci-order-detail-card mb-4">
-      <div class="ci-order-detail-head"><h3>Items in This Order</h3><span class="ci-status ci-status-shipped">Shipped</span></div>
-      <div style="padding:20px;">
-        <div class="d-flex gap-3 align-items-start pb-4" style="border-bottom:1px solid var(--border-light);">
-          <div style="width:72px;height:72px;background:var(--bg-cream);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;">💎</div>
-          <div style="flex:1;"><div style="font-weight:600;color:var(--text-primary);margin-bottom:4px;">Kundan Bridal Necklace Set</div><div style="font-size:.8125rem;color:var(--text-muted);">By Shilpa Crafts · Gold Plated · 18in · Qty: 1</div><div class="mt-2"><a href="reviews.html" class="bc-btn bc-btn-outline bc-btn-sm"><i class="fa-solid fa-star"></i> Write Review</a></div></div>
-          <div style="font-weight:700;color:var(--text-primary);font-size:1.0625rem;">₹8,499</div>
-        </div>
-        <div class="d-flex gap-3 align-items-start py-4" style="border-bottom:1px solid var(--border-light);">
-          <div style="width:72px;height:72px;background:var(--bg-cream);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;">🏺</div>
-          <div style="flex:1;"><div style="font-weight:600;color:var(--text-primary);margin-bottom:4px;">Blue Pottery Vase — Large (×2)</div><div style="font-size:.8125rem;color:var(--text-muted);">By Blue Pottery Co. · Floral · Qty: 2</div></div>
-          <div style="font-weight:700;color:var(--text-primary);font-size:1.0625rem;">₹2,998</div>
-        </div>
-        <div class="d-flex gap-3 align-items-start pt-4">
-          <div style="width:72px;height:72px;background:var(--bg-cream);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;">🧵</div>
-          <div style="flex:1;"><div style="font-weight:600;color:var(--text-primary);margin-bottom:4px;">Banarasi Silk Saree — Bridal Red</div><div style="font-size:.8125rem;color:var(--text-muted);">By Varanasi Weavers · Qty: 1</div></div>
-          <div style="font-weight:700;color:var(--text-primary);font-size:1.0625rem;">₹14,500</div>
-        </div>
+      <div class="ci-order-detail-head">
+  <h3>Items in This Order</h3>
+  <span class="ci-status" id="detailOrderStatus">Loading...</span>
+</div>
+
+<div id="detailOrderItems" style="padding:20px;">
+  <p>Loading order items...</p>
+</div>
       </div>
     </div>
     <!-- Tracking mini -->
-    <div class="ci-order-detail-card">
-      <div class="ci-order-detail-head"><h3>Shipment Tracking</h3><a href="tracking.html" class="bc-btn bc-btn-outline bc-btn-sm">Full Tracking →</a></div>
-      <div style="padding:20px;">
-        <div class="ci-tracking-timeline">
-          <div class="ci-track-step"><div class="ci-track-dot done"><i class="fa-solid fa-check"></i></div><div class="ci-track-info"><div class="ci-track-label">Order Confirmed</div><div class="ci-track-date">Jun 15, 2025 · 4:32 PM</div></div></div>
-          <div class="ci-track-step"><div class="ci-track-dot done"><i class="fa-solid fa-check"></i></div><div class="ci-track-info"><div class="ci-track-label">Dispatched</div><div class="ci-track-date">Jun 16, 2025 · 11:20 AM</div></div></div>
-          <div class="ci-track-step"><div class="ci-track-dot current"><i class="fa-solid fa-truck"></i></div><div class="ci-track-info"><div class="ci-track-label">In Transit — Bengaluru Hub</div><div class="ci-track-date">Jun 17, 2025 · 8:15 AM</div></div></div>
-          <div class="ci-track-step"><div class="ci-track-dot pending"><i class="fa-solid fa-house"></i></div><div class="ci-track-info"><div class="ci-track-label" style="color:var(--text-muted);">Delivered — Expected Jun 19</div></div></div>
-        </div>
+   <div style="padding:20px;" id="detailTracking">
+  <p>Tracking information will appear when available.</p>
+</div>
       </div>
     </div>
   </div>
   <div class="col-lg-4">
     <div class="ci-order-detail-card mb-4"><div class="ci-order-detail-head"><h3>Payment Summary</h3></div>
-      <div style="padding:16px 20px;">
-        <div class="ci-summary-row"><span>Subtotal</span><span>₹25,997</span></div>
-        <div class="ci-summary-row" style="color:var(--green-dark);"><span>Coupon Discount</span><span>−₹5,199</span></div>
-        <div class="ci-summary-row"><span>Delivery</span><span style="color:var(--green-dark);">FREE</span></div>
-        <div class="ci-summary-row total"><span>Total Paid</span><span>₹20,998</span></div>
-        <div style="font-size:.8125rem;color:var(--text-muted);margin-top:8px;">Paid via UPI (GPay)</div>
-      </div>
+   <div style="padding:16px 20px;">
+  <div class="ci-summary-row">
+    <span>Subtotal</span>
+    <span id="detailSubtotal">—</span>
+  </div>
+
+  <div class="ci-summary-row" style="color:var(--green-dark);">
+    <span>Discount</span>
+    <span id="detailDiscount">—</span>
+  </div>
+
+  <div class="ci-summary-row">
+    <span>Delivery</span>
+    <span id="detailShipping">—</span>
+  </div>
+
+  <div class="ci-summary-row total">
+    <span>Total</span>
+    <span id="detailTotal">—</span>
+  </div>
+</div>
     </div>
     <div class="ci-order-detail-card"><div class="ci-order-detail-head"><h3>Actions</h3></div>
       <div style="padding:16px 20px;display:flex;flex-direction:column;gap:8px;">
@@ -179,6 +178,7 @@
 <!-- Conscious Indi Main JS -->
 <script src="../assets/js/bharatcraft.js"></script>
 <script src="../assets/js/customer-panel.js"></script>
+<script src="../assets/js/order-details.js"></script>
 
 </body>
 </html>
