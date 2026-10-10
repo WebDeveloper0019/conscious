@@ -14,13 +14,26 @@
     })[char]);
   }
 
-  function showMessage(message) {
-    const element = $('trackingMessage');
-    if (!element) return;
+ 
+function showMessage(message) {
+  const element = $('trackingMessage');
+  if (!element) return;
 
+  const content = element.querySelector('.tracking-message-content');
+
+  if (content) {
+    const heading = content.querySelector('h2');
+    const paragraph = content.querySelector('p');
+
+    if (heading) heading.textContent = 'Track your order';
+    if (paragraph) paragraph.textContent = message;
+  } else {
     element.textContent = message;
-    element.hidden = false;
   }
+
+  element.hidden = false;
+}
+
 
   async function loadTracking() {
     const params = new URLSearchParams(window.location.search);
@@ -56,11 +69,11 @@
       const status = String(order.status || 'Unknown')
         .replace(/_/g, ' ');
 
-      const message = $('trackingMessage');
-      message.textContent =
-        'Order ' + (order.orderNumber || '') +
-        ' — Current status: ' + status + '.';
-      message.hidden = false;
+showMessage(
+  'Order ' + (order.orderNumber || '') +
+  ' — Current status: ' + status + '.'
+);
+
 
       const content = $('trackingContent');
       content.hidden = false;

@@ -12,6 +12,100 @@
   <link rel="stylesheet" href="../assets/css/bharatcraft.css" />
   <link rel="stylesheet" href="../assets/css/conscious-pages.css" />
   <link rel="stylesheet" href="../assets/css/customer-panel.css" />
+  
+<style>
+  .tracking-message {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 24px;
+    margin-bottom: 24px;
+    background: #fff;
+    border: 1px solid #f0dfca;
+    border-left: 4px solid #e98b2a;
+    border-radius: 14px;
+    box-shadow: 0 6px 22px rgba(50, 35, 15, 0.05);
+  }
+
+  .tracking-message[hidden] {
+    display: none !important;
+  }
+
+  .tracking-message-icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    flex: 0 0 52px;
+    border-radius: 14px;
+    background: #fff1df;
+    color: #a85c13;
+    font-size: 22px;
+  }
+
+  .tracking-message-content h2 {
+    margin: 0 0 6px;
+    color: #263c2e;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .tracking-message-content p {
+    margin: 0;
+    color: #6d746e;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  #trackingContent[hidden] {
+    display: none !important;
+  }
+
+  #trackingContent .ci-order-detail-card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #eee5d9;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(50, 35, 15, 0.045);
+  }
+
+  #trackingContent .ci-order-detail-head {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f0e9df;
+  }
+
+  #trackingContent .ci-order-detail-head h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  @media (max-width: 575px) {
+    .tracking-message {
+      align-items: flex-start;
+      gap: 12px;
+      padding: 18px 14px;
+    }
+
+    .tracking-message-icon {
+      width: 44px;
+      height: 44px;
+      flex-basis: 44px;
+      font-size: 18px;
+    }
+
+    .tracking-message-content h2 {
+      font-size: 1.05rem;
+    }
+
+    #trackingContent .ci-order-detail-head {
+      padding: 16px;
+    }
+  }
+</style>
+</head>
+
 </head>
 <body>
 
@@ -95,9 +189,17 @@
 <div class="ci-dash-topbar">
 
 <div class="ci-dash-page-content">
-  <div id="trackingMessage" class="ci-alert mb-4">
-    Loading your order tracking information...
+  
+<div id="trackingMessage" class="ci-alert mb-4 tracking-message">
+  <div class="tracking-message-icon">
+    <i class="fa-solid fa-truck-fast"></i>
   </div>
+  <div class="tracking-message-content">
+    <h2>Track your order</h2>
+    <p>Loading your order tracking information...</p>
+  </div>
+</div>
+
 
   <div class="row g-4" id="trackingContent" hidden>
     <div class="col-lg-8">
