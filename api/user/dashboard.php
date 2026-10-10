@@ -254,38 +254,7 @@ foreach ($stmt->fetchAll() as $order) {
             ORDER BY c.ends_at ASC
             LIMIT 10";
 
-    $stmt=$db->prepare($sql);
-    $stmt->execute([
-        'user'=>$userId,
-        'user2'=>$userId
-    ]);
-
-    foreach($stmt->fetchAll() as $c) {
-        $coupons[]=[
-            'id'=>$c['id'],
-            'code'=>$c['code'],
-            'discountType'=>$c['discount_type']??null,
-            'discountValue'=>(float)($c['discount_value']??0),
-            'minOrderAmount'=>(float)($c['min_order_amount']??0),
-            'maxDiscountAmount'=>isset($c['max_discount_amount'])
-                ? (float)$c['max_discount_amount']
-                : null,
-            'startsAt'=>$c['starts_at'],
-            'endsAt'=>$c['ends_at'],
-            'vendorName'=>$c['vendor_name']??null,
-
-            'usage'=>[
-                'total'=>(int)$c['total_usage'],
-                'limit'=>$c['usage_limit']===null
-                    ? null
-                    : (int)$c['usage_limit'],
-                'customer'=>(int)$c['customer_usage'],
-                'customerLimit'=>$c['per_customer_limit']===null
-                    ? null
-                    : (int)$c['per_customer_limit']
-            ]
-        ];
-    }
+   
 
         $stmt=$db->prepare($sql); $stmt->execute(['user'=>$userId,'user2'=>$userId]);
         foreach($stmt->fetchAll() as $c) $coupons[]=[

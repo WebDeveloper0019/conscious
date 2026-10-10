@@ -234,15 +234,7 @@ function checkout_place_v2(): void
 
         $db->prepare('UPDATE checkout_quotes SET status="converted" WHERE id=:converted_quote_id')->execute(['converted_quote_id' => $quoteId]);
         $db->prepare('UPDATE carts SET status="converted",updated_at=UTC_TIMESTAMP() WHERE id=:converted_cart_id')->execute(['converted_cart_id' => $cart['id']]);
-        if ($quote['coupon_id'] !== null) {
-            $db->prepare(
-                'INSERT INTO coupon_redemptions (id,coupon_id,user_id,order_id,discount_amount,created_at)
-                 VALUES (:redemption_id,:redemption_coupon,:redemption_user,:redemption_order,:redemption_amount,UTC_TIMESTAMP())'
-            )->execute([
-                'redemption_id' => uuid_string(), 'redemption_coupon' => $quote['coupon_id'], 'redemption_user' => $userId,
-                'redemption_order' => $orderId, 'redemption_amount' => $quote['discount_amount'],
-            ]);
-        }
+      
 
         $paymentAttemptId = uuid_string();
         $db->prepare(

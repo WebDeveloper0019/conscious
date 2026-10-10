@@ -1,601 +1,1888 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" dir="ltr">
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#FF9933" />
-  <meta name="robots" content="index, follow" />
-  <meta name="description" content="Hand-crafted Blue Pottery Vase by master artisan Rajan Kumhar from Jaipur. GI Tagged. Verified authentic." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Blue Pottery Vase — Jaipur Heritage Craft | Conscious Indi" />
-  <meta property="og:description" content="Authentic Jaipur Blue Pottery Vase by master artisan. Shop verified handcrafted products at Conscious Indi." />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Blue Pottery Vase — Jaipur Heritage Craft | Conscious Indi</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="assets/css/bharatcraft.css" />
-<style>
-.bc-breadcrumb-wrap{background:var(--bg-cream);border-bottom:1px solid var(--border-warm);padding:10px 0;}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#FF9933" />
+    <meta name="robots" content="index, follow" />
+    <meta
+      name="description"
+      content="Hand-crafted Blue Pottery Vase by master artisan Rajan Kumhar from Jaipur. GI Tagged. Verified authentic."
+    />
+    <meta name="author" content="Conscious Indi" />
+    <meta
+      property="og:title"
+      content="Blue Pottery Vase — Jaipur Heritage Craft | Conscious Indi"
+    />
+    <meta
+      property="og:description"
+      content="Authentic Jaipur Blue Pottery Vase by master artisan. Shop verified handcrafted products at Conscious Indi."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Conscious Indi" />
+    <title>Blue Pottery Vase — Jaipur Heritage Craft | Conscious Indi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/bharatcraft.css" />
+    <style>
+      .bc-breadcrumb-wrap {
+        background: var(--bg-cream);
+        border-bottom: 1px solid var(--border-warm);
+        padding: 10px 0;
+      }
 
-/* ============ PRODUCT DETAIL PAGE RESPONSIVE ============ */
-.bc-pd-layout{ display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+      /* ============ PRODUCT DETAIL PAGE RESPONSIVE ============ */
+      .bc-pd-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: start;
+      }
 
-.bc-pd-buy-row{ display:flex; gap:12px; margin-bottom:20px; align-items:center; flex-wrap:wrap; }
-.bc-pd-buy-row .bc-btn-primary{ flex:1; justify-content:center; min-width:150px; }
+      .bc-pd-buy-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .bc-pd-buy-row .bc-btn-primary {
+        flex: 1;
+        justify-content: center;
+        min-width: 150px;
+      }
 
-.bc-pd-tabs{
-  display:flex; gap:0; border-bottom:2px solid var(--border-warm); margin-bottom:32px;
-  overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
-}
-.bc-pd-tabs::-webkit-scrollbar{ display:none; }
-.bc-pd-tabs button{ flex:0 0 auto; }
+      .bc-pd-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid var(--border-warm);
+        margin-bottom: 32px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .bc-pd-tabs::-webkit-scrollbar {
+        display: none;
+      }
+      .bc-pd-tabs button {
+        flex: 0 0 auto;
+      }
 
-.bc-pd-specs{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+      .bc-pd-specs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
 
-.bc-pd-related-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+      .bc-pd-related-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
 
-@media (max-width:900px){
-  .bc-pd-layout{ grid-template-columns:1fr; gap:32px; }
-  .bc-pd-related-grid{ grid-template-columns:repeat(3,1fr); }
-}
+      @media (max-width: 900px) {
+        .bc-pd-layout {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+        .bc-pd-related-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
 
-@media (max-width:768px){
-  .bc-pd-related-grid{ grid-template-columns:repeat(2,1fr); gap:16px; }
-}
+      @media (max-width: 768px) {
+        .bc-pd-related-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px;
+        }
+      }
 
-@media (max-width:480px){
-  .bc-pd-specs{ grid-template-columns:1fr; }
-  .bc-pd-buy-row .bc-btn-primary{ flex:1 1 100%; order:3; }
-}
+      @media (max-width: 480px) {
+        .bc-pd-specs {
+          grid-template-columns: 1fr;
+        }
+        .bc-pd-buy-row .bc-btn-primary {
+          flex: 1 1 100%;
+          order: 3;
+        }
+      }
 
-@media (max-width:420px){
-  .bc-pd-related-grid{ grid-template-columns:1fr; }
-}
-</style>
-</head>
-<body>
-
-<!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
-  <div class="bc-preloader-chakra"></div>
-</div>
-
-<!-- ANNOUNCEMENT BAR -->
-<div class="bc-announce-bar" role="marquee" aria-live="polite">
-  <div class="bc-announce-track container">
-    <div class="bc-announce-messages">
-      <div class="bc-announce-item">
-        <span><span class="bc-announce-badge">New</span> 🌍 World's First Story-Led Commerce &amp; Conscious Living Platform</span>
-        <span class="bc-announce-dot"></span>
-        <span>Growing Community of Verified Brands &amp; Artisans</span>
-        <span class="bc-announce-dot"></span>
-        <span>Commerce + Events + Sustainability + Creator Economy</span>
-      </div>
-      <div class="bc-announce-item">
-        <span>🔒 100% Secure Payments — UPI, Cards &amp; Net Banking</span>
-        <span class="bc-announce-dot"></span>
-        <span>Every transaction protected &amp; encrypted</span>
-        <span class="bc-announce-dot"></span>
-        <span>Buyer Protection Guarantee on all orders</span>
-      </div>
-      <div class="bc-announce-item">
-        <span><span class="bc-announce-badge">Live</span> 🎪 Upcoming Pop-Ups, Exhibitions &amp; Sustainability Conferences</span>
-        <span class="bc-announce-dot"></span>
-        <span>Across 12+ cities &amp; growing</span>
-        <span class="bc-announce-dot"></span>
-        <span>Register free for early access</span>
-      </div>
-      <div class="bc-announce-item">
-        <span>✋ Support Conscious — Every purchase empowers an artisan or sustainable brand</span>
-        <span class="bc-announce-dot"></span>
-        <span>Curated, verified partners only</span>
-        <span class="bc-announce-dot"></span>
-        <span>100% Authenticity Guaranteed</span>
-      </div>
+      @media (max-width: 420px) {
+        .bc-pd-related-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- PRELOADER -->
+    <div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
+      <img
+        src="assets/images/symbol.png"
+        alt="Conscious Indi"
+        class="bc-preloader-symbol"
+        width="90"
+        height="90"
+        aria-hidden="true"
+      />
+      <div class="bc-preloader-brand">Conscious Indi</div>
+      <div class="bc-preloader-chakra"></div>
     </div>
-    <button class="bc-announce-close" aria-label="Close announcement bar"><i class="fa-solid fa-xmark"></i></button>
-  </div>
-</div>
 
-<!-- DESKTOP HEADER -->
-<header class="bc-header" id="bc-header" role="banner">
-  <div class="bc-header-top">
-    <div class="container">
-      <div class="bc-header-top-inner">
-        <a href="index.html" class="bc-logo bc-logo-real" aria-label="Conscious Indi — Story-Led Commerce, Conscious Living Marketplace &amp; Events Platform">
-          <img src="assets/images/logo-horizontal.png" alt="Conscious Indi" class="bc-logo-img bc-logo-horizontal" width="220" height="60" loading="eager" fetchpriority="high" />
-        </a>
-        <div class="bc-search-wrap">
-          <div class="bc-search-box" role="search">
-            <select class="bc-search-cat" aria-label="Search category">
-              <option value="all">All Categories</option>
-              <option value="brands">Sustainable Brands</option>
-              <option value="pottery">Pottery &amp; Ceramics</option>
-              <option value="jewelry">Handmade Jewelry</option>
-              <option value="wood">Wood Crafts</option>
-              <option value="home">Home Decor</option>
-              <option value="handloom">Handloom &amp; Textiles</option>
-              <option value="paintings">Paintings</option>
-              <option value="art">Traditional Art</option>
-              <option value="fashion">Fashion Accessories</option>
-              <option value="gifts">Gift Items</option>
-              <option value="eco">Eco Friendly</option>
-            </select>
-            <input class="bc-search-input" type="search" id="bc-search-input" placeholder="Search brands, artisans, events…" aria-label="Search products" autocomplete="off" />
-            <button class="bc-search-btn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+    <!-- ANNOUNCEMENT BAR -->
+    <div class="bc-announce-bar" role="marquee" aria-live="polite">
+      <div class="bc-announce-track container">
+        <div class="bc-announce-messages">
+          <div class="bc-announce-item">
+            <span
+              ><span class="bc-announce-badge">New</span> 🌍 World's First
+              Story-Led Commerce &amp; Conscious Living Platform</span
+            >
+            <span class="bc-announce-dot"></span>
+            <span>Growing Community of Verified Brands &amp; Artisans</span>
+            <span class="bc-announce-dot"></span>
+            <span>Commerce + Events + Sustainability + Creator Economy</span>
+          </div>
+          <div class="bc-announce-item">
+            <span>🔒 100% Secure Payments — UPI, Cards &amp; Net Banking</span>
+            <span class="bc-announce-dot"></span>
+            <span>Every transaction protected &amp; encrypted</span>
+            <span class="bc-announce-dot"></span>
+            <span>Buyer Protection Guarantee on all orders</span>
+          </div>
+          <div class="bc-announce-item">
+            <span
+              ><span class="bc-announce-badge">Live</span> 🎪 Upcoming Pop-Ups,
+              Exhibitions &amp; Sustainability Conferences</span
+            >
+            <span class="bc-announce-dot"></span>
+            <span>Across 12+ cities &amp; growing</span>
+            <span class="bc-announce-dot"></span>
+            <span>Register free for early access</span>
+          </div>
+          <div class="bc-announce-item">
+            <span
+              >✋ Support Conscious — Every purchase empowers an artisan or
+              sustainable brand</span
+            >
+            <span class="bc-announce-dot"></span>
+            <span>Curated, verified partners only</span>
+            <span class="bc-announce-dot"></span>
+            <span>100% Authenticity Guaranteed</span>
           </div>
         </div>
-        <div class="bc-header-actions">
-          <a href="become-brand-partner.html" class="bc-btn-seller"><i class="fa-solid fa-store"></i> Sell With Us</a>
-          <a href="creators.html" class="bc-btn-influencer"><i class="fa-solid fa-star"></i> Become a Creator</a>
-          <a href="customer/wishlist.html" class="bc-header-action-link" aria-label="Wishlist"><i class="fa-regular fa-heart"></i><span>Wishlist</span></a>
-          <a href="cart.html" class="bc-header-action-link" aria-label="Cart (0 items)">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <span class="bc-action-badge" aria-label="0 items in cart">0</span>
-            <span>Cart</span>
-          </a>
-          <a href="customer/dashboard.html" class="bc-header-action-link" aria-label="My Account"><i class="fa-regular fa-circle-user"></i><span>Account</span></a>
-        </div>
+        <button class="bc-announce-close" aria-label="Close announcement bar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
     </div>
-  </div>
-  <div class="bc-header-nav">
-    <div class="container">
-      <div class="bc-nav-inner">
-        <nav aria-label="Main Navigation">
-          <ul class="bc-nav-list">
-            <li class="bc-nav-item has-mega">
-              <a href="shop.html" class="active">
-                <i class="fa-solid fa-grid-2" style="font-size:0.875rem;color:var(--saffron)"></i>
-                Marketplace <i class="fa-solid fa-chevron-down" style="font-size:0.625rem;margin-left:2px;"></i>
+
+    <!-- DESKTOP HEADER -->
+    <header class="bc-header" id="bc-header" role="banner">
+      <div class="bc-header-top">
+        <div class="container">
+          <div class="bc-header-top-inner">
+            <a
+              href="index.html"
+              class="bc-logo bc-logo-real"
+              aria-label="Conscious Indi — Story-Led Commerce, Conscious Living Marketplace &amp; Events Platform"
+            >
+              <img
+                src="assets/images/logo-horizontal.png"
+                alt="Conscious Indi"
+                class="bc-logo-img bc-logo-horizontal"
+                width="220"
+                height="60"
+                loading="eager"
+                fetchpriority="high"
+              />
+            </a>
+            <div class="bc-search-wrap">
+              <div class="bc-search-box" role="search">
+                <select class="bc-search-cat" aria-label="Search category">
+                  <option value="all">All Categories</option>
+                  <option value="brands">Sustainable Brands</option>
+                  <option value="pottery">Pottery &amp; Ceramics</option>
+                  <option value="jewelry">Handmade Jewelry</option>
+                  <option value="wood">Wood Crafts</option>
+                  <option value="home">Home Decor</option>
+                  <option value="handloom">Handloom &amp; Textiles</option>
+                  <option value="paintings">Paintings</option>
+                  <option value="art">Traditional Art</option>
+                  <option value="fashion">Fashion Accessories</option>
+                  <option value="gifts">Gift Items</option>
+                  <option value="eco">Eco Friendly</option>
+                </select>
+                <input
+                  class="bc-search-input"
+                  type="search"
+                  id="bc-search-input"
+                  placeholder="Search brands, artisans, events…"
+                  aria-label="Search products"
+                  autocomplete="off"
+                />
+                <button class="bc-search-btn" aria-label="Search">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </div>
+            </div>
+            <div class="bc-header-actions">
+              <a href="become-brand-partner.html" class="bc-btn-seller"
+                ><i class="fa-solid fa-store"></i> Sell With Us</a
+              >
+              <a href="creators.html" class="bc-btn-influencer"
+                ><i class="fa-solid fa-star"></i> Become a Creator</a
+              >
+              <a
+                href="customer/wishlist.html"
+                class="bc-header-action-link"
+                aria-label="Wishlist"
+                ><i class="fa-regular fa-heart"></i><span>Wishlist</span></a
+              >
+              <a
+                href="cart.html"
+                class="bc-header-action-link"
+                aria-label="Cart (0 items)"
+              >
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="bc-action-badge" aria-label="0 items in cart"
+                  >0</span
+                >
+                <span>Cart</span>
               </a>
-              <div class="bc-mega-menu" role="region" aria-label="Marketplace mega menu">
-                <div class="bc-mega-grid">
-                  <div class="bc-mega-col">
-                    <h5>Crafts &amp; Art</h5>
-                    <ul>
-                      <li><a href="pottery.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Pottery &amp; Ceramics</a></li>
-                      <li><a href="paintings.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Madhubani Paintings</a></li>
-                      <li><a href="traditional-art.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Warli Art</a></li>
-                      <li><a href="traditional-art.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Pattachitra</a></li>
-                      <li><a href="paintings.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Tanjore Paintings</a></li>
-                      <li><a href="wood.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Wood Carving</a></li>
-                    </ul>
-                  </div>
-                  <div class="bc-mega-col">
-                    <h5>Jewelry &amp; Fashion</h5>
-                    <ul>
-                      <li><a href="jewelry.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Kundan Jewelry</a></li>
-                      <li><a href="jewelry.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Meenakari Work</a></li>
-                      <li><a href="jewelry.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Beaded Jewelry</a></li>
-                      <li><a href="jewelry.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Silver Filigree</a></li>
-                      <li><a href="fashion.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Lac Bangles</a></li>
-                      <li><a href="fashion.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Jute Accessories</a></li>
-                    </ul>
-                  </div>
-                  <div class="bc-mega-col">
-                    <h5>Textiles &amp; Decor</h5>
-                    <ul>
-                      <li><a href="handloom.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Kantha Embroidery</a></li>
-                      <li><a href="handloom.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Block Print Fabric</a></li>
-                      <li><a href="handloom.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Handloom Sarees</a></li>
-                      <li><a href="home-decor.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Dhurrie Rugs</a></li>
-                      <li><a href="home-decor.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Kashmiri Carpets</a></li>
-                      <li><a href="handloom.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Pashmina Shawls</a></li>
-                    </ul>
-                  </div>
-                  <div class="bc-mega-col">
-                    <h5>Gifting &amp; More</h5>
-                    <ul>
-                      <li><a href="corporate-gifting.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Corporate Gifts</a></li>
-                      <li><a href="gifts.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Wedding Gifts</a></li>
-                      <li><a href="brands.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Sustainable Brands</a></li>
-                      <li><a href="eco.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Eco Products</a></li>
-                      <li><a href="home-decor.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Home Decor</a></li>
-                      <li><a href="shop.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Kitchen &amp; Dining</a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="bc-mega-banner">
-                  <div>
-                    <div class="bc-mega-banner-text">
-                      🌱 New: Verified Sustainable Brands Directory
-                      <span>Discover ESG, zero-waste &amp; circular economy brands</span>
+              <a
+                href="customer/dashboard.html"
+                class="bc-header-action-link"
+                aria-label="My Account"
+                ><i class="fa-regular fa-circle-user"></i
+                ><span>Account</span></a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bc-header-nav">
+        <div class="container">
+          <div class="bc-nav-inner">
+            <nav aria-label="Main Navigation">
+              <ul class="bc-nav-list">
+                <li class="bc-nav-item has-mega">
+                  <a href="shop.html" class="active">
+                    <i
+                      class="fa-solid fa-grid-2"
+                      style="font-size: 0.875rem; color: var(--saffron)"
+                    ></i>
+                    Marketplace
+                    <i
+                      class="fa-solid fa-chevron-down"
+                      style="font-size: 0.625rem; margin-left: 2px"
+                    ></i>
+                  </a>
+                  <div
+                    class="bc-mega-menu"
+                    role="region"
+                    aria-label="Marketplace mega menu"
+                  >
+                    <div class="bc-mega-grid">
+                      <div class="bc-mega-col">
+                        <h5>Crafts &amp; Art</h5>
+                        <ul>
+                          <li>
+                            <a href="pottery.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Pottery &amp; Ceramics</a
+                            >
+                          </li>
+                          <li>
+                            <a href="paintings.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Madhubani Paintings</a
+                            >
+                          </li>
+                          <li>
+                            <a href="traditional-art.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Warli Art</a
+                            >
+                          </li>
+                          <li>
+                            <a href="traditional-art.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Pattachitra</a
+                            >
+                          </li>
+                          <li>
+                            <a href="paintings.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Tanjore Paintings</a
+                            >
+                          </li>
+                          <li>
+                            <a href="wood.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Wood Carving</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="bc-mega-col">
+                        <h5>Jewelry &amp; Fashion</h5>
+                        <ul>
+                          <li>
+                            <a href="jewelry.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Kundan Jewelry</a
+                            >
+                          </li>
+                          <li>
+                            <a href="jewelry.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Meenakari Work</a
+                            >
+                          </li>
+                          <li>
+                            <a href="jewelry.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Beaded Jewelry</a
+                            >
+                          </li>
+                          <li>
+                            <a href="jewelry.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Silver Filigree</a
+                            >
+                          </li>
+                          <li>
+                            <a href="fashion.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Lac Bangles</a
+                            >
+                          </li>
+                          <li>
+                            <a href="fashion.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Jute Accessories</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="bc-mega-col">
+                        <h5>Textiles &amp; Decor</h5>
+                        <ul>
+                          <li>
+                            <a href="handloom.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Kantha Embroidery</a
+                            >
+                          </li>
+                          <li>
+                            <a href="handloom.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Block Print Fabric</a
+                            >
+                          </li>
+                          <li>
+                            <a href="handloom.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Handloom Sarees</a
+                            >
+                          </li>
+                          <li>
+                            <a href="home-decor.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Dhurrie Rugs</a
+                            >
+                          </li>
+                          <li>
+                            <a href="home-decor.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Kashmiri Carpets</a
+                            >
+                          </li>
+                          <li>
+                            <a href="handloom.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Pashmina Shawls</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="bc-mega-col">
+                        <h5>Gifting &amp; More</h5>
+                        <ul>
+                          <li>
+                            <a href="corporate-gifting.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Corporate Gifts</a
+                            >
+                          </li>
+                          <li>
+                            <a href="gifts.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Wedding Gifts</a
+                            >
+                          </li>
+                          <li>
+                            <a href="brands.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Sustainable Brands</a
+                            >
+                          </li>
+                          <li>
+                            <a href="eco.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Eco Products</a
+                            >
+                          </li>
+                          <li>
+                            <a href="home-decor.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Home Decor</a
+                            >
+                          </li>
+                          <li>
+                            <a href="shop.html"
+                              ><i
+                                class="fa-solid fa-circle-dot"
+                                style="font-size: 0.5rem"
+                              ></i>
+                              Kitchen &amp; Dining</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="bc-mega-banner">
+                      <div>
+                        <div class="bc-mega-banner-text">
+                          🌱 New: Verified Sustainable Brands Directory
+                          <span
+                            >Discover ESG, zero-waste &amp; circular economy
+                            brands</span
+                          >
+                        </div>
+                      </div>
+                      <a
+                        href="brands.html"
+                        class="bc-btn bc-btn-primary bc-btn-sm"
+                        >Explore Brands</a
+                      >
                     </div>
                   </div>
-                  <a href="brands.html" class="bc-btn bc-btn-primary bc-btn-sm">Explore Brands</a>
+                </li>
+                <li class="bc-nav-item"><a href="brands.html">Brands</a></li>
+                <li class="bc-nav-item">
+                  <a href="artisans.html">Artisans</a>
+                </li>
+                <li class="bc-nav-item highlight">
+                  <a href="events.html"
+                    ><i
+                      class="fa-regular fa-calendar"
+                      style="font-size: 0.75rem"
+                    ></i>
+                    Events</a
+                  >
+                </li>
+                <li class="bc-nav-item">
+                  <a href="community.html">Community</a>
+                </li>
+                <li class="bc-nav-item">
+                  <a href="creators.html">Creators</a>
+                </li>
+                <li class="bc-nav-item"><a href="about.html">Impact</a></li>
+                <li class="bc-nav-item highlight-green">
+                  <a href="become-exhibitor.html"
+                    ><i
+                      class="fa-solid fa-store"
+                      style="font-size: 0.75rem"
+                    ></i>
+                    Become an Exhibitor</a
+                  >
+                </li>
+              </ul>
+            </nav>
+            <div class="bc-nav-extras">
+              <a href="customer/tracking.html"
+                ><i class="fa-regular fa-clock"></i> Track Order</a
+              >
+              <a href="help.html"
+                ><i class="fa-regular fa-circle-question"></i> Help</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MOBILE HEADER -->
+    <header class="bc-header-mobile" role="banner">
+      <div class="bc-mobile-top">
+        <button
+          class="bc-hamburger"
+          id="bc-hamburger"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+        >
+          <span></span><span></span><span></span>
+        </button>
+        <a
+          href="index.html"
+          class="bc-logo bc-logo-real"
+          aria-label="Conscious Indi"
+        >
+          <img
+            src="assets/images/logo-horizontal.png"
+            alt="Conscious Indi"
+            class="bc-logo-img bc-logo-horizontal bc-logo-mobile"
+            width="160"
+            height="44"
+            loading="eager"
+          />
+        </a>
+        <div class="bc-mobile-actions">
+          <a
+            href="customer/wishlist.html"
+            class="bc-mobile-action-btn"
+            aria-label="Wishlist"
+            ><i class="fa-regular fa-heart"></i
+          ></a>
+          <a
+            href="cart.html"
+            class="bc-mobile-action-btn"
+            aria-label="Cart"
+            style="position: relative"
+          >
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="bc-action-badge" style="top: 2px; right: 2px">0</span>
+          </a>
+          <a
+            href="customer/dashboard.html"
+            class="bc-mobile-action-btn"
+            aria-label="Account"
+            ><i class="fa-regular fa-circle-user"></i
+          ></a>
+        </div>
+      </div>
+      <div class="bc-mobile-search-wrap">
+        <div class="bc-mobile-search" role="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="search"
+            placeholder="Search brands, artisans, events…"
+            aria-label="Search"
+          />
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <nav
+      class="bc-mobile-drawer"
+      id="bc-mobile-drawer"
+      aria-label="Mobile Navigation"
+      aria-hidden="true"
+    >
+      <div class="bc-drawer-head">
+        <a
+          href="index.html"
+          class="bc-logo bc-logo-real"
+          aria-label="Conscious Indi Home"
+        >
+          <img
+            src="assets/images/logo-square.png"
+            alt="Conscious Indi"
+            class="bc-logo-img bc-logo-square-img"
+            width="130"
+            height="130"
+            loading="lazy"
+          />
+        </a>
+        <button
+          class="bc-drawer-close"
+          id="bc-drawer-close"
+          aria-label="Close menu"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="bc-drawer-nav">
+        <div class="bc-drawer-section-title">Explore</div>
+        <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="shop.html"><i class="fa-solid fa-store"></i> Marketplace</a>
+        <a href="brands.html"
+          ><i class="fa-solid fa-leaf"></i> Sustainable Brands</a
+        >
+        <a href="artisans.html"
+          ><i class="fa-solid fa-hands"></i> Artisans &amp; Stories</a
+        >
+        <a href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
+        <a href="community.html"
+          ><i class="fa-solid fa-people-group"></i> Community</a
+        >
+        <div class="bc-drawer-divider"></div>
+        <div class="bc-drawer-section-title">Discover</div>
+        <a href="creators.html"
+          ><i class="fa-solid fa-star"></i> Creator Shops</a
+        >
+        <a href="about.html"
+          ><i class="fa-solid fa-chart-line"></i> Our Impact</a
+        >
+        <a href="corporate-gifting.html"
+          ><i class="fa-solid fa-gift"></i> Corporate Gifting</a
+        >
+        <div class="bc-drawer-divider"></div>
+        <div class="bc-drawer-section-title">Partners</div>
+        <a href="become-brand-partner.html"
+          ><i class="fa-solid fa-store"></i> Sell With Us</a
+        >
+        <a href="become-exhibitor.html"
+          ><i class="fa-solid fa-people-roof"></i> Exhibit With Us</a
+        >
+        <a href="creators.html"
+          ><i class="fa-solid fa-star"></i> Become a Creator</a
+        >
+        <div class="bc-drawer-divider"></div>
+        <a href="customer/tracking.html"
+          ><i class="fa-regular fa-clock"></i> Track Order</a
+        >
+        <a href="customer/dashboard.html"
+          ><i class="fa-regular fa-circle-user"></i> My Account</a
+        >
+        <a href="help.html"
+          ><i class="fa-regular fa-circle-question"></i> Help &amp; Support</a
+        >
+      </div>
+    </nav>
+    <div class="bc-overlay" id="bc-overlay"></div>
+    <main id="main-content">
+      <div
+        class="bc-breadcrumb-wrap"
+        style="
+          background: var(--bg-cream);
+          border-bottom: 1px solid var(--border-warm);
+          padding: 10px 0;
+        "
+      >
+        <div class="container">
+          <nav aria-label="Breadcrumb">
+            <ol class="breadcrumb mb-0" style="font-size: 0.8125rem">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item"><a href="shop.html">Shop</a></li>
+              <li class="breadcrumb-item">
+                <a href="pottery.html">Pottery & Ceramics</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                Blue Pottery Vase
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+
+      <section
+        class="section-py"
+        style="background: var(--bg-cream)"
+        aria-label="Product detail"
+      >
+        <div class="container">
+          <!-- Product Layout -->
+          <div class="bc-pd-layout">
+            <!-- Gallery -->
+            <div class="bc-reveal-left">
+              <!-- Main Image -->
+              <div
+                style="
+                  border-radius: var(--r-xl);
+                  overflow: hidden;
+                  aspect-ratio: 1;
+                  background: linear-gradient(135deg, #c9a078, #8b5a30);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 8rem;
+                  margin-bottom: 16px;
+                  border: 1.5px solid var(--border-warm);
+                "
+              >
+                🏺
+              </div>
+              <!-- Thumbnails -->
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(4, 1fr);
+                  gap: 10px;
+                "
+              >
+                <div
+                  style="
+                    border-radius: var(--r-md);
+                    overflow: hidden;
+                    aspect-ratio: 1;
+                    background: linear-gradient(135deg, #c9a078, #8b5a30);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 2.5rem;
+                    border: 2px solid var(--saffron);
+                    cursor: pointer;
+                  "
+                >
+                  🏺
+                </div>
+                <div
+                  style="
+                    border-radius: var(--r-md);
+                    overflow: hidden;
+                    aspect-ratio: 1;
+                    background: linear-gradient(135deg, #a86040, #6b3020);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 2.5rem;
+                    border: 1.5px solid var(--border-warm);
+                    cursor: pointer;
+                    opacity: 0.7;
+                  "
+                >
+                  🪴
+                </div>
+                <div
+                  style="
+                    border-radius: var(--r-md);
+                    overflow: hidden;
+                    aspect-ratio: 1;
+                    background: linear-gradient(135deg, #d4a88a, #9c6040);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 2.5rem;
+                    border: 1.5px solid var(--border-warm);
+                    cursor: pointer;
+                    opacity: 0.7;
+                  "
+                >
+                  🌿
+                </div>
+                <div
+                  style="
+                    border-radius: var(--r-md);
+                    overflow: hidden;
+                    aspect-ratio: 1;
+                    background: linear-gradient(135deg, #b89070, #7a5030);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 2.5rem;
+                    border: 1.5px solid var(--border-warm);
+                    cursor: pointer;
+                    opacity: 0.7;
+                  "
+                >
+                  ✨
                 </div>
               </div>
-            </li>
-            <li class="bc-nav-item"><a href="brands.html">Brands</a></li>
-            <li class="bc-nav-item"><a href="artisans.html">Artisans</a></li>
-            <li class="bc-nav-item highlight">
-              <a href="events.html"><i class="fa-regular fa-calendar" style="font-size:0.75rem"></i> Events</a>
-            </li>
-            <li class="bc-nav-item"><a href="community.html">Community</a></li>
-            <li class="bc-nav-item"><a href="creators.html">Creators</a></li>
-            <li class="bc-nav-item"><a href="about.html">Impact</a></li>
-            <li class="bc-nav-item highlight-green">
-              <a href="become-exhibitor.html"><i class="fa-solid fa-store" style="font-size:0.75rem"></i> Become an Exhibitor</a>
-            </li>
-          </ul>
-        </nav>
-        <div class="bc-nav-extras">
-          <a href="customer/tracking.html"><i class="fa-regular fa-clock"></i> Track Order</a>
-          <a href="help.html"><i class="fa-regular fa-circle-question"></i> Help</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<!-- MOBILE HEADER -->
-<header class="bc-header-mobile" role="banner">
-  <div class="bc-mobile-top">
-    <button class="bc-hamburger" id="bc-hamburger" aria-label="Open navigation menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-    <a href="index.html" class="bc-logo bc-logo-real" aria-label="Conscious Indi">
-      <img src="assets/images/logo-horizontal.png" alt="Conscious Indi" class="bc-logo-img bc-logo-horizontal bc-logo-mobile" width="160" height="44" loading="eager" />
-    </a>
-    <div class="bc-mobile-actions">
-      <a href="customer/wishlist.html" class="bc-mobile-action-btn" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
-      <a href="cart.html" class="bc-mobile-action-btn" aria-label="Cart" style="position:relative;">
-        <i class="fa-solid fa-bag-shopping"></i>
-        <span class="bc-action-badge" style="top:2px;right:2px;">0</span>
-      </a>
-      <a href="customer/dashboard.html" class="bc-mobile-action-btn" aria-label="Account"><i class="fa-regular fa-circle-user"></i></a>
-    </div>
-  </div>
-  <div class="bc-mobile-search-wrap">
-    <div class="bc-mobile-search" role="search">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="search" placeholder="Search brands, artisans, events…" aria-label="Search" />
-    </div>
-  </div>
-</header>
-
-<!-- Mobile Drawer -->
-<nav class="bc-mobile-drawer" id="bc-mobile-drawer" aria-label="Mobile Navigation" aria-hidden="true">
-  <div class="bc-drawer-head">
-    <a href="index.html" class="bc-logo bc-logo-real" aria-label="Conscious Indi Home">
-      <img src="assets/images/logo-square.png" alt="Conscious Indi" class="bc-logo-img bc-logo-square-img" width="130" height="130" loading="lazy" />
-    </a>
-    <button class="bc-drawer-close" id="bc-drawer-close" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
-  </div>
-  <div class="bc-drawer-nav">
-    <div class="bc-drawer-section-title">Explore</div>
-    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="shop.html"><i class="fa-solid fa-store"></i> Marketplace</a>
-    <a href="brands.html"><i class="fa-solid fa-leaf"></i> Sustainable Brands</a>
-    <a href="artisans.html"><i class="fa-solid fa-hands"></i> Artisans &amp; Stories</a>
-    <a href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
-    <a href="community.html"><i class="fa-solid fa-people-group"></i> Community</a>
-    <div class="bc-drawer-divider"></div>
-    <div class="bc-drawer-section-title">Discover</div>
-    <a href="creators.html"><i class="fa-solid fa-star"></i> Creator Shops</a>
-    <a href="about.html"><i class="fa-solid fa-chart-line"></i> Our Impact</a>
-    <a href="corporate-gifting.html"><i class="fa-solid fa-gift"></i> Corporate Gifting</a>
-    <div class="bc-drawer-divider"></div>
-    <div class="bc-drawer-section-title">Partners</div>
-    <a href="become-brand-partner.html"><i class="fa-solid fa-store"></i> Sell With Us</a>
-    <a href="become-exhibitor.html"><i class="fa-solid fa-people-roof"></i> Exhibit With Us</a>
-    <a href="creators.html"><i class="fa-solid fa-star"></i> Become a Creator</a>
-    <div class="bc-drawer-divider"></div>
-    <a href="customer/tracking.html"><i class="fa-regular fa-clock"></i> Track Order</a>
-    <a href="customer/dashboard.html"><i class="fa-regular fa-circle-user"></i> My Account</a>
-    <a href="help.html"><i class="fa-regular fa-circle-question"></i> Help &amp; Support</a>
-  </div>
-</nav>
-<div class="bc-overlay" id="bc-overlay"></div>
-<main id="main-content">
-
-<div class="bc-breadcrumb-wrap" style="background:var(--bg-cream);border-bottom:1px solid var(--border-warm);padding:10px 0;">
-  <div class="container">
-    <nav aria-label="Breadcrumb">
-      <ol class="breadcrumb mb-0" style="font-size:0.8125rem;">
-        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item"><a href="shop.html">Shop</a></li>
-            <li class="breadcrumb-item"><a href="pottery.html">Pottery & Ceramics</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Blue Pottery Vase</li>
-      </ol>
-    </nav>
-  </div>
-</div>
-
-<section class="section-py" style="background:var(--bg-cream);" aria-label="Product detail">
-  <div class="container">
-
-    <!-- Product Layout -->
-    <div class="bc-pd-layout">
-
-      <!-- Gallery -->
-      <div class="bc-reveal-left">
-        <!-- Main Image -->
-        <div style="border-radius:var(--r-xl);overflow:hidden;aspect-ratio:1;background:linear-gradient(135deg,#C9A078,#8B5A30);display:flex;align-items:center;justify-content:center;font-size:8rem;margin-bottom:16px;border:1.5px solid var(--border-warm);">
-          🏺
-        </div>
-        <!-- Thumbnails -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
-          <div style="border-radius:var(--r-md);overflow:hidden;aspect-ratio:1;background:linear-gradient(135deg,#C9A078,#8B5A30);display:flex;align-items:center;justify-content:center;font-size:2.5rem;border:2px solid var(--saffron);cursor:pointer;">🏺</div>
-          <div style="border-radius:var(--r-md);overflow:hidden;aspect-ratio:1;background:linear-gradient(135deg,#A86040,#6B3020);display:flex;align-items:center;justify-content:center;font-size:2.5rem;border:1.5px solid var(--border-warm);cursor:pointer;opacity:0.7;">🪴</div>
-          <div style="border-radius:var(--r-md);overflow:hidden;aspect-ratio:1;background:linear-gradient(135deg,#D4A88A,#9C6040);display:flex;align-items:center;justify-content:center;font-size:2.5rem;border:1.5px solid var(--border-warm);cursor:pointer;opacity:0.7;">🌿</div>
-          <div style="border-radius:var(--r-md);overflow:hidden;aspect-ratio:1;background:linear-gradient(135deg,#B89070,#7A5030);display:flex;align-items:center;justify-content:center;font-size:2.5rem;border:1.5px solid var(--border-warm);cursor:pointer;opacity:0.7;">✨</div>
-        </div>
-      </div>
-
-      <!-- Product Info -->
-      <div class="bc-reveal-right">
-        <!-- Badges -->
-        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
-          <span class="bc-badge bc-badge-green"><i class="fa-solid fa-circle-check"></i> Verified Artisan</span>
-          <span class="bc-badge bc-badge-saffron">🏆 GI Tagged</span>
-          <span class="bc-badge bc-badge-navy">🌱 Eco Conscious</span>
-        </div>
-
-        <h1 style="font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.25rem);font-weight:800;color:var(--text-primary);margin-bottom:12px;line-height:1.2;">
-          Blue Pottery Vase — Jaipur Heritage Craft
-        </h1>
-
-        <!-- Artisan Credit -->
-        <a href="artisan-profile.html" style="display:inline-flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg-cream);border-radius:var(--r-full);border:1.5px solid var(--border-warm);margin-bottom:20px;text-decoration:none;color:inherit;transition:all var(--t);">
-          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--saffron),var(--gold));display:flex;align-items:center;justify-content:center;font-size:1rem;">🧑</div>
-          <div>
-            <div style="font-size:0.8125rem;font-weight:600;color:var(--text-primary);">Rajan Kumhar</div>
-            <div style="font-size:0.6875rem;color:var(--text-muted);">Master Potter · Jaipur, Rajasthan</div>
-          </div>
-          <i class="fa-solid fa-chevron-right" style="font-size:0.625rem;color:var(--text-muted);margin-left:auto;"></i>
-        </a>
-
-        <!-- Rating -->
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-          <div class="bc-stars" style="font-size:1rem;">★★★★★</div>
-          <span style="font-weight:700;color:var(--text-primary);">4.9</span>
-          <span style="color:var(--text-muted);font-size:0.875rem;">(87 reviews)</span>
-          <span style="color:var(--text-muted);">·</span>
-          <span style="color:var(--green);font-size:0.875rem;font-weight:600;">342 sold</span>
-        </div>
-
-        <!-- Price -->
-        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:24px;">
-          <span style="font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--text-primary);">₹1,299</span>
-          <span style="font-size:1.125rem;color:var(--text-muted);text-decoration:line-through;">₹1,799</span>
-          <span style="background:var(--green-pale);color:var(--green-dark);font-size:0.875rem;font-weight:700;padding:3px 10px;border-radius:var(--r-full);">28% OFF</span>
-        </div>
-        <div style="font-size:0.8125rem;color:var(--green);margin-bottom:24px;"><i class="fa-solid fa-circle-check"></i> Inclusive of all taxes. Free shipping on orders above ₹999</div>
-
-        <!-- Variants -->
-        <div style="margin-bottom:24px;">
-          <h3 style="font-size:0.875rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;">Size</h3>
-          <div style="display:flex;gap:8px;">
-            <button style="padding:8px 16px;border-radius:var(--r-md);border:2px solid var(--saffron);background:var(--saffron-pale);color:var(--saffron-dark);font-weight:600;font-size:0.875rem;cursor:pointer;">Small</button>
-            <button style="padding:8px 16px;border-radius:var(--r-md);border:1.5px solid var(--border-warm);background:transparent;color:var(--text-secondary);font-size:0.875rem;cursor:pointer;">Medium</button>
-            <button style="padding:8px 16px;border-radius:var(--r-md);border:1.5px solid var(--border-warm);background:transparent;color:var(--text-secondary);font-size:0.875rem;cursor:pointer;">Large</button>
-          </div>
-        </div>
-
-        <!-- Quantity + CTA -->
-        <div class="bc-pd-buy-row">
-          <div style="display:flex;align-items:center;border:1.5px solid var(--border-warm);border-radius:var(--r-md);overflow:hidden;">
-            <button style="width:40px;height:44px;font-size:1.25rem;color:var(--text-secondary);background:var(--bg-cream);border:none;cursor:pointer;">−</button>
-            <span style="width:44px;text-align:center;font-weight:700;color:var(--text-primary);">1</span>
-            <button style="width:40px;height:44px;font-size:1.25rem;color:var(--text-secondary);background:var(--bg-cream);border:none;cursor:pointer;">+</button>
-          </div>
-          <a href="cart.html" class="bc-btn bc-btn-primary" style="flex:1;justify-content:center;"><i class="fa-solid fa-bag-shopping"></i> Add to Cart</a>
-          <button class="bc-product-action-btn wishlist" style="width:44px;height:44px;" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button>
-        </div>
-        <a href="checkout.html" class="bc-btn bc-btn-navy" style="width:100%;justify-content:center;margin-bottom:20px;"><i class="fa-solid fa-bolt"></i> Buy Now</a>
-
-        <!-- Trust Signals -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px;background:var(--bg-cream);border-radius:var(--r-md);border:1.5px solid var(--border-warm);">
-          <div style="display:flex;align-items:center;gap:8px;font-size:0.8125rem;color:var(--text-secondary);"><i class="fa-solid fa-rotate-left" style="color:var(--saffron);"></i> 7-Day Easy Returns</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:0.8125rem;color:var(--text-secondary);"><i class="fa-solid fa-shield-halved" style="color:var(--green);"></i> Buyer Protection</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:0.8125rem;color:var(--text-secondary);"><i class="fa-solid fa-truck-fast" style="color:var(--navy);"></i> Free Ship ₹999+</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:0.8125rem;color:var(--text-secondary);"><i class="fa-solid fa-certificate" style="color:var(--gold-dark);"></i> 100% Authentic</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Description Tabs -->
-    <div style="margin-top:48px;">
-      <div class="bc-pd-tabs">
-        <button style="padding:14px 24px;font-size:0.9375rem;font-weight:600;color:var(--saffron-dark);border-bottom:2px solid var(--saffron);margin-bottom:-2px;background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;white-space:nowrap;">Description</button>
-        <button style="padding:14px 24px;font-size:0.9375rem;font-weight:500;color:var(--text-muted);background:none;border:none;cursor:pointer;white-space:nowrap;">Artisan Story</button>
-        <button style="padding:14px 24px;font-size:0.9375rem;font-weight:500;color:var(--text-muted);background:none;border:none;cursor:pointer;white-space:nowrap;">Reviews (87)</button>
-        <button style="padding:14px 24px;font-size:0.9375rem;font-weight:500;color:var(--text-muted);background:none;border:none;cursor:pointer;white-space:nowrap;">Shipping &amp; Returns</button>
-      </div>
-      <div style="max-width:720px;">
-        <h3 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;margin-bottom:16px;color:var(--text-primary);">About This Product</h3>
-        <p style="color:var(--text-secondary);line-height:1.8;margin-bottom:16px;">This exquisite Blue Pottery Vase is a treasure from the heart of Jaipur, crafted by master artisan Rajan Kumhar using techniques passed down through four generations. Each piece is hand-painted with the signature blue-and-white motifs that define Jaipur's legendary pottery tradition.</p>
-        <p style="color:var(--text-secondary);line-height:1.8;margin-bottom:24px;">Made from a unique blend of quartz, powdered glass, and clay, Blue Pottery is distinct from regular ceramics — it's fired at lower temperatures and has a characteristically translucent quality. Every brushstroke is applied by hand, making each piece absolutely one-of-a-kind.</p>
-        <div class="bc-pd-specs">
-          <div style="padding:16px;background:var(--bg-cream);border-radius:var(--r-md);border:1px solid var(--border-warm);">
-            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:6px;">Material</div>
-            <div style="font-weight:600;color:var(--text-primary);">Quartz &amp; Glass Composite</div>
-          </div>
-          <div style="padding:16px;background:var(--bg-cream);border-radius:var(--r-md);border:1px solid var(--border-warm);">
-            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:6px;">Origin</div>
-            <div style="font-weight:600;color:var(--text-primary);">Jaipur, Rajasthan 🇮🇳</div>
-          </div>
-          <div style="padding:16px;background:var(--bg-cream);border-radius:var(--r-md);border:1px solid var(--border-warm);">
-            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:6px;">Dimensions</div>
-            <div style="font-weight:600;color:var(--text-primary);">Height: 20cm, Width: 12cm</div>
-          </div>
-          <div style="padding:16px;background:var(--bg-cream);border-radius:var(--r-md);border:1px solid var(--border-warm);">
-            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:6px;">Care</div>
-            <div style="font-weight:600;color:var(--text-primary);">Wipe with soft dry cloth</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Related Products -->
-    <div style="margin-top:64px;">
-      <div class="bc-section-header">
-        <div class="bc-section-label">You May Also Like</div>
-        <h2 class="bc-section-title">Related Products</h2>
-      </div>
-      <div class="bc-pd-related-grid">
-        <article class="bc-product-card bc-reveal" data-category="pottery">
-          <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-2" style="display:flex;align-items:center;justify-content:center;font-size:3rem;">🫙</div></div>
-          <div class="bc-product-body">
-            <h3 class="bc-product-title"><a href="product-detail.html">Terracotta Storage Jar</a></h3>
-            <div class="bc-product-price-row"><span class="bc-product-price">₹799</span><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-          </div>
-        </article>
-        <article class="bc-product-card bc-reveal delay-1" data-category="pottery">
-          <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-3" style="display:flex;align-items:center;justify-content:center;font-size:3rem;">🏺</div></div>
-          <div class="bc-product-body">
-            <h3 class="bc-product-title"><a href="product-detail.html">Khurja Ceramic Bowl Set</a></h3>
-            <div class="bc-product-price-row"><span class="bc-product-price">₹1,199</span><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-          </div>
-        </article>
-        <article class="bc-product-card bc-reveal delay-2" data-category="pottery">
-          <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-4" style="display:flex;align-items:center;justify-content:center;font-size:3rem;">🫖</div></div>
-          <div class="bc-product-body">
-            <h3 class="bc-product-title"><a href="product-detail.html">Hand-painted Chai Mugs (Set of 4)</a></h3>
-            <div class="bc-product-price-row"><span class="bc-product-price">₹949</span><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-          </div>
-        </article>
-        <article class="bc-product-card bc-reveal delay-3" data-category="pottery">
-          <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-5" style="display:flex;align-items:center;justify-content:center;font-size:3rem;">🪴</div></div>
-          <div class="bc-product-body">
-            <h3 class="bc-product-title"><a href="product-detail.html">Blue Pottery Planter Pot</a></h3>
-            <div class="bc-product-price-row"><span class="bc-product-price">₹1,099</span><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="bc-newsletter-section section-py" aria-labelledby="newsletter-heading">
-  <div class="container">
-    <div class="bc-newsletter-inner bc-reveal">
-      <div class="bc-section-label">Stay Connected</div>
-      <h2 class="bc-section-title" id="newsletter-heading">Join the Conscious Community</h2>
-      <p class="bc-section-desc">Get curated stories, upcoming events, exclusive offers &amp; sustainability insights delivered to your inbox.</p>
-      <form class="bc-newsletter-form" id="bc-newsletter-form" novalidate>
-        <input class="bc-newsletter-input" type="email" placeholder="Enter your email address" aria-label="Email address" required />
-        <button class="bc-newsletter-submit" type="submit"><i class="fa-solid fa-paper-plane"></i> Subscribe</button>
-      </form>
-      <div class="bc-newsletter-perks">
-        <span class="bc-newsletter-perk"><i class="fa-solid fa-check-circle"></i> No spam, ever</span>
-        <span class="bc-newsletter-perk"><i class="fa-solid fa-check-circle"></i> Unsubscribe anytime</span>
-        <span class="bc-newsletter-perk"><i class="fa-solid fa-check-circle"></i> 50,000+ conscious subscribers</span>
-      </div>
-    </div>
-  </div>
-</section>
-</main>
-
-<!-- FOOTER -->
-<footer class="bc-footer" role="contentinfo">
-  <div class="bc-india-pride-bar" aria-hidden="true" title="Colors of the Indian National Flag"></div>
-  <div class="bc-footer-top">
-    <div class="container">
-      <div class="bc-footer-grid">
-        <div class="bc-footer-brand">
-          <a href="index.html" class="bc-footer-logo-link" aria-label="Conscious Indi">
-            <div class="bc-footer-logo-pill">
-              <img src="assets/images/logo-horizontal.png" alt="Conscious Indi" class="bc-logo-img bc-logo-footer" width="200" height="54" loading="lazy" />
             </div>
-          </a>
-          <p class="bc-footer-about">World's first story-led commerce, conscious living marketplace &amp; events platform — connecting sustainable brands, artisans, creators &amp; conscious consumers across the globe.</p>
-          <div class="bc-footer-social">
-            <a href="#" class="bc-social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="#" class="bc-social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#" class="bc-social-btn" aria-label="Twitter/X"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="#" class="bc-social-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-            <a href="#" class="bc-social-btn" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
-            <a href="#" class="bc-social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-          </div>
-        </div>
-        <div>
-          <div class="bc-footer-col-title">Explore</div>
-          <ul class="bc-footer-links">
-            <li><a href="shop.html"><i class="fa-solid fa-chevron-right"></i> Marketplace</a></li>
-            <li><a href="brands.html"><i class="fa-solid fa-chevron-right"></i> Sustainable Brands</a></li>
-            <li><a href="stories.html"><i class="fa-solid fa-chevron-right"></i> Artisan Stories</a></li>
-            <li><a href="creators.html"><i class="fa-solid fa-chevron-right"></i> Creator Shops</a></li>
-            <li><a href="events.html"><i class="fa-solid fa-chevron-right"></i> Events</a></li>
-            <li><a href="community.html"><i class="fa-solid fa-chevron-right"></i> Community</a></li>
-          </ul>
-        </div>
-        <div>
-          <div class="bc-footer-col-title">Partners</div>
-          <ul class="bc-footer-links">
-            <li><a href="become-brand-partner.html"><i class="fa-solid fa-chevron-right"></i> Become a Brand Partner</a></li>
-            <li><a href="become-artisan-partner.html"><i class="fa-solid fa-chevron-right"></i> Become an Artisan Partner</a></li>
-            <li><a href="become-exhibitor.html"><i class="fa-solid fa-chevron-right"></i> Exhibitor Program</a></li>
-            <li><a href="creators.html"><i class="fa-solid fa-chevron-right"></i> Creator Program</a></li>
-            <li><a href="corporate-gifting.html"><i class="fa-solid fa-chevron-right"></i> Corporate Gifting</a></li>
-            <li><a href="partner-success.html"><i class="fa-solid fa-chevron-right"></i> Success Stories</a></li>
-          </ul>
-        </div>
-        <div>
-          <div class="bc-footer-col-title">Customer Care</div>
-          <ul class="bc-footer-links">
-            <li><a href="customer/dashboard.html"><i class="fa-solid fa-chevron-right"></i> My Account</a></li>
-            <li><a href="customer/tracking.html"><i class="fa-solid fa-chevron-right"></i> Track My Order</a></li>
-            <li><a href="returns.html"><i class="fa-solid fa-chevron-right"></i> Returns &amp; Refunds</a></li>
-            <li><a href="faq.html"><i class="fa-solid fa-chevron-right"></i> FAQs</a></li>
-            <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
-            <li><a href="help.html"><i class="fa-solid fa-chevron-right"></i> Help Centre</a></li>
-          </ul>
-        </div>
-        <div>
-          <div class="bc-footer-col-title">About Us</div>
-          <ul class="bc-footer-links">
-            <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> Our Story</a></li>
-            <li><a href="mission.html"><i class="fa-solid fa-chevron-right"></i> Our Mission</a></li>
-            <li><a href="impact-report.html"><i class="fa-solid fa-chevron-right"></i> Impact Report</a></li>
-            <li><a href="press.html"><i class="fa-solid fa-chevron-right"></i> Press &amp; Media</a></li>
-            <li><a href="careers.html"><i class="fa-solid fa-chevron-right"></i> Careers</a></li>
-            <li><a href="partnerships.html"><i class="fa-solid fa-chevron-right"></i> Partnerships</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="bc-footer-bottom">
-    <div class="container">
-      <div class="bc-footer-bottom-inner">
-        <div class="bc-footer-copyright">
-          &copy; 2025 Conscious Indi&trade;. Made with ❤️ in India.
-          Empowering <a href="stories.html">artisans &amp; conscious brands</a>, one story at a time.
-        </div>
-        <div class="bc-footer-payments" aria-label="Accepted payment methods">
-          <span style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-right:4px;">We Accept:</span>
-          <span class="bc-payment-badge">UPI</span>
-          <span class="bc-payment-badge">Visa</span>
-          <span class="bc-payment-badge">Mastercard</span>
-          <span class="bc-payment-badge">RuPay</span>
-          <span class="bc-payment-badge">Net Banking</span>
-          <span class="bc-payment-badge">EMI</span>
-        </div>
-        <div class="bc-footer-legal">
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="terms.html">Terms of Use</a>
-          <a href="sitemap.html">Sitemap</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
 
-<button class="bc-back-top" id="bc-back-top" aria-label="Scroll back to top" title="Back to Top">
-  <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+            <!-- Product Info -->
+            <div class="bc-reveal-right">
+              <!-- Badges -->
+              <div
+                style="
+                  display: flex;
+                  gap: 8px;
+                  margin-bottom: 16px;
+                  flex-wrap: wrap;
+                "
+              >
+                <span class="bc-badge bc-badge-green"
+                  ><i class="fa-solid fa-circle-check"></i> Verified
+                  Artisan</span
+                >
+                <span class="bc-badge bc-badge-saffron">🏆 GI Tagged</span>
+                <span class="bc-badge bc-badge-navy">🌱 Eco Conscious</span>
+              </div>
+
+              <h1
+                style="
+                  font-family: var(--font-display);
+                  font-size: clamp(1.5rem, 3vw, 2.25rem);
+                  font-weight: 800;
+                  color: var(--text-primary);
+                  margin-bottom: 12px;
+                  line-height: 1.2;
+                "
+              >
+                Blue Pottery Vase — Jaipur Heritage Craft
+              </h1>
+
+              <!-- Artisan Credit -->
+              <a
+                href="artisan-profile.html"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 10px;
+                  padding: 8px 14px;
+                  background: var(--bg-cream);
+                  border-radius: var(--r-full);
+                  border: 1.5px solid var(--border-warm);
+                  margin-bottom: 20px;
+                  text-decoration: none;
+                  color: inherit;
+                  transition: all var(--t);
+                "
+              >
+                <div
+                  style="
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    background: linear-gradient(
+                      135deg,
+                      var(--saffron),
+                      var(--gold)
+                    );
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1rem;
+                  "
+                >
+                  🧑
+                </div>
+                <div>
+                  <div
+                    style="
+                      font-size: 0.8125rem;
+                      font-weight: 600;
+                      color: var(--text-primary);
+                    "
+                  >
+                    Rajan Kumhar
+                  </div>
+                  <div style="font-size: 0.6875rem; color: var(--text-muted)">
+                    Master Potter · Jaipur, Rajasthan
+                  </div>
+                </div>
+                <i
+                  class="fa-solid fa-chevron-right"
+                  style="
+                    font-size: 0.625rem;
+                    color: var(--text-muted);
+                    margin-left: auto;
+                  "
+                ></i>
+              </a>
+
+              <!-- Rating -->
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                  margin-bottom: 20px;
+                "
+              >
+                <div class="bc-stars" style="font-size: 1rem">★★★★★</div>
+                <span style="font-weight: 700; color: var(--text-primary)"
+                  >4.9</span
+                >
+                <span style="color: var(--text-muted); font-size: 0.875rem"
+                  >(87 reviews)</span
+                >
+                <span style="color: var(--text-muted)">·</span>
+                <span
+                  style="
+                    color: var(--green);
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                  "
+                  >342 sold</span
+                >
+              </div>
+
+              <!-- Price -->
+              <div
+                style="
+                  display: flex;
+                  align-items: baseline;
+                  gap: 12px;
+                  margin-bottom: 24px;
+                "
+              >
+                <span
+                  style="
+                    font-family: var(--font-display);
+                    font-size: 2rem;
+                    font-weight: 800;
+                    color: var(--text-primary);
+                  "
+                  >₹1,299</span
+                >
+                <span
+                  style="
+                    font-size: 1.125rem;
+                    color: var(--text-muted);
+                    text-decoration: line-through;
+                  "
+                  >₹1,799</span
+                >
+                <span
+                  style="
+                    background: var(--green-pale);
+                    color: var(--green-dark);
+                    font-size: 0.875rem;
+                    font-weight: 700;
+                    padding: 3px 10px;
+                    border-radius: var(--r-full);
+                  "
+                  >28% OFF</span
+                >
+              </div>
+              <div
+                style="
+                  font-size: 0.8125rem;
+                  color: var(--green);
+                  margin-bottom: 24px;
+                "
+              >
+                <i class="fa-solid fa-circle-check"></i> Inclusive of all taxes.
+                Free shipping on orders above ₹999
+              </div>
+
+              <!-- Variants -->
+              <div style="margin-bottom: 24px">
+                <h3
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 700;
+                    color: var(--text-primary);
+                    margin-bottom: 10px;
+                  "
+                >
+                  Size
+                </h3>
+                <div style="display: flex; gap: 8px">
+                  <button
+                    style="
+                      padding: 8px 16px;
+                      border-radius: var(--r-md);
+                      border: 2px solid var(--saffron);
+                      background: var(--saffron-pale);
+                      color: var(--saffron-dark);
+                      font-weight: 600;
+                      font-size: 0.875rem;
+                      cursor: pointer;
+                    "
+                  >
+                    Small
+                  </button>
+                  <button
+                    style="
+                      padding: 8px 16px;
+                      border-radius: var(--r-md);
+                      border: 1.5px solid var(--border-warm);
+                      background: transparent;
+                      color: var(--text-secondary);
+                      font-size: 0.875rem;
+                      cursor: pointer;
+                    "
+                  >
+                    Medium
+                  </button>
+                  <button
+                    style="
+                      padding: 8px 16px;
+                      border-radius: var(--r-md);
+                      border: 1.5px solid var(--border-warm);
+                      background: transparent;
+                      color: var(--text-secondary);
+                      font-size: 0.875rem;
+                      cursor: pointer;
+                    "
+                  >
+                    Large
+                  </button>
+                </div>
+              </div>
+
+              <!-- Quantity + CTA -->
+              <div class="bc-pd-buy-row">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    border: 1.5px solid var(--border-warm);
+                    border-radius: var(--r-md);
+                    overflow: hidden;
+                  "
+                >
+                  <button
+                    style="
+                      width: 40px;
+                      height: 44px;
+                      font-size: 1.25rem;
+                      color: var(--text-secondary);
+                      background: var(--bg-cream);
+                      border: none;
+                      cursor: pointer;
+                    "
+                  >
+                    −
+                  </button>
+                  <span
+                    style="
+                      width: 44px;
+                      text-align: center;
+                      font-weight: 700;
+                      color: var(--text-primary);
+                    "
+                    >1</span
+                  >
+                  <button
+                    style="
+                      width: 40px;
+                      height: 44px;
+                      font-size: 1.25rem;
+                      color: var(--text-secondary);
+                      background: var(--bg-cream);
+                      border: none;
+                      cursor: pointer;
+                    "
+                  >
+                    +
+                  </button>
+                </div>
+                <a
+                  href="cart.html"
+                  class="bc-btn bc-btn-primary"
+                  style="flex: 1; justify-content: center"
+                  ><i class="fa-solid fa-bag-shopping"></i> Add to Cart</a
+                >
+              
+<button
+  class="bc-product-action-btn wishlist"
+  style="width: 44px; height: 44px"
+  aria-label="Add to Wishlist"
+  data-product-id="blue-pottery-vase-jaipur-heritage-craft"
+  data-product-name="Blue Pottery Vase — Jaipur Heritage Craft"
+  data-product-price="1299"
+  data-product-image=""
+  data-vendor-name="Rajan Kumhar"
+>
+  <i class="fa-regular fa-heart"></i>
 </button>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/bharatcraft.js"></script>
-</body>
+              </div>
+              <a
+                href="checkout.html"
+                class="bc-btn bc-btn-navy"
+                style="
+                  width: 100%;
+                  justify-content: center;
+                  margin-bottom: 20px;
+                "
+                ><i class="fa-solid fa-bolt"></i> Buy Now</a
+              >
+
+              <!-- Trust Signals -->
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 1fr 1fr;
+                  gap: 10px;
+                  padding: 16px;
+                  background: var(--bg-cream);
+                  border-radius: var(--r-md);
+                  border: 1.5px solid var(--border-warm);
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 0.8125rem;
+                    color: var(--text-secondary);
+                  "
+                >
+                  <i
+                    class="fa-solid fa-rotate-left"
+                    style="color: var(--saffron)"
+                  ></i>
+                  7-Day Easy Returns
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 0.8125rem;
+                    color: var(--text-secondary);
+                  "
+                >
+                  <i
+                    class="fa-solid fa-shield-halved"
+                    style="color: var(--green)"
+                  ></i>
+                  Buyer Protection
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 0.8125rem;
+                    color: var(--text-secondary);
+                  "
+                >
+                  <i
+                    class="fa-solid fa-truck-fast"
+                    style="color: var(--navy)"
+                  ></i>
+                  Free Ship ₹999+
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 0.8125rem;
+                    color: var(--text-secondary);
+                  "
+                >
+                  <i
+                    class="fa-solid fa-certificate"
+                    style="color: var(--gold-dark)"
+                  ></i>
+                  100% Authentic
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description Tabs -->
+          <div style="margin-top: 48px">
+            <div class="bc-pd-tabs">
+              <button
+                style="
+                  padding: 14px 24px;
+                  font-size: 0.9375rem;
+                  font-weight: 600;
+                  color: var(--saffron-dark);
+                  border-bottom: 2px solid var(--saffron);
+                  margin-bottom: -2px;
+                  background: none;
+                  border-top: none;
+                  border-left: none;
+                  border-right: none;
+                  cursor: pointer;
+                  white-space: nowrap;
+                "
+              >
+                Description
+              </button>
+              <button
+                style="
+                  padding: 14px 24px;
+                  font-size: 0.9375rem;
+                  font-weight: 500;
+                  color: var(--text-muted);
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  white-space: nowrap;
+                "
+              >
+                Artisan Story
+              </button>
+              <button
+                style="
+                  padding: 14px 24px;
+                  font-size: 0.9375rem;
+                  font-weight: 500;
+                  color: var(--text-muted);
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  white-space: nowrap;
+                "
+              >
+                Reviews (87)
+              </button>
+              <button
+                style="
+                  padding: 14px 24px;
+                  font-size: 0.9375rem;
+                  font-weight: 500;
+                  color: var(--text-muted);
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  white-space: nowrap;
+                "
+              >
+                Shipping &amp; Returns
+              </button>
+            </div>
+            <div style="max-width: 720px">
+              <h3
+                style="
+                  font-family: var(--font-display);
+                  font-size: 1.25rem;
+                  font-weight: 700;
+                  margin-bottom: 16px;
+                  color: var(--text-primary);
+                "
+              >
+                About This Product
+              </h3>
+              <p
+                style="
+                  color: var(--text-secondary);
+                  line-height: 1.8;
+                  margin-bottom: 16px;
+                "
+              >
+                This exquisite Blue Pottery Vase is a treasure from the heart of
+                Jaipur, crafted by master artisan Rajan Kumhar using techniques
+                passed down through four generations. Each piece is hand-painted
+                with the signature blue-and-white motifs that define Jaipur's
+                legendary pottery tradition.
+              </p>
+              <p
+                style="
+                  color: var(--text-secondary);
+                  line-height: 1.8;
+                  margin-bottom: 24px;
+                "
+              >
+                Made from a unique blend of quartz, powdered glass, and clay,
+                Blue Pottery is distinct from regular ceramics — it's fired at
+                lower temperatures and has a characteristically translucent
+                quality. Every brushstroke is applied by hand, making each piece
+                absolutely one-of-a-kind.
+              </p>
+              <div class="bc-pd-specs">
+                <div
+                  style="
+                    padding: 16px;
+                    background: var(--bg-cream);
+                    border-radius: var(--r-md);
+                    border: 1px solid var(--border-warm);
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 0.75rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.1em;
+                      color: var(--text-muted);
+                      margin-bottom: 6px;
+                    "
+                  >
+                    Material
+                  </div>
+                  <div style="font-weight: 600; color: var(--text-primary)">
+                    Quartz &amp; Glass Composite
+                  </div>
+                </div>
+                <div
+                  style="
+                    padding: 16px;
+                    background: var(--bg-cream);
+                    border-radius: var(--r-md);
+                    border: 1px solid var(--border-warm);
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 0.75rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.1em;
+                      color: var(--text-muted);
+                      margin-bottom: 6px;
+                    "
+                  >
+                    Origin
+                  </div>
+                  <div style="font-weight: 600; color: var(--text-primary)">
+                    Jaipur, Rajasthan 🇮🇳
+                  </div>
+                </div>
+                <div
+                  style="
+                    padding: 16px;
+                    background: var(--bg-cream);
+                    border-radius: var(--r-md);
+                    border: 1px solid var(--border-warm);
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 0.75rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.1em;
+                      color: var(--text-muted);
+                      margin-bottom: 6px;
+                    "
+                  >
+                    Dimensions
+                  </div>
+                  <div style="font-weight: 600; color: var(--text-primary)">
+                    Height: 20cm, Width: 12cm
+                  </div>
+                </div>
+                <div
+                  style="
+                    padding: 16px;
+                    background: var(--bg-cream);
+                    border-radius: var(--r-md);
+                    border: 1px solid var(--border-warm);
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 0.75rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.1em;
+                      color: var(--text-muted);
+                      margin-bottom: 6px;
+                    "
+                  >
+                    Care
+                  </div>
+                  <div style="font-weight: 600; color: var(--text-primary)">
+                    Wipe with soft dry cloth
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Related Products -->
+          <div style="margin-top: 64px">
+            <div class="bc-section-header">
+              <div class="bc-section-label">You May Also Like</div>
+              <h2 class="bc-section-title">Related Products</h2>
+            </div>
+            <div class="bc-pd-related-grid">
+              <article
+                class="bc-product-card bc-reveal"
+                data-category="pottery"
+              >
+                <div class="bc-product-img-wrap">
+                  <div
+                    class="bc-product-img bc-prod-bg-2"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 3rem;
+                    "
+                  >
+                    🫙
+                  </div>
+                </div>
+                <div class="bc-product-body">
+                  <h3 class="bc-product-title">
+                    <a href="product-detail.html">Terracotta Storage Jar</a>
+                  </h3>
+                  <div class="bc-product-price-row">
+                    <span class="bc-product-price">₹799</span
+                    ><button
+                      class="bc-product-add-btn"
+                      aria-label="Add to cart"
+                    >
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+              </article>
+              <article
+                class="bc-product-card bc-reveal delay-1"
+                data-category="pottery"
+              >
+                <div class="bc-product-img-wrap">
+                  <div
+                    class="bc-product-img bc-prod-bg-3"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 3rem;
+                    "
+                  >
+                    🏺
+                  </div>
+                </div>
+                <div class="bc-product-body">
+                  <h3 class="bc-product-title">
+                    <a href="product-detail.html">Khurja Ceramic Bowl Set</a>
+                  </h3>
+                  <div class="bc-product-price-row">
+                    <span class="bc-product-price">₹1,199</span
+                    ><button
+                      class="bc-product-add-btn"
+                      aria-label="Add to cart"
+                    >
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+              </article>
+              <article
+                class="bc-product-card bc-reveal delay-2"
+                data-category="pottery"
+              >
+                <div class="bc-product-img-wrap">
+                  <div
+                    class="bc-product-img bc-prod-bg-4"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 3rem;
+                    "
+                  >
+                    🫖
+                  </div>
+                </div>
+                <div class="bc-product-body">
+                  <h3 class="bc-product-title">
+                    <a href="product-detail.html"
+                      >Hand-painted Chai Mugs (Set of 4)</a
+                    >
+                  </h3>
+                  <div class="bc-product-price-row">
+                    <span class="bc-product-price">₹949</span
+                    ><button
+                      class="bc-product-add-btn"
+                      aria-label="Add to cart"
+                    >
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+              </article>
+              <article
+                class="bc-product-card bc-reveal delay-3"
+                data-category="pottery"
+              >
+                <div class="bc-product-img-wrap">
+                  <div
+                    class="bc-product-img bc-prod-bg-5"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 3rem;
+                    "
+                  >
+                    🪴
+                  </div>
+                </div>
+                <div class="bc-product-body">
+                  <h3 class="bc-product-title">
+                    <a href="product-detail.html">Blue Pottery Planter Pot</a>
+                  </h3>
+                  <div class="bc-product-price-row">
+                    <span class="bc-product-price">₹1,099</span
+                    ><button
+                      class="bc-product-add-btn"
+                      aria-label="Add to cart"
+                    >
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="bc-newsletter-section section-py"
+        aria-labelledby="newsletter-heading"
+      >
+        <div class="container">
+          <div class="bc-newsletter-inner bc-reveal">
+            <div class="bc-section-label">Stay Connected</div>
+            <h2 class="bc-section-title" id="newsletter-heading">
+              Join the Conscious Community
+            </h2>
+            <p class="bc-section-desc">
+              Get curated stories, upcoming events, exclusive offers &amp;
+              sustainability insights delivered to your inbox.
+            </p>
+            <form class="bc-newsletter-form" id="bc-newsletter-form" novalidate>
+              <input
+                class="bc-newsletter-input"
+                type="email"
+                placeholder="Enter your email address"
+                aria-label="Email address"
+                required
+              />
+              <button class="bc-newsletter-submit" type="submit">
+                <i class="fa-solid fa-paper-plane"></i> Subscribe
+              </button>
+            </form>
+            <div class="bc-newsletter-perks">
+              <span class="bc-newsletter-perk"
+                ><i class="fa-solid fa-check-circle"></i> No spam, ever</span
+              >
+              <span class="bc-newsletter-perk"
+                ><i class="fa-solid fa-check-circle"></i> Unsubscribe
+                anytime</span
+              >
+              <span class="bc-newsletter-perk"
+                ><i class="fa-solid fa-check-circle"></i> 50,000+ conscious
+                subscribers</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bc-footer" role="contentinfo">
+      <div
+        class="bc-india-pride-bar"
+        aria-hidden="true"
+        title="Colors of the Indian National Flag"
+      ></div>
+      <div class="bc-footer-top">
+        <div class="container">
+          <div class="bc-footer-grid">
+            <div class="bc-footer-brand">
+              <a
+                href="index.html"
+                class="bc-footer-logo-link"
+                aria-label="Conscious Indi"
+              >
+                <div class="bc-footer-logo-pill">
+                  <img
+                    src="assets/images/logo-horizontal.png"
+                    alt="Conscious Indi"
+                    class="bc-logo-img bc-logo-footer"
+                    width="200"
+                    height="54"
+                    loading="lazy"
+                  />
+                </div>
+              </a>
+              <p class="bc-footer-about">
+                World's first story-led commerce, conscious living marketplace
+                &amp; events platform — connecting sustainable brands, artisans,
+                creators &amp; conscious consumers across the globe.
+              </p>
+              <div class="bc-footer-social">
+                <a href="#" class="bc-social-btn" aria-label="Facebook"
+                  ><i class="fa-brands fa-facebook-f"></i
+                ></a>
+                <a href="#" class="bc-social-btn" aria-label="Instagram"
+                  ><i class="fa-brands fa-instagram"></i
+                ></a>
+                <a href="#" class="bc-social-btn" aria-label="Twitter/X"
+                  ><i class="fa-brands fa-x-twitter"></i
+                ></a>
+                <a href="#" class="bc-social-btn" aria-label="YouTube"
+                  ><i class="fa-brands fa-youtube"></i
+                ></a>
+                <a href="#" class="bc-social-btn" aria-label="Pinterest"
+                  ><i class="fa-brands fa-pinterest-p"></i
+                ></a>
+                <a href="#" class="bc-social-btn" aria-label="LinkedIn"
+                  ><i class="fa-brands fa-linkedin-in"></i
+                ></a>
+              </div>
+            </div>
+            <div>
+              <div class="bc-footer-col-title">Explore</div>
+              <ul class="bc-footer-links">
+                <li>
+                  <a href="shop.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Marketplace</a
+                  >
+                </li>
+                <li>
+                  <a href="brands.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Sustainable
+                    Brands</a
+                  >
+                </li>
+                <li>
+                  <a href="stories.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Artisan
+                    Stories</a
+                  >
+                </li>
+                <li>
+                  <a href="creators.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Creator Shops</a
+                  >
+                </li>
+                <li>
+                  <a href="events.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Events</a
+                  >
+                </li>
+                <li>
+                  <a href="community.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Community</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <div class="bc-footer-col-title">Partners</div>
+              <ul class="bc-footer-links">
+                <li>
+                  <a href="become-brand-partner.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Become a Brand
+                    Partner</a
+                  >
+                </li>
+                <li>
+                  <a href="become-artisan-partner.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Become an Artisan
+                    Partner</a
+                  >
+                </li>
+                <li>
+                  <a href="become-exhibitor.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Exhibitor
+                    Program</a
+                  >
+                </li>
+                <li>
+                  <a href="creators.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Creator
+                    Program</a
+                  >
+                </li>
+                <li>
+                  <a href="corporate-gifting.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Corporate
+                    Gifting</a
+                  >
+                </li>
+                <li>
+                  <a href="partner-success.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Success
+                    Stories</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <div class="bc-footer-col-title">Customer Care</div>
+              <ul class="bc-footer-links">
+                <li>
+                  <a href="customer/dashboard.html"
+                    ><i class="fa-solid fa-chevron-right"></i> My Account</a
+                  >
+                </li>
+                <li>
+                  <a href="customer/tracking.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Track My Order</a
+                  >
+                </li>
+                <li>
+                  <a href="returns.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Returns &amp;
+                    Refunds</a
+                  >
+                </li>
+                <li>
+                  <a href="faq.html"
+                    ><i class="fa-solid fa-chevron-right"></i> FAQs</a
+                  >
+                </li>
+                <li>
+                  <a href="contact.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Contact Us</a
+                  >
+                </li>
+                <li>
+                  <a href="help.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Help Centre</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <div class="bc-footer-col-title">About Us</div>
+              <ul class="bc-footer-links">
+                <li>
+                  <a href="about.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Our Story</a
+                  >
+                </li>
+                <li>
+                  <a href="mission.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Our Mission</a
+                  >
+                </li>
+                <li>
+                  <a href="impact-report.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Impact Report</a
+                  >
+                </li>
+                <li>
+                  <a href="press.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Press &amp;
+                    Media</a
+                  >
+                </li>
+                <li>
+                  <a href="careers.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Careers</a
+                  >
+                </li>
+                <li>
+                  <a href="partnerships.html"
+                    ><i class="fa-solid fa-chevron-right"></i> Partnerships</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bc-footer-bottom">
+        <div class="container">
+          <div class="bc-footer-bottom-inner">
+            <div class="bc-footer-copyright">
+              &copy; 2025 Conscious Indi&trade;. Made with ❤️ in India.
+              Empowering
+              <a href="stories.html">artisans &amp; conscious brands</a>, one
+              story at a time.
+            </div>
+            <div
+              class="bc-footer-payments"
+              aria-label="Accepted payment methods"
+            >
+              <span
+                style="
+                  font-size: 0.7rem;
+                  color: rgba(255, 255, 255, 0.4);
+                  margin-right: 4px;
+                "
+                >We Accept:</span
+              >
+              <span class="bc-payment-badge">UPI</span>
+              <span class="bc-payment-badge">Visa</span>
+              <span class="bc-payment-badge">Mastercard</span>
+              <span class="bc-payment-badge">RuPay</span>
+              <span class="bc-payment-badge">Net Banking</span>
+              <span class="bc-payment-badge">EMI</span>
+            </div>
+            <div class="bc-footer-legal">
+              <a href="privacy.html">Privacy Policy</a>
+              <a href="terms.html">Terms of Use</a>
+              <a href="sitemap.html">Sitemap</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <button
+      class="bc-back-top"
+      id="bc-back-top"
+      aria-label="Scroll back to top"
+      title="Back to Top"
+    >
+      <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/bharatcraft.js"></script>
+  </body>
 </html>

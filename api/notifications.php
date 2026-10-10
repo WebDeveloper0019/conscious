@@ -9,22 +9,103 @@ $db=get_db();
 $method=$_SERVER['REQUEST_METHOD']??'GET';
 
 if($method==='GET'){
-    $unread=isset($_GET['unread']) ? $_GET['unread']!=='0' : true;
-    $limit=min(100,max(1,(int)($_GET['limit']??100)));
-    $sql="SELECT id,type,title,message,action_url,metadata_json,read_at,created_at
-          FROM notifications
-          WHERE recipient_type=:type AND recipient_id=:id";
-    if($unread)$sql.=" AND read_at IS NULL";
-    $sql.=" ORDER BY created_at DESC LIMIT {$limit}";
-    $stmt=$db->prepare($sql);
-    $stmt->execute(['type'=>$principal['type'],'id'=>$principal['id']]);
-    $rows=$stmt->fetchAll();
+  
+$unread = isset($_GET['unread'])
+    ? filter_var($_GET['unread'], FILTER_VALIDATE_BOOLEAN)
+    : null;
+
+$page = max(1, (int)($_GET['page'] ?? 1));
+$limit = min(100, max(1, (int)($_GET['limit'] ?? 20)));
+$offset = ($page - 1) * $limit;
+
+$typeFilter = trim((string)($_GET['type'] ?? ''));
+
+   
+$sql = "SELECT id, type, title, message, action_url, metadata_json, read_at, created_at
+        FROM notifications
+        WHERE recipient_type = :recipient_type
+          AND recipient_id = :recipient_id";
+
+$params = [
+    'recipient_type' => $principal['type'],
+    'recipient_id' => $principal['id']
+];
+
+if ($unread === true) {
+    $sql .= " AND read_at IS NULL";
+} elseif ($unread === false) {
+    $sql .= " AND read_at IS NOT NULL";
+}
+
+if ($typeFilter !== '') {
+    $sql .= " AND type = :notification_type";
+    $params['notification_type'] = $typeFilter;
+}
+
+$countSql = "SELECT COUNT(*)
+             FROM notifications
+             WHERE recipient_type = :recipient_type
+               AND recipient_id = :recipient_id";
+
+$countParams = [
+    'recipient_type' => $principal['type'],
+    'recipient_id' => $principal['id']
+];
+
+if ($unread === true) {
+    $countSql .= " AND read_at IS NULL";
+} elseif ($unread === false) {
+    $countSql .= " AND read_at IS NOT NULL";
+}
+
+if ($typeFilter !== '') {
+    $countSql .= " AND type = :notification_type";
+    $countParams['notification_type'] = $typeFilter;
+}
+
+$countStmt = $db->prepare($countSql);
+$countStmt->execute($countParams);
+$total = (int) $countStmt->fetchColumn();
+
+$sql .= " ORDER BY created_at DESC LIMIT {$limit} OFFSET {$offset}";
+
+$stmt = $db->prepare($sql);
+$stmt->execute($params);
+$rows = $stmt->fetchAll();
+
+$unreadStmt = $db->prepare(
+    "SELECT COUNT(*)
+     FROM notifications
+     WHERE recipient_type = :type
+       AND recipient_id = :id
+       AND read_at IS NULL"
+);
+
+$unreadStmt->execute([
+    'type' => $principal['type'],
+    'id' => $principal['id']
+]);
+
+$unreadCount = (int) $unreadStmt->fetchColumn();
+
+
     foreach($rows as &$row){
         $row['metadata']=$row['metadata_json'] ? json_decode((string)$row['metadata_json'],true) : null;
         unset($row['metadata_json']);
     }
     unset($row);
-    json_response(200,['success'=>true,'notifications'=>$rows]);
+
+json_response(200, [
+    'success' => true,
+    'notifications' => $rows,
+    'pagination' => [
+        'page' => $page,
+        'limit' => $limit,
+        'total' => $total,
+        'totalPages' => (int) ceil($total / $limit)
+    ],
+    'unreadCount' => $unreadCount
+]);
 }
 
 if($method==='PATCH'){
