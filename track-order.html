@@ -21,6 +21,161 @@
   <link rel="stylesheet" href="assets/css/bharatcraft.css" />
 <style>
 .bc-breadcrumb-wrap{background:var(--bg-cream);border-bottom:1px solid var(--border-warm);padding:10px 0;}
+
+/* Track Order — UI improvements */
+.track-order-card {
+  background: #fff;
+  border: 1px solid var(--border-warm);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 8px 28px rgba(55, 40, 20, 0.05);
+}
+
+.track-order-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.track-order-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.track-order-field input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-warm);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.track-order-field input:focus {
+  border-color: var(--saffron);
+  box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.14);
+}
+
+.track-order-submit {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-height: 48px;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.track-order-summary {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 24px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.track-order-product-icon {
+  width: 68px;
+  height: 68px;
+  flex: 0 0 68px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: #fbf0df;
+  color: #8b5a30;
+  font-size: 1.8rem;
+}
+
+.track-order-timeline {
+  position: relative;
+  padding-left: 42px;
+}
+
+.track-order-step {
+  position: relative;
+  padding-bottom: 28px;
+}
+
+.track-order-step:last-child {
+  padding-bottom: 0;
+}
+
+.track-order-step::before {
+  content: "";
+  position: absolute;
+  left: -32px;
+  top: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--border-warm);
+  z-index: 1;
+}
+
+.track-order-step.is-complete::before {
+  content: "✓";
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--green);
+  border-color: var(--green);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.track-order-step.is-current::before {
+  border: 5px solid var(--saffron);
+  box-shadow: 0 0 0 4px rgba(255, 153, 51, 0.13);
+}
+
+.track-order-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: -22px;
+  top: 25px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-warm);
+}
+
+.track-order-step.is-complete:not(:last-child)::after {
+  background: var(--green);
+}
+
+.track-order-step.is-pending {
+  opacity: 0.55;
+}
+
+@media (max-width: 575px) {
+  .track-order-card {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .track-order-form {
+    grid-template-columns: 1fr;
+  }
+
+  .track-order-summary {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .track-order-product-icon {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+    border-radius: 12px;
+    font-size: 1.4rem;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -126,7 +281,7 @@
                   <div class="bc-mega-col">
                     <h5>Crafts &amp; Art</h5>
                     <ul>
-                      <li><a href="pottery.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Pottery &amp; Ceramics</a></li>
+                      <div class="track-order-product-icon">🏺</div>
                       <li><a href="paintings.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Madhubani Paintings</a></li>
                       <li><a href="traditional-art.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Warli Art</a></li>
                       <li><a href="traditional-art.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Pattachitra</a></li>
@@ -282,7 +437,7 @@
     </div>
 
     <!-- Lookup Form -->
-    <div style="background:white;border-radius:var(--r-xl);border:1.5px solid var(--border-warm);padding:32px;margin-bottom:32px;" class="bc-reveal">
+    <div class="track-order-card bc-reveal" style="margin-bottom:24px;">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
         <div>
           <label style="font-size:0.8125rem;font-weight:600;color:var(--text-primary);margin-bottom:6px;display:block;">Order ID</label>
@@ -293,13 +448,15 @@
           <input type="tel" placeholder="Registered mobile number" style="width:100%;padding:12px 16px;border:1.5px solid var(--border-warm);border-radius:var(--r-md);font-size:0.9375rem;background:var(--bg-cream);" />
         </div>
       </div>
-      <button class="bc-btn bc-btn-primary" style="width:100%;justify-content:center;"><i class="fa-solid fa-magnifying-glass"></i> Track Order</button>
+<button class="bc-btn bc-btn-primary track-order-submit" type="button">
+  <i class="fa-solid fa-magnifying-glass"></i> Track Order
+</button>
     </div>
 
     <!-- Tracking Results -->
-    <div style="background:white;border-radius:var(--r-xl);border:1.5px solid var(--border-warm);padding:32px;" class="bc-reveal">
+<div class="track-order-card bc-reveal">
       <!-- Order Summary -->
-      <div style="display:flex;gap:20px;align-items:flex-start;padding-bottom:24px;border-bottom:1px solid var(--border-light);margin-bottom:28px;">
+      <div class="track-order-summary">
         <div style="width:72px;height:72px;border-radius:var(--r-md);background:linear-gradient(135deg,#C9A078,#8B5A30);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;">🏺</div>
         <div style="flex:1;">
           <div style="font-family:var(--font-display);font-size:1.0625rem;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Blue Pottery Vase + 2 more items</div>

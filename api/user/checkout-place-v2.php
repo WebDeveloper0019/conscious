@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/../lib/rewards.php';
+require_once __DIR__ . '/../lib/invoice.php';
 
 require_once __DIR__ . '/../lib/coupon.php';
 
@@ -40,6 +42,7 @@ function checkout_place_v2(): void
         if (!is_array($pricing)) {
             json_response(409, ['success' => false, 'message' => 'Checkout pricing is no longer valid.']);
         }
+        $rewardPoints = (int)($pricing['reward_points_redeem'] ?? 0);
         $cart = cart_details($userId);
         if (!$cart['items']) {
             json_response(409, ['success' => false, 'message' => 'Your cart is empty.']);
@@ -82,6 +85,23 @@ function checkout_place_v2(): void
             'order_total' => $quote['total_amount'], 'order_address' => json_encode($addressSnapshot, JSON_UNESCAPED_SLASHES),
         ]);
         $orderId = (int)$db->lastInsertId();
+
+
+        // Redeem reward points atomically
+if ($rewardPoints > 0) {
+    try {
+        reward_redeem(
+            $userId,
+            $rewardPoints,
+            'order',
+            (string)$orderId,
+            'Redeemed on order #' . $orderNumber
+        );
+    } catch (Throwable $e) {
+        // Insufficient / race → abort the whole order
+        throw new RuntimeException('Reward redemption failed: ' . $e->getMessage());
+    }
+}
 
         $groupsByVendor = [];
         foreach ($cart['items'] as $item) {
@@ -244,6 +264,14 @@ function checkout_place_v2(): void
             'payment_id' => $paymentAttemptId, 'payment_order' => $orderId, 'payment_provider' => $paymentMethod,
             'payment_amount' => $quote['total_amount'], 'payment_status' => $paymentMethod === 'cod' ? 'cod_pending' : 'created',
         ]);
+        // ── Generate invoice for COD orders ──
+        if ($paymentMethod === 'cod') {
+            try {
+                invoice_generate_for_order($orderId);
+            } catch (Throwable $e) {
+                error_log('COD invoice generation failed for order ' . $orderId . ': ' . $e->getMessage());
+            }
+        }
 
         record_status_change('order', (string)$orderId, null, $orderStatus);
         attribute_influencer_order($orderId, $userId, (float)$quote['total_amount']);

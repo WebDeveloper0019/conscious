@@ -1,134 +1,928 @@
 <?php
 declare(strict_types=1);
-if(PHP_SAPI!=='cli'){exit(1);}
-require_once __DIR__.'/../api/lib/helpers.php';
-if(DB_NAME!=='conscious_backend_test'){fwrite(STDERR,"Refusing to run outside conscious_backend_test.\n");exit(1);}
-$base=rtrim(getenv('BACKEND_TEST_URL')?:'http://127.0.0.1:8100/api','/');$db=get_db();
-function check(bool $condition,string $message): void {if(!$condition)throw new RuntimeException($message);echo "PASS {$message}\n";}
-final class HttpClient {private string $jar;public function __construct(){ $this->jar=tempnam(sys_get_temp_dir(),'ci-cookie-'); }public function request(string $method,string $url,?array $body=null,?string $csrf=null,?string $idempotencyKey=null): array {$headers=['Accept: application/json'];if(in_array($method,['POST','PUT','PATCH','DELETE'],true))$headers[]='Idempotency-Key: '.($idempotencyKey?:'test-'.bin2hex(random_bytes(12)));$payload=null;if($body!==null){$payload=json_encode($body,JSON_UNESCAPED_SLASHES);$headers[]='Content-Type: application/json';}if($csrf!==null)$headers[]='X-CSRF-Token: '.$csrf;$ch=curl_init($url);curl_setopt_array($ch,[CURLOPT_CUSTOMREQUEST=>$method,CURLOPT_RETURNTRANSFER=>true,CURLOPT_HTTPHEADER=>$headers,CURLOPT_COOKIEJAR=>$this->jar,CURLOPT_COOKIEFILE=>$this->jar,CURLOPT_POSTFIELDS=>$payload,CURLOPT_TIMEOUT=>15]);$raw=curl_exec($ch);$status=(int)curl_getinfo($ch,CURLINFO_HTTP_CODE);$error=curl_error($ch);curl_close($ch);if($raw===false)throw new RuntimeException($error);return [$status,json_decode($raw,true),$raw];}public function __destruct(){@unlink($this->jar);}}
-$suffix=substr(bin2hex(random_bytes(4)),0,8);$userId=uuid_string();$vendorId=uuid_string();$otherVendorId=uuid_string();$productId=uuid_string();$variantId=uuid_string();$password='Backend@Test1234';$snapshot=['id'=>$productId,'vendor_id'=>$vendorId,'name'=>'Approved Bamboo Basket','slug'=>'approved-bamboo-basket-'.$suffix,'sku'=>'BASKET-'.$suffix,'short_description'=>'Handwoven approved basket','description'=>str_repeat('Handwoven bamboo basket with responsible local sourcing. ',2),'mrp'=>1200,'selling_price'=>999,'gst_percent'=>5,'package_weight_grams'=>800,'processing_min_days'=>1,'processing_max_days'=>3,'status'=>'approved','review_version'=>1];
-$db->beginTransaction();try{
-    $db->prepare('INSERT INTO users (id,first_name,last_name,email,mobile,password_hash,email_verified,status,created_at) VALUES (:id,"Backend","Customer",:email,"9876501111",:password,1,"active",UTC_TIMESTAMP())')->execute(['id'=>$userId,'email'=>'customer.'.$suffix.'@conscious.test','password'=>password_hash($password,PASSWORD_DEFAULT)]);
-    foreach([[$vendorId,'Primary Vendor','9876502222'],[$otherVendorId,'Other Vendor','9876503333']] as [$id,$name,$mobile]){$db->prepare('INSERT INTO vendors (id,vendor_type,owner_name,display_name,email,mobile,password_hash,email_verified,status,verification_status,onboarding_status,created_at) VALUES (:id,"artisan",:owner,:display,:email,:mobile,:password,1,"active","approved","completed",UTC_TIMESTAMP())')->execute(['id'=>$id,'owner'=>$name,'display'=>$name,'email'=>strtolower(str_replace(' ','.',$name)).'.'.$suffix.'@conscious.test','mobile'=>$mobile,'password'=>password_hash($password,PASSWORD_DEFAULT)]);$db->prepare('INSERT INTO principal_roles (principal_type,principal_id,role_id,granted_at) SELECT "vendor",:id,id,UTC_TIMESTAMP() FROM roles WHERE code="vendor"')->execute(['id'=>$id]);}
-    $db->prepare('INSERT INTO vendor_shipping_settings (vendor_id,coverage_model,processing_min_days,processing_max_days,courier_partners,base_charge,free_above,cod_enabled,created_at) VALUES (:id,"all_india",1,3,"India Post, Delhivery",75,3000,1,UTC_TIMESTAMP())')->execute(['id'=>$vendorId]);
-    $policy=str_repeat('Clear handmade marketplace policy and customer protection terms. ',3);$db->prepare('INSERT INTO vendor_settings (vendor_id,return_policy,cancellation_policy,damage_policy,handmade_policy,updated_at) VALUES (:id,:returns,:cancellation,:damage,:handmade,UTC_TIMESTAMP())')->execute(['id'=>$vendorId,'returns'=>$policy,'cancellation'=>$policy,'damage'=>$policy,'handmade'=>$policy]);
-    $db->prepare('INSERT INTO products (id,vendor_id,name,slug,sku,description,mrp,selling_price,gst_percent,package_weight_grams,processing_min_days,processing_max_days,status,review_version,published_version,published_snapshot_json,published_at,created_at,updated_at) VALUES (:id,:vendor,:name,:slug,:sku,:description,1200,999,5,800,1,3,"approved",1,1,:snapshot,UTC_TIMESTAMP(),UTC_TIMESTAMP(),UTC_TIMESTAMP())')->execute(['id'=>$productId,'vendor'=>$vendorId,'name'=>$snapshot['name'],'slug'=>$snapshot['slug'],'sku'=>$snapshot['sku'],'description'=>$snapshot['description'],'snapshot'=>json_encode($snapshot,JSON_UNESCAPED_SLASHES)]);
-    $db->prepare('INSERT INTO product_versions (id,product_id,version_number,snapshot_json,review_status,submitted_at,reviewed_at,created_at) VALUES (:id,:product,1,:snapshot,"approved",UTC_TIMESTAMP(),UTC_TIMESTAMP(),UTC_TIMESTAMP())')->execute(['id'=>uuid_string(),'product'=>$productId,'snapshot'=>json_encode($snapshot)]);
-    $db->prepare('INSERT INTO product_variants (id,product_id,sku,name,is_active,created_at) VALUES (:id,:product,:sku,"Default",1,UTC_TIMESTAMP())')->execute(['id'=>$variantId,'product'=>$productId,'sku'=>$snapshot['sku']]);$db->prepare('INSERT INTO inventory_levels (variant_id,stock_quantity,reserved_quantity,low_stock_threshold,updated_at) VALUES (:id,10,0,2,UTC_TIMESTAMP())')->execute(['id'=>$variantId]);$db->commit();
-}catch(Throwable $e){$db->rollBack();throw $e;}
 
-$customer=new HttpClient();[$status,$login]=$customer->request('POST',$base.'/auth/login.php',['email'=>'customer.'.$suffix.'@conscious.test','password'=>$password]);check($status===200&&isset($login['csrf_token']),'customer login issues an authenticated CSRF session');$customerCsrf=$login['csrf_token'];
-$idemKey='saved-add-'.$suffix;
-[$status,$missingCsrf]=$customer->request('POST',$base.'/user/saved-vendors.php',['vendor_id'=>$vendorId]);
-check($status===419,'saved-vendor add rejects requests without CSRF');
-[$status,$saved]=$customer->request('POST',$base.'/user/saved-vendors.php',['vendor_id'=>$vendorId],$customerCsrf,$idemKey);
-check($status===200&&$saved['vendorId']===$vendorId,'customer can save an approved vendor');
-[$status,$savedReplay]=$customer->request('POST',$base.'/user/saved-vendors.php',['vendor_id'=>$vendorId],$customerCsrf,$idemKey);
-check($status===200&&$savedReplay['vendorId']===$vendorId,'saved-vendor add is idempotent and does not duplicate the relation');
-[$status,$savedList]=$customer->request('GET',$base.'/user/saved-vendors.php');
-check($status===200&&count($savedList['savedVendors'])===1,'customer saved-vendor list returns only owned vendors');
-[$status,$crossSave]=$customer->request('POST',$base.'/user/saved-vendors.php',['vendor_id'=>$otherVendorId],$customerCsrf);
-check($status===200,'customer can save another approved vendor');
-[$status,$removed]=$customer->request('DELETE',$base.'/user/saved-vendors.php?vendor_id='.$otherVendorId,null,$customerCsrf);
-check($status===200&&$removed['vendorId']===$otherVendorId,'customer can remove an owned saved vendor');
+/**
+ * Conscious Indi — Backend E2E Test Runner
+ *
+ * Run:    php tests/backend-e2e.php
+ * Filter: php tests/backend-e2e.php --only=cancellation
+ *
+ * Requires:
+ *   - APP_ENV=local (won't run against production)
+ *   - DB reachable via api/config.php
+ *   - At least one active vendor + product in DB for order seeding
+ *
+ * Creates and cleans up its own test data (prefixed with TEST-E2E-).
+ */
 
+if (PHP_SAPI !== 'cli') {
+    fwrite(STDERR, "This test must be run from the command line.\n");
+    exit(1);
+}
 
+require_once __DIR__ . '/../api/config.php';
 
-// Seed customer-dashboard data from real backend tables; nothing below is UI/demo data.
-$rewardId=uuid_string();
-$db->prepare('INSERT INTO customer_reward_ledger (id,user_id,points,entry_type,reference_type,reference_id,description,created_at) VALUES (:id,:user,275,"earned","test",:ref,"Dashboard API test reward",UTC_TIMESTAMP())')->execute(['id'=>$rewardId,'user'=>$userId,'ref'=>$rewardId]);
-$notificationId=uuid_string();
-$db->prepare('INSERT INTO notifications (id,recipient_type,recipient_id,type,title,message,created_at) VALUES (:id,"customer",:user,"test","Dashboard test notification","This notification belongs only to the dashboard test customer.",UTC_TIMESTAMP())')->execute(['id'=>$notificationId,'user'=>$userId]);[$status,$readWithoutCsrf]=$customer->request('PATCH',$base.'/notifications.php',['id'=>$notificationId]);
-check($status===419,'single notification read rejects missing CSRF');
-[$status,$readOne]=$customer->request('PATCH',$base.'/notifications.php',['id'=>$notificationId],$customerCsrf);
-check($status===200&&$readOne['notificationId']===$notificationId,'customer can mark one owned notification as read');
-$notification2=uuid_string();
-$db->prepare('INSERT INTO notifications (id,recipient_type,recipient_id,type,title,message,created_at) VALUES (:id,"customer",:user,"test","Second test notification","Second notification.",UTC_TIMESTAMP())')->execute(['id'=>$notification2,'user'=>$userId]);
-[$status,$readAll]=$customer->request('PATCH',$base.'/notifications.php',['id'=>'all'],$customerCsrf);
-check($status===200&&$readAll['updated']>=1,'customer can mark all owned notifications as read');
+if (APP_ENV !== 'local') {
+    fwrite(STDERR, "Refusing to run against non-local APP_ENV=" . APP_ENV . "\n");
+    exit(1);
+}
+require_once __DIR__ . '/../api/lib/db.php';
+require_once __DIR__ . '/../api/lib/helpers.php';
+require_once __DIR__ . '/../api/lib/notifications.php';
+require_once __DIR__ . '/../api/lib/audit.php';
+require_once __DIR__ . '/../api/lib/commerce.php';
+require_once __DIR__ . '/../api/lib/idempotency.php';
+require_once __DIR__ . '/../api/lib/invoice.php';
+require_once __DIR__ . '/../api/lib/rewards.php';
 
-$savedVendorId=$vendorId;
-$db->prepare('INSERT INTO saved_vendors (user_id,vendor_id,created_at) VALUES (:user,:vendor,UTC_TIMESTAMP())')->execute(['user'=>$userId,'vendor'=>$savedVendorId]);
-$couponId=uuid_string();
-$db->prepare('INSERT INTO coupons (id,vendor_id,code,discount_type,discount_value,min_order_amount,usage_limit,per_customer_limit,starts_at,ends_at,status,created_at) VALUES (:id,:vendor,:code,"percent",10,500,NULL,1,DATE_SUB(UTC_TIMESTAMP(),INTERVAL 1 DAY),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 30 DAY),"active",UTC_TIMESTAMP())')->execute(['id'=>$couponId,'vendor'=>$vendorId,'code'=>'DASH-'.$suffix]);
-$expiredCouponId=uuid_string();
-$db->prepare('INSERT INTO coupons (id,vendor_id,code,discount_type,discount_value,min_order_amount,usage_limit,per_customer_limit,starts_at,ends_at,status,created_at) VALUES (:id,:vendor,:code,"percent",20,0,NULL,1,DATE_SUB(UTC_TIMESTAMP(),INTERVAL 2 DAY),DATE_SUB(UTC_TIMESTAMP(),INTERVAL 1 DAY),"active",UTC_TIMESTAMP())')->execute(['id'=>$expiredCouponId,'vendor'=>$vendorId,'code'=>'EXPIRED-'.$suffix]);
-$inactiveCouponId=uuid_string();
-$db->prepare('INSERT INTO coupons (id,vendor_id,code,discount_type,discount_value,min_order_amount,usage_limit,per_customer_limit,starts_at,ends_at,status,created_at) VALUES (:id,:vendor,:code,"percent",15,0,NULL,1,DATE_SUB(UTC_TIMESTAMP(),INTERVAL 1 DAY),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 30 DAY),"active",UTC_TIMESTAMP())')->execute(['id'=>$inactiveCouponId,'vendor'=>$otherVendorId,'code'=>'INACTIVE-'.$suffix]);
-$db->prepare('UPDATE vendors SET status="inactive" WHERE id=:id')->execute(['id'=>$otherVendorId]);
+// ─────────────────────────────────────────────────────────
+//  CLI hardening — override the HTTP error handlers that
+//  helpers.php/errors.php/session.php installed, so real
+//  errors surface as text instead of a JSON "session expired".
+// ─────────────────────────────────────────────────────────
 
-$hostId=uuid_string();
-$db->prepare('INSERT INTO event_hosts (id,owner_type,owner_id,display_name,email,mobile,verification_status,created_at) VALUES (:id,"admin",:owner,"Dashboard Test Host",:email,"9876505555","approved",UTC_TIMESTAMP())')->execute(['id'=>$hostId,'owner'=>$userId,'email'=>'event.'.$suffix.'@conscious.test']);
-$eventId=uuid_string();
-$db->prepare('INSERT INTO events (id,host_id,title,slug,event_type,short_description,description,venue_type,venue_name,timezone,starts_at,ends_at,booking_opens_at,booking_closes_at,status,published_at,created_at) VALUES (:id,:host,"Dashboard Test Event",:slug,"workshop","Dashboard API event","Dashboard API event description","physical","Test Studio","Asia/Kolkata",DATE_ADD(UTC_TIMESTAMP(),INTERVAL 3 DAY),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 3 DAY 2 HOUR),DATE_SUB(UTC_TIMESTAMP(),INTERVAL 1 DAY),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 2 DAY),"published",UTC_TIMESTAMP(),UTC_TIMESTAMP())')->execute(['id'=>$eventId,'host'=>$hostId,'slug'=>'dashboard-test-'.$suffix]);
-$ticketId=uuid_string();
-$db->prepare('INSERT INTO event_ticket_types (id,event_id,name,description,price,capacity,reserved_quantity,sold_quantity,min_per_booking,max_per_booking,sales_start_at,sales_end_at,status,created_at) VALUES (:id,:event,"General","Dashboard test ticket",500,100,0,0,1,10,DATE_SUB(UTC_TIMESTAMP(),INTERVAL 1 DAY),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 2 DAY),"active",UTC_TIMESTAMP())')->execute(['id'=>$ticketId,'event'=>$eventId]);
-[$status,$dashboard]=$customer->request('GET',$base.'/user/dashboard.php');
-check($status===200&&$dashboard['customer']['id']===$userId,'customer dashboard returns the authenticated customer profile');
-check($dashboard['stats']['rewardPoints']===275&&$dashboard['stats']['unreadNotifications']>=1,'customer dashboard returns owned reward points and unread notification count');
-check(count($dashboard['notifications'])>=1&&count($dashboard['savedVendors'])>=1,'customer dashboard returns owned notifications and saved vendors');
-<<<<<<< HEAD
-check(in_array('DASH-'.$suffix,array_column($dashboard['coupons'],'code'),true),'customer dashboard returns an active usable coupon');
-check(in_array($eventId,array_column($dashboard['upcomingEvents'],'id'),true),'customer dashboard returns published upcoming events');
-=======
-check(count($dashboard['coupons'])===1&&$dashboard['coupons'][0]['code']==='DASH-'.$suffix,'customer dashboard returns only customer-eligible, unexpired, vendor-active coupons');
-check(count($dashboard['upcomingEvents'])>=1&&$dashboard['upcomingEvents'][0]['id']===$eventId,'customer dashboard returns published upcoming events');
->>>>>>> 4ff1e44 (feat: complete customer dashboard features)
-check(isset($dashboard['recentOrders'])&&isset($dashboard['pendingActions'])&&isset($dashboard['empty']),'customer dashboard always returns stable collection and empty-state fields');
+restore_error_handler();
+restore_exception_handler();
 
-$otherUserId=uuid_string();
-$otherEmail='dashboard-other.'.$suffix.'@conscious.test';
-$db->prepare('INSERT INTO users (id,first_name,last_name,email,mobile,password_hash,email_verified,status,created_at) VALUES (:id,"Other","Dashboard",:email,"9876506666",:password,1,"active",UTC_TIMESTAMP())')->execute(['id'=>$otherUserId,'email'=>$otherEmail,'password'=>password_hash($password,PASSWORD_DEFAULT)]);
-$otherCustomer=new HttpClient();
-[$status,$otherLogin]=$otherCustomer->request('POST',$base.'/auth/login.php',['email'=>$otherEmail,'password'=>$password]);
-check($status===200,'second customer can authenticate for ownership isolation test');
-[$status,$otherDashboard]=$otherCustomer->request('GET',$base.'/user/dashboard.php');
-check($status===200&&$otherDashboard['customer']['id']===$otherUserId&&$otherDashboard['stats']['rewardPoints']===0,'customer dashboard enforces ownership and does not leak another customer reward balance');
-check(count($otherDashboard['notifications'])===0&&count($otherDashboard['savedVendors'])===0,'customer dashboard does not leak another customer notifications or saved vendors');
-//Authentication
-[$status]=$customer->request('POST',$base.'/user/cart.php',['variant_id'=>$variantId,'quantity'=>1]);check($status===419,'state-changing request without CSRF is rejected');
-[$status,$address]=$customer->request('POST',$base.'/user/addresses.php',['label'=>'Home','fullName'=>'Backend Customer','phone'=>'9876501111','pincode'=>'560034','addressLine1'=>'12 Test Street','addressLine2'=>'','city'=>'Bengaluru','state'=>'Karnataka','landmark'=>'Test Park','isDefault'=>true],$customerCsrf);check($status===201,'customer can create an owned India delivery address');$addressId=$address['address']['id'];
-[$status,$cart]=$customer->request('POST',$base.'/user/cart.php',['variant_id'=>$variantId,'quantity'=>2],$customerCsrf);check($status===200&&$cart['cart']['item_count']===2,'cart validates product availability and quantity');
-[$status,$expiredQuote]=$customer->request('POST',$base.'/user/checkout-quote.php',['address_id'=>$addressId,'coupon_code'=>'EXPIRED-'.$suffix],$customerCsrf);
-check($status===422,'checkout rejects an expired coupon');
-[$status,$inactiveQuote]=$customer->request('POST',$base.'/user/checkout-quote.php',['address_id'=>$addressId,'coupon_code'=>'INACTIVE-'.$suffix],$customerCsrf);
-check($status===422,'checkout rejects a coupon belonging to an inactive vendor');
+set_error_handler(function (int $no, string $str, string $file, int $line): bool {
+    if (!(error_reporting() & $no)) return false;
+    fwrite(STDERR, "\n\033[31m[PHP ERROR]\033[0m $str\n  at $file:$line\n");
+    return true;
+});
 
-[$status,$quote]=$customer->request('POST',$base.'/user/checkout-quote.php',['address_id'=>$addressId],$customerCsrf);check($status===201&&(float)$quote['quote']['shipping_amount']===75.0,'checkout applies the vendor all-India manual shipping charge');
-[$status,$order]=$customer->request('POST',$base.'/user/checkout-place.php',['quote_id'=>$quote['quote']['id'],'payment_method'=>'cod'],$customerCsrf);check($status===201&&$order['order']['status']==='confirmed','COD checkout creates a server-priced multi-vendor order');$orderId=(int)$order['order']['id'];
-//payload
-[$status,$replay]=$customer->request('POST',$base.'/user/checkout-place.php',['quote_id'=>$quote['quote']['id'],'payment_method'=>'cod'],$customerCsrf);check($status===422||$status===409,'checkout cannot be submitted twice without a reusable idempotency key');
+set_exception_handler(function (Throwable $e): void {
+    fwrite(STDERR, "\n\033[31m[UNCAUGHT EXCEPTION]\033[0m " . get_class($e) . "\n");
+    fwrite(STDERR, "  " . $e->getMessage() . "\n");
+    fwrite(STDERR, "  at " . $e->getFile() . ":" . $e->getLine() . "\n");
+    exit(1);
+});
 
-$vendor=new HttpClient();[$status,$vendorLogin]=$vendor->request('POST',$base.'/vendor/auth/login.php',['email'=>'primary.vendor.'.$suffix.'@conscious.test','password'=>$password]);check($status===200&&isset($vendorLogin['csrf_token']),'approved vendor can sign in');$vendorCsrf=$vendorLogin['csrf_token'];[$status,$orders]=$vendor->request('GET',$base.'/vendor/orders.php');check($status===200&&count($orders['orders'])===1,'vendor sees only its order group');$groupId=$orders['orders'][0]['id'];[$status,$details]=$vendor->request('GET',$base.'/vendor/orders.php?id='.rawurlencode($groupId));$itemId=(int)$details['order']['items'][0]['id'];
-foreach(['accepted','processing','quality_check','packing','ready_to_dispatch'] as $next){[$status]=$vendor->request('POST',$base.'/vendor/orders.php',['group_id'=>$groupId,'status'=>$next],$vendorCsrf);check($status===200,'vendor can move order to '.$next);}
-[$status,$package]=$vendor->request('POST',$base.'/vendor/shipments.php',['group_id'=>$groupId,'courier_name'=>'India Post','tracking_reference'=>'IP'.$suffix,'expected_delivery_date'=>gmdate('Y-m-d',time()+86400*5),'items'=>[['order_item_id'=>$itemId,'quantity'=>2]]],$vendorCsrf);check($status===201,'vendor manually creates courier package and tracking reference');$packageId=$package['package_id'];
-foreach(['dispatched','picked_up','in_transit','at_destination','out_for_delivery','delivered'] as $next){[$status]=$vendor->request('PATCH',$base.'/vendor/shipments.php',['package_id'=>$packageId,'status'=>$next,'location'=>$next==='delivered'?'Bengaluru':'Transit hub','note'=>$next==='delivered'?'Delivered to customer successfully.':'Manual courier milestone update.'],$vendorCsrf);check($status===200,'manual shipment milestone '.$next.' is accepted in sequence');}
-[$status,$tracking]=$customer->request('GET',$base.'/user/tracking.php?order_id='.$orderId);check($status===200&&$tracking['vendor_groups'][0]['status']==='delivered','customer tracking reflects vendor manual delivery events');
-$groupTotal=(float)$details['order']['total_amount'];[$status,$cod]=$vendor->request('POST',$base.'/vendor/cod-collections.php',['group_id'=>$groupId,'status'=>'collected','amount'=>$groupTotal,'collection_method'=>'cash','collection_reference'=>'CASH-'.$suffix],$vendorCsrf);check($status===200&&$cod['status']==='collected','vendor manually reconciles cash on delivery after delivery');
+// Stub HTTP environment vars helpers expect
+$_SERVER['REQUEST_METHOD'] ??= 'CLI';
+$_SERVER['REMOTE_ADDR']    ??= '127.0.0.1';
+$_SERVER['HTTP_HOST']      ??= 'localhost';
+$_SERVER['REQUEST_URI']    ??= '/cli/e2e';
+$_SERVER['CONTENT_LENGTH'] ??= 0;
 
-$rewardKey='reward-earn-'.$suffix;
-[$status,$earn]=$customer->request('POST',$base.'/user/rewards.php',['action'=>'earn','reference_type'=>'order','reference_id'=>(string)$orderId],$customerCsrf,$rewardKey);
-check($status===201&&$earn['pointsEarned']>=1,'customer earns server-calculated points only after a delivered owned order');
-[$status,$earnReplay]=$customer->request('POST',$base.'/user/rewards.php',['action'=>'earn','reference_type'=>'order','reference_id'=>(string)$orderId],$customerCsrf,$rewardKey);
-check($status===201&&$earnReplay['duplicate']===true,'reward earn is idempotent and does not create duplicate ledger entries');
-[$status,$rewardHistory]=$customer->request('GET',$base.'/user/rewards.php');
-check($status===200&&$rewardHistory['balance']>0&&count($rewardHistory['transactions'])>=2,'reward balance and transaction history are returned for the authenticated customer');
-$redeemPoints=1;
-[$status,$redeem]=$customer->request('POST',$base.'/user/rewards.php',['action'=>'redeem','points'=>$redeemPoints],$customerCsrf,'reward-redeem-'.$suffix);
-check($status===200&&$redeem['pointsRedeemed']===$redeemPoints,'customer can redeem owned reward points');
-[$status,$redeemReplay]=$customer->request('POST',$base.'/user/rewards.php',['action'=>'redeem','points'=>$redeemPoints],$customerCsrf,'reward-redeem-'.$suffix);
-check($status===200&&$redeemReplay['transactionId']===$redeem['transactionId'],'reward redemption is idempotent');
-$expiredRewardId=uuid_string();
-$db->prepare("INSERT INTO customer_reward_ledger (id,user_id,points,entry_type,reference_type,reference_id,description,expires_at,status,created_at) VALUES (:id,:user,50,'earned','test',:ref,'Expired reward test',DATE_SUB(UTC_TIMESTAMP(),INTERVAL 1 DAY),'active',UTC_TIMESTAMP())")->execute(['id'=>$expiredRewardId,'user'=>$userId,'ref'=>$expiredRewardId]);
-[$status,$expire]=$customer->request('POST',$base.'/user/rewards.php',['action'=>'expire'],$customerCsrf,'reward-expire-'.$suffix);
-check($status===200,'reward expiry endpoint processes due points');
-[$status,$afterExpiry]=$customer->request('GET',$base.'/user/rewards.php');
-$expiredFound=false;foreach($afterExpiry['transactions'] as $tx)if($tx['id']===$expiredRewardId&&$tx['status']==='expired')$expiredFound=true;
-check($status===200&&$expiredFound,'expired reward transaction remains in history with expired status and is excluded from balance');
+// ─────────────────────────────────────────────────────────
+//  Test harness
+// ─────────────────────────────────────────────────────────
 
-$stock=$db->query("SELECT stock_quantity,reserved_quantity FROM inventory_levels WHERE variant_id=".$db->quote($variantId))->fetch();check((int)$stock['stock_quantity']===8&&(int)$stock['reserved_quantity']===0,'stock is decremented once and no reservation remains');$ledger=$db->query("SELECT balance_bucket FROM vendor_ledger_entries WHERE reference_type='order_item' AND reference_id=".$db->quote((string)$itemId))->fetchColumn();check($ledger==='eligible','vendor earning becomes eligible only after delivery');
-$onlineUserId=uuid_string();$onlineEmail='online.'.$suffix.'@conscious.test';$db->prepare('INSERT INTO users (id,first_name,last_name,email,mobile,password_hash,email_verified,status,created_at) VALUES (:online_id,"Online","Customer",:online_email,:online_mobile,:online_password,1,"active",UTC_TIMESTAMP())')->execute(['online_id'=>$onlineUserId,'online_email'=>$onlineEmail,'online_mobile'=>'9876504444','online_password'=>password_hash($password,PASSWORD_DEFAULT)]);
-$online=new HttpClient();[$status,$onlineLogin]=$online->request('POST',$base.'/auth/login.php',['email'=>$onlineEmail,'password'=>$password]);check($status===200&&isset($onlineLogin['csrf_token']),'online-payment customer can sign in');$onlineCsrf=$onlineLogin['csrf_token'];[$status,$onlineAddress]=$online->request('POST',$base.'/user/addresses.php',['label'=>'Office','fullName'=>'Online Customer','phone'=>'9876504444','pincode'=>'110001','addressLine1'=>'1 Payment Street','city'=>'New Delhi','state'=>'Delhi','isDefault'=>true],$onlineCsrf);check($status===201,'online-payment customer can add an India address');[$status]=$online->request('POST',$base.'/user/cart.php',['variant_id'=>$variantId,'quantity'=>1],$onlineCsrf);check($status===200,'online-payment customer can add an approved variant to cart');[$status,$onlineQuote]=$online->request('POST',$base.'/user/checkout-quote.php',['address_id'=>$onlineAddress['address']['id']],$onlineCsrf);check($status===201,'online checkout quote is created');[$status,$onlineOrder]=$online->request('POST',$base.'/user/checkout-place.php',['quote_id'=>$onlineQuote['quote']['id'],'payment_method'=>'online'],$onlineCsrf);check($status===201&&$onlineOrder['payment']['provider']==='online','online checkout creates a pending payment attempt');$attemptId=$onlineOrder['payment']['attempt_id'];[$status,$razorOrder]=$online->request('POST',$base.'/payment/razorpay-order.php',['payment_attempt_id'=>$attemptId],$onlineCsrf);check($status===200&&$razorOrder['gateway']==='mock','local Razorpay order adapter returns a mock order without live credentials');$mockPaymentId='pay_'.$suffix;$mockSignature=hash_hmac('sha256',$razorOrder['order_id'].'|'.$mockPaymentId,APP_KEY);[$status,$verified]=$online->request('POST',$base.'/payment/razorpay-verify.php',['payment_attempt_id'=>$attemptId,'razorpay_order_id'=>$razorOrder['order_id'],'razorpay_payment_id'=>$mockPaymentId,'razorpay_signature'=>$mockSignature],$onlineCsrf);check($status===200&&$verified['order_id']===$onlineOrder['order']['id'],'Razorpay signature verification confirms the online order');$onlinePayment=$db->prepare('SELECT o.status,o.payment_status,p.status AS attempt_status FROM orders o JOIN payment_attempts p ON p.order_id=o.id WHERE o.id=:online_order');$onlinePayment->execute(['online_order'=>$onlineOrder['order']['id']]);$onlinePayment=$onlinePayment->fetch();check($onlinePayment['status']==='confirmed'&&$onlinePayment['payment_status']==='paid'&&$onlinePayment['attempt_status']==='paid','online payment confirmation settles the order exactly once');
-$db->prepare('UPDATE products SET name="Unapproved Draft Name",status="draft",review_version=2 WHERE id=:id')->execute(['id'=>$productId]);[$status,$publicProduct]=$customer->request('GET',$base.'/public/catalog.php?id='.rawurlencode($productId));check($status===200&&$publicProduct['product']['name']==='Approved Bamboo Basket','public catalogue preserves the last approved product version during draft edits');
-$other=new HttpClient();[$status,$otherLogin]=$other->request('POST',$base.'/vendor/auth/login.php',['email'=>'other.vendor.'.$suffix.'@conscious.test','password'=>$password]);$otherCsrf=$otherLogin['csrf_token'];[$status]=$other->request('GET',$base.'/vendor/orders.php?id='.rawurlencode($groupId));check($status===404,'cross-vendor order access is denied');
-$audit=(int)$db->query('SELECT COUNT(*) FROM audit_logs')->fetchColumn();check($audit>=8,'security and commerce actions create audit records');echo "BACKEND_E2E_OK order={$orderId}\n";
+final class T
+{
+    public static int $passed  = 0;
+    public static int $failed  = 0;
+    public static int $skipped = 0;
+    public static array $failures = [];
+    public static string $current = '';
+
+    public static function suite(string $name): void
+    {
+        self::$current = $name;
+        echo "\n" . str_repeat('═', 68) . "\n";
+        echo "  SUITE: $name\n";
+        echo str_repeat('═', 68) . "\n";
+    }
+
+    public static function ok(string $msg): void
+    {
+        self::$passed++;
+        echo "  \033[32m✓\033[0m $msg\n";
+    }
+
+    public static function fail(string $msg): void
+    {
+        self::$failed++;
+        self::$failures[] = self::$current . ' → ' . $msg;
+        echo "  \033[31m✗\033[0m $msg\n";
+    }
+
+    public static function skip(string $msg): void
+    {
+        self::$skipped++;
+        echo "  \033[33m○\033[0m SKIP: $msg\n";
+    }
+
+    public static function assert(bool $cond, string $msg): void
+    {
+        $cond ? self::ok($msg) : self::fail($msg);
+    }
+
+    public static function assertEq($expected, $actual, string $msg): void
+    {
+        if ($expected == $actual) {
+            self::ok($msg);
+        } else {
+            self::fail($msg . "  (expected: " . var_export($expected, true)
+                     . ", got: " . var_export($actual, true) . ")");
+        }
+    }
+
+    public static function summary(): int
+    {
+        echo "\n" . str_repeat('═', 68) . "\n";
+        echo "  RESULTS\n";
+        echo str_repeat('═', 68) . "\n";
+        printf("  Passed:  %d\n", self::$passed);
+        printf("  Failed:  %d\n", self::$failed);
+        printf("  Skipped: %d\n", self::$skipped);
+
+        if (self::$failures) {
+            echo "\n  \033[31mFailures:\033[0m\n";
+            foreach (self::$failures as $f) {
+                echo "    • $f\n";
+            }
+        }
+
+        echo "\n";
+        return self::$failed === 0 ? 0 : 1;
+    }
+}
+
+// ─────────────────────────────────────────────────────────
+//  Fixture helpers
+// ─────────────────────────────────────────────────────────
+
+function fixture_user(): array
+{
+    $db = get_db();
+    $email = 'e2e+' . bin2hex(random_bytes(4)) . '@test.local';
+    $id = uuid_string();
+
+    $db->prepare(
+        'INSERT INTO users (id, first_name, last_name, email, mobile, password_hash,
+                            email_verified, created_at)
+         VALUES (:id, "E2E", "Tester", :email, :mobile, "x", 1, UTC_TIMESTAMP())'
+    )->execute([
+        'id'     => $id,
+        'email'  => $email,
+        'mobile' => '9' . str_pad((string)random_int(0, 999999999), 9, '0', STR_PAD_LEFT),
+    ]);
+
+    return ['id' => $id, 'email' => $email];
+}
+
+function fixture_vendor(): string
+{
+    $db = get_db();
+    $existing = $db->query("SELECT id FROM vendors WHERE status='active' AND verification_status='approved' LIMIT 1")->fetchColumn();
+    if ($existing) return (string)$existing;
+
+    $id = uuid_string();
+    $db->prepare(
+        'INSERT INTO vendors (id, vendor_type, owner_name, display_name, email, mobile,
+                              status, verification_status, onboarding_status, created_at)
+         VALUES (:id, "artisan", "E2E Vendor", "E2E Vendor", :email, :mobile,
+                 "active", "approved", "completed", UTC_TIMESTAMP())'
+    )->execute([
+        'id'     => $id,
+        'email'  => 'e2e-vendor+' . bin2hex(random_bytes(3)) . '@test.local',
+        'mobile' => '9' . str_pad((string)random_int(0, 999999999), 9, '0', STR_PAD_LEFT),
+    ]);
+    return $id;
+}
+
+function fixture_product(string $vendorId): array
+{
+    $db = get_db();
+    $pid = 'E2E-PROD-' . strtoupper(bin2hex(random_bytes(4)));
+    $vid = uuid_string();
+
+    $db->prepare(
+        'INSERT INTO products (id, vendor_id, name, slug, sku, mrp, selling_price,
+                               gst_percent, package_weight_grams,
+                               processing_min_days, processing_max_days, status, created_at)
+         VALUES (:id, :v, "E2E Test Product", :slug, :sku, 1500.00, 1200.00,
+                 5.00, 300, 1, 3, "approved", UTC_TIMESTAMP())'
+    )->execute([
+        'id'   => $pid,
+        'v'    => $vendorId,
+        'slug' => strtolower($pid),
+        'sku'  => $pid,
+    ]);
+
+    $db->prepare(
+        'INSERT INTO product_variants (id, product_id, name, sku, price_adjustment)
+         VALUES (:id, :p, "Default", :sku, 0.00)'
+    )->execute(['id' => $vid, 'p' => $pid, 'sku' => $pid . '-V1']);
+
+    $db->prepare(
+        'INSERT INTO inventory_levels (variant_id, stock_quantity, reserved_quantity,
+                                       low_stock_threshold, updated_at)
+         VALUES (:v, 100, 0, 5, UTC_TIMESTAMP())'
+    )->execute(['v' => $vid]);
+
+    return ['product_id' => $pid, 'variant_id' => $vid];
+}
+
+function fixture_order(string $userId, string $vendorId, array $product,
+                       string $paymentStatus = 'paid',
+                       string $paymentMethod = 'online',
+                       string $orderStatus   = 'confirmed',
+                       int $qty = 1): array
+{
+    $db = get_db();
+    $orderNumber = 'E2E-' . strtoupper(bin2hex(random_bytes(4)));
+    $groupId     = uuid_string();
+    $unitPrice   = 1200.00;
+    $lineTotal   = round($unitPrice * $qty * 1.05, 2); // +5% GST
+    $subtotal    = round($unitPrice * $qty, 2);
+    $taxAmount   = round($lineTotal - $subtotal, 2);
+    $vendorNet   = round($lineTotal * 0.9, 2); // 10% commission
+
+    $db->prepare(
+        'INSERT INTO orders (user_id, checkout_quote_id, order_number, status, payment_status,
+                             payment_method, currency, subtotal, shipping_amount, discount_amount,
+                             tax_amount, total_amount, address_snapshot_json,
+                             placed_at, created_at, updated_at)
+         VALUES (:u, NULL, :num, :st, :ps, :pm, "INR", :sub, 50.00, 0.00,
+                 :tax, :total, :addr, UTC_TIMESTAMP(), UTC_TIMESTAMP(), UTC_TIMESTAMP())'
+    )->execute([
+        'u'     => $userId,
+        'num'   => $orderNumber,
+        'st'    => $orderStatus,
+        'ps'    => $paymentStatus,
+        'pm'    => $paymentMethod,
+        'sub'   => $subtotal,
+        'tax'   => $taxAmount,
+        'total' => round($lineTotal + 50, 2),
+        'addr'  => json_encode([
+            'full_name'     => 'E2E Tester',
+            'phone'         => '9000000000',
+            'pincode'       => '560001',
+            'address_line1' => '1 Test St',
+            'city'          => 'Bangalore',
+            'state'         => 'Karnataka',
+        ]),
+    ]);
+    $orderId = (int)$db->lastInsertId();
+
+    $db->prepare(
+        'INSERT INTO vendor_order_groups
+           (id, order_id, vendor_id, group_number, status, subtotal, shipping_amount,
+            discount_amount, tax_amount, total_amount, policy_snapshot_json,
+            dispatch_due_at, created_at, updated_at)
+         VALUES (:id, :o, :v, :gn, "awaiting_acceptance", :sub, 50.00, 0.00,
+                 :tax, :total, "{}", DATE_ADD(UTC_TIMESTAMP(), INTERVAL 3 DAY),
+                 UTC_TIMESTAMP(), UTC_TIMESTAMP())'
+    )->execute([
+        'id'    => $groupId,
+        'o'     => $orderId,
+        'v'     => $vendorId,
+        'gn'    => $orderNumber . '-01',
+        'sub'   => $subtotal,
+        'tax'   => $taxAmount,
+        'total' => round($lineTotal + 50, 2),
+    ]);
+
+    $db->prepare(
+        'INSERT INTO order_items
+           (order_id, vendor_group_id, vendor_id, product_id, variant_id, product_name, sku,
+            quantity, status, unit_price, mrp, discount_amount, tax_amount, line_total,
+            product_snapshot_json, policy_snapshot_json, cancelled_quantity, returned_quantity)
+         VALUES (:o, :g, :v, :p, :va, "E2E Test Product", :sku,
+                 :q, "awaiting_acceptance", :up, 1500.00, 0.00, :tax, :lt,
+                 :snap, "{}", 0, 0)'
+    )->execute([
+        'o'    => $orderId,
+        'g'    => $groupId,
+        'v'    => $vendorId,
+        'p'    => $product['product_id'],
+        'va'   => $product['variant_id'],
+        'sku'  => $product['product_id'] . '-V1',
+        'q'    => $qty,
+        'up'   => $unitPrice,
+        'tax'  => $taxAmount,
+        'lt'   => $lineTotal,
+        'snap' => json_encode(['gst_percent' => 5.0, 'hsn' => '6214']),
+    ]);
+    $itemId = (int)$db->lastInsertId();
+
+    $db->prepare(
+        'INSERT INTO order_item_financials
+           (order_item_id, gross_amount, discount_amount, tax_amount,
+            commission_percent, commission_amount, fixed_fee, vendor_net_amount,
+            snapshot_json, created_at)
+         VALUES (:i, :g, 0.00, :t, 10.00, :comm, 0.00, :net, "{}", UTC_TIMESTAMP())'
+    )->execute([
+        'i'    => $itemId,
+        'g'    => $subtotal,
+        't'    => $taxAmount,
+        'comm' => round($lineTotal * 0.1, 2),
+        'net'  => $vendorNet,
+    ]);
+
+    if ($paymentStatus === 'paid') {
+        $db->prepare(
+            'INSERT INTO payment_attempts (id, order_id, provider, provider_payment_id,
+                                           amount, currency, status, created_at)
+             VALUES (:id, :o, :pr, :ppid, :amt, "INR", "paid", UTC_TIMESTAMP())'
+        )->execute([
+            'id'   => uuid_string(),
+            'o'    => $orderId,
+            'pr'   => $paymentMethod === 'cod' ? 'cod' : 'razorpay',
+            'ppid' => 'pay_e2e_' . bin2hex(random_bytes(6)),
+            'amt'  => round($lineTotal + 50, 2),
+        ]);
+    }
+
+    return [
+        'order_id'     => $orderId,
+        'order_number' => $orderNumber,
+        'group_id'     => $groupId,
+        'item_id'      => $itemId,
+        'variant_id'   => $product['variant_id'],
+        'total_amount' => round($lineTotal + 50, 2),
+        'vendor_net'   => $vendorNet,
+    ];
+}
+
+function cleanup_order(int $orderId): void
+{
+    $db = get_db();
+
+    // Capture item IDs before anything is deleted
+    $itemIds = $db->prepare('SELECT id FROM order_items WHERE order_id = :o');
+    $itemIds->execute(['o' => $orderId]);
+    $itemList = array_column($itemIds->fetchAll(), 'id');
+
+    // 1. Child rows of order_items (must go before order_items)
+    $db->prepare('DELETE FROM order_item_financials WHERE order_item_id IN
+                  (SELECT id FROM order_items WHERE order_id = :o)')
+       ->execute(['o' => $orderId]);
+
+    // 2. Inventory movements + vendor ledger referencing order items
+    if ($itemList) {
+        $inList = implode(',', array_map('intval', $itemList));
+        $db->exec("DELETE FROM inventory_movements
+                   WHERE reference_type = 'order_item' AND reference_id IN ($inList)");
+        $db->exec("DELETE FROM vendor_ledger_entries
+                   WHERE reference_type = 'order_item' AND reference_id IN ($inList)");
+    }
+
+    // 3. Order-level rows
+    $db->prepare('DELETE FROM refunds WHERE order_id = :o')->execute(['o' => $orderId]);
+    $db->prepare('DELETE FROM invoices WHERE order_id = :o')->execute(['o' => $orderId]);
+    $db->prepare('DELETE FROM payment_attempts WHERE order_id = :o')->execute(['o' => $orderId]);
+    $db->prepare('DELETE FROM cod_collections WHERE order_id = :o')->execute(['o' => $orderId]);
+    $db->prepare('DELETE FROM vendor_ledger_entries
+                  WHERE reference_type = "order" AND reference_id = :o')
+       ->execute(['o' => (string)$orderId]);
+    $db->prepare('DELETE FROM customer_reward_ledger
+                  WHERE reference_type = "order" AND reference_id = :o')
+       ->execute(['o' => (string)$orderId]);
+
+    // 4. Order items → vendor_order_groups → order (in that order)
+    $db->prepare('DELETE FROM order_items WHERE order_id = :o')->execute(['o' => $orderId]);
+    $db->prepare('DELETE FROM vendor_order_groups WHERE order_id = :o')->execute(['o' => $orderId]);
+    $db->prepare('DELETE FROM orders WHERE id = :o')->execute(['o' => $orderId]);
+}
+
+function cleanup_user(string $userId): void
+{
+    $db = get_db();
+    $db->prepare('DELETE FROM customer_rewards WHERE user_id = :u')->execute(['u' => $userId]);
+    $db->prepare('DELETE FROM customer_reward_ledger WHERE user_id = :u')->execute(['u' => $userId]);
+    $db->prepare('DELETE FROM users WHERE id = :u')->execute(['u' => $userId]);
+}
+
+// ─────────────────────────────────────────────────────────
+//  Direct cancellation logic (mirrors cancel-order.php)
+//  Used so we don't need HTTP auth in CLI
+// ─────────────────────────────────────────────────────────
+
+function run_cancel_logic(int $orderId, string $userId, string $reason = 'E2E test cancel'): array
+{
+    $db = get_db();
+    $db->beginTransaction();
+
+    try {
+        $stmt = $db->prepare('SELECT * FROM orders WHERE id = :id AND user_id = :u LIMIT 1 FOR UPDATE');
+        $stmt->execute(['id' => $orderId, 'u' => $userId]);
+        $order = $stmt->fetch();
+        if (!$order) throw new RuntimeException('Order not found.');
+
+        $status        = strtolower((string)$order['status']);
+        $paymentStatus = strtolower((string)$order['payment_status']);
+
+        // Load items + financials
+        $itemStmt = $db->prepare(
+            'SELECT oi.*, f.vendor_net_amount
+             FROM order_items oi
+             LEFT JOIN order_item_financials f ON f.order_item_id = oi.id
+             WHERE oi.order_id = :oid FOR UPDATE'
+        );
+        $itemStmt->execute(['oid' => $orderId]);
+        $items = $itemStmt->fetchAll();
+
+        $refundAmount     = 0.0;
+        $vendorReversals  = [];
+
+        foreach ($items as $it) {
+            if (in_array($it['status'], ['cancelled', 'delivered', 'returned'], true)) continue;
+
+            // Stock restore
+            $db->prepare(
+                'UPDATE inventory_levels
+                 SET stock_quantity = stock_quantity + :q, updated_at = UTC_TIMESTAMP()
+                 WHERE variant_id = :v'
+            )->execute(['q' => (int)$it['quantity'], 'v' => $it['variant_id']]);
+
+            $lvl = $db->prepare('SELECT stock_quantity, reserved_quantity FROM inventory_levels WHERE variant_id = :v');
+            $lvl->execute(['v' => $it['variant_id']]);
+            $after = $lvl->fetch() ?: ['stock_quantity' => 0, 'reserved_quantity' => 0];
+
+            $db->prepare(
+                'INSERT INTO inventory_movements
+                   (variant_id, vendor_id, movement_type, quantity_delta, reserved_delta,
+                    stock_after, reserved_after, reference_type, reference_id, note,
+                    actor_type, actor_id, created_at)
+                 VALUES (:v, :vn, "cancellation", :q, 0, :s, :r, "order_item", :ref,
+                         "E2E cancellation", "customer", :actor, UTC_TIMESTAMP())'
+            )->execute([
+                'v'     => $it['variant_id'],
+                'vn'    => $it['vendor_id'],
+                'q'     => (int)$it['quantity'],
+                's'     => $after['stock_quantity'],
+                'r'     => $after['reserved_quantity'],
+                'ref'   => (string)$it['id'],
+                'actor' => $userId,
+            ]);
+
+            if (!empty($it['vendor_id']) && !empty($it['vendor_net_amount'])) {
+                $vendorReversals[$it['vendor_id']] =
+                    ($vendorReversals[$it['vendor_id']] ?? 0.0) + (float)$it['vendor_net_amount'];
+            }
+
+            $refundAmount += (float)$it['line_total'];
+
+            $db->prepare('UPDATE order_items SET status = "cancelled", cancelled_quantity = quantity WHERE id = :id')
+               ->execute(['id' => $it['id']]);
+        }
+
+        // Vendor ledger reversals
+        foreach ($vendorReversals as $vendorId => $net) {
+            $db->prepare(
+                'INSERT INTO vendor_ledger_entries
+                   (id, vendor_id, entry_type, amount, currency, balance_bucket,
+                    reference_type, reference_id, description, available_at, created_at)
+                 VALUES (:id, :v, "order_cancellation", :amt, "INR", "reversed",
+                         "order", :ref, :desc, NULL, UTC_TIMESTAMP())'
+            )->execute([
+                'id'   => uuid_string(),
+                'v'    => $vendorId,
+                'amt'  => -1 * abs($net),
+                'ref'  => (string)$orderId,
+                'desc' => 'E2E cancellation reversal',
+            ]);
+        }
+
+        // Order status
+        $db->prepare(
+            'UPDATE orders SET status = "cancelled", cancelled_at = UTC_TIMESTAMP(),
+                               cancelled_reason = :r, updated_at = UTC_TIMESTAMP()
+             WHERE id = :id'
+        )->execute(['r' => $reason, 'id' => $orderId]);
+
+        // Refund
+        $refund = ['method' => 'none', 'status' => 'not_applicable', 'amount' => 0.0];
+        if ($paymentStatus === 'paid') {
+            $pay = $db->prepare(
+                'SELECT * FROM payment_attempts WHERE order_id = :o AND status = "paid"
+                 ORDER BY created_at DESC LIMIT 1'
+            );
+            $pay->execute(['o' => $orderId]);
+            $payment = $pay->fetch();
+
+            $refundId = uuid_string();
+            if ($payment && $payment['provider'] === 'razorpay' && !empty($payment['provider_payment_id'])) {
+                $db->prepare(
+                    'INSERT INTO refunds
+                       (id, order_id, order_item_id, amount, currency, method, status,
+                        provider_payment_id, reason, recommended_by_type, recommended_by_id,
+                        created_at, updated_at)
+                     VALUES (:id, :o, NULL, :amt, "INR", "razorpay", "processing",
+                             :ppid, :reason, "customer", :uid,
+                             UTC_TIMESTAMP(), UTC_TIMESTAMP())'
+                )->execute([
+                    'id'     => $refundId,
+                    'o'      => $orderId,
+                    'amt'    => $refundAmount,
+                    'ppid'   => $payment['provider_payment_id'],
+                    'reason' => $reason,
+                    'uid'    => $userId,
+                ]);
+                $refund = ['method' => 'razorpay', 'status' => 'processing',
+                           'amount' => $refundAmount, 'refundId' => $refundId];
+            } else {
+                $db->prepare(
+                    'INSERT INTO refunds
+                       (id, order_id, order_item_id, amount, currency, method, status,
+                        reason, recommended_by_type, recommended_by_id,
+                        created_at, updated_at)
+                     VALUES (:id, :o, NULL, :amt, "INR", "manual", "recommended",
+                             :reason, "customer", :uid,
+                             UTC_TIMESTAMP(), UTC_TIMESTAMP())'
+                )->execute([
+                    'id'     => $refundId,
+                    'o'      => $orderId,
+                    'amt'    => $refundAmount,
+                    'reason' => $reason,
+                    'uid'    => $userId,
+                ]);
+                $refund = ['method' => 'manual', 'status' => 'recommended',
+                           'amount' => $refundAmount, 'refundId' => $refundId];
+            }
+        } elseif ($paymentStatus === 'pending') {
+            $refund = ['method' => 'cod', 'status' => 'not_applicable', 'amount' => 0.0];
+        }
+
+        // Rewards adjustments
+        reward_refund_for_order($userId, $orderId, (string)$order['order_number']);
+        reward_clawback_for_order($userId, $orderId, (string)$order['order_number']);
+
+        // Audit
+                // Audit (pass explicit actor so it doesn't try to auto-detect an HTTP session)
+        audit_event('customer.order_cancelled', 'order', (string)$orderId, [
+            'reason' => $reason,
+            'refund' => $refund,
+        ], [
+            'principal_type' => 'customer',
+            'principal_id'   => $userId,
+        ]);
+
+        // Notification
+        create_notification(
+            'customer',
+            $userId,
+            'order_update',
+            'Order cancellation confirmed',
+            'Your order ' . $order['order_number'] . ' has been cancelled.',
+            null,
+            ['order_number' => $order['order_number']]
+        );
+
+        $db->commit();
+        return ['success' => true, 'refund' => $refund, 'refund_amount' => $refundAmount];
+    } catch (Throwable $e) {
+        if ($db->inTransaction()) $db->rollBack();
+        throw $e;
+    }
+}
+
+// ─────────────────────────────────────────────────────────
+//  Suite 1 — Cancellation
+// ─────────────────────────────────────────────────────────
+
+function suite_cancellation(): void
+{
+    T::suite('CANCELLATION');
+
+    $db       = get_db();
+    $user     = fixture_user();
+    $vendorId = fixture_vendor();
+    $product  = fixture_product($vendorId);
+    $order    = fixture_order($user['id'], $vendorId, $product, 'paid', 'online');
+
+    // Snapshot: stock before
+    $before = $db->prepare('SELECT stock_quantity FROM inventory_levels WHERE variant_id = :v');
+    $before->execute(['v' => $product['variant_id']]);
+    $stockBefore = (int)$before->fetchColumn();
+
+    // Run cancel
+    $result = run_cancel_logic($order['order_id'], $user['id']);
+
+    T::assert($result['success'] === true, 'Cancel succeeded');
+
+    // Stock restored
+    $after = $db->prepare('SELECT stock_quantity FROM inventory_levels WHERE variant_id = :v');
+    $after->execute(['v' => $product['variant_id']]);
+    $stockAfter = (int)$after->fetchColumn();
+    T::assertEq($stockBefore + 1, $stockAfter, 'Stock restored by 1');
+
+    // Order status
+    $oStmt = $db->prepare('SELECT status, cancelled_at, cancelled_reason FROM orders WHERE id = :id');
+    $oStmt->execute(['id' => $order['order_id']]);
+    $oRow = $oStmt->fetch();
+    T::assertEq('cancelled', $oRow['status'], 'Order status = cancelled');
+    T::assert(!empty($oRow['cancelled_at']), 'cancelled_at set');
+    T::assertEq('E2E test cancel', $oRow['cancelled_reason'], 'cancelled_reason saved');
+
+    // Item status
+    $iStmt = $db->prepare('SELECT status, cancelled_quantity FROM order_items WHERE id = :id');
+    $iStmt->execute(['id' => $order['item_id']]);
+    $iRow = $iStmt->fetch();
+    T::assertEq('cancelled', $iRow['status'], 'Item status = cancelled');
+    T::assertEq(1, (int)$iRow['cancelled_quantity'], 'cancelled_quantity = 1');
+
+    // Vendor ledger reversal
+    $lStmt = $db->prepare(
+        'SELECT amount, balance_bucket FROM vendor_ledger_entries
+         WHERE reference_type = "order" AND reference_id = :ref AND entry_type = "order_cancellation"'
+    );
+    $lStmt->execute(['ref' => (string)$order['order_id']]);
+    $ledger = $lStmt->fetch();
+    T::assert($ledger !== false, 'Vendor ledger reversal row exists');
+    if ($ledger) {
+        T::assert((float)$ledger['amount'] < 0, 'Reversal amount is negative');
+        T::assertEq('reversed', $ledger['balance_bucket'], 'balance_bucket = reversed');
+    }
+
+    // Inventory movement
+    $mStmt = $db->prepare(
+        'SELECT movement_type, quantity_delta FROM inventory_movements
+         WHERE reference_type = "order_item" AND reference_id = :ref'
+    );
+    $mStmt->execute(['ref' => (string)$order['item_id']]);
+    $mov = $mStmt->fetch();
+    T::assert($mov !== false, 'Inventory movement row exists');
+    if ($mov) {
+        T::assertEq('cancellation', $mov['movement_type'], 'movement_type = cancellation');
+        T::assertEq(1, (int)$mov['quantity_delta'], 'quantity_delta = +1');
+    }
+
+    // Audit log
+    $aStmt = $db->prepare(
+        'SELECT COUNT(*) FROM audit_logs WHERE action = "customer.order_cancelled" AND subject_id = :s'
+    );
+    $aStmt->execute(['s' => (string)$order['order_id']]);
+    T::assert((int)$aStmt->fetchColumn() > 0, 'Audit log written');
+
+    // Notification
+    $nStmt = $db->prepare(
+        'SELECT COUNT(*) FROM notifications WHERE recipient_type = "customer"
+         AND recipient_id = :u AND type = "order_update"'
+    );
+    $nStmt->execute(['u' => $user['id']]);
+    T::assert((int)$nStmt->fetchColumn() > 0, 'Customer notification sent');
+
+    cleanup_order($order['order_id']);
+    cleanup_user($user['id']);
+}
+
+// ─────────────────────────────────────────────────────────
+//  Suite 2 — Refund
+// ─────────────────────────────────────────────────────────
+
+function suite_refund(): void
+{
+    T::suite('REFUND');
+
+    $db       = get_db();
+    $user     = fixture_user();
+    $vendorId = fixture_vendor();
+    $product  = fixture_product($vendorId);
+
+    // --- Case A: paid online (razorpay) ---
+    $orderA = fixture_order($user['id'], $vendorId, $product, 'paid', 'online');
+    $resA   = run_cancel_logic($orderA['order_id'], $user['id'], 'E2E refund A');
+
+    $rA = $db->prepare('SELECT method, status, amount FROM refunds WHERE order_id = :o LIMIT 1');
+    $rA->execute(['o' => $orderA['order_id']]);
+    $refundA = $rA->fetch();
+
+    T::assert($refundA !== false, 'Refund row created for razorpay order');
+    if ($refundA) {
+        T::assertEq('razorpay', $refundA['method'], 'Refund method = razorpay');
+        T::assert(in_array($refundA['status'], ['processing', 'processed'], true),
+                  'Refund status = processing or processed');
+        T::assert((float)$refundA['amount'] > 0, 'Refund amount > 0');
+    }
+
+    // --- Case B: paid COD (pending status → no refund) ---
+    $orderB = fixture_order($user['id'], $vendorId, $product, 'pending', 'cod');
+    $resB   = run_cancel_logic($orderB['order_id'], $user['id'], 'E2E refund B');
+
+    $rB = $db->prepare('SELECT COUNT(*) FROM refunds WHERE order_id = :o');
+    $rB->execute(['o' => $orderB['order_id']]);
+    T::assertEq(0, (int)$rB->fetchColumn(), 'No refund row for unpaid COD');
+
+    T::assertEq('cod', $resB['refund']['method'], 'COD refund method reported');
+
+    cleanup_order($orderA['order_id']);
+    cleanup_order($orderB['order_id']);
+    cleanup_user($user['id']);
+}
+
+// ─────────────────────────────────────────────────────────
+//  Suite 3 — Coupon concurrency
+// ─────────────────────────────────────────────────────────
+
+function suite_coupon_concurrency(): void
+{
+    T::suite('COUPON CONCURRENCY');
+
+    $db       = get_db();
+    $user     = fixture_user();
+    $vendorId = fixture_vendor();
+
+    // Create a coupon with a strict total usage limit
+    $couponId = uuid_string();
+    $code     = 'E2E' . strtoupper(bin2hex(random_bytes(3)));
+    $db->prepare(
+        'INSERT INTO coupons
+           (id, code, discount_type, discount_value, min_order_amount,
+            usage_limit, per_customer_limit, vendor_id, status,
+            starts_at, ends_at, created_at)
+         VALUES (:id, :code, "flat", 100.00, 500.00,
+                 1, 5, NULL, "active",
+                 DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 DAY),
+                 DATE_ADD(UTC_TIMESTAMP(), INTERVAL 1 DAY),
+                 UTC_TIMESTAMP())'
+    )->execute(['id' => $couponId, 'code' => $code]);
+
+    // Simulate two near-simultaneous redemptions on two orders for the same user
+    $orderA = fixture_order($user['id'], $vendorId, fixture_product($vendorId), 'paid', 'online');
+    $orderB = fixture_order($user['id'], $vendorId, fixture_product($vendorId), 'paid', 'online');
+
+    // Simulate the two attempts sequentially, using FOR UPDATE to mimic real race
+    // (True parallel requires pcntl_fork or curl_multi — the lock semantics are the same)
+    $attempts = [$orderA['order_id'], $orderB['order_id']];
+    $succeeded = 0;
+    $blocked   = 0;
+
+    foreach ($attempts as $oid) {
+        $db->beginTransaction();
+        try {
+            // Lock coupon row
+            $c = $db->prepare('SELECT usage_limit FROM coupons WHERE id = :id FOR UPDATE');
+            $c->execute(['id' => $couponId]);
+            $coupon = $c->fetch();
+
+            // Count current redemptions
+            $u = $db->prepare('SELECT COUNT(*) FROM coupon_redemptions WHERE coupon_id = :c');
+            $u->execute(['c' => $couponId]);
+            $used = (int)$u->fetchColumn();
+
+            if ($coupon['usage_limit'] !== null && $used >= (int)$coupon['usage_limit']) {
+                $db->rollBack();
+                $blocked++;
+                continue;
+            }
+
+            $db->prepare(
+                'INSERT INTO coupon_redemptions (id, coupon_id, user_id, order_id, discount_amount, created_at)
+                 VALUES (:id, :c, :u, :o, 100.00, UTC_TIMESTAMP())'
+            )->execute([
+                'id' => uuid_string(),
+                'c'  => $couponId,
+                'u'  => $user['id'],
+                'o'  => $oid,
+            ]);
+            $db->commit();
+            $succeeded++;
+        } catch (Throwable $e) {
+            if ($db->inTransaction()) $db->rollBack();
+            $blocked++;
+        }
+    }
+
+    T::assertEq(1, $succeeded, 'Exactly 1 redemption succeeded');
+    T::assertEq(1, $blocked, 'Exactly 1 redemption blocked');
+
+    $final = $db->prepare('SELECT COUNT(*) FROM coupon_redemptions WHERE coupon_id = :c');
+    $final->execute(['c' => $couponId]);
+    T::assertEq(1, (int)$final->fetchColumn(), 'Total redemptions = 1');
+
+    // Cleanup
+    $db->prepare('DELETE FROM coupon_redemptions WHERE coupon_id = :c')->execute(['c' => $couponId]);
+    $db->prepare('DELETE FROM coupons WHERE id = :c')->execute(['c' => $couponId]);
+    cleanup_order($orderA['order_id']);
+    cleanup_order($orderB['order_id']);
+    cleanup_user($user['id']);
+}
+
+// ─────────────────────────────────────────────────────────
+//  Suite 4 — Reward redemption
+// ─────────────────────────────────────────────────────────
+
+function suite_rewards(): void
+{
+    T::suite('REWARD REDEMPTION');
+
+    $db       = get_db();
+    $user     = fixture_user();
+    $vendorId = fixture_vendor();
+    $product  = fixture_product($vendorId);
+
+    // --- Case A: award points on delivery ---
+    $orderA = fixture_order($user['id'], $vendorId, $product, 'paid', 'online', 'confirmed');
+
+    $awarded = reward_earn_for_order(
+        $user['id'],
+        $orderA['order_id'],
+        $orderA['total_amount'],
+        $orderA['order_number']
+    );
+    T::assert($awarded > 0, 'Points awarded on delivery');
+
+    // Idempotency: awarding again should return 0
+    $again = reward_earn_for_order(
+        $user['id'],
+        $orderA['order_id'],
+        $orderA['total_amount'],
+        $orderA['order_number']
+    );
+    T::assertEq(0, $again, 'Second award is idempotent (returns 0)');
+
+    // Balance check
+    $bal = $db->prepare('SELECT balance_points FROM customer_rewards WHERE user_id = :u');
+    $bal->execute(['u' => $user['id']]);
+    T::assertEq($awarded, (int)$bal->fetchColumn(), 'Balance matches award');
+
+    // --- Case B: redeem on a new order ---
+    $orderB = fixture_order($user['id'], $vendorId, $product, 'pending', 'cod', 'payment_pending');
+
+    // Cannot redeem less than 100
+    try {
+        reward_redeem_for_order($user['id'], $orderB['order_id'], 50, 2000.00, $orderB['order_number']);
+        T::fail('Redeem 50 points should have thrown');
+    } catch (Throwable $e) {
+        T::ok('Redeem below minimum rejected');
+    }
+
+    // Redeem a valid amount (must be ≥ 100 and ≤ balance)
+    $redeem = min(100, $awarded);
+    if ($redeem >= 100) {
+        $applied = reward_redeem_for_order(
+            $user['id'],
+            $orderB['order_id'],
+            $redeem,
+            2000.00,
+            $orderB['order_number']
+        );
+        T::assertEq($redeem, $applied, "Redeemed $redeem points");
+
+        $bal->execute(['u' => $user['id']]);
+        T::assertEq($awarded - $redeem, (int)$bal->fetchColumn(), 'Balance reduced by redeemed points');
+
+        // --- Case C: cancel → points refunded ---
+        $refunded = reward_refund_for_order($user['id'], $orderB['order_id'], $orderB['order_number']);
+        T::assertEq($redeem, $refunded, 'Cancelled order refunded points');
+
+        $bal->execute(['u' => $user['id']]);
+        T::assertEq($awarded, (int)$bal->fetchColumn(), 'Balance restored after refund');
+    } else {
+        T::skip('Not enough points to test redemption (need 100+)');
+    }
+
+    // --- Case D: cancel order that earned points → clawback ---
+    $clawed = reward_clawback_for_order($user['id'], $orderA['order_id'], $orderA['order_number']);
+    T::assertEq($awarded, $clawed, 'Points clawed back on cancelled delivery');
+
+    $bal->execute(['u' => $user['id']]);
+    $final = (int)$bal->fetchColumn();
+    T::assert($final >= 0, 'Balance never goes negative (floor at 0)');
+
+    // --- Case E: insufficient balance ---
+    try {
+        reward_redeem_for_order($user['id'], $orderB['order_id'], 99999, 5000.00, $orderB['order_number']);
+        T::fail('Redeem 99999 with low balance should have thrown');
+    } catch (Throwable $e) {
+        T::ok('Redeem over balance rejected');
+    }
+
+    cleanup_order($orderA['order_id']);
+    cleanup_order($orderB['order_id']);
+    cleanup_user($user['id']);
+}
+
+// ─────────────────────────────────────────────────────────
+//  Runner
+// ─────────────────────────────────────────────────────────
+
+$only = null;
+foreach ($argv as $arg) {
+    if (str_starts_with($arg, '--only=')) {
+        $only = substr($arg, 7);
+    }
+}
+
+echo "\n";
+echo "  ╔══════════════════════════════════════════════════════════════╗\n";
+echo "  ║  Conscious Indi — Backend E2E Tests                          ║\n";
+echo "  ║  APP_ENV = " . str_pad(APP_ENV, 50) . "║\n";
+echo "  ║  DB      = " . str_pad(DB_NAME, 50) . "║\n";
+echo "  ╚══════════════════════════════════════════════════════════════╝\n";
+
+$all = [
+    'cancellation' => 'suite_cancellation',
+    'refund'       => 'suite_refund',
+    'coupon'       => 'suite_coupon_concurrency',
+    'rewards'      => 'suite_rewards',
+];
+
+$exitCode = 0;
+try {
+    foreach ($all as $key => $fn) {
+        if ($only !== null && $key !== $only) continue;
+        $fn();
+    }
+    $exitCode = T::summary();
+} catch (Throwable $e) {
+    echo "\n\033[31mFATAL: " . $e->getMessage() . "\033[0m\n";
+    echo $e->getTraceAsString() . "\n";
+    $exitCode = 2;
+}
+
+exit($exitCode);

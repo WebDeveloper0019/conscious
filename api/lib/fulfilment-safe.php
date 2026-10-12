@@ -1,6 +1,10 @@
 <?php
 declare(strict_types=1);
 
+
+require_once __DIR__ . '/rewards.php';
+
+
 function sync_group_from_packages_safe(string $groupId): void
 {
     $db = get_db();
@@ -42,7 +46,7 @@ function sync_group_from_packages_safe(string $groupId): void
         'new_item_status' => $next, 'item_group' => $groupId,
     ]);
 
-    if ($next === 'delivered') {
+        if ($next === 'delivered') {
         $db->prepare(
             'UPDATE vendor_ledger_entries le
              JOIN order_items oi ON le.reference_type="order_item" AND CAST(le.reference_id AS UNSIGNED)=oi.id
@@ -55,6 +59,30 @@ function sync_group_from_packages_safe(string $groupId): void
                    WHERE g2.id=oi.vendor_group_id AND (o.payment_status="paid" OR c.status="collected")
                )'
         )->execute(['eligible_group' => $groupId]);
+
+        // ── Award reward points to customer ──
+        $ordStmt = $db->prepare('SELECT user_id, total_amount, order_number FROM orders WHERE id = :oid');
+        $ordStmt->execute(['oid' => $current['order_id']]);
+        $ord = $ordStmt->fetch();
+        if ($ord) {
+            $awarded = reward_earn_for_order(
+                (string)$ord['user_id'],
+                (int)$current['order_id'],
+                (float)$ord['total_amount'],
+                (string)$ord['order_number']
+            );
+            if ($awarded > 0) {
+                create_notification(
+                    'customer',
+                    (string)$ord['user_id'],
+                    'reward_earned',
+                    'You earned reward points!',
+                    $awarded . ' points added to your account.',
+                    null,
+                    ['order_id' => $current['order_id'], 'points' => $awarded]
+                );
+            }
+        }
     }
 
     $openStmt = $db->prepare(

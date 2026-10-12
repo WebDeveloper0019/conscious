@@ -162,127 +162,94 @@
 
 <script>
 (function () {
-  const tbody = document.getElementById('invoices-tbody');
-  const searchInput = document.getElementById('invoice-search');
+  'use strict';
 
+  const tbody       = document.getElementById('invoices-tbody');
+  const searchInput = document.getElementById('invoice-search');
   if (!tbody) return;
 
   let invoices = [];
 
   function escapeHtml(value) {
-    return String(value ?? '').replace(/[&<>"']/g, function (char) {
-      return {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      }[char];
-    });
+    return String(value ?? '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
   }
 
   function formatDate(value) {
     if (!value) return '—';
+    const d = new Date(String(value).replace(' ', 'T') + (String(value).includes('Z') ? '' : 'Z'));
+    return Number.isNaN(d.getTime()) ? '—'
+      : d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
 
-    const date = new Date(value);
-    return Number.isNaN(date.getTime())
-      ? '—'
-      : date.toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric'
-        });
+  function money(v) {
+    return '₹' + Number(v || 0).toLocaleString('en-IN', {
+      minimumFractionDigits: 2, maximumFractionDigits: 2
+    });
   }
 
   function renderInvoices() {
-    const query = (searchInput?.value || '').trim().toLowerCase();
+    const q = (searchInput?.value || '').trim().toLowerCase();
 
-    const filtered = invoices.filter(invoice =>
-      [
-        invoice.invoiceNumber,
-        invoice.orderNumber,
-        invoice.date,
-        invoice.amount,
-        invoice.status
-      ].some(value => String(value ?? '').toLowerCase().includes(query))
+    const filtered = invoices.filter(inv =>
+      [inv.invoiceNumber, inv.orderNumber, inv.date, inv.amount, inv.orderStatus]
+        .some(v => String(v ?? '').toLowerCase().includes(q))
     );
 
     if (!filtered.length) {
       tbody.innerHTML = `
         <tr>
           <td colspan="6" class="text-center py-4">
-            ${invoices.length
-              ? 'No matching invoices found.'
-              : 'No orders found for your account.'}
+            ${invoices.length ? 'No matching invoices found.' : 'No invoices yet.'}
           </td>
         </tr>`;
       return;
     }
 
-    tbody.innerHTML = filtered.map(invoice => `
+    tbody.innerHTML = filtered.map(inv => `
       <tr>
-        <td>${escapeHtml(invoice.invoiceNumber || 'Not issued')}</td>
-        <td>#${escapeHtml(invoice.orderNumber || invoice.orderId)}</td>
-        <td>${escapeHtml(formatDate(invoice.date))}</td>
-        <td>₹${Number(invoice.amount || 0).toLocaleString('en-IN', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        })}</td>
-        <td>${invoice.gstAmount == null
-          ? '—'
-          : '₹' + Number(invoice.gstAmount).toLocaleString('en-IN')}</td>
-      
-<td>
-  <div class="ci-table-actions">
-    <button
-      class="ci-table-action-btn"
-      type="button"
-      data-invoice-download="${Number(invoice.orderId)}"
-      title="Download invoice as PDF"
-      aria-label="Download invoice as PDF">
-      <i class="fa-solid fa-download"></i>
-    </button>
-
-    <button
-      class="ci-table-action-btn"
-      type="button"
-      data-invoice-view="${Number(invoice.orderId)}"
-      title="View invoice"
-      aria-label="View invoice">
-      <i class="fa-solid fa-eye"></i>
-    </button>
-  </div>
-</td>
+        <td>${escapeHtml(inv.invoiceNumber || 'Not issued')}</td>
+        <td>#${escapeHtml(inv.orderNumber || inv.orderId)}</td>
+        <td>${escapeHtml(formatDate(inv.date))}</td>
+        <td>${money(inv.amount)}</td>
+        <td>${inv.gstAmount == null ? '—' : money(inv.gstAmount)}</td>
+        <td>
+          <div class="ci-table-actions">
+            <button class="ci-table-action-btn" type="button"
+                    data-invoice-download="${escapeHtml(inv.invoiceNumber || '')}"
+                    title="Download invoice as PDF" aria-label="Download invoice">
+              <i class="fa-solid fa-download"></i>
+            </button>
+            <button class="ci-table-action-btn" type="button"
+                    data-invoice-view="${escapeHtml(inv.invoiceNumber || '')}"
+                    title="Preview invoice" aria-label="Preview invoice">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </td>
       </tr>
     `).join('');
   }
 
   async function loadInvoices() {
     try {
-      const response = await fetch('../api/user/invoices.php', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Accept': 'application/json'
-        }
+      const res  = await fetch('../api/user/invoices.php?limit=50', {
+        method: 'GET', credentials: 'include',
+        headers: { 'Accept': 'application/json' }
       });
+      const data = await res.json();
 
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.message || 'Unable to load invoices.');
-      }
+      if (!res.ok || !data.success) throw new Error(data.message || 'Unable to load invoices.');
 
       invoices = Array.isArray(data.invoices) ? data.invoices : [];
       renderInvoices();
-
-    } catch (error) {
-      console.error('Invoice loading error:', error);
-
+    } catch (err) {
+      console.error('Invoice loading error:', err);
       tbody.innerHTML = `
         <tr>
           <td colspan="6" class="text-center py-4">
-            Unable to load invoices. Please log in again or check the API.
+            Unable to load invoices. Please log in again.
           </td>
         </tr>`;
     }
@@ -290,143 +257,33 @@
 
   searchInput?.addEventListener('input', renderInvoices);
 
- 
-tbody.addEventListener('click', async function (event) {
-  const viewButton = event.target.closest('[data-invoice-view]');
-  const downloadButton = event.target.closest('[data-invoice-download]');
+  tbody.addEventListener('click', function (event) {
+    const viewBtn     = event.target.closest('[data-invoice-view]');
+    const downloadBtn = event.target.closest('[data-invoice-download]');
+    if (!viewBtn && !downloadBtn) return;
 
-  if (!viewButton && !downloadButton) return;
-
-  const button = viewButton || downloadButton;
-  const orderId = Number(
-    button.dataset.invoiceView || button.dataset.invoiceDownload
-  );
-
-  const order = invoices.find(
-    item => Number(item.orderId) === orderId
-  );
-
-  if (!order || !order.orderNumber) {
-    alert('Order information could not be found.');
-    return;
-  }
-
-  // Open synchronously to avoid browser popup blocking.
-  const invoiceWindow = window.open('', '_blank');
-
-  if (!invoiceWindow) {
-    alert('Please allow pop-ups for this localhost site.');
-    return;
-  }
-
-  invoiceWindow.document.write(
-    '<p style="font-family:Arial;padding:24px">Loading invoice...</p>'
-  );
-  invoiceWindow.document.close();
-
-  try {
-    const response = await fetch(
-      '../api/user/invoice.php?orderNumber=' +
-        encodeURIComponent(order.orderNumber),
-      {
-        method: 'GET',
-        credentials: 'include',
-        headers: { Accept: 'application/json' }
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok || !data.success || !data.invoice) {
-      throw new Error(data.message || 'Could not load invoice details.');
+    const invoiceNumber = (viewBtn?.dataset.invoiceView || downloadBtn?.dataset.invoiceDownload || '').trim();
+    if (!invoiceNumber) {
+      alert('Invoice number not available. Try refreshing the page.');
+      return;
     }
 
-    const invoice = data.invoice;
-
-    const escapeHtml = value =>
-      String(value ?? '').replace(/[&<>"']/g, char => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      })[char]);
-
-    const money = value =>
-      '₹' + Number(value || 0).toLocaleString('en-IN', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-
-    const items = Array.isArray(invoice.items) ? invoice.items : [];
-
-    const itemRows = items.map(item => `
-      <tr>
-        <td>${escapeHtml(item.productName)}</td>
-        <td>${Number(item.quantity) || 0}</td>
-        <td>${money(item.unitPrice)}</td>
-        <td>${money(item.lineTotal)}</td>
-      </tr>
-    `).join('');
-
-    invoiceWindow.document.open();
-    invoiceWindow.document.write(`<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Order ${escapeHtml(invoice.orderNumber)}</title>
-<style>
-body{font-family:Arial,sans-serif;color:#222;max-width:850px;margin:35px auto;padding:20px}
-h1{margin-bottom:5px}
-.muted{color:#666}
-table{width:100%;border-collapse:collapse;margin-top:25px}
-th,td{padding:12px;border-bottom:1px solid #ddd;text-align:left}
-th{background:#f5f5f5}
-.total{text-align:right;margin-top:25px;font-size:20px;font-weight:bold}
-.actions{margin-bottom:25px}
-button{padding:10px 16px;cursor:pointer;margin-right:8px}
-@media print{.actions{display:none}body{margin:0;padding:10px}}
-</style>
-</head>
-<body>
-<div class="actions">
-  <button onclick="window.print()">Print / Save as PDF</button>
-  <button onclick="window.close()">Close</button>
-</div>
-<h1>Conscious Indi</h1>
-<p class="muted">Order invoice details</p>
-<hr>
-<p><strong>Order number:</strong> ${escapeHtml(invoice.orderNumber)}</p>
-<p><strong>Order date:</strong> ${escapeHtml(invoice.orderDate || '—')}</p>
-<p><strong>Status:</strong> ${escapeHtml(invoice.status || '—')}</p>
-<table>
-<thead>
-<tr><th>Product</th><th>Qty</th><th>Unit price</th><th>Total</th></tr>
-</thead>
-<tbody>
-${itemRows || '<tr><td colspan="4">No item details available.</td></tr>'}
-</tbody>
-</table>
-<div class="total">Total: ${money(invoice.totalAmount)}</div>
-<p class="muted">This document shows the order details available in the system. It is not a GST tax invoice unless the required tax and invoice information has been issued and verified.</p>
-</body>
-</html>`);
-    invoiceWindow.document.close();
-
-    if (downloadButton) {
-      invoiceWindow.onload = () => invoiceWindow.print();
+    if (typeof window.downloadInvoice !== 'function') {
+      alert('Invoice PDF module is not loaded. Please refresh the page.');
+      return;
     }
-  } catch (error) {
-    console.error('Invoice details error:', error);
-    invoiceWindow.close();
-    alert(error.message || 'Unable to open invoice details.');
-  }
-});
+
+    if (viewBtn) {
+      window.downloadInvoice(invoiceNumber, 'number', { preview: true });
+    } else {
+      window.downloadInvoice(invoiceNumber, 'number');
+    }
+  });
 
   loadInvoices();
 })();
 </script>
+<script src="../assets/js/invoice-pdf.js"></script>
 
 </body>
 </html>

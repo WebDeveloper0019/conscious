@@ -1,4 +1,3 @@
-
 (function () {
     'use strict';
 
@@ -9,14 +8,27 @@
 
     let isBusy = false;
 
+    // Read CSRF token from the cookie set by the backend
+    function getCsrfToken() {
+        const match = document.cookie.match(/(?:^|;\s*)ci_csrf=([^;]+)/);
+        return match ? decodeURIComponent(match[1]) : '';
+    }
+
     async function apiRequest(action, data = {}) {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        };
+
+        // CSRF header required for POST requests
+        if (action) {
+            headers['X-CSRF-Token'] = getCsrfToken();
+        }
+
         const response = await fetch(API_URL, {
             method: action ? 'POST' : 'GET',
             credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
+            headers: headers,
             body: action
                 ? JSON.stringify({ action, ...data })
                 : undefined
@@ -60,7 +72,7 @@
 
         if (redeemValueElement) {
             redeemValueElement.textContent =
-                '₹' + Number(points / 10).toLocaleString('en-IN');
+                '₹' + Number(points).toLocaleString('en-IN');
         }
 
         const summary = document.querySelector('.ci-dash-page-sub');
@@ -176,6 +188,8 @@
         });
     }
 
+    // Redeem buttons on the rewards page are INFORMATIONAL only.
+    // Actual redemption happens at checkout, where an order_id exists.
     function setupRedeemButtons(balance) {
         const buttons = document.querySelectorAll(
             '.ci-chart-card button'
@@ -189,54 +203,21 @@
                 return;
             }
 
-            const cardText = button.parentElement?.parentElement
-                ?.textContent || '';
-
-            const match = cardText.match(
-                /([\d,]+)\s*Points/i
-            );
-
-            if (!match) return;
-
-            const points = Number(match[1].replace(/,/g, ''));
-
-            button.dataset.rewardPoints = String(points);
-            button.disabled = isBusy || points > balance;
+            button.disabled = balance < 100;
+            button.textContent = balance < 100
+                ? 'Earn 100+ points to redeem'
+                : 'Redeem at Checkout';
 
             if (!button.dataset.rewardListener) {
                 button.dataset.rewardListener = 'true';
 
-                button.addEventListener('click', async function (event) {
+                button.addEventListener('click', function (event) {
                     event.preventDefault();
-
-                    const requestedPoints = Number(
-                        button.dataset.rewardPoints
+                    alert(
+                        'Reward points are redeemed during checkout.\n\n' +
+                        'Add items to your cart and use the "Apply Reward Points" ' +
+                        'option on the checkout page.'
                     );
-
-                    if (!requestedPoints || isBusy) return;
-
-                    if (!confirm(
-                        `Redeem ${requestedPoints.toLocaleString('en-IN')} points? ` +
-                        'This will deduct points from your rewards balance.'
-                    )) {
-                        return;
-                    }
-
-                    isBusy = true;
-
-                    try {
-                        await apiRequest('redeem', {
-                            points: requestedPoints
-                        });
-
-                        alert('Points redeemed successfully.');
-                        await loadRewards();
-                    } catch (error) {
-                        alert('Could not redeem points: ' + error.message);
-                    } finally {
-                        isBusy = false;
-                        loadRewards();
-                    }
                 });
             }
         });
@@ -273,13 +254,8 @@
         }
     }
 
+    // GET already runs expiry — no need for a separate POST
     async function init() {
-        try {
-            await apiRequest('expire');
-        } catch (error) {
-            console.warn('Reward expiry check:', error.message);
-        }
-
         await loadRewards();
     }
 

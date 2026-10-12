@@ -23,6 +23,11 @@ function create_auth_session(string $principalType,string $principalId,bool $rem
     return ['session_id'=>$id,'csrf_token'=>$csrf,'expires_in'=>$ttl];
 }
 function current_auth_session(bool $required=true): ?array {
+    // CLI mode: there is never an HTTP session to inspect. Never kill
+    // the process with a JSON 401 — just return null so callers that
+    // pass $required=false (audit_event, record_status_change) work.
+    if (PHP_SAPI === 'cli') return null;
+
     static $loaded=false,$session=null; if($loaded){if(!$session&&$required)json_response(401,['success'=>false,'message'=>'Please sign in again.']);return $session;} $loaded=true;
     $token=session_token(); if(!$token){if($required)json_response(401,['success'=>false,'message'=>'Your session has expired. Please sign in again.']);return null;}
     $stmt=get_db()->prepare('SELECT * FROM auth_sessions WHERE token_hash=:hash AND revoked_at IS NULL AND expires_at>UTC_TIMESTAMP() LIMIT 1');
@@ -32,6 +37,15 @@ function current_auth_session(bool $required=true): ?array {
     return $session;
 }
 function require_principal(array $allowedTypes=[]): array {
+    // CLI mode (tests, cron, migrations) — return synthetic system principal
+    if (PHP_SAPI === 'cli') {
+        return [
+            'session_id' => '00000000-0000-0000-0000-000000000000',
+            'type'       => 'system',
+            'id'         => '00000000-0000-0000-0000-000000000000',
+        ];
+    }
+
     $session=current_auth_session(true);
     if($allowedTypes&&!in_array($session['principal_type'],$allowedTypes,true))json_response(403,['success'=>false,'message'=>'You do not have permission to access this resource.']);
     $tables=['customer'=>'users','vendor'=>'vendors','admin'=>'admin_users','influencer'=>'influencers'];
