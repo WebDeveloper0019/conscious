@@ -88,20 +88,27 @@ function checkout_place_v2(): void
 
 
         // Redeem reward points atomically
-if ($rewardPoints > 0) {
-    try {
-        reward_redeem(
-            $userId,
-            $rewardPoints,
-            'order',
-            (string)$orderId,
-            'Redeemed on order #' . $orderNumber
-        );
-    } catch (Throwable $e) {
-        // Insufficient / race → abort the whole order
-        throw new RuntimeException('Reward redemption failed: ' . $e->getMessage());
-    }
-}
+        // ── Redeem reward points atomically ──
+        // Uses the canonical reward_redeem_for_order() helper.
+        // Called after order creation, inside the same transaction,
+        // so a failed redeem rolls back the whole order.
+        $rewardPoints = (int)($pricing['reward_points_redeem'] ?? 0);
+        if ($rewardPoints > 0) {
+            try {
+                $applied = reward_redeem_for_order(
+                    $userId,
+                    $orderId,
+                    $rewardPoints,
+                    (float)$quote['subtotal'],
+                    (string)$orderNumber
+                );
+                if ($applied !== $rewardPoints) {
+                    throw new RuntimeException('Reward points changed. Please try again.');
+                }
+            } catch (Throwable $e) {
+                throw new RuntimeException('Reward redemption failed: ' . $e->getMessage());
+            }
+        }
 
         $groupsByVendor = [];
         foreach ($cart['items'] as $item) {

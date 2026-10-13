@@ -93,7 +93,17 @@ function confirm_online_order(int $orderId, string $paymentReference): void {
         error_log('Invoice generation failed for order ' . $orderId . ': ' . $e->getMessage());
     }
 
-    record_status_change('order', (string)$orderId, $row['status'], 'confirmed', 'Online payment confirmed');
+     record_status_change('order', (string)$orderId, $row['status'], 'confirmed', 'Online payment confirmed');
+
+    // ⭐ Referral reward — fires on buyer's first paid order only
+    if (!empty($row['user_id'])) {
+        require_once __DIR__ . '/referral.php';
+        try {
+            referral_reward_on_first_order((string)$row['user_id']);
+        } catch (Throwable $e) {
+            error_log('Referral reward failed for user ' . $row['user_id'] . ': ' . $e->getMessage());
+        }
+    }
 }
 
 function fail_online_order(int $orderId, string $message): void {
@@ -107,5 +117,15 @@ function fail_online_order(int $orderId, string $message): void {
        ->execute(['id' => $orderId]);
     $db->prepare('UPDATE payment_attempts SET status="failed",failure_message=:message,updated_at=UTC_TIMESTAMP() WHERE order_id=:order AND status="created"')
        ->execute(['message' => mb_substr($message, 0, 500), 'order' => $orderId]);
-    record_status_change('order', (string)$orderId, $order['status'], 'payment_failed', $message);
+       record_status_change('order', (string)$orderId, $row['status'], 'confirmed', 'Online payment confirmed');
+
+    // ⭐ Referral reward — fires on buyer's first paid order only
+    if (!empty($row['user_id'])) {
+        require_once __DIR__ . '/referral.php';
+        try {
+            referral_reward_on_first_order((string)$row['user_id']);
+        } catch (Throwable $e) {
+            error_log('Referral reward failed for user ' . $row['user_id'] . ': ' . $e->getMessage());
+        }
+    }
 }

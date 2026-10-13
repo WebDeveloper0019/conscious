@@ -23,8 +23,7 @@
      sidebar + a real app topbar (same shell as the vendor panel).
      A "Back to Store" link lives in the profile menu instead.
      ════════════════════════════════════════════ -->
-<div class="ci-dash-wrap">
-
+<div class="ci-dash-wrap" data-referral-page>
 <aside class="ci-dash-sidebar" id="ci-sidebar">
   <div class="ci-sidebar-brand">
     <div class="ci-sidebar-brand-icon"><i class="fa-solid fa-user"></i></div>
@@ -113,30 +112,27 @@
   
 <div class="ci-stat-card saffron">
   <div class="ci-stat-icon"><i class="fa-solid fa-users"></i></div>
-  <div class="ci-stat-value">12</div>
+  <div class="ci-stat-value" data-ref-stat="totalReferred">0</div>
   <div class="ci-stat-label">Friends Referred</div>
-  <div class="ci-stat-change up"><i class="fa-solid fa-arrow-trend-up"></i> +3 this month <span class="vs">vs last month</span></div>
 </div>
   
 <div class="ci-stat-card green">
   <div class="ci-stat-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div>
-  <div class="ci-stat-value">₹6,000</div>
+  <div class="ci-stat-value" data-ref-stat="totalEarned">₹0</div>
   <div class="ci-stat-label">Total Earned</div>
-  <div class="ci-stat-change up"><i class="fa-solid fa-arrow-trend-up"></i> via referrals <span class="vs">vs last month</span></div>
 </div>
   
 <div class="ci-stat-card navy">
   <div class="ci-stat-icon"><i class="fa-solid fa-clock"></i></div>
-  <div class="ci-stat-value">3</div>
+  <div class="ci-stat-value" data-ref-stat="pending">0</div>
   <div class="ci-stat-label">Pending Signup</div>
-  <div class="ci-stat-change up"><i class="fa-solid fa-arrow-trend-up"></i> Awaiting first purchase <span class="vs">vs last month</span></div>
 </div>
   
 <div class="ci-stat-card gold">
   <div class="ci-stat-icon"><i class="fa-solid fa-gift"></i></div>
-  <div class="ci-stat-value">₹500</div>
+  <div class="ci-stat-value" data-ref-stat="rewardPer">₹500</div>
   <div class="ci-stat-label">Your Reward</div>
-  <div class="ci-stat-change up"><i class="fa-solid fa-arrow-trend-up"></i> Per successful referral <span class="vs">vs last month</span></div>
+</div>
 </div>
 </div>
 <div class="row g-4">
@@ -145,52 +141,21 @@
       <div style="font-size:1.5rem;font-weight:800;margin-bottom:6px;">Your Referral Link</div>
       <p style="opacity:.8;margin-bottom:16px;">Share this link. When a friend signs up and makes their first purchase, you both earn ₹500!</p>
       <div style="display:flex;gap:8px;margin-bottom:16px;">
-        <input type="text" value="consciousindi.com/ref/RAHUL2025" class="ci-form-input" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:white;flex:1;" readonly />
-        <button class="bc-btn bc-btn-primary bc-btn-sm" style="white-space:nowrap;"><i class="fa-solid fa-copy"></i> Copy</button>
+      <input type="text" data-ref-link class="ci-form-input" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:white;flex:1;" readonly placeholder="Loading…" />
+<button data-ref-copy class="bc-btn bc-btn-primary bc-btn-sm" style="white-space:nowrap;"><i class="fa-solid fa-copy"></i> Copy</button>
       </div>
       <div class="d-flex gap-2 flex-wrap">
-        <button class="bc-btn bc-btn-outline bc-btn-sm" style="border-color:rgba(255,255,255,.3);color:white;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
-        <button class="bc-btn bc-btn-outline bc-btn-sm" style="border-color:rgba(255,255,255,.3);color:white;"><i class="fa-solid fa-envelope"></i> Email</button>
-        <button class="bc-btn bc-btn-outline bc-btn-sm" style="border-color:rgba(255,255,255,.3);color:white;"><i class="fa-brands fa-instagram"></i> Instagram</button>
+       <button data-ref-share="whatsapp" class="bc-btn bc-btn-outline bc-btn-sm" style="border-color:rgba(255,255,255,.3);color:white;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+<button data-ref-share="email" class="bc-btn bc-btn-outline bc-btn-sm" style="border-color:rgba(255,255,255,.3);color:white;"><i class="fa-solid fa-envelope"></i> Email</button>
+<button data-ref-share="instagram" class="bc-btn bc-btn-outline bc-btn-sm" style="border-color:rgba(255,255,255,.3);color:white;"><i class="fa-brands fa-instagram"></i> Instagram</button>
       </div>
     </div>
   </div>
   <div class="col-lg-6">
     <div class="ci-widget-card">
       <div class="ci-widget-head"><span class="ci-widget-title">Referred Friends</span></div>
-      <div class="ci-widget-body">
-        
-<div class="ci-activity-item">
-  <div class="ci-activity-icon green"><i class="fa-solid fa-user"></i></div>
-  <div class="ci-activity-text">
-    <div class="ci-activity-desc"><strong>Priya S.</strong> — Signed up &amp; purchased · Reward: +₹500</div>
-    <div class="ci-activity-time">Jun 11, 2025</div>
-  </div>
-</div>
-        
-<div class="ci-activity-item">
-  <div class="ci-activity-icon green"><i class="fa-solid fa-user"></i></div>
-  <div class="ci-activity-text">
-    <div class="ci-activity-desc"><strong>Ananya M.</strong> — Signed up &amp; purchased · Reward: +₹500</div>
-    <div class="ci-activity-time">Jun 5, 2025</div>
-  </div>
-</div>
-        
-<div class="ci-activity-item">
-  <div class="ci-activity-icon saffron"><i class="fa-solid fa-user"></i></div>
-  <div class="ci-activity-text">
-    <div class="ci-activity-desc"><strong>Raj K.</strong> — Signed up, awaiting first purchase</div>
-    <div class="ci-activity-time">Jun 13, 2025</div>
-  </div>
-</div>
-        
-<div class="ci-activity-item">
-  <div class="ci-activity-icon navy"><i class="fa-solid fa-user"></i></div>
-  <div class="ci-activity-text">
-    <div class="ci-activity-desc"><strong>Meera T.</strong> — Invited, not yet signed up</div>
-    <div class="ci-activity-time">Jun 12, 2025</div>
-  </div>
-</div>
+          <div class="ci-widget-body" data-ref-friends>
+        <div class="ci-empty-state" style="padding:24px;text-align:center;color:var(--text-muted);">Loading…</div>
       </div>
     </div>
   </div>
@@ -210,6 +175,7 @@
 <!-- Conscious Indi Main JS -->
 <script src="../assets/js/bharatcraft.js"></script>
 <script src="../assets/js/customer-panel.js"></script>
+<script src="../assets/js/referral.js"></script>
 
 </body>
 </html>
