@@ -164,16 +164,46 @@
     }
   }
 
+   function isLogoutTrigger(el) {
+    if (!el) return false;
+    // Explicit attribute
+    if (el.matches('[data-customer-logout]')) return true;
+    // Any link/button whose visible text says "Log Out" / "Logout"
+    var tag = (el.tagName || '').toLowerCase();
+    if (tag !== 'a' && tag !== 'button') return false;
+    var text = (el.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    if (text === 'log out' || text === 'logout') return true;
+    // Links whose href points at logout / login
+    var href = (el.getAttribute('href') || '').toLowerCase();
+    if (href.includes('logout')) return true;
+    return false;
+  }
+
   function initLogout() {
-    document.querySelectorAll('a[data-customer-logout]').forEach(function (link) {
-      link.addEventListener('click', async function (e) {
-        e.preventDefault();
-        try {
-          await fetch('../api/auth/logout.php', { method: 'POST', credentials: 'same-origin', headers: { Accept: 'application/json', 'X-CSRF-Token': csrfToken() } });
-        } finally {
-          window.location.href = '../login.html';
-        }
-      });
+    // Event delegation — survives re-renders, works on every page,
+    // matches attribute OR visible text OR href pattern.
+    document.addEventListener('click', async function (e) {
+      var trigger = e.target.closest('a, button');
+      if (!isLogoutTrigger(trigger)) return;
+
+      e.preventDefault();
+
+      try {
+        await fetch('../api/auth/logout.php', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Accept': 'application/json',
+            'X-CSRF-Token': csrfToken()
+          }
+        });
+      } catch (err) {
+        // Silent — still redirect even if network hiccups
+        console.warn('Logout request failed:', err);
+      }
+
+      // Force redirect even if 401 (session already gone)
+      window.location.href = '../login.html';
     });
   }
 
