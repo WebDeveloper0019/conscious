@@ -235,6 +235,10 @@ try {
     $rem->execute(['oid' => $order['id']]);
     $isFullCancel = ((int)$rem->fetchColumn() === 0);
 
+      if ($isFullCancel && (float)$order['shipping_amount'] > 0) {
+        $refundAmount += (float)$order['shipping_amount'];
+    }
+
     // ────────── 7. Vendor group status update ──────────
     $affectedGroups = array_unique(array_filter(array_column($itemsToCancel, 'vendor_group_id')));
     foreach ($affectedGroups as $gid) {

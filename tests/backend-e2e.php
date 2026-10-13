@@ -476,6 +476,12 @@ function run_cancel_logic(int $orderId, string $userId, string $reason = 'E2E te
                 'desc' => 'E2E cancellation reversal',
             ]);
         }
+           // Shipping refund on full cancel (mirrors cancel-order.php)
+        $remStmt = $db->prepare('SELECT COUNT(*) FROM order_items WHERE order_id = ? AND status NOT IN ("cancelled","returned")');
+        $remStmt->execute([$orderId]);
+        $isFullCancel = ((int)$remStmt->fetchColumn() === 0);
+        if ($isFullCancel && (float)$order['shipping_amount'] > 0) {
+            $refundAmount += (float)$order['shipping_amount'];}
 
         // Order status
         $db->prepare(
@@ -639,6 +645,18 @@ function suite_cancellation(): void
     if ($mov) {
         T::assertEq('cancellation', $mov['movement_type'], 'movement_type = cancellation');
         T::assertEq(1, (int)$mov['quantity_delta'], 'quantity_delta = +1');
+    }
+        // Shipping refund assertion — full cancel must include shipping
+    $orderRow = $db->prepare('SELECT shipping_amount FROM orders WHERE id = ?');
+    $orderRow->execute([$order['order_id']]);
+    $shipAmt = (float)$orderRow->fetchColumn();
+    if ($shipAmt > 0) {
+        $refStmt = $db->prepare('SELECT amount FROM refunds WHERE order_id = ? AND source = "cancellation" LIMIT 1');
+        $refStmt->execute([$order['order_id']]);
+        $refundAmt = (float)$refStmt->fetchColumn();
+        // line_total (1260) + shipping (50) = 1310 expected
+        T::assert($refundAmt >= 1300,
+                  'Shipping refunded on full cancel (refund ≈ 1310)');
     }
 
     // Audit log
