@@ -888,8 +888,98 @@ function suite_rewards(): void
 }
 
 // ─────────────────────────────────────────────────────────
-//  Runner
+//  Suite 5 — Concurrent cancel (double-fire safety)
 // ─────────────────────────────────────────────────────────
+
+function suite_concurrent_cancel(): void
+{
+    T::suite('CONCURRENT CANCEL — double-fire safety');
+
+    $db       = get_db();
+    $user     = fixture_user();
+    $vendorId = fixture_vendor();
+    $product  = fixture_product($vendorId);
+    $order    = fixture_order($user['id'], $vendorId, $product, 'paid', 'online');
+
+    // Snapshot stock BEFORE
+    $beforeStmt = $db->prepare('SELECT stock_quantity FROM inventory_levels WHERE variant_id = ?');
+    $beforeStmt->execute([$product['variant_id']]);
+    $stockBefore = (int)$beforeStmt->fetchColumn();
+
+    // Fire two cancels back-to-back. Row-level FOR UPDATE must serialize them.
+    $first  = null;
+    $second = null;
+
+    try {
+        $first = run_cancel_logic($order['order_id'], $user['id'], 'first');
+    } catch (Throwable $e) {
+        $first = ['error' => $e->getMessage()];
+    }
+
+    try {
+        $second = run_cancel_logic($order['order_id'], $user['id'], 'second');
+    } catch (Throwable $e) {
+        $second = ['error' => $e->getMessage()];
+    }
+
+    T::assert(($first['success'] ?? false) === true,
+              'First cancel succeeded');
+
+    $secondRejected = (($second['success'] ?? false) === false) || !empty($second['error']);
+    T::assert($secondRejected, 'Second cancel rejected (already cancelled)');
+
+    // Exactly ONE refund row for this order
+    $rCount = $db->prepare(
+        'SELECT COUNT(*) FROM refunds WHERE order_id = ? AND source = "cancellation"'
+    );
+    $rCount->execute([$order['order_id']]);
+    T::assertEq(1, (int)$rCount->fetchColumn(), 'Exactly 1 refund row (no double-refund)');
+
+    // Exactly ONE stock restore movement
+    $mCount = $db->prepare(
+        "SELECT COUNT(*) FROM inventory_movements
+         WHERE reference_type = 'order_item'
+           AND reference_id = ?
+           AND movement_type = 'cancellation'"
+    );
+    $mCount->execute([(string)$order['item_id']]);
+    T::assertEq(1, (int)$mCount->fetchColumn(), 'Exactly 1 stock restore movement');
+
+    // Exactly ONE ledger reversal for the order
+    $lCount = $db->prepare(
+        "SELECT COUNT(*) FROM vendor_ledger_entries
+         WHERE reference_type = 'order'
+           AND reference_id = ?
+           AND entry_type = 'order_cancellation'"
+    );
+    $lCount->execute([(string)$order['order_id']]);
+    T::assertEq(1, (int)$lCount->fetchColumn(), 'Exactly 1 ledger reversal row');
+
+    // Original order_earning entry is marked reversed (if it existed)
+    $origStmt = $db->prepare(
+        "SELECT status FROM vendor_ledger_entries
+         WHERE reference_type = 'order_item'
+           AND reference_id = ?
+           AND entry_type = 'order_earning'
+         LIMIT 1"
+    );
+    $origStmt->execute([(string)$order['item_id']]);
+    $origStatus = $origStmt->fetchColumn();
+    if ($origStatus !== false) {
+        T::assertEq('reversed', (string)$origStatus, 'Original earning marked reversed');
+    } else {
+        T::skip('No original order_earning entry (test order had no ledger)');
+    }
+
+    // Stock never double-restored
+    $afterStmt = $db->prepare('SELECT stock_quantity FROM inventory_levels WHERE variant_id = ?');
+    $afterStmt->execute([$product['variant_id']]);
+    $stockAfter = (int)$afterStmt->fetchColumn();
+    T::assertEq($stockBefore + 1, $stockAfter, 'Stock restored exactly once (+1, not +2)');
+
+    cleanup_order($order['order_id']);
+    cleanup_user($user['id']);
+}
 
 $only = null;
 foreach ($argv as $arg) {
@@ -910,6 +1000,8 @@ $all = [
     'refund'       => 'suite_refund',
     'coupon'       => 'suite_coupon_concurrency',
     'rewards'      => 'suite_rewards',
+       'concurrent'   => 'suite_concurrent_cancel',
+
 ];
 
 $exitCode = 0;
@@ -926,3 +1018,4 @@ try {
 }
 
 exit($exitCode);
+
