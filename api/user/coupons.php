@@ -1,4 +1,3 @@
-
 <?php
 
 require_once __DIR__ . '/../lib/helpers.php';
@@ -49,10 +48,15 @@ try {
             ) AS customer_redemptions
 
         FROM coupons c
+        LEFT JOIN vendors v ON v.id = c.vendor_id
 
         WHERE c.status = 'active'
           AND c.starts_at <= UTC_TIMESTAMP()
           AND c.ends_at > UTC_TIMESTAMP()
+          AND (
+              c.vendor_id IS NULL
+              OR (v.status = 'active' AND v.verification_status = 'approved')
+          )
 
           AND (
               c.usage_limit IS NULL
@@ -93,7 +97,7 @@ try {
             ? (float) $row['max_discount_amount']
             : null;
 
-        $couponSavings = $discountType === 'percentage'
+        $couponSavings = $discountType === 'percent'
             ? $maxDiscount
             : $discountValue;
 

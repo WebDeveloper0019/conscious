@@ -57,12 +57,12 @@ try {
     $upcomingBookings = [];
 
     if (dashboard_has_columns($db, 'orders', ['id','user_id','order_number','status','total_amount','created_at'])) {
-        $stmt = $db->prepare("SELECT COUNT(*), COALESCE(SUM(total_amount),0), SUM(status NOT IN ('delivered','cancelled','refunded')), SUM(status='delivered') FROM orders WHERE user_id=:user");
+        $stmt = $db->prepare("SELECT COUNT(*), COALESCE(SUM(IF(payment_status='paid',total_amount,0)),0), SUM(status NOT IN ('delivered','completed_with_exceptions','cancelled','payment_failed')), SUM(status='delivered') FROM orders WHERE user_id=:user");
         $stmt->execute(['user'=>$userId]);
         $row = $stmt->fetch(PDO::FETCH_NUM) ?: [0,0,0,0];
         $stats['orders']=(int)$row[0]; $stats['totalSpent']=(float)$row[1]; $stats['activeOrders']=(int)$row[2]; $stats['deliveredOrders']=(int)$row[3];
 
-      
+
 $stmt = $db->prepare(
     'SELECT * FROM orders
      WHERE user_id = :user
@@ -254,7 +254,7 @@ foreach ($stmt->fetchAll() as $order) {
             ORDER BY c.ends_at ASC
             LIMIT 10";
 
-   
+
 
         $stmt=$db->prepare($sql); $stmt->execute(['user'=>$userId,'user2'=>$userId]);
         foreach($stmt->fetchAll() as $c) $coupons[]=[
@@ -267,7 +267,7 @@ foreach ($stmt->fetchAll() as $order) {
         ];
     }
     if (dashboard_has_columns($db,'saved_vendors',['user_id','vendor_id','created_at']) && dashboard_has_columns($db,'vendors',['id','display_name'])) {
-        $stmt=$db->prepare('SELECT v.id,v.display_name,v.owner_name,v.vendor_type,sv.created_at AS saved_at FROM saved_vendors sv JOIN vendors v ON v.id=sv.vendor_id WHERE sv.user_id=:user ORDER BY sv.created_at DESC LIMIT 10'); $stmt->execute(['user'=>$userId]);
+        $stmt=$db->prepare('SELECT v.id,v.display_name,v.owner_name,v.vendor_type,sv.created_at AS saved_at FROM saved_vendors sv JOIN vendors v ON v.id=sv.vendor_id WHERE sv.user_id=:user AND v.status="active" AND v.verification_status="approved" ORDER BY sv.created_at DESC LIMIT 10'); $stmt->execute(['user'=>$userId]);
         foreach($stmt->fetchAll() as $v) $savedVendors[]=['id'=>$v['id'],'displayName'=>$v['display_name'],'ownerName'=>$v['owner_name']??null,'vendorType'=>$v['vendor_type']??null,'savedAt'=>$v['saved_at']];
     }
     if (dashboard_has_columns($db,'events',['id','title','starts_at','ends_at','status'])) {

@@ -9,7 +9,7 @@ $db=get_db();
 $method=$_SERVER['REQUEST_METHOD']??'GET';
 
 if($method==='GET'){
-  
+
 $unread = isset($_GET['unread'])
     ? filter_var($_GET['unread'], FILTER_VALIDATE_BOOLEAN)
     : null;
@@ -20,7 +20,7 @@ $offset = ($page - 1) * $limit;
 
 $typeFilter = trim((string)($_GET['type'] ?? ''));
 
-   
+
 $sql = "SELECT id, type, title, message, action_url, metadata_json, read_at, created_at
         FROM notifications
         WHERE recipient_type = :recipient_type

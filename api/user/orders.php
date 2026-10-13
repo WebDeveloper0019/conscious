@@ -16,8 +16,8 @@ $params = ['user' => $userId];
 
 if ($status !== '' && $status !== 'all') {
     $allowedStatuses = [
-        'pending', 'processing', 'shipped',
-        'delivered', 'cancelled', 'returned'
+        'payment_pending', 'payment_failed', 'confirmed',
+        'delivered', 'completed_with_exceptions', 'cancelled'
     ];
 
     if (!in_array($status, $allowedStatuses, true)) {

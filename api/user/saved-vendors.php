@@ -16,12 +16,10 @@ if ($method === 'GET') {
                 sv.created_at AS saved_at
          FROM saved_vendors sv
          JOIN vendors v ON v.id=sv.vendor_id
-
-WHERE sv.user_id = :user
-  AND v.status = 'active'
-  AND v.verification_status = 'approved'
-ORDER BY sv.created_at DESC
-
+         WHERE sv.user_id=:user
+           AND v.status='active'
+           AND v.verification_status='approved'
+         ORDER BY sv.created_at DESC"
     );
     $stmt->execute(['user'=>$userId]);
     $vendors=[];

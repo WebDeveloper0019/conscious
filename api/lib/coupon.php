@@ -50,5 +50,5 @@ function find_customer_coupon_by_id(PDO $db, string $couponId, string $userId, a
     $stmt->execute(['id'=>$couponId]);
     $code=$stmt->fetchColumn();
     if(!$code)json_response(422,['success'=>false,'message'=>'Coupon is no longer available.']);
-    return find_customer_coupon($db,(string)$code,$userId,$vendorIds,$cartSubtotal,false);
+    return find_customer_coupon($db,(string)$code,$userId,$vendorIds,$cartSubtotal,true);
 }
