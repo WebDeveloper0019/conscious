@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/../lib/rewards.php';
+require_once __DIR__ . '/../lib/invoice.php';
+
 function vendor_cod_collections_v2(): void
 {
     send_cors_headers();
@@ -118,6 +121,14 @@ function vendor_cod_collections_v2(): void
                      WHERE id=:paid_order AND payment_status="cod_pending"'
                 )->execute(['paid_order' => $group['order_id']]);
                 record_status_change('order', (string)$group['order_id'], 'confirmed', 'confirmed', 'Cash on delivery collected.');
+                try { invoice_generate_for_order((int)$group['order_id']); }
+                catch (Throwable $e) { error_log('COD invoice generation failed: ' . $e->getMessage()); }
+                $awarded = reward_award_if_eligible((int)$group['order_id']);
+                if ($awarded > 0) {
+                    create_notification('customer', (string)$group['user_id'], 'reward_earned',
+                        'You earned reward points!', $awarded . ' points added to your account.', null,
+                        ['order_id' => $group['order_id'], 'points' => $awarded]);
+                }
             }
         }
 

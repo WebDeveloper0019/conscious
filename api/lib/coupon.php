@@ -29,14 +29,14 @@ function find_customer_coupon(PDO $db, string $code, string $userId, array $vend
         json_response(422,['success'=>false,'message'=>'Minimum order amount for this coupon has not been met.']);
     }
 
-    $usage=$db->prepare("SELECT COUNT(*) FROM coupon_redemptions WHERE coupon_id=:coupon");
+    $usage=$db->prepare("SELECT COUNT(*) FROM coupon_redemptions WHERE coupon_id=:coupon AND status='active'");
     $usage->execute(['coupon'=>$coupon['id']]);
     $totalUsage=(int)$usage->fetchColumn();
     if($coupon['usage_limit']!==null && $totalUsage >= (int)$coupon['usage_limit']){
         json_response(422,['success'=>false,'message'=>'This coupon has reached its total usage limit.']);
     }
 
-    $customerUsage=$db->prepare("SELECT COUNT(*) FROM coupon_redemptions WHERE coupon_id=:coupon AND user_id=:user");
+    $customerUsage=$db->prepare("SELECT COUNT(*) FROM coupon_redemptions WHERE coupon_id=:coupon AND user_id=:user AND status='active'");
     $customerUsage->execute(['coupon'=>$coupon['id'],'user'=>$userId]);
     if($customerUsage->fetchColumn() >= (int)$coupon['per_customer_limit']){
         json_response(422,['success'=>false,'message'=>'You have reached the usage limit for this coupon.']);
