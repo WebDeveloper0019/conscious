@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- Migration 0013: Cancellation + Refunds
 -- Adds: refunds table, cancelled_reason on orders, cancellation audit trail
 
@@ -30,6 +31,12 @@ CREATE TABLE IF NOT EXISTS `refunds` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 2. Add cancelled_reason to orders (idempotent)
+=======
+-- Cancellation metadata. The refunds table already exists from migration 0005.
+SET @OLD_SQL_MODE = @@SQL_MODE;
+SET SQL_MODE = 'STRICT_TRANS_TABLES';
+
+>>>>>>> origin/main
 SET @col_exists := (
   SELECT COUNT(*) FROM information_schema.COLUMNS
   WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'orders' AND COLUMN_NAME = 'cancelled_reason'
@@ -40,6 +47,7 @@ SET @sql := IF(@col_exists = 0,
 );
 PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
+<<<<<<< HEAD
 -- 3. Add payment_method to orders (idempotent) — so refund branch doesn't guess
 SET @col_exists := (
   SELECT COUNT(*) FROM information_schema.COLUMNS
@@ -52,3 +60,6 @@ SET @sql := IF(@col_exists = 0,
 PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
 SET SQL_MODE = @OLD_SQL_MODE;
+=======
+SET SQL_MODE = @OLD_SQL_MODE;
+>>>>>>> origin/main

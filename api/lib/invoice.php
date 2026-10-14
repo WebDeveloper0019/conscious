@@ -123,6 +123,12 @@ function invoice_generate_for_order(int $orderId): array
     $oStmt->execute(['oid' => $orderId]);
     $order = $oStmt->fetch();
     if (!$order) throw new RuntimeException('Order not found for invoice.');
+<<<<<<< HEAD
+=======
+    if ((string)$order['payment_status'] !== 'paid') {
+        throw new RuntimeException('Invoice can be issued only after payment is complete.');
+    }
+>>>>>>> origin/main
 
     $iStmt = $db->prepare(
         'SELECT oi.*, f.commission_percent, f.commission_amount, f.vendor_net_amount
@@ -172,9 +178,15 @@ function invoice_generate_for_order(int $orderId): array
         $snap = json_decode((string)($it['product_snapshot_json'] ?? '{}'), true) ?: [];
         $gstPct = (float)($snap['gst_percent'] ?? invoice_setting('default_gst_percent', 5));
 
+<<<<<<< HEAD
         // line_total is already tax-inclusive based on checkout-place logic
         $lineTotal = (float)$it['line_total'];
         $taxAmount = round($lineTotal * $gstPct / (100 + $gstPct), 2);
+=======
+        // Checkout persists the authoritative per-line tax amount.
+        $lineTotal = (float)$it['line_total'];
+        $taxAmount = round((float)$it['tax_amount'], 2);
+>>>>>>> origin/main
         $taxable   = round($lineTotal - $taxAmount, 2);
 
         $cgst = $sgst = $igst = 0.0;
@@ -302,4 +314,8 @@ function invoice_to_json(array $row): array
             'amountInWords'  => invoice_amount_in_words((float)$row['grand_total']),
         ],
     ];
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

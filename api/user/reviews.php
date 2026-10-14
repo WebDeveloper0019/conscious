@@ -23,17 +23,20 @@ if ($method === 'GET') {
     $countStmt = $db->prepare('SELECT COUNT(*) FROM product_reviews WHERE user_id = ?');
     $countStmt->execute([$userId]);
     $total = (int)$countStmt->fetchColumn();
+    $countStmt->closeCursor();
 
     $stmt = $db->prepare(
-        "SELECT * FROM product_reviews
-         WHERE user_id = ?
-         ORDER BY created_at DESC, id DESC
+        "SELECT r.*, oi.product_name, oi.image AS product_image, o.order_number
+         FROM product_reviews r
+         LEFT JOIN order_items oi ON oi.id = r.order_item_id
+         LEFT JOIN orders o ON o.id = oi.order_id
+         WHERE r.user_id = ?
+         ORDER BY r.created_at DESC, r.id DESC
          LIMIT $limit OFFSET $offset"
     );
     $stmt->execute([$userId]);
     $rows = $stmt->fetchAll();
 
-    // Enrich with editable flag
     $out = [];
     foreach ($rows as $r) {
         $createdTs = strtotime((string)$r['created_at']);
@@ -42,17 +45,22 @@ if ($method === 'GET') {
             && !in_array(strtolower((string)($r['status'] ?? '')), ['rejected', 'hidden', 'removed'], true);
 
         $out[] = [
-            'id'         => $r['id'],
-            'productId'  => $r['product_id'] ?? null,
-            'orderId'    => isset($r['order_id']) ? (int)$r['order_id'] : null,
-            'rating'     => isset($r['rating']) ? (int)$r['rating'] : null,
-            'title'      => $r['title'] ?? null,
-            'comment'    => $r['comment'] ?? $r['body'] ?? null,
-            'status'     => $r['status'] ?? 'published',
-            'editable'   => $editable,
-            'editUntil'  => date(DATE_ATOM, $createdTs + $editWindowDays * 86400),
-            'createdAt'  => $r['created_at'],
-            'updatedAt'  => $r['updated_at'] ?? null,
+            'id'           => $r['id'],
+            'productId'    => $r['product_id'] ?? null,
+            'productName'  => $r['product_name'] ?? null,
+            'productImage' => $r['product_image'] ?? null,
+            'orderItemId'  => (int)($r['order_item_id'] ?? 0),
+            'orderNumber'  => $r['order_number'] ?? null,
+            'rating'       => (int)$r['rating'],
+            'title'        => $r['title'] ?? null,
+            'comment'      => $r['review_text'] ?? null,
+            'status'       => $r['status'] ?? 'published',
+            'vendorReply'  => $r['vendor_reply'] ?? null,
+            'repliedAt'    => $r['replied_at'] ?? null,
+            'editable'     => $editable,
+            'editUntil'    => date(DATE_ATOM, $createdTs + $editWindowDays * 86400),
+            'createdAt'    => $r['created_at'],
+            'updatedAt'    => $r['updated_at'] ?? null,
         ];
     }
 
@@ -75,33 +83,37 @@ if (!in_array($method, ['POST', 'PUT', 'DELETE'], true)) {
 
 require_csrf();
 
-// ────────── POST: create (existing behaviour) ──────────
+// ────────── POST: create ──────────
 if ($method === 'POST') {
     $body     = get_json_body();
-    $orderId  = (int)($body['order_id'] ?? 0);
     $itemId   = (int)($body['order_item_id'] ?? 0);
     $rating   = (int)($body['rating'] ?? 0);
     $title    = trim((string)($body['title'] ?? ''));
-    $comment  = trim((string)($body['comment'] ?? $body['body'] ?? ''));
+    $comment  = trim((string)($body['comment'] ?? ''));
 
     if ($rating < 1 || $rating > 5) json_response(422, ['success' => false, 'message' => 'Rating must be 1-5.']);
     if (mb_strlen($comment) < 10 || mb_strlen($comment) > 2000) {
-        json_response(422, ['success' => false, 'message' => 'Comment must be 10-2000 chars.']);
+        json_response(422, ['success' => false, 'message' => 'Review must be 10-2000 chars.']);
     }
-    if (mb_strlen($title) > 150) json_response(422, ['success' => false, 'message' => 'Title too long.']);
+    if (mb_strlen($title) > 180) json_response(422, ['success' => false, 'message' => 'Title too long.']);
 
     // Verify item belongs to user's delivered order
     $chk = $db->prepare(
-        'SELECT oi.id, oi.product_id FROM order_items oi
+        'SELECT oi.id, oi.product_id, oi.vendor_id, o.status AS order_status
+         FROM order_items oi
          JOIN orders o ON o.id = oi.order_id
-         WHERE oi.id = ? AND o.user_id = ? AND oi.status = "delivered"
+         WHERE oi.id = ? AND o.user_id = ?
          LIMIT 1'
     );
     $chk->execute([$itemId, $userId]);
     $item = $chk->fetch();
-    if (!$item) json_response(404, ['success' => false, 'message' => 'Delivered order item not found.']);
+    if (!$item) json_response(404, ['success' => false, 'message' => 'Order item not found.']);
 
-    // Check duplicate
+    if (strtolower((string)$item['order_status']) !== 'delivered') {
+        json_response(409, ['success' => false, 'message' => 'You can review only delivered orders.']);
+    }
+
+    // Duplicate check
     $dup = $db->prepare('SELECT id FROM product_reviews WHERE user_id = ? AND order_item_id = ? LIMIT 1');
     $dup->execute([$userId, $itemId]);
     if ($dup->fetchColumn()) {
@@ -112,9 +124,19 @@ if ($method === 'POST') {
     try {
         $db->prepare(
             'INSERT INTO product_reviews
-               (id, user_id, product_id, order_id, order_item_id, rating, title, comment, status, created_at)
+               (id, user_id, order_item_id, product_id, vendor_id, rating, title,
+                review_text, status, created_at)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, "published", UTC_TIMESTAMP())'
-        )->execute([$id, $userId, $item['product_id'], $orderId, $itemId, $rating, $title, $comment]);
+        )->execute([
+            $id,
+            $userId,
+            $itemId,
+            $item['product_id'],
+            $item['vendor_id'],
+            $rating,
+            $title,
+            $comment,
+        ]);
 
         audit_event('customer.review_created', 'product_review', $id, ['rating' => $rating]);
         json_response(201, ['success' => true, 'message' => 'Review submitted.', 'reviewId' => $id]);
@@ -130,13 +152,13 @@ if ($method === 'POST') {
 if ($method === 'PUT') {
     $body    = get_json_body();
     $id      = trim((string)($body['id'] ?? ''));
-    $rating  = isset($body['rating']) ? (int)$body['rating'] : null;
-    $title   = isset($body['title']) ? trim((string)$body['title']) : null;
+    $rating  = isset($body['rating'])  ? (int)$body['rating'] : null;
+    $title   = isset($body['title'])   ? trim((string)$body['title']) : null;
     $comment = isset($body['comment']) ? trim((string)$body['comment']) : null;
 
     if ($id === '') json_response(422, ['success' => false, 'message' => 'id required.']);
 
-    $stmt = $db->prepare('SELECT * FROM product_reviews WHERE id = ? AND user_id = ? LIMIT 1 FOR UPDATE');
+    $stmt = $db->prepare('SELECT * FROM product_reviews WHERE id = ? AND user_id = ? LIMIT 1');
     $stmt->execute([$id, $userId]);
     $review = $stmt->fetch();
     if (!$review) json_response(404, ['success' => false, 'message' => 'Review not found.']);
@@ -150,22 +172,21 @@ if ($method === 'PUT') {
         json_response(403, ['success' => false, 'message' => "Reviews can only be edited within {$editWindowDays} days."]);
     }
 
-    // Validate fields
     if ($rating !== null && ($rating < 1 || $rating > 5)) {
         json_response(422, ['success' => false, 'message' => 'Rating must be 1-5.']);
     }
     if ($comment !== null && (mb_strlen($comment) < 10 || mb_strlen($comment) > 2000)) {
-        json_response(422, ['success' => false, 'message' => 'Comment must be 10-2000 chars.']);
+        json_response(422, ['success' => false, 'message' => 'Review must be 10-2000 chars.']);
     }
-    if ($title !== null && mb_strlen($title) > 150) {
+    if ($title !== null && mb_strlen($title) > 180) {
         json_response(422, ['success' => false, 'message' => 'Title too long.']);
     }
 
     $fields = [];
     $params = [];
-    if ($rating  !== null) { $fields[] = 'rating = ?';  $params[] = $rating; }
-    if ($title   !== null) { $fields[] = 'title = ?';   $params[] = $title; }
-    if ($comment !== null) { $fields[] = 'comment = ?'; $params[] = $comment; }
+    if ($rating  !== null) { $fields[] = 'rating = ?';      $params[] = $rating; }
+    if ($title   !== null) { $fields[] = 'title = ?';       $params[] = $title; }
+    if ($comment !== null) { $fields[] = 'review_text = ?'; $params[] = $comment; }
 
     if (!$fields) json_response(422, ['success' => false, 'message' => 'Nothing to update.']);
 
