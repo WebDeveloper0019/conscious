@@ -37,14 +37,14 @@ try {
             (
                 SELECT COUNT(*)
                 FROM coupon_redemptions cr
-                WHERE cr.coupon_id = c.id
+                WHERE cr.coupon_id = c.id AND cr.status = 'active'
             ) AS total_redemptions,
 
             (
                 SELECT COUNT(*)
                 FROM coupon_redemptions cr
                 WHERE cr.coupon_id = c.id
-                  AND cr.user_id = :customer_id
+                  AND cr.user_id = :customer_id AND cr.status = 'active'
             ) AS customer_redemptions
 
         FROM coupons c
@@ -63,7 +63,7 @@ try {
               OR (
                   SELECT COUNT(*)
                   FROM coupon_redemptions cr
-                  WHERE cr.coupon_id = c.id
+                  WHERE cr.coupon_id = c.id AND cr.status = 'active'
               ) < c.usage_limit
           )
 
@@ -71,7 +71,7 @@ try {
               SELECT COUNT(*)
               FROM coupon_redemptions cr
               WHERE cr.coupon_id = c.id
-                AND cr.user_id = :customer_limit_user
+                AND cr.user_id = :customer_limit_user AND cr.status = 'active'
           ) < c.per_customer_limit
 
         ORDER BY c.ends_at ASC

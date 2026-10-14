@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../lib/coupon.php';
+require_once __DIR__ . '/../lib/rewards.php';
 
 function checkout_place_v2(): void
 {
@@ -82,6 +83,20 @@ function checkout_place_v2(): void
             'order_total' => $quote['total_amount'], 'order_address' => json_encode($addressSnapshot, JSON_UNESCAPED_SLASHES),
         ]);
         $orderId = (int)$db->lastInsertId();
+
+        $rewardPoints = (int)($pricing['reward_points_redeem'] ?? 0);
+        if ($rewardPoints > 0) {
+            $applied = reward_redeem_for_order(
+                $userId,
+                $orderId,
+                $rewardPoints,
+                (float)$quote['subtotal'],
+                (string)$orderNumber
+            );
+            if ($applied !== $rewardPoints) {
+                throw new RuntimeException('Reward points changed. Please recalculate checkout.');
+            }
+        }
 
         $groupsByVendor = [];
         foreach ($cart['items'] as $item) {
@@ -245,7 +260,7 @@ function checkout_place_v2(): void
             )->execute([
                 'redemption_id' => uuid_string(), 'redemption_coupon' => $quote['coupon_id'],
                 'redemption_user' => $userId, 'redemption_order' => $orderId,
-                'redemption_amount' => $quote['discount_amount'],
+                'redemption_amount' => (float)($pricing['coupon_discount'] ?? $quote['discount_amount']),
             ]);
         }
 
