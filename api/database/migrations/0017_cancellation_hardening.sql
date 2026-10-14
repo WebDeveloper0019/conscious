@@ -1,26 +1,33 @@
 -- Migration 0017: Cancellation hardening
--- Prevents double-refund, double-restore, and duplicate ledger reversals
--- on concurrent or retried cancel requests.
+-- Prevents double-refund, double-restore, and duplicate ledger reversals.
 --
 -- Idempotent — safe to run multiple times.
+-- No `AFTER <col>` clauses (they fail if the reference column is missing).
 
 SET @OLD_SQL_MODE = @@SQL_MODE;
 SET SQL_MODE = 'STRICT_TRANS_TABLES';
 
 -- ─────────────────────────────────────────────────────────
--- 1. refunds — prevent double-refund per (order, source)
+-- 1. refunds.source — prevents double-refund per (order, source)
 -- ─────────────────────────────────────────────────────────
 SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS
              WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'refunds'
                AND COLUMN_NAME = 'source');
 SET @sql := IF(@col = 0,
-  'ALTER TABLE `refunds` ADD COLUMN `source` VARCHAR(20) NOT NULL DEFAULT ''cancellation'' AFTER `method`',
+  'ALTER TABLE `refunds` ADD COLUMN `source` VARCHAR(20) NOT NULL DEFAULT ''cancellation''',
   'SELECT 1');
 PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
 
-UPDATE `refunds` SET `source` = 'return'
-WHERE `return_request_id` IS NOT NULL AND `source` = 'cancellation';
+-- Backfill: any refund linked to a return request → source='return'
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'refunds'
+               AND COLUMN_NAME = 'return_request_id');
+SET @sql := IF(@col > 0,
+  'UPDATE `refunds` SET `source` = ''return'' WHERE `return_request_id` IS NOT NULL AND `source` = ''cancellation''',
+  'SELECT 1');
+PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
 
+-- Unique key (order_id, source)
 SET @idx := (SELECT COUNT(*) FROM information_schema.STATISTICS
              WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'refunds'
                AND INDEX_NAME = 'uniq_refund_order_source');
@@ -30,13 +37,13 @@ SET @sql := IF(@idx = 0,
 PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
 
 -- ─────────────────────────────────────────────────────────
--- 2. vendor_ledger_entries — status + unique reference
+-- 2. vendor_ledger_entries — status + reversed_at + unique key
 -- ─────────────────────────────────────────────────────────
 SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS
              WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'vendor_ledger_entries'
                AND COLUMN_NAME = 'status');
 SET @sql := IF(@col = 0,
-  'ALTER TABLE `vendor_ledger_entries` ADD COLUMN `status` VARCHAR(20) NOT NULL DEFAULT ''active'' AFTER `balance_bucket`',
+  'ALTER TABLE `vendor_ledger_entries` ADD COLUMN `status` VARCHAR(20) NOT NULL DEFAULT ''active''',
   'SELECT 1');
 PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
 
@@ -64,7 +71,7 @@ SET @sql := IF(@idx = 0,
 PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
 
 -- ─────────────────────────────────────────────────────────
--- 3. inventory_movements — prevent duplicate stock movements
+-- 3. inventory_movements — unique key
 -- ─────────────────────────────────────────────────────────
 DELETE im1 FROM inventory_movements im1
 JOIN inventory_movements im2
@@ -82,13 +89,13 @@ SET @sql := IF(@idx = 0,
 PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
 
 -- ─────────────────────────────────────────────────────────
--- 4. coupon_redemptions — soft delete
+-- 4. coupon_redemptions — soft delete columns
 -- ─────────────────────────────────────────────────────────
 SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS
              WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'coupon_redemptions'
                AND COLUMN_NAME = 'status');
 SET @sql := IF(@col = 0,
-  'ALTER TABLE `coupon_redemptions` ADD COLUMN `status` VARCHAR(20) NOT NULL DEFAULT ''active'' AFTER `discount_amount`',
+  'ALTER TABLE `coupon_redemptions` ADD COLUMN `status` VARCHAR(20) NOT NULL DEFAULT ''active''',
   'SELECT 1');
 PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
 
@@ -110,4 +117,4 @@ PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
 
 SET SQL_MODE = @OLD_SQL_MODE;
 
-SELECT '0017_cancellation_hardening applied' AS status;
+SELECT '0017 applied' AS status;

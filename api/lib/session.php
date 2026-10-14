@@ -52,7 +52,33 @@ function require_principal(array $allowedTypes=[]): array {
     $table=$tables[$session['principal_type']]??null;
     if(!$table)json_response(401,['success'=>false,'message'=>'Please sign in again.']);
     $check=get_db()->prepare("SELECT status FROM {$table} WHERE id=:id");$check->execute(['id'=>$session['principal_id']]);$status=$check->fetchColumn();
-    if($status===false||in_array($status,['restricted','suspended','blocked','inactive'],true))json_response(403,['success'=>false,'message'=>'This account is not permitted to access the service.']);
+    // For customers, also reject deactivated / deletion-pending accounts
+// For customers, reject deactivated / deletion-pending accounts.
+// BUT: allow requests to auth endpoints (login, logout, me, register)
+//      so the user can reactivate by logging in again.
+if ($session['principal_type'] === 'customer') {
+    $script = $_SERVER['SCRIPT_NAME'] ?? '';
+    $isAuthPath = (
+        str_contains($script, '/api/auth/')
+        || str_contains($script, '/api/user/account-deactivate.php')
+    );
+
+    if (!$isAuthPath) {
+        $acc = get_db()->prepare('SELECT account_status FROM users WHERE id = :id');
+        $acc->execute(['id' => $session['principal_id']]);
+        $accStatus = (string)($acc->fetchColumn() ?: 'active');
+
+        if (in_array($accStatus, ['deactivated', 'pending_deletion'], true)) {
+            // Do NOT revoke — the user might want to log back in to reactivate
+            json_response(403, [
+                'success' => false,
+                'message' => 'This account is not active. Please log in again to reactivate.',
+                'code'    => 'ACCOUNT_INACTIVE',
+                'account_status' => $accStatus,
+            ]);
+        }
+    }
+}
     require_csrf();
     return ['session_id'=>$session['id'],'type'=>$session['principal_type'],'id'=>$session['principal_id']];
 }

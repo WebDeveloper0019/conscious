@@ -23,3 +23,6 @@ storage/private/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+storage/private/data-exports/
+storage/private/return-evidence/

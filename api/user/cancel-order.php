@@ -9,6 +9,7 @@ require_once __DIR__ . '/../lib/commerce.php';
 require_once __DIR__ . '/../lib/idempotency.php';
 require_once __DIR__ . '/../lib/razorpay.php';
 require_once __DIR__ . '/../lib/rewards.php';
+require_once __DIR__ . '/../lib/refund-queue.php';
 
 send_cors_headers();
 
@@ -29,7 +30,7 @@ $body        = get_json_body();
 $orderNumber = trim((string)($body['orderNumber'] ?? ''));
 $reason      = trim((string)($body['reason'] ?? ''));
 $scope       = strtolower(trim((string)($body['scope'] ?? 'full')));
-$itemIdsRaw  = $body['itemIds'] ?? [];
+$itemsRaw    = $body['items'] ?? null;   // [{"itemId":123, "quantity":2}, ...]
 
 // ── Input validation ──
 if ($orderNumber === '' || strlen($orderNumber) > 100) {
@@ -42,18 +43,44 @@ if (!in_array($scope, ['full', 'item'], true)) {
     json_response(422, ['success' => false, 'message' => 'Cancellation scope must be "full" or "item".']);
 }
 
-$itemIds = is_array($itemIdsRaw)
-    ? array_values(array_unique(array_filter(array_map('intval', $itemIdsRaw), fn($v) => $v > 0)))
-    : [];
-if ($scope === 'item' && !$itemIds) {
-    json_response(422, ['success' => false, 'message' => 'No items selected for cancellation.']);
+/**
+ * Normalize items input:
+ *   [
+ *     {"itemId": 123, "quantity": 2},
+ *     {"itemId": 456}                     // no quantity → cancel full quantity
+ *   ]
+ * Returns map: [itemId => quantity|null]
+ */
+$requestedItems = [];
+if ($scope === 'item') {
+    if (!is_array($itemsRaw) || !$itemsRaw) {
+        json_response(422, ['success' => false, 'message' => 'No items selected for cancellation.']);
+    }
+    foreach ($itemsRaw as $entry) {
+        if (!is_array($entry) || !isset($entry['itemId'])) continue;
+        $iid = (int)$entry['itemId'];
+        if ($iid <= 0) continue;
+        $qty = isset($entry['quantity']) ? (int)$entry['quantity'] : null;
+        if ($qty !== null && $qty < 1) {
+            json_response(422, ['success' => false, 'message' => "Invalid quantity for item {$iid}."]);
+        }
+        $requestedItems[$iid] = $qty;   // null = cancel all remaining
+    }
+    if (!$requestedItems) {
+        json_response(422, ['success' => false, 'message' => 'No valid items selected for cancellation.']);
+    }
 }
 
-// ── Idempotency: same key + same payload = same response ──
+// ── Idempotency ──
 $idem = begin_idempotent_request(
     'order.cancel',
     ['type' => 'customer', 'id' => $userId],
-    ['orderNumber' => $orderNumber, 'scope' => $scope, 'itemIds' => $itemIds, 'reason' => $reason]
+    [
+        'orderNumber' => $orderNumber,
+        'scope'       => $scope,
+        'items'       => $requestedItems,
+        'reason'      => $reason,
+    ]
 );
 
 $db = get_db();
@@ -61,7 +88,7 @@ $db = get_db();
 try {
     $db->beginTransaction();
 
-    // ────────── 1. Lock order row FIRST (serializes all cancels for this order) ──────────
+    // ────────── 1. Lock order ──────────
     $stmt = $db->prepare('SELECT * FROM orders WHERE order_number = :num AND user_id = :uid LIMIT 1 FOR UPDATE');
     $stmt->execute(['num' => $orderNumber, 'uid' => $userId]);
     $order = $stmt->fetch();
@@ -85,7 +112,7 @@ try {
         json_response(409, ['success' => false, 'message' => 'This order is no longer eligible for cancellation. Please raise a return request.']);
     }
 
-    // ────────── 2. Enforce 24h window ──────────
+    // ────────── 2. 24h window ──────────
     $placedAt = $order['placed_at'] ?? $order['created_at'];
     try {
         $createdAt = new DateTimeImmutable((string)$placedAt, new DateTimeZone('UTC'));
@@ -99,9 +126,9 @@ try {
         json_response(409, ['success' => false, 'message' => 'The 24-hour cancellation window has passed. Please raise a return after delivery.']);
     }
 
-    // ────────── 3. Load & lock all items + financials ──────────
+    // ────────── 3. Load + lock items ──────────
     $itemStmt = $db->prepare(
-        'SELECT oi.*, f.vendor_net_amount
+        'SELECT oi.*, f.vendor_net_amount, f.gross_amount
          FROM order_items oi
          LEFT JOIN order_item_financials f ON f.order_item_id = oi.id
          WHERE oi.order_id = :oid
@@ -111,333 +138,397 @@ try {
     $itemStmt->execute(['oid' => $order['id']]);
     $allItems = $itemStmt->fetchAll();
 
-    $itemsToCancel = [];
+    // Build the cancel plan
+    $cancelPlan = [];      // [['item' => row, 'quantity' => int, 'line_amount' => float, 'is_full' => bool]]
+    $refundAmount = 0.0;
+    $vendorReversals = [];
+    $affectedItemIds = [];
+    $isPartialQuantityCancel = false;
+
     foreach ($allItems as $it) {
         if (in_array($it['status'], ['cancelled', 'delivered', 'returned'], true)) continue;
-        if ($scope === 'item' && !in_array((int)$it['id'], $itemIds, true)) continue;
-        $itemsToCancel[] = $it;
+
+        $alreadyCancelled = (int)$it['cancelled_quantity'];
+        $remaining = (int)$it['quantity'] - $alreadyCancelled;
+        if ($remaining <= 0) continue;
+
+        // Determine requested quantity for this item
+        $requestQty = null;
+        if ($scope === 'full') {
+            $requestQty = $remaining;   // everything left
+        } else {
+            if (!array_key_exists((int)$it['id'], $requestedItems)) continue;
+            $requestedQty = $requestedItems[(int)$it['id']];
+            $requestQty = ($requestedQty === null) ? $remaining : min($requestedQty, $remaining);
+        }
+
+        if ($requestQty <= 0) continue;
+        if ($requestQty > $remaining) $requestQty = $remaining;
+
+        // Compute proportional refund amount for this item's cancelled portion
+        $lineTotal   = (float)$it['line_total'];
+        $unitLineAmt = $remaining > 0 ? $lineTotal / $remaining : 0.0;
+        $lineRefund  = round($unitLineAmt * $requestQty, 2);
+
+        $isFullItem = ($requestQty === $remaining) && ($alreadyCancelled === 0);
+        if (!$isFullItem) $isPartialQuantityCancel = true;
+
+        $refundAmount += $lineRefund;
+        $affectedItemIds[] = (int)$it['id'];
+
+        // Vendor ledger reversal proportional to quantity
+        $netAmount = (float)($it['vendor_net_amount'] ?? 0);
+        if ($netAmount > 0 && (int)$it['quantity'] > 0) {
+            $netPerUnit = $netAmount / (int)$it['quantity'];
+            $vendorReversals[(string)$it['vendor_id']] =
+                ($vendorReversals[(string)$it['vendor_id']] ?? 0.0) + ($netPerUnit * $requestQty);
+        }
+
+        $cancelPlan[] = [
+            'item'        => $it,
+            'quantity'    => $requestQty,
+            'line_amount' => $lineRefund,
+            'is_full'     => $isFullItem,
+        ];
     }
-    if (!$itemsToCancel) {
+
+    if (!$cancelPlan) {
         $db->rollBack();
         json_response(409, ['success' => false, 'message' => 'No eligible items found for cancellation.']);
     }
 
-    // ────────── 4. Process each item atomically ──────────
-    $refundAmount     = 0.0;
-    $vendorReversals  = [];
-    $cancelledItemIds = [];
+    // ────────── 4. Apply item-level changes ──────────
+    foreach ($cancelPlan as $entry) {
+        $it  = $entry['item'];
+        $qty = $entry['quantity'];
 
-    foreach ($itemsToCancel as $it) {
-        $qty = (int)$it['quantity'];
-        $refundAmount += (float)$it['line_total'];
-        $cancelledItemIds[] = (int)$it['id'];
-
-        // 4a. Stock restore — guard against double-restore via unique key
+        // 4a. Stock restore for the cancelled quantity
         if (!empty($it['variant_id'])) {
-            // Restore inventory level
             $db->prepare(
                 'UPDATE inventory_levels
-                 SET stock_quantity = stock_quantity + :qty, updated_at = UTC_TIMESTAMP()
-                 WHERE variant_id = :vid'
-            )->execute(['qty' => $qty, 'vid' => $it['variant_id']]);
+                 SET stock_quantity = stock_quantity + ?, updated_at = UTC_TIMESTAMP()
+                 WHERE variant_id = ?'
+            )->execute([$qty, $it['variant_id']]);
 
-            // Snapshot after update
-            $lvl = $db->prepare('SELECT stock_quantity, reserved_quantity FROM inventory_levels WHERE variant_id = :vid');
-            $lvl->execute(['vid' => $it['variant_id']]);
+            $lvl = $db->prepare('SELECT stock_quantity, reserved_quantity FROM inventory_levels WHERE variant_id = ?');
+            $lvl->execute([$it['variant_id']]);
             $after = $lvl->fetch() ?: ['stock_quantity' => 0, 'reserved_quantity' => 0];
 
-            // Insert movement — unique key prevents duplicates from double-cancel
-            try {
+                      try {
                 $db->prepare(
                     'INSERT INTO inventory_movements
                        (variant_id, vendor_id, movement_type, quantity_delta, reserved_delta,
                         stock_after, reserved_after, reference_type, reference_id, note,
                         actor_type, actor_id, created_at)
-                     VALUES
-                       (:vid, :vendor, "cancellation", :qty, 0,
-                        :stock, :reserved, "order_item", :ref, "Customer cancellation",
-                        "customer", :actor, UTC_TIMESTAMP())'
+                     VALUES (?, ?, "cancellation", ?, 0, ?, ?, "order_item", ?, ?, "customer", ?, UTC_TIMESTAMP())'
                 )->execute([
-                    'vid'      => $it['variant_id'],
-                    'vendor'   => $it['vendor_id'],
-                    'qty'      => $qty,
-                    'stock'    => $after['stock_quantity'],
-                    'reserved' => $after['reserved_quantity'],
-                    'ref'      => (string)$it['id'],
-                    'actor'    => $userId,
+                    $it['variant_id'],
+                    $it['vendor_id'],
+                    $qty,
+                    $after['stock_quantity'],
+                    $after['reserved_quantity'],
+                    (string)$it['id'],
+                    "Partial qty cancel ({$qty} of " . (int)$it['quantity'] . ")",
+                    $userId,
                 ]);
+                $movementId = (int)$db->lastInsertId();
+
+                // Anomaly check — cancellation is legit, but this catches
+                // cases where cancel runs twice or stock has drifted
+                require_once __DIR__ . '/../lib/inventory-anomaly.php';
+                inventory_check_anomaly(
+                    (string)$it['variant_id'],
+                    (string)$it['vendor_id'],
+                    'cancellation',
+                    $qty,
+                    (int)$after['stock_quantity'],
+                    $movementId,
+                    (int)$after['stock_quantity'] - $qty
+                );
             } catch (PDOException $e) {
-                if ((string)$e->getCode() === '23000') {
-                    // Already restored — treat as idempotent success, skip
-                    error_log('Skipping duplicate stock restore for item ' . $it['id']);
-                } else {
-                    throw $e;
-                }
+                if ((string)$e->getCode() !== '23000') throw $e;
             }
         }
 
-        // 4b. Accumulate vendor ledger reversal
-        if (!empty($it['vendor_id']) && isset($it['vendor_net_amount']) && (float)$it['vendor_net_amount'] != 0.0) {
-            $vendorReversals[$it['vendor_id']] =
-                ($vendorReversals[$it['vendor_id']] ?? 0.0) + (float)$it['vendor_net_amount'];
-        }
+        // 4b. Update order_item
+        $newCancelledQty = (int)$it['cancelled_quantity'] + $qty;
+        $newCancelledAmt = (float)($it['cancelled_amount'] ?? 0) + (float)$entry['line_amount'];
+        $newStatus = $newCancelledQty >= (int)$it['quantity'] ? 'cancelled' : $it['status'];
 
-        // 4c. Mark item cancelled
         $db->prepare(
-            'UPDATE order_items SET status = "cancelled", cancelled_quantity = quantity WHERE id = :id'
-        )->execute(['id' => $it['id']]);
+            'UPDATE order_items
+             SET status = ?,
+                 cancelled_quantity = ?,
+                 cancelled_amount = ?
+             WHERE id = ?'
+        )->execute([$newStatus, $newCancelledQty, $newCancelledAmt, $it['id']]);
     }
 
-    // ────────── 5. Vendor ledger — mark original reversed + insert reversal ──────────
-    if ($vendorReversals) {
-        $itemIdList = implode(',', array_map('intval', $cancelledItemIds));
+    // ────────── 5. Vendor ledger reversals ──────────
+    foreach ($vendorReversals as $vendorId => $netAmount) {
+        if ($netAmount <= 0) continue;
+        try {
+            $db->prepare(
+                'INSERT INTO vendor_ledger_entries
+                   (id, vendor_id, entry_type, amount, currency, balance_bucket,
+                    status, reference_type, reference_id, description, available_at, created_at)
+                 VALUES (?, ?, "order_cancellation", ?, "INR", "reversed",
+                         "active", "order", ?, ?, NULL, UTC_TIMESTAMP())'
+            )->execute([
+                uuid_string(),
+                $vendorId,
+                -1 * abs($netAmount),
+                (string)$order['id'],
+                'Cancellation reversal · order ' . $order['order_number'] . ' · ' . count($cancelPlan) . ' item(s)',
+            ]);
+        } catch (PDOException $e) {
+            if ((string)$e->getCode() !== '23000') throw $e;
+        }
+    }
 
-        // 5a. Mark original order_earning entries as reversed (audit trail)
-        $db->exec(
-            "UPDATE vendor_ledger_entries
-             SET status = 'reversed', reversed_at = UTC_TIMESTAMP()
-             WHERE reference_type = 'order_item'
-               AND reference_id IN ($itemIdList)
-               AND entry_type = 'order_earning'
-               AND status = 'active'"
-        );
-
-        // 5b. Insert reversal entries (unique key prevents dupes)
-        foreach ($vendorReversals as $vendorId => $netAmount) {
-            try {
-                $db->prepare(
-                    'INSERT INTO vendor_ledger_entries
-                       (id, vendor_id, entry_type, amount, currency, balance_bucket,
-                        status, reference_type, reference_id, description,
-                        available_at, created_at)
-                     VALUES
-                       (:id, :vendor, "order_cancellation", :amt, "INR", "reversed",
-                        "active", "order", :ref, :desc, NULL, UTC_TIMESTAMP())'
-                )->execute([
-                    'id'     => uuid_string(),
-                    'vendor' => $vendorId,
-                    'amt'    => -1 * abs($netAmount),
-                    'ref'    => (string)$order['id'],
-                    'desc'   => 'Cancellation reversal · order ' . $order['order_number'],
-                ]);
-            } catch (PDOException $e) {
-                if ((string)$e->getCode() === '23000') {
-                    error_log('Skipping duplicate ledger reversal for vendor ' . $vendorId);
-                } else {
-                    throw $e;
-                }
-            }
+    // Mark original earning entries as reversed (only for fully cancelled items)
+    foreach ($cancelPlan as $entry) {
+        if ($entry['is_full']) {
+            $db->prepare(
+                'UPDATE vendor_ledger_entries
+                 SET status = "reversed", reversed_at = UTC_TIMESTAMP()
+                 WHERE reference_type = "order_item"
+                   AND reference_id = ?
+                   AND entry_type = "order_earning"
+                   AND status = "active"'
+            )->execute([(string)$entry['item']['id']]);
         }
     }
 
     // ────────── 6. Determine full vs partial ──────────
-    $rem = $db->prepare('SELECT COUNT(*) FROM order_items WHERE order_id = :oid AND status NOT IN ("cancelled","returned")');
-    $rem->execute(['oid' => $order['id']]);
+    $rem = $db->prepare('SELECT COUNT(*) FROM order_items WHERE order_id = ? AND status NOT IN ("cancelled","returned")');
+    $rem->execute([$order['id']]);
     $isFullCancel = ((int)$rem->fetchColumn() === 0);
 
-      if ($isFullCancel && (float)$order['shipping_amount'] > 0) {
+    // ────────── 7. Shipping refund — only on full order cancel ──────────
+    if ($isFullCancel && (float)$order['shipping_amount'] > 0) {
         $refundAmount += (float)$order['shipping_amount'];
     }
 
-    // ────────── 7. Vendor group status update ──────────
-    $affectedGroups = array_unique(array_filter(array_column($itemsToCancel, 'vendor_group_id')));
+    // ────────── 8. Vendor group status ──────────
+    $affectedGroups = array_unique(array_filter(array_map(fn($e) => $e['item']['vendor_group_id'], $cancelPlan)));
     foreach ($affectedGroups as $gid) {
         $gc = $db->prepare(
             'SELECT COUNT(*) AS total,
                     SUM(CASE WHEN status = "cancelled" THEN 1 ELSE 0 END) AS cancelled_count
-             FROM order_items WHERE vendor_group_id = :gid'
+             FROM order_items WHERE vendor_group_id = ?'
         );
-        $gc->execute(['gid' => $gid]);
+        $gc->execute([$gid]);
         $row = $gc->fetch();
         if ($row && (int)$row['total'] === (int)$row['cancelled_count']) {
-            $db->prepare('UPDATE vendor_order_groups SET status = "cancelled", updated_at = UTC_TIMESTAMP() WHERE id = :gid')
-               ->execute(['gid' => $gid]);
+            $db->prepare('UPDATE vendor_order_groups SET status = "cancelled", updated_at = UTC_TIMESTAMP() WHERE id = ?')
+               ->execute([$gid]);
         }
     }
 
-    // ────────── 8. Order status update ──────────
+    // ────────── 9. Order status ──────────
+    $newOrderStatus = $isFullCancel ? 'cancelled' : 'partially_cancelled';
     if ($isFullCancel) {
         $db->prepare(
             'UPDATE orders
              SET status = "cancelled",
                  cancelled_at = UTC_TIMESTAMP(),
-                 cancelled_reason = :reason,
+                 cancelled_reason = ?,
                  updated_at = UTC_TIMESTAMP()
-             WHERE id = :oid'
-        )->execute(['reason' => $reason !== '' ? $reason : null, 'oid' => $order['id']]);
+             WHERE id = ?'
+        )->execute([$reason !== '' ? $reason : null, $order['id']]);
     } else {
-        $db->prepare('UPDATE orders SET updated_at = UTC_TIMESTAMP() WHERE id = :oid')
-           ->execute(['oid' => $order['id']]);
+        $db->prepare('UPDATE orders SET status = "partially_cancelled", updated_at = UTC_TIMESTAMP() WHERE id = ?')
+           ->execute([$order['id']]);
     }
 
-    // ────────── 9. Coupon reversal — soft delete ──────────
+    // ────────── 10. Coupon reversal — only on full cancel ──────────
     if ($isFullCancel) {
         $db->prepare(
-            "UPDATE coupon_redemptions
-             SET status = 'reversed', reversed_at = UTC_TIMESTAMP(), reversed_reason = 'order_cancelled'
-             WHERE order_id = :oid AND status = 'active'"
-        )->execute(['oid' => $order['id']]);
+            'UPDATE coupon_redemptions
+             SET status = "reversed", reversed_at = UTC_TIMESTAMP(), reversed_reason = "order_cancelled"
+             WHERE order_id = ? AND status = "active"'
+        )->execute([$order['id']]);
     }
 
-    // ────────── 10. Release quote reservations (unpaid only) ──────────
+    // ────────── 11. Release quote reservations (unpaid only) ──────────
     if ($paymentStatus !== 'paid' && !empty($order['checkout_quote_id'])) {
         try { release_quote_reservations((string)$order['checkout_quote_id']); }
         catch (Throwable $e) { error_log('release_quote_reservations failed: ' . $e->getMessage()); }
     }
 
-    // ────────── 11. Rewards refund/clawback BEFORE refund API call ──────────
+    // ────────── 12. Rewards — only on full cancel ──────────
     if ($isFullCancel) {
         reward_refund_for_order($userId, (int)$order['id'], (string)$order['order_number']);
         reward_clawback_for_order($userId, (int)$order['id'], (string)$order['order_number']);
     }
 
-    // ────────── 12. Refund row (intent) — BEFORE Razorpay call ──────────
+    // ────────── 13. Refund record ──────────
     $refund = ['method' => 'none', 'status' => 'not_applicable', 'amount' => 0.0];
 
-    if ($paymentStatus === 'paid') {
-        // Cap refund to what was actually paid
-        $paidStmt = $db->prepare(
-            'SELECT COALESCE(SUM(amount), 0) FROM payment_attempts
-             WHERE order_id = :oid AND status = "paid"'
-        );
-        $paidStmt->execute(['oid' => $order['id']]);
+    if ($paymentStatus === 'paid' && $refundAmount > 0) {
+        // Cap
+        $paidStmt = $db->prepare('SELECT COALESCE(SUM(amount),0) FROM payment_attempts WHERE order_id = ? AND status = "paid"');
+        $paidStmt->execute([$order['id']]);
         $amountPaid = (float)$paidStmt->fetchColumn();
 
-        // Subtract any already-refunded amount for this order
         $alreadyStmt = $db->prepare(
-            'SELECT COALESCE(SUM(amount), 0) FROM refunds
-             WHERE order_id = :oid AND source = "cancellation"
-               AND status IN ("processing", "processed", "recommended")'
+            'SELECT COALESCE(SUM(amount),0) FROM refunds
+             WHERE order_id = ? AND source = "cancellation"
+               AND status IN ("processing","processed","recommended")'
         );
-        $alreadyStmt->execute(['oid' => $order['id']]);
+        $alreadyStmt->execute([$order['id']]);
         $alreadyRefunded = (float)$alreadyStmt->fetchColumn();
 
         $maxRefundable = max(0.0, $amountPaid - $alreadyRefunded);
-        $refundAmount  = min($refundAmount, $maxRefundable);
+        $refundAmount = min($refundAmount, $maxRefundable);
 
-        if ($refundAmount <= 0.0) {
-            $refund = ['method' => 'none', 'status' => 'nothing_to_refund', 'amount' => 0.0];
-        } else {
-            $pay = $db->prepare(
-                'SELECT * FROM payment_attempts
-                 WHERE order_id = :oid AND status = "paid"
-                 ORDER BY created_at DESC LIMIT 1'
-            );
-            $pay->execute(['oid' => $order['id']]);
+        if ($refundAmount > 0) {
+            $pay = $db->prepare('SELECT * FROM payment_attempts WHERE order_id = ? AND status = "paid" ORDER BY created_at DESC LIMIT 1');
+            $pay->execute([$order['id']]);
             $payment = $pay->fetch();
 
             $refundId = uuid_string();
+            $details = [
+                'items' => array_map(fn($e) => [
+                    'item_id'  => (int)$e['item']['id'],
+                    'name'     => $e['item']['product_name'],
+                    'quantity' => (int)$e['quantity'],
+                    'amount'   => (float)$e['line_amount'],
+                ], $cancelPlan),
+                'shipping_refunded' => $isFullCancel ? (float)$order['shipping_amount'] : 0,
+                'scope'             => $isFullCancel ? 'full' : 'partial',
+            ];
 
             if ($payment && $payment['provider'] === 'razorpay' && !empty($payment['provider_payment_id'])) {
-                // Insert refund intent — unique key prevents duplicate cancel refund
                 $db->prepare(
                     'INSERT INTO refunds
-                       (id, return_request_id, order_id, order_item_id, amount, currency,
-                        method, source, status, provider_payment_id, reason,
+                       (id, order_id, order_item_id, amount, currency, method, source, status,
+                        provider_payment_id, reason, details_json,
                         recommended_by_type, recommended_by_id, created_at, updated_at)
-                     VALUES
-                       (:id, NULL, :oid, NULL, :amt, "INR",
-                        "razorpay", "cancellation", "processing", :ppid, :reason,
-                        "customer", :uid, UTC_TIMESTAMP(), UTC_TIMESTAMP())'
+                     VALUES (?, ?, NULL, ?, "INR", "razorpay", "cancellation", "processing",
+                             ?, ?, ?,
+                             "customer", ?, UTC_TIMESTAMP(), UTC_TIMESTAMP())'
                 )->execute([
-                    'id'     => $refundId,
-                    'oid'    => $order['id'],
-                    'amt'    => $refundAmount,
-                    'ppid'   => $payment['provider_payment_id'],
-                    'reason' => $reason !== '' ? $reason : 'Customer cancelled',
-                    'uid'    => $userId,
+                    $refundId,
+                    $order['id'],
+                    $refundAmount,
+                    $payment['provider_payment_id'],
+                    $reason !== '' ? $reason : 'Customer cancelled',
+                    json_encode($details, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                    $userId,
                 ]);
 
-                $refund = ['method' => 'razorpay', 'status' => 'processing',
-                           'amount' => $refundAmount, 'refundId' => $refundId];
+                // Enqueue async retry job
+                refund_queue_enqueue($refundId, (int)$order['id']);
+
+                $refund = [
+                    'method'   => 'razorpay',
+                    'status'   => 'processing',
+                    'amount'   => $refundAmount,
+                    'refundId' => $refundId,
+                ];
             } else {
-                // Manual refund for non-Razorpay paid orders
                 $db->prepare(
                     'INSERT INTO refunds
-                       (id, return_request_id, order_id, order_item_id, amount, currency,
-                        method, source, status, reason,
+                       (id, order_id, order_item_id, amount, currency, method, source, status,
+                        reason, details_json,
                         recommended_by_type, recommended_by_id, created_at, updated_at)
-                     VALUES
-                       (:id, NULL, :oid, NULL, :amt, "INR",
-                        "manual", "cancellation", "recommended", :reason,
-                        "customer", :uid, UTC_TIMESTAMP(), UTC_TIMESTAMP())'
+                     VALUES (?, ?, NULL, ?, "INR", "manual", "cancellation", "recommended",
+                             ?, ?,
+                             "customer", ?, UTC_TIMESTAMP(), UTC_TIMESTAMP())'
                 )->execute([
-                    'id'     => $refundId,
-                    'oid'    => $order['id'],
-                    'amt'    => $refundAmount,
-                    'reason' => $reason !== '' ? $reason : 'Customer cancelled',
-                    'uid'    => $userId,
+                    $refundId,
+                    $order['id'],
+                    $refundAmount,
+                    $reason !== '' ? $reason : 'Customer cancelled',
+                    json_encode($details, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                    $userId,
                 ]);
-                $refund = ['method' => 'manual', 'status' => 'recommended',
-                           'amount' => $refundAmount, 'refundId' => $refundId];
+                $refund = [
+                    'method'   => 'manual',
+                    'status'   => 'recommended',
+                    'amount'   => $refundAmount,
+                    'refundId' => $refundId,
+                ];
             }
         }
     } elseif ($paymentStatus === 'pending') {
         $refund = ['method' => 'cod', 'status' => 'not_applicable', 'amount' => 0.0];
     }
 
-    // ────────── 13. Status history + audit ──────────
+    // ────────── 14. Status history + audit ──────────
     record_status_change(
         'order',
         (string)$order['id'],
         $status,
-        $isFullCancel ? 'cancelled' : 'partially_cancelled',
+        $newOrderStatus,
         $reason !== '' ? $reason : 'Customer requested cancellation'
     );
 
     audit_event('customer.order_cancelled', 'order', (string)$order['id'], [
-        'order_number' => $order['order_number'],
-        'scope'        => $scope,
-        'item_ids'     => $cancelledItemIds,
-        'reason'       => $reason,
-        'refund'       => $refund,
+        'order_number'    => $order['order_number'],
+        'scope'           => $isFullCancel ? 'full' : 'partial',
+        'quantity_level'  => $isPartialQuantityCancel,
+        'items'           => array_map(fn($e) => [
+            'item_id'  => (int)$e['item']['id'],
+            'quantity' => (int)$e['quantity'],
+        ], $cancelPlan),
+        'reason'          => $reason,
+        'refund'          => $refund,
     ]);
 
-    // ────────── 14. Notifications ──────────
+    // ────────── 15. Notifications ──────────
     create_notification(
         'customer',
         $userId,
         'order_update',
-        'Order cancellation confirmed',
-        'Your order ' . $order['order_number'] . ' has been cancelled.' .
-            ($refund['amount'] > 0 ? ' A refund of ₹' . number_format($refund['amount'], 2) . ' has been initiated.' : ''),
+        $isFullCancel ? 'Order cancelled' : 'Partial cancellation confirmed',
+        $isFullCancel
+            ? 'Your order ' . $order['order_number'] . ' has been cancelled.'
+              . ($refund['amount'] > 0 ? ' Refund of ₹' . number_format($refund['amount'], 2) . ' initiated.' : '')
+            : count($cancelPlan) . ' item(s) cancelled from order ' . $order['order_number'] . '.'
+              . ($refund['amount'] > 0 ? ' Refund of ₹' . number_format($refund['amount'], 2) . ' initiated.' : ''),
         '/customer/order-details.html?orderNumber=' . urlencode((string)$order['order_number']),
         ['order_number' => $order['order_number'], 'refund' => $refund]
     );
 
     foreach ($vendorReversals as $vendorId => $net) {
+        if ($net <= 0) continue;
         create_notification(
             'vendor',
             $vendorId,
             'order_cancelled',
-            'Order cancelled',
-            'Order ' . $order['order_number'] . ' was cancelled. Ledger reversal of ₹' . number_format(abs($net), 2) . ' applied.',
+            $isFullCancel ? 'Order cancelled' : 'Partial cancellation',
+            'Order ' . $order['order_number'] . ': reversal of ₹' . number_format($net, 2) . ' applied.',
             '/vendor/orders.html',
             ['order_number' => $order['order_number'], 'reversal' => -1 * abs($net)]
         );
     }
 
-    // ────────── 15. Commit BEFORE the Razorpay API call ──────────
-    //     The refunds row is already written; the API call is a side-effect
-    //     that we do after commit so the transaction isn't held open during
-    //     a slow HTTP request.
+    // ────────── 16. Commit ──────────
     $response = [
         'success'        => true,
         'message'        => $isFullCancel ? 'Order cancelled successfully.' : 'Selected items cancelled.',
         'orderNumber'    => $order['order_number'],
-        'status'         => $isFullCancel ? 'cancelled' : 'partially_cancelled',
-        'cancelledItems' => $cancelledItemIds,
+        'status'         => $newOrderStatus,
+        'cancelledItems' => array_map(fn($e) => [
+            'itemId'   => (int)$e['item']['id'],
+            'quantity' => (int)$e['quantity'],
+            'amount'   => (float)$e['line_amount'],
+        ], $cancelPlan),
         'refund'         => $refund,
+        'async'          => $refund['method'] === 'razorpay',
     ];
 
     finish_idempotent_request((int)$idem['id'], 200, $response);
     $db->commit();
 
-    // ────────── 16. Razorpay refund API (post-commit side effect) ──────────
+    // ────────── 17. Try refund inline; worker will retry on failure ──────────
     if ($refund['method'] === 'razorpay' && !empty($refund['refundId'])) {
         try {
-            $refundRow = $db->prepare('SELECT provider_payment_id FROM refunds WHERE id = :id');
-            $refundRow->execute(['id' => $refund['refundId']]);
+            $refundRow = $db->prepare('SELECT provider_payment_id FROM refunds WHERE id = ?');
+            $refundRow->execute([$refund['refundId']]);
             $ppid = (string)$refundRow->fetchColumn();
 
             if ($ppid !== '' && razorpay_is_configured()) {
@@ -447,52 +538,38 @@ try {
                     [
                         'amount' => (int)round($refund['amount'] * 100),
                         'notes'  => [
-                            'order_number' => (string)$order['order_number'],
+                            'order_number' => $order['order_number'],
                             'reason'       => $reason !== '' ? $reason : 'Customer cancelled',
+                            'source'       => 'inline_attempt',
                         ],
                     ]
                 );
 
-                if (!empty($api['id'])) {
+                               if (!empty($api['id'])) {
                     $db->prepare(
-                        'UPDATE refunds
-                         SET status = "processed",
-                             provider_reference = :rid,
-                             processed_at = UTC_TIMESTAMP(),
-                             updated_at = UTC_TIMESTAMP()
-                         WHERE id = :id'
-                    )->execute(['rid' => $api['id'], 'id' => $refund['refundId']]);
+                        'UPDATE refunds SET status = "processed", provider_reference = ?, processed_at = UTC_TIMESTAMP(), updated_at = UTC_TIMESTAMP() WHERE id = ?'
+                    )->execute([$api['id'], $refund['refundId']]);
+
+                    $db->prepare(
+                        'UPDATE refund_jobs SET status = "succeeded", completed_at = UTC_TIMESTAMP(), updated_at = UTC_TIMESTAMP() WHERE refund_id = ?'
+                    )->execute([$refund['refundId']]);
+
+                    // Generate GST credit note now that refund succeeded
+                    try {
+                        require_once __DIR__ . '/../lib/credit-note.php';
+                        credit_note_generate_for_refund((string)$refund['refundId']);
+                    } catch (Throwable $cnErr) {
+                        error_log('Credit note gen failed (inline): ' . $cnErr->getMessage());
+                    }
 
                     $response['refund']['status'] = 'processed';
                     $response['refund']['providerRefundId'] = $api['id'];
+                    $response['async'] = false;
                 }
             }
         } catch (Throwable $e) {
-            // Refund API failed — mark row failed, notify admin, but DO NOT roll back the cancel
-            error_log('Razorpay refund failed for order ' . $order['order_number'] . ': ' . $e->getMessage());
-
-            $db->prepare(
-                'UPDATE refunds
-                 SET status = "failed", failure_message = :msg, updated_at = UTC_TIMESTAMP()
-                 WHERE id = :id'
-            )->execute([
-                'msg' => mb_substr($e->getMessage(), 0, 500),
-                'id'  => $refund['refundId'],
-            ]);
-
-            $response['refund']['status']  = 'failed';
-            $response['refund']['message'] = 'Refund will be processed manually by support.';
-
-            // Notify admin
-            create_notification(
-                'admin',
-                '00000000-0000-0000-0000-000000000000',
-                'refund_failed',
-                'Razorpay refund failed',
-                'Order ' . $order['order_number'] . ' refund failed: ' . $e->getMessage(),
-                null,
-                ['order_id' => $order['id'], 'refund_id' => $refund['refundId']]
-            );
+            // Inline failed — worker will pick it up. Just log.
+            error_log('Inline refund attempt failed (queued for retry): ' . $e->getMessage());
         }
     }
 

@@ -24,6 +24,26 @@ if (empty($user['email_verified'])) json_response(403, ['success'=>false,'messag
 if (($user['status'] ?? 'active') !== 'active') json_response(403, ['success'=>false,'message'=>'This customer account is not currently permitted to sign in.','code'=>'CUSTOMER_ACCOUNT_RESTRICTED']);
 
 $session=create_auth_session('customer',$user['id'],$remember);
+
+// ── Auto-reactivate if account was deactivated ──
+try {
+    $db = get_db();
+    $chk = $db->prepare('SELECT account_status FROM users WHERE id = ?');
+    $chk->execute([$user['id']]);
+    if ($chk->fetchColumn() === 'deactivated') {
+        $db->prepare(
+            'UPDATE users
+             SET account_status = "active",
+                 deactivated_at = NULL,
+                 updated_at = UTC_TIMESTAMP()
+             WHERE id = ?'
+        )->execute([$user['id']]);
+
+        if (function_exists('audit_event')) {
+            audit_event('customer.account_reactivated', 'user', $user['id'], ['via' => 'login']);
+        }
+    }
+} catch (Throwable $ignore) { /* silent */ }
 get_db()->prepare('UPDATE users SET last_login_at=UTC_TIMESTAMP() WHERE id=:id')->execute(['id'=>$user['id']]);
 audit_event('customer.login','customer',$user['id']);
 $csrf=$session['csrf_token'];
