@@ -15,7 +15,7 @@ $isAdmin   = $principal['type'] === 'admin';
 
 if ($isAdmin) require_permission('support.manage', ['admin']);
 
-$ALLOWED_CATEGORIES = ['order', 'payment', 'product', 'account', 'return', 'other'];
+$ALLOWED_CATEGORIES = ['order', 'payment', 'product', 'account', 'other'];
 $ALLOWED_STATUSES   = ['open', 'waiting_customer', 'waiting_vendor', 'resolved', 'closed'];
 $ALLOWED_PRIORITIES = ['low', 'normal', 'high', 'urgent'];
 
@@ -64,7 +64,7 @@ if ($method === 'GET') {
 
         if (!$ticket) json_response(404, ['success' => false, 'message' => 'Support ticket not found.']);
 
-        $msgStmt = $db->prepare(
+                $msgStmt = $db->prepare(
             'SELECT id, sender_type, sender_id, message, is_internal, created_at
              FROM support_messages
              WHERE ticket_id = :ticket AND (is_internal = 0 OR :admin = 1)
@@ -80,7 +80,7 @@ if ($method === 'GET') {
             'influencer' => ['table' => 'influencers',   'name' => 'display_name'],
         ];
 
-        $messages = [];
+           $messages = [];
         foreach ($msgStmt->fetchAll() as $m) {
             $senderName = '';
             $map = $nameMap[$m['sender_type']] ?? null;
@@ -92,6 +92,28 @@ if ($method === 'GET') {
                     $n->closeCursor();
                 } catch (Throwable $e) {}
             }
+
+            // Attachments for this message
+            $attStmt = $db->prepare(
+                'SELECT sa.file_asset_id, f.original_name, f.mime_type, f.size_bytes, f.created_at
+                 FROM support_attachments sa
+                 JOIN file_assets f ON f.id = sa.file_asset_id
+                 WHERE sa.message_id = ? AND f.deleted_at IS NULL
+                 ORDER BY f.created_at ASC'
+            );
+            $attStmt->execute([$m['id']]);
+            $atts = [];
+            foreach ($attStmt->fetchAll() as $a) {
+                $atts[] = [
+                    'fileId'       => $a['file_asset_id'],
+                    'url'          => '../files.php?id=' . urlencode((string)$a['file_asset_id']),
+                    'originalName' => $a['original_name'],
+                    'mimeType'     => $a['mime_type'],
+                    'sizeBytes'    => (int)$a['size_bytes'],
+                    'uploadedAt'   => $a['created_at'],
+                ];
+            }
+
             $messages[] = [
                 'id'          => $m['id'],
                 'senderType'  => $m['sender_type'],
@@ -99,10 +121,39 @@ if ($method === 'GET') {
                 'message'     => $m['message'],
                 'isInternal'  => (bool)$m['is_internal'],
                 'createdAt'   => $m['created_at'],
+                'attachments' => $atts,
             ];
         }
 
         $ticket['messages'] = $messages;
+        json_response(200, ['success' => true, 'ticket' => $ticket]);
+               // Fetch attachments for this ticket
+        $attStmt = $db->prepare(
+            'SELECT sa.id, sa.file_asset_id, sa.uploaded_by_type, sa.created_at,
+                    f.original_name, f.mime_type, f.size_bytes
+             FROM support_attachments sa
+             JOIN file_assets f ON f.id = sa.file_asset_id
+             WHERE sa.ticket_id = ? AND f.deleted_at IS NULL
+             ORDER BY sa.created_at ASC'
+        );
+        $attStmt->execute([$id]);
+
+        $attachments = [];
+        foreach ($attStmt->fetchAll() as $a) {
+            $attachments[] = [
+                'id'           => $a['id'],
+                'fileId'       => $a['file_asset_id'],
+                'url'          => '../files.php?id=' . urlencode((string)$a['file_asset_id']),
+                'originalName' => $a['original_name'],
+                'mimeType'     => $a['mime_type'],
+                'sizeBytes'    => (int)$a['size_bytes'],
+                'uploadedBy'   => $a['uploaded_by_type'],
+                'uploadedAt'   => $a['created_at'],
+            ];
+        }
+
+        $ticket['messages']    = $messages;
+        $ticket['attachments'] = $attachments;
         json_response(200, ['success' => true, 'ticket' => $ticket]);
     }
 
@@ -229,12 +280,12 @@ if ($method === 'POST') {
                 'subject'  => $subject,
                 'priority' => $priority,
             ]);
-
+            $firstMessageId = uuid_string();
             $db->prepare(
                 'INSERT INTO support_messages (id, ticket_id, sender_type, sender_id, message, is_internal, created_at)
                  VALUES (:id, :ticket, :type, :owner, :message, 0, UTC_TIMESTAMP())'
             )->execute([
-                'id'      => uuid_string(),
+                'id'      => $firstMessageId,
                 'ticket'  => $ticketId,
                 'type'    => $principal['type'],
                 'owner'   => $principal['id'],
@@ -253,6 +304,8 @@ if ($method === 'POST') {
                 'message'       => 'Support ticket created.',
                 'ticket_id'     => $ticketId,
                 'ticket_number' => $number,
+                                'message_id'    => $firstMessageId,
+
             ]);
         } catch (Throwable $e) {
             if ($db->inTransaction()) $db->rollBack();
@@ -274,6 +327,7 @@ if ($method === 'POST') {
     }
 
     $internal = ($isAdmin && !empty($body['is_internal'])) ? 1 : 0;
+    $replyMessageId = uuid_string();
 
     $db->prepare(
         'INSERT INTO support_messages (id, ticket_id, sender_type, sender_id, message, is_internal, created_at)
@@ -313,7 +367,7 @@ if ($method === 'POST') {
         );
     }
 
-    json_response(201, ['success' => true, 'message' => 'Reply added.']);
+    json_response(201, ['success' => true, 'message' => 'Reply added.', 'message_id' => $replyMessageId,]);
 }
 
 // ════════════════════════════════════════════════

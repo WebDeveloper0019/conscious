@@ -1,12 +1,8 @@
 <?php
-declare(strict_types=1);
-
 /**
  * Data export worker — packages a user's data into a JSON file.
- * Every query is defensive: missing tables/columns are skipped.
- *
- * Run: *\/5 * * * * cd /path && php api/bin/data-export-worker.php
- */
+ * Run every 5 minutes via cron:
+ *   cd /path && php api/bin/data-export-worker.php */
 
 if (PHP_SAPI !== 'cli') { fwrite(STDERR, "CLI only.\n"); exit(1); }
 
@@ -98,7 +94,15 @@ try {
     );
     $invoices   = safe_fetch($db, 'SELECT * FROM invoices WHERE user_id = ?', [$userId], 'invoices');
     $creditNotes= safe_fetch($db, 'SELECT * FROM credit_notes WHERE user_id = ?', [$userId], 'credit_notes');
-    $refunds    = safe_fetch($db, 'SELECT * FROM refunds WHERE user_id = ?', [$userId], 'refunds');
+
+    // refunds has no user_id — join through orders
+    $refunds    = safe_fetch(
+        $db,
+        'SELECT r.* FROM refunds r JOIN orders o ON o.id = r.order_id WHERE o.user_id = ? ORDER BY r.created_at DESC',
+        [$userId],
+        'refunds'
+    );
+
     $returns    = safe_fetch($db, 'SELECT * FROM return_requests WHERE user_id = ?', [$userId], 'returns');
     $rewards    = safe_fetch($db, 'SELECT * FROM customer_reward_ledger WHERE user_id = ? ORDER BY created_at DESC', [$userId], 'rewards');
     $wishlist   = safe_fetch($db, 'SELECT * FROM wishlist_items WHERE user_id = ?', [$userId], 'wishlist');
@@ -114,7 +118,7 @@ try {
 
     $archive = [
         'exported_at'    => date('c'),
-        'export_version' => '1.0',
+        'export_version' => '1.1',
         'user'           => $user[0] ?? null,
         'addresses'      => $addresses,
         'preferences'    => $prefs[0] ?? null,
@@ -145,23 +149,28 @@ try {
         throw new RuntimeException('Failed to write export file.');
     }
 
-    $size = strlen($json);
+    $size   = strlen($json);
+    $sha256 = hash('sha256', $json);
 
-    // Register file asset — defensive against schema variations
+    // Register file asset using the real column names
     try {
         $db->prepare(
             'INSERT INTO file_assets
-               (id, storage_key, original_name, mime_type, byte_size, visibility, scan_status,
-                uploaded_by_type, uploaded_by_id, created_at)
-             VALUES (?, ?, ?, "application/json", ?, "private", "clean", "system", ?, UTC_TIMESTAMP())'
-        )->execute([$fileId, 'data-exports/' . basename($storedPath), $filename, $size, $userId]);
+               (id, owner_type, owner_id, purpose, storage_key, original_name, mime_type, extension,
+                size_bytes, sha256, visibility, scan_status, created_at)
+             VALUES (?, "customer", ?, "data_export", ?, ?, "application/json", "json", ?, ?, "private", "clean", UTC_TIMESTAMP())'
+        )->execute([
+            $fileId,
+            $userId,
+            'data-exports/' . basename($storedPath),
+            $filename,
+            $size,
+            $sha256,
+        ]);
     } catch (Throwable $e) {
-        // Fallback: maybe column names differ
-        error_log('file_assets insert failed, trying minimal: ' . $e->getMessage());
-        $db->prepare(
-            'INSERT INTO file_assets (id, storage_key, original_name, mime_type, byte_size, created_at)
-             VALUES (?, ?, ?, "application/json", ?, UTC_TIMESTAMP())'
-        )->execute([$fileId, 'data-exports/' . basename($storedPath), $filename, $size]);
+        error_log('data-export: file_assets insert failed: ' . $e->getMessage());
+        @unlink($storedPath);
+        throw new RuntimeException('Failed to register export file: ' . $e->getMessage());
     }
 
     // Update job

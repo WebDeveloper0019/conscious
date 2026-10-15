@@ -20,7 +20,7 @@ if ($jobId === '') {
 
 $stmt = $db->prepare(
     'SELECT j.id, j.status, j.expires_at, j.file_asset_id,
-            f.storage_key, f.original_name, f.byte_size
+            f.storage_key, f.original_name, f.size_bytes
      FROM user_data_export_jobs j
      LEFT JOIN file_assets f ON f.id = j.file_asset_id
      WHERE j.id = ? AND j.user_id = ? LIMIT 1'

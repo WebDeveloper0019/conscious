@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 -- Migration 0014: Rewards — balance table + configurable rules
-=======
--- Migration 0015: Rewards - balance table + configurable rules
->>>>>>> origin/main
 --
 -- The ledger table (customer_reward_ledger) was created by migration 0011.
 -- This migration adds the balance cache table + a rules config table so
@@ -44,11 +40,7 @@ INSERT INTO `customer_reward_rules` (`rule_key`, `value`, `description`, `update
   ('min_redeem_points',  100,     'Minimum points required to redeem', UTC_TIMESTAMP()),
   ('point_value_rupees', 1.0000,  '1 point = ₹X discount', UTC_TIMESTAMP()),
   ('expiry_days',        365,     'Points expire after N days', UTC_TIMESTAMP())
-<<<<<<< HEAD
 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
-=======
-ON DUPLICATE KEY UPDATE `rule_key` = `rule_key`;
->>>>>>> origin/main
 
 -- ─────────────────────────────────────────────────────────
 -- 3. Backfill balances from existing ledger history
@@ -71,8 +63,4 @@ ON DUPLICATE KEY UPDATE `updated_at` = VALUES(`updated_at`);
 
 SET SQL_MODE = @OLD_SQL_MODE;
 
-<<<<<<< HEAD
 SELECT '0014_rewards applied' AS status;
-=======
-SELECT '0015_rewards applied' AS status;
->>>>>>> origin/main

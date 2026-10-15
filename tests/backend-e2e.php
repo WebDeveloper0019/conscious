@@ -64,10 +64,6 @@ $_SERVER['HTTP_HOST']      ??= 'localhost';
 $_SERVER['REQUEST_URI']    ??= '/cli/e2e';
 $_SERVER['CONTENT_LENGTH'] ??= 0;
 
-// ─────────────────────────────────────────────────────────
-//  Test harness
-// ─────────────────────────────────────────────────────────
-
 final class T
 {
     public static int $passed  = 0;
