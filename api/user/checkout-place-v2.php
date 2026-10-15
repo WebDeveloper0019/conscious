@@ -73,11 +73,12 @@ function checkout_place_v2(): void
 
         $db->prepare(
             'INSERT INTO orders
-             (user_id,checkout_quote_id,order_number,status,payment_status,currency,subtotal,shipping_amount,discount_amount,tax_amount,total_amount,address_snapshot_json,placed_at,created_at,updated_at)
-             VALUES (:order_user,:order_quote,:order_number,:order_status,:order_payment,"INR",:order_subtotal,:order_shipping,:order_discount,:order_tax,:order_total,:order_address,UTC_TIMESTAMP(),UTC_TIMESTAMP(),UTC_TIMESTAMP())'
+             (user_id,checkout_quote_id,order_number,status,payment_status,payment_method,currency,subtotal,shipping_amount,discount_amount,tax_amount,total_amount,address_snapshot_json,placed_at,created_at,updated_at)
+             VALUES (:order_user,:order_quote,:order_number,:order_status,:order_payment,:payment_method,"INR",:order_subtotal,:order_shipping,:order_discount,:order_tax,:order_total,:order_address,UTC_TIMESTAMP(),UTC_TIMESTAMP(),UTC_TIMESTAMP())'
         )->execute([
             'order_user' => $userId, 'order_quote' => $quoteId, 'order_number' => $orderNumber,
             'order_status' => $orderStatus, 'order_payment' => $paymentStatus,
+            'payment_method' => $paymentMethod,
             'order_subtotal' => $quote['subtotal'], 'order_shipping' => $quote['shipping_amount'],
             'order_discount' => $quote['discount_amount'], 'order_tax' => $quote['tax_amount'],
             'order_total' => $quote['total_amount'], 'order_address' => json_encode($addressSnapshot, JSON_UNESCAPED_SLASHES),
