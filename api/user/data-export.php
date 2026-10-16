@@ -17,21 +17,29 @@ $db      = get_db();
 
 // ─── GET: check status of latest export job ───
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+<<<<<<< HEAD
     // Prefer a ready, unexpired job; fall back to the newest job of any status
+=======
+>>>>>>> origin/main
     $stmt = $db->prepare(
         'SELECT id, status, file_asset_id, size_bytes, expires_at, error_message,
                 started_at, completed_at, created_at
          FROM user_data_export_jobs
          WHERE user_id = ?
+<<<<<<< HEAD
            AND status = "ready"
            AND (expires_at IS NULL OR expires_at > UTC_TIMESTAMP())
          ORDER BY completed_at DESC, created_at DESC
          LIMIT 1'
+=======
+         ORDER BY created_at DESC LIMIT 1'
+>>>>>>> origin/main
     );
     $stmt->execute([$userId]);
     $job = $stmt->fetch();
 
     if (!$job) {
+<<<<<<< HEAD
         $stmt = $db->prepare(
             'SELECT id, status, file_asset_id, size_bytes, expires_at, error_message,
                     started_at, completed_at, created_at
@@ -47,11 +55,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
        $response = [
+=======
+        json_response(200, ['success' => true, 'job' => null]);
+    }
+
+    $response = [
+>>>>>>> origin/main
         'id'          => $job['id'],
         'status'      => $job['status'],
         'sizeBytes'   => $job['size_bytes'] ? (int)$job['size_bytes'] : null,
         'expiresAt'   => $job['expires_at'],
+<<<<<<< HEAD
         'error'       => $job['error_message'] ? 'Export could not be generated. Please try again.' : null,
+=======
+        'error'       => $job['status'] === 'failed' ? 'The export could not be completed. Please try again.' : null,
+>>>>>>> origin/main
         'requestedAt' => $job['created_at'],
         'completedAt' => $job['completed_at'],
     ];
@@ -98,4 +116,8 @@ json_response(202, [
     'message' => 'Export queued. You will be notified when ready.',
     'jobId' => $jobId,
     'status' => 'queued',
+<<<<<<< HEAD
 ]);
+=======
+]);
+>>>>>>> origin/main

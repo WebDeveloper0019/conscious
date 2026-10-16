@@ -56,4 +56,8 @@ header('Cache-Control: private, max-age=0, no-store');
 header('X-Content-Type-Options: nosniff');
 
 readfile($path);
+<<<<<<< HEAD
 exit;
+=======
+exit;
+>>>>>>> origin/main

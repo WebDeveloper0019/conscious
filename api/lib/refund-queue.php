@@ -118,6 +118,7 @@ function refund_queue_mark_succeeded(string $jobId, string $providerRefundId): v
         if ($db->inTransaction()) $db->rollBack();
         throw $e;
     }
+<<<<<<< HEAD
                 // Reverse earned points for RETURN-linked refunds
             if ($refundId) {
                 try {
@@ -146,6 +147,8 @@ function refund_queue_mark_succeeded(string $jobId, string $providerRefundId): v
                     error_log('Return points reversal failed: ' . $e->getMessage());
                 }
             }
+=======
+>>>>>>> origin/main
 }
 
 function refund_queue_mark_failed(string $jobId, string $errorMessage): bool

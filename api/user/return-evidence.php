@@ -24,7 +24,11 @@ if ($method === 'GET') {
 
     $stmt = $db->prepare(
         'SELECT re.id, re.file_asset_id, re.caption, re.sort_order, re.created_at,
+<<<<<<< HEAD
                 f.original_name, f.mime_type, f.byte_size, f.width, f.height,
+=======
+                f.original_name, f.mime_type, f.size_bytes,
+>>>>>>> origin/main
                 CONCAT("../files.php?id=", f.id) AS url
          FROM return_evidence re
          JOIN file_assets f ON f.id = re.file_asset_id
@@ -43,9 +47,13 @@ if ($method === 'GET') {
             'url'         => $r['url'],
             'caption'     => $r['caption'],
             'mimeType'    => $r['mime_type'],
+<<<<<<< HEAD
             'byteSize'    => (int)$r['byte_size'],
             'width'       => $r['width'] ? (int)$r['width'] : null,
             'height'      => $r['height'] ? (int)$r['height'] : null,
+=======
+            'byteSize'    => (int)$r['size_bytes'],
+>>>>>>> origin/main
             'uploadedAt'  => $r['created_at'],
         ];
     }
@@ -68,6 +76,10 @@ if (rate_limit('return-evidence:' . $userId, 30, 3600)) {
 $returnId = '';
 $fileId   = '';
 $caption  = '';
+<<<<<<< HEAD
+=======
+$createdAssetPath = null;
+>>>>>>> origin/main
 
 // Detect multipart
 if (!empty($_FILES['file'])) {
@@ -76,6 +88,24 @@ if (!empty($_FILES['file'])) {
     $caption  = trim((string)($_POST['caption'] ?? ''));
     $uploaded = $_FILES['file'];
 
+<<<<<<< HEAD
+=======
+    if ($returnId === '') json_response(422, ['success' => false, 'message' => 'return_id is required.']);
+    if (strlen($caption) > 255) json_response(422, ['success' => false, 'message' => 'Caption must be at most 255 characters.']);
+    $returnStmt = $db->prepare('SELECT status FROM return_requests WHERE id = ? AND user_id = ? LIMIT 1');
+    $returnStmt->execute([$returnId, $userId]);
+    $returnStatus = $returnStmt->fetchColumn();
+    if ($returnStatus === false) json_response(404, ['success' => false, 'message' => 'Return request not found.']);
+    if (in_array(strtolower((string)$returnStatus), ['completed', 'rejected', 'cancelled'], true)) {
+        json_response(409, ['success' => false, 'message' => 'Cannot add evidence to a closed return.']);
+    }
+    $earlyCount = $db->prepare('SELECT COUNT(*) FROM return_evidence WHERE return_request_id = ?');
+    $earlyCount->execute([$returnId]);
+    if ((int)$earlyCount->fetchColumn() >= 8) {
+        json_response(422, ['success' => false, 'message' => 'Maximum 8 images per return request.']);
+    }
+
+>>>>>>> origin/main
     if (!is_uploaded_file($uploaded['tmp_name'])) {
         json_response(400, ['success' => false, 'message' => 'Invalid upload.']);
     }
@@ -83,7 +113,11 @@ if (!empty($_FILES['file'])) {
         json_response(400, ['success' => false, 'message' => 'Upload error code: ' . $uploaded['error']]);
     }
     if ($uploaded['size'] > 5 * 1024 * 1024) {
+<<<<<<< HEAD
         json_response(413, ['success' => false, 'message' => 'Image must be ≤ 5 MB.']);
+=======
+        json_response(413, ['success' => false, 'message' => 'Image must be at most 5 MB.']);
+>>>>>>> origin/main
     }
 
     // Validate mime
@@ -107,14 +141,19 @@ if (!empty($_FILES['file'])) {
     if (!move_uploaded_file($uploaded['tmp_name'], $storedPath)) {
         json_response(500, ['success' => false, 'message' => 'Failed to store file.']);
     }
+<<<<<<< HEAD
 
     $width = $height = null;
     $size = @getimagesize($storedPath);
     if ($size) { $width = $size[0]; $height = $size[1]; }
+=======
+    $createdAssetPath = $storedPath;
+>>>>>>> origin/main
 
     try {
         $db->prepare(
             'INSERT INTO file_assets
+<<<<<<< HEAD
                (id, storage_key, original_name, mime_type, byte_size, width, height,
                 visibility, scan_status, uploaded_by_type, uploaded_by_id, created_at)
              VALUES (?, ?, ?, ?, ?, ?, ?, "private", "clean", "customer", ?, UTC_TIMESTAMP())'
@@ -127,6 +166,20 @@ if (!empty($_FILES['file'])) {
             $width,
             $height,
             $userId,
+=======
+               (id, owner_type, owner_id, purpose, storage_key, original_name, mime_type,
+                extension, size_bytes, sha256, visibility, scan_status, created_at)
+             VALUES (?, "customer", ?, "return_evidence", ?, ?, ?, ?, ?, ?, "private", "clean", UTC_TIMESTAMP())'
+        )->execute([
+            $fileId,
+            $userId,
+            'return-evidence/' . $storedName,
+            mb_substr((string)$uploaded['name'], 0, 255),
+            $mime,
+            $ext,
+            (int)$uploaded['size'],
+            hash_file('sha256', $storedPath),
+>>>>>>> origin/main
         ]);
     } catch (Throwable $e) {
         @unlink($storedPath);
@@ -143,13 +196,25 @@ if (!empty($_FILES['file'])) {
     if ($fileId === '') json_response(422, ['success' => false, 'message' => 'Provide file_asset_id or multipart file.']);
 
     // Verify ownership
+<<<<<<< HEAD
     $chk = $db->prepare('SELECT id FROM file_assets WHERE id = ? AND uploaded_by_id = ? AND deleted_at IS NULL LIMIT 1');
+=======
+    $chk = $db->prepare(
+        'SELECT id FROM file_assets WHERE id = ? AND owner_type = "customer" AND owner_id = ?
+         AND mime_type IN ("image/jpeg","image/png","image/webp","image/gif")
+         AND scan_status = "clean" AND deleted_at IS NULL LIMIT 1'
+    );
+>>>>>>> origin/main
     $chk->execute([$fileId, $userId]);
     if (!$chk->fetchColumn()) json_response(404, ['success' => false, 'message' => 'File not found.']);
 }
 
 if ($returnId === '') json_response(422, ['success' => false, 'message' => 'return_id is required.']);
+<<<<<<< HEAD
 if (strlen($caption) > 255) json_response(422, ['success' => false, 'message' => 'Caption must be ≤ 255 chars.']);
+=======
+if (strlen($caption) > 255) json_response(422, ['success' => false, 'message' => 'Caption must be at most 255 characters.']);
+>>>>>>> origin/main
 
 // Ownership check on the return
 $chk = $db->prepare('SELECT id, status FROM return_requests WHERE id = ? AND user_id = ? LIMIT 1');
@@ -195,8 +260,19 @@ try {
         'url'        => '../files.php?id=' . $fileId,
     ]);
 } catch (PDOException $e) {
+<<<<<<< HEAD
+=======
+    if ($createdAssetPath !== null) {
+        $db->prepare('DELETE FROM file_assets WHERE id = ? AND owner_type = "customer" AND owner_id = ?')->execute([$fileId, $userId]);
+        @unlink($createdAssetPath);
+    }
+>>>>>>> origin/main
     if ((string)$e->getCode() === '23000') {
         json_response(409, ['success' => false, 'message' => 'This image is already attached.']);
     }
     throw $e;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

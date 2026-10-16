@@ -51,7 +51,11 @@ if ($refundId !== '') {
 
 // ── Fetch all refunds for the order ──
 $rStmt = $db->prepare(
+<<<<<<< HEAD
     'SELECT r.*, 
+=======
+    'SELECT r.*,
+>>>>>>> origin/main
             j.status AS job_status, j.attempts, j.max_attempts,
             j.next_attempt_at, j.last_error
      FROM refunds r
@@ -146,4 +150,8 @@ $response = [
     'polledAt' => (new DateTimeImmutable('now', new DateTimeZone('UTC')))->format(DateTimeInterface::ATOM),
 ];
 
+<<<<<<< HEAD
 json_response(200, $response);
+=======
+json_response(200, $response);
+>>>>>>> origin/main

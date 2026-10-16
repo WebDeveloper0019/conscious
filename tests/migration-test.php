@@ -200,8 +200,11 @@ $expectedColumns = [
     ['refunds', 'source'],
     ['refunds', 'details_json'],
     ['refunds', 'failure_message'],
+<<<<<<< HEAD
     ['vendor_ledger_entries', 'status'],
     ['vendor_ledger_entries', 'reversed_at'],
+=======
+>>>>>>> origin/main
     ['inventory_movements', 'anomaly_flag'],
     ['coupon_redemptions', 'status'],
     ['notifications', 'deleted_at'],
@@ -225,9 +228,13 @@ foreach ($expectedColumns as [$table, $col]) {
 MT::suite('EXISTING DB — unique keys');
 
 $expectedIndexes = [
+<<<<<<< HEAD
     ['refunds', 'uniq_refund_order_source'],
     ['vendor_ledger_entries', 'uniq_ledger_reference'],
     ['inventory_movements', 'uniq_movement_ref'],
+=======
+    ['vendor_ledger_entries', 'uniq_vendor_ledger_reference'],
+>>>>>>> origin/main
     ['invoices', 'uniq_invoice_number'],
     ['invoices', 'uniq_order_invoice'],
     ['credit_notes', 'uniq_credit_note_number'],
@@ -253,7 +260,14 @@ foreach ($expectedIndexes as [$table, $idx]) {
 // ─────────────────────────────────────────────────────────
 MT::suite('EXISTING DB — idempotent re-run');
 
+<<<<<<< HEAD
 foreach ($files as $file) {
+=======
+$rerunnableFiles = array_values(array_filter($files, static function (string $file): bool {
+    return strcmp(basename($file), '0013_cancellation_refunds.sql') >= 0;
+}));
+foreach ($rerunnableFiles as $file) {
+>>>>>>> origin/main
     [$ok, $err] = run_migration_file($db, $file);
     if ($ok) {
         MT::ok('Re-ran: ' . basename($file));
@@ -325,4 +339,8 @@ try {
     }
 }
 
+<<<<<<< HEAD
 exit(MT::summary());
+=======
+exit(MT::summary());
+>>>>>>> origin/main

@@ -53,7 +53,11 @@ try {
     foreach ($users as $u) {
         $uid = (string)$u['id'];
         $anonymizedEmail = 'deleted+' . substr(hash('sha256', $uid), 0, 16) . '@anonymized.local';
+<<<<<<< HEAD
         $anonymizedMobile = '0000000000';
+=======
+        $anonymizedMobile = substr(preg_replace('/[^0-9]/', '', hash('sha256', 'mobile:' . $uid)), 0, 10);
+>>>>>>> origin/main
 
         // Scrub PII
         $db->prepare(
@@ -99,4 +103,8 @@ try {
     if ($db->inTransaction()) $db->rollBack();
     fwrite(STDERR, "[" . date('Y-m-d H:i:s') . "] ERROR: " . $e->getMessage() . "\n");
     exit(2);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

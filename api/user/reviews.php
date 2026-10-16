@@ -89,7 +89,11 @@ if ($method === 'POST') {
     $itemId   = (int)($body['order_item_id'] ?? 0);
     $rating   = (int)($body['rating'] ?? 0);
     $title    = trim((string)($body['title'] ?? ''));
+<<<<<<< HEAD
     $comment  = trim((string)($body['comment'] ?? ''));
+=======
+    $comment  = trim((string)($body['comment'] ?? $body['review_text'] ?? ''));
+>>>>>>> origin/main
 
     if ($rating < 1 || $rating > 5) json_response(422, ['success' => false, 'message' => 'Rating must be 1-5.']);
     if (mb_strlen($comment) < 10 || mb_strlen($comment) > 2000) {
@@ -154,7 +158,13 @@ if ($method === 'PUT') {
     $id      = trim((string)($body['id'] ?? ''));
     $rating  = isset($body['rating'])  ? (int)$body['rating'] : null;
     $title   = isset($body['title'])   ? trim((string)$body['title']) : null;
+<<<<<<< HEAD
     $comment = isset($body['comment']) ? trim((string)$body['comment']) : null;
+=======
+    $comment = isset($body['comment'])
+        ? trim((string)$body['comment'])
+        : (isset($body['review_text']) ? trim((string)$body['review_text']) : null);
+>>>>>>> origin/main
 
     if ($id === '') json_response(422, ['success' => false, 'message' => 'id required.']);
 
@@ -212,4 +222,8 @@ if ($method === 'DELETE') {
 
     audit_event('customer.review_deleted', 'product_review', $id);
     json_response(200, ['success' => true, 'message' => 'Review deleted.']);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

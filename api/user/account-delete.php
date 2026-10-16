@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         json_response(422, ['success' => false, 'message' => 'Type DELETE MY ACCOUNT to confirm.']);
     }
     if (mb_strlen($reason) > 500) {
+<<<<<<< HEAD
         json_response(422, ['success' => false, 'message' => 'Reason must be ≤ 500 chars.']);
     }
 
@@ -38,11 +39,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     }
 
+=======
+        json_response(422, ['success' => false, 'message' => 'Reason must be at most 500 characters.']);
+    }
+
+    $db = get_db();
+>>>>>>> origin/main
     // 30-day grace period
     $graceDays = 30;
 
     $db->beginTransaction();
     try {
+<<<<<<< HEAD
+=======
+        $stmt = $db->prepare('SELECT id, account_status, deletion_scheduled_for FROM users WHERE id = ? LIMIT 1 FOR UPDATE');
+        $stmt->execute([$userId]);
+        $user = $stmt->fetch();
+        if (!$user) throw new DomainException('ACCOUNT_NOT_FOUND');
+        if ($user['account_status'] === 'pending_deletion') throw new DomainException('ALREADY_SCHEDULED:' . (string)$user['deletion_scheduled_for']);
+>>>>>>> origin/main
         $db->prepare(
             'UPDATE users
              SET account_status = "pending_deletion",
@@ -57,6 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'grace_days' => $graceDays,
         ]);
 
+<<<<<<< HEAD
+=======
+        revoke_principal_sessions('customer', $userId, 'account_deletion_requested');
+
+>>>>>>> origin/main
         // Fetch schedule
         $s = $db->prepare('SELECT deletion_scheduled_for FROM users WHERE id = ?');
         $s->execute([$userId]);
@@ -66,11 +86,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         json_response(200, [
             'success' => true,
+<<<<<<< HEAD
             'message' => "Your account will be permanently deleted in {$graceDays} days. Log in anytime to cancel.",
+=======
+            'message' => "Your account will be permanently anonymized in {$graceDays} days. Sign in again during the grace period to cancel.",
+>>>>>>> origin/main
             'scheduledFor' => $scheduledFor,
             'graceDays' => $graceDays,
         ]);
 
+<<<<<<< HEAD
+=======
+    } catch (DomainException $e) {
+        if ($db->inTransaction()) $db->rollBack();
+        if (str_starts_with($e->getMessage(), 'ALREADY_SCHEDULED:')) {
+            json_response(409, ['success' => true, 'message' => 'Deletion already scheduled.', 'scheduledFor' => substr($e->getMessage(), 18)]);
+        }
+        json_response(404, ['success' => false, 'message' => 'Account not found.']);
+>>>>>>> origin/main
     } catch (Throwable $e) {
         if ($db->inTransaction()) $db->rollBack();
         error_log('Account deletion scheduling failed: ' . $e->getMessage());
@@ -97,4 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     json_response(200, ['success' => true, 'message' => 'Deletion cancelled. Welcome back.']);
 }
 
+<<<<<<< HEAD
 json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
+=======
+json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
+>>>>>>> origin/main

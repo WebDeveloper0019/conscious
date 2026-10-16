@@ -79,7 +79,11 @@ try {
 
         // Check variant + product + vendor + stock
         $vStmt = $db->prepare(
+<<<<<<< HEAD
             'SELECT pv.id AS variant_id, pv.price_adjustment,
+=======
+            'SELECT pv.id AS variant_id, pv.price_adjustment, pv.is_active AS variant_active,
+>>>>>>> origin/main
                     p.id AS product_id, p.name, p.status AS product_status,
                     p.vendor_id, p.selling_price, p.gst_percent,
                     i.stock_quantity, i.reserved_quantity,
@@ -102,7 +106,11 @@ try {
             continue;
         }
 
+<<<<<<< HEAD
         if (strtolower((string)$v['product_status']) !== 'approved') {
+=======
+        if (!(int)$v['variant_active'] || !in_array(strtolower((string)$v['product_status']), ['approved', 'active'], true)) {
+>>>>>>> origin/main
             $skipped[] = [
                 'productName' => $item['product_name'],
                 'reason'      => 'Product is no longer available',
@@ -138,6 +146,7 @@ try {
         $row = $existing->fetch();
 
         if ($row) {
+<<<<<<< HEAD
             // Cap at available stock
             $newQty = min((int)$row['quantity'] + $addQty, $available);
             $db->prepare('UPDATE cart_items SET quantity = ? WHERE id = ?')->execute([$newQty, $row['id']]);
@@ -145,6 +154,22 @@ try {
             $db->prepare(
                 'INSERT INTO cart_items (id, cart_id, variant_id, quantity, created_at)
                  VALUES (?, ?, ?, ?, UTC_TIMESTAMP())'
+=======
+            // Match the normal cart limit and report only the quantity actually added.
+            $oldQty = (int)$row['quantity'];
+            $newQty = min($oldQty + $addQty, $available, 20);
+            $addQty = max(0, $newQty - $oldQty);
+            if ($addQty === 0) {
+                $skipped[] = ['productName' => $item['product_name'], 'reason' => 'Cart quantity is already at its limit'];
+                continue;
+            }
+            $db->prepare('UPDATE cart_items SET quantity = ?, updated_at = UTC_TIMESTAMP() WHERE id = ?')->execute([$newQty, $row['id']]);
+        } else {
+            $addQty = min($addQty, 20);
+            $db->prepare(
+                'INSERT INTO cart_items (id, cart_id, variant_id, quantity, created_at, updated_at)
+                 VALUES (?, ?, ?, ?, UTC_TIMESTAMP(), UTC_TIMESTAMP())'
+>>>>>>> origin/main
             )->execute([uuid_string(), $cartId, $variantId, $addQty]);
         }
 
@@ -193,4 +218,8 @@ try {
     if ($db->inTransaction()) $db->rollBack();
     error_log('Reorder failed: ' . $e->getMessage());
     json_response(500, ['success' => false, 'message' => 'Unable to reorder. Please try again.']);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

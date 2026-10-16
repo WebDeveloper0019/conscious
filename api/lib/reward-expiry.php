@@ -134,12 +134,17 @@ function reward_expiry_sweep(): array
 
     // 2. Reconcile balance for every affected user.
     //    Source of truth = ledger. Balance is derived.
+<<<<<<< HEAD
     $affected = $db->query(
         'SELECT DISTINCT user_id FROM customer_reward_ledger
          WHERE status = "expired" AND updated_at IS NULL OR updated_at >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 5 MINUTE)'
     )->fetchAll();
 
     // Simpler + safer: recalc for every user with any expired rows in ledger
+=======
+    // Recalculate every user with expired rows; the ledger has no updated_at
+    // column, so the ledger itself remains the source of truth.
+>>>>>>> origin/main
     $userStmt = $db->query(
         'SELECT DISTINCT user_id FROM customer_reward_ledger WHERE status = "expired"'
     );
@@ -275,4 +280,8 @@ function reward_expiry_send_expired_notifications(): int
     }
 
     return $sent;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

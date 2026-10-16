@@ -1,8 +1,11 @@
 <?php
 declare(strict_types=1);
+<<<<<<< HEAD
 ini_set('display_errors', '1');
 error_reporting(E_ALL);
 
+=======
+>>>>>>> origin/main
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/audit.php';
@@ -26,11 +29,16 @@ if ($confirm !== 'DEACTIVATE') {
     json_response(422, ['success' => false, 'message' => 'Type DEACTIVATE to confirm.']);
 }
 if (mb_strlen($reason) > 500) {
+<<<<<<< HEAD
     json_response(422, ['success' => false, 'message' => 'Reason must be ≤ 500 chars.']);
+=======
+    json_response(422, ['success' => false, 'message' => 'Reason must be at most 500 characters.']);
+>>>>>>> origin/main
 }
 
 $db = get_db();
 
+<<<<<<< HEAD
 $stmt = $db->prepare('SELECT id, account_status FROM users WHERE id = ? LIMIT 1 FOR UPDATE');
 $stmt->execute([$userId]);
 $user = $stmt->fetch();
@@ -45,6 +53,16 @@ if ($user['account_status'] === 'pending_deletion') {
 
 $db->beginTransaction();
 try {
+=======
+$db->beginTransaction();
+try {
+    $stmt = $db->prepare('SELECT id, account_status FROM users WHERE id = ? LIMIT 1 FOR UPDATE');
+    $stmt->execute([$userId]);
+    $user = $stmt->fetch();
+    if (!$user) throw new DomainException('ACCOUNT_NOT_FOUND');
+    if ($user['account_status'] === 'deactivated') throw new DomainException('ALREADY_DEACTIVATED');
+    if ($user['account_status'] === 'pending_deletion') throw new DomainException('PENDING_DELETION');
+>>>>>>> origin/main
     $db->prepare(
         'UPDATE users
          SET account_status = "deactivated",
@@ -66,8 +84,24 @@ try {
         'nextLogin' => 'sign in with your password to reactivate',
     ]);
 
+<<<<<<< HEAD
+=======
+} catch (DomainException $e) {
+    if ($db->inTransaction()) $db->rollBack();
+    $messages = [
+        'ACCOUNT_NOT_FOUND' => [404, 'Account not found.'],
+        'ALREADY_DEACTIVATED' => [409, 'Account already deactivated.'],
+        'PENDING_DELETION' => [409, 'Account is scheduled for deletion. Cancel deletion first.'],
+    ];
+    [$status, $message] = $messages[$e->getMessage()] ?? [409, 'Account cannot be deactivated.'];
+    json_response($status, ['success' => false, 'message' => $message]);
+>>>>>>> origin/main
 } catch (Throwable $e) {
     if ($db->inTransaction()) $db->rollBack();
     error_log('Account deactivation failed: ' . $e->getMessage());
     json_response(500, ['success' => false, 'message' => 'Unable to deactivate account.']);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

@@ -76,12 +76,19 @@ try {
     $stmt->execute([$itemId, $userId]);
     $item = $stmt->fetch();
 
+<<<<<<< HEAD
     if (!$item) {
         json_response(404, ['success' => false, 'message' => 'Order item not found.']);
     }
 
     if ($item['group_status'] !== 'delivered' && $item['status'] !== 'delivered') {
         json_response(409, ['success' => false, 'message' => 'A return can be requested only after delivery.']);
+=======
+    if (!$item) throw new DomainException('ITEM_NOT_FOUND');
+
+    if ($item['group_status'] !== 'delivered' && $item['status'] !== 'delivered') {
+        throw new DomainException('NOT_DELIVERED');
+>>>>>>> origin/main
     }
 
     $openStmt = $db->prepare(
@@ -91,9 +98,14 @@ try {
     $openStmt->execute([$itemId]);
     $openQty = (int)$openStmt->fetchColumn();
 
+<<<<<<< HEAD
     if ($quantity > (int)$item['quantity'] - $openQty) {
         json_response(422, ['success' => false, 'message' => 'Requested quantity exceeds the eligible quantity.']);
     }
+=======
+    $eligibleQty = (int)$item['quantity'] - (int)$item['cancelled_quantity'] - (int)$item['returned_quantity'] - $openQty;
+    if ($quantity > $eligibleQty) throw new DomainException('QUANTITY_EXCEEDED');
+>>>>>>> origin/main
 
     // ── Insert the return request ──
     $returnId = uuid_string();
@@ -124,7 +136,12 @@ try {
         $chk = $db->prepare(
             "SELECT id FROM file_assets
              WHERE id IN ($placeholders)
+<<<<<<< HEAD
                AND uploaded_by_id = ?
+=======
+               AND owner_type = 'customer' AND owner_id = ?
+               AND mime_type IN ('image/jpeg','image/png','image/webp','image/gif')
+>>>>>>> origin/main
                AND deleted_at IS NULL
                AND scan_status = 'clean'"
         );
@@ -178,7 +195,23 @@ try {
     $db->commit();
     json_response(201, $response);
 
+<<<<<<< HEAD
 } catch (Throwable $e) {
     if ($db->inTransaction()) $db->rollBack();
     throw $e;
 }
+=======
+} catch (DomainException $e) {
+    if ($db->inTransaction()) $db->rollBack();
+    $messages = [
+        'ITEM_NOT_FOUND' => [404, 'Order item not found.'],
+        'NOT_DELIVERED' => [409, 'A return can be requested only after delivery.'],
+        'QUANTITY_EXCEEDED' => [422, 'Requested quantity exceeds the eligible quantity.'],
+    ];
+    [$status, $message] = $messages[$e->getMessage()] ?? [409, 'Return request cannot be created.'];
+    json_response($status, ['success' => false, 'message' => $message]);
+} catch (Throwable $e) {
+    if ($db->inTransaction()) $db->rollBack();
+    throw $e;
+}
+>>>>>>> origin/main

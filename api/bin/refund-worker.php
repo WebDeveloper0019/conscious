@@ -68,7 +68,15 @@ try {
         // Skip if refund is already marked processed (defensive)
         if (strtolower((string)$job['refund_status']) === 'processed') {
             echo "already processed (skip)\n";
+<<<<<<< HEAD
             refund_queue_mark_succeeded($jobId, '');
+=======
+            $db = get_db();
+            $db->prepare(
+                'UPDATE refund_jobs SET status="succeeded",completed_at=UTC_TIMESTAMP(),
+                 locked_by=NULL,locked_until=NULL,updated_at=UTC_TIMESTAMP() WHERE id=?'
+            )->execute([$jobId]);
+>>>>>>> origin/main
             continue;
         }
 
@@ -87,6 +95,22 @@ try {
         }
 
         try {
+<<<<<<< HEAD
+=======
+            // Reconcile before creating a refund. If a prior request reached
+            // Razorpay but our worker timed out before saving the response,
+            // this stable local refund id prevents a duplicate payout.
+            $remoteRefunds = razorpay_request('GET', 'payments/' . $paymentId . '/refunds?count=100');
+            foreach (($remoteRefunds['items'] ?? []) as $remoteRefund) {
+                if (($remoteRefund['notes']['conscious_refund_id'] ?? null) === $refundId && !empty($remoteRefund['id'])) {
+                    refund_queue_mark_succeeded($jobId, (string)$remoteRefund['id']);
+                    echo "reconciled (refund {$remoteRefund['id']})\n";
+                    $succeeded++;
+                    continue 2;
+                }
+            }
+
+>>>>>>> origin/main
             $api = razorpay_request(
                 'POST',
                 'payments/' . $paymentId . '/refund',
@@ -95,6 +119,10 @@ try {
                     'notes'  => [
                         'order_number' => $orderNumber,
                         'source'       => 'refund_worker',
+<<<<<<< HEAD
+=======
+                        'conscious_refund_id' => $refundId,
+>>>>>>> origin/main
                         'attempt'      => $attempt,
                     ],
                 ]
@@ -128,4 +156,8 @@ try {
 } catch (Throwable $e) {
     fwrite(STDERR, "[" . date('Y-m-d H:i:s') . "] WORKER ERROR: " . $e->getMessage() . "\n");
     exit(2);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

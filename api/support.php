@@ -15,7 +15,11 @@ $isAdmin   = $principal['type'] === 'admin';
 
 if ($isAdmin) require_permission('support.manage', ['admin']);
 
+<<<<<<< HEAD
 $ALLOWED_CATEGORIES = ['order', 'payment', 'product', 'account', 'other'];
+=======
+$ALLOWED_CATEGORIES = ['order', 'payment', 'product', 'account', 'return', 'other'];
+>>>>>>> origin/main
 $ALLOWED_STATUSES   = ['open', 'waiting_customer', 'waiting_vendor', 'resolved', 'closed'];
 $ALLOWED_PRIORITIES = ['low', 'normal', 'high', 'urgent'];
 
@@ -64,7 +68,11 @@ if ($method === 'GET') {
 
         if (!$ticket) json_response(404, ['success' => false, 'message' => 'Support ticket not found.']);
 
+<<<<<<< HEAD
                 $msgStmt = $db->prepare(
+=======
+        $msgStmt = $db->prepare(
+>>>>>>> origin/main
             'SELECT id, sender_type, sender_id, message, is_internal, created_at
              FROM support_messages
              WHERE ticket_id = :ticket AND (is_internal = 0 OR :admin = 1)
@@ -80,7 +88,11 @@ if ($method === 'GET') {
             'influencer' => ['table' => 'influencers',   'name' => 'display_name'],
         ];
 
+<<<<<<< HEAD
            $messages = [];
+=======
+        $messages = [];
+>>>>>>> origin/main
         foreach ($msgStmt->fetchAll() as $m) {
             $senderName = '';
             $map = $nameMap[$m['sender_type']] ?? null;
@@ -92,6 +104,7 @@ if ($method === 'GET') {
                     $n->closeCursor();
                 } catch (Throwable $e) {}
             }
+<<<<<<< HEAD
 
             // Attachments for this message
             $attStmt = $db->prepare(
@@ -112,6 +125,29 @@ if ($method === 'GET') {
                     'sizeBytes'    => (int)$a['size_bytes'],
                     'uploadedAt'   => $a['created_at'],
                 ];
+=======
+            $attachmentStmt = $db->prepare(
+                'SELECT f.id, f.original_name, f.mime_type, f.size_bytes, f.scan_status
+                 FROM support_attachments sa
+                 JOIN file_assets f ON f.id = sa.file_asset_id
+                 WHERE sa.message_id = :message AND f.deleted_at IS NULL
+                 ORDER BY f.created_at ASC'
+            );
+            $attachmentStmt->execute(['message' => $m['id']]);
+            $attachments = [];
+            foreach ($attachmentStmt->fetchAll() as $file) {
+                $attachment = [
+                    'id' => $file['id'],
+                    'name' => $file['original_name'],
+                    'mimeType' => $file['mime_type'],
+                    'sizeBytes' => (int)$file['size_bytes'],
+                    'scanStatus' => $file['scan_status'],
+                ];
+                if ($file['scan_status'] === 'clean') {
+                    $attachment['downloadUrl'] = '../api/support-attachment.php?file_id=' . urlencode((string)$file['id']);
+                }
+                $attachments[] = $attachment;
+>>>>>>> origin/main
             }
 
             $messages[] = [
@@ -121,12 +157,17 @@ if ($method === 'GET') {
                 'message'     => $m['message'],
                 'isInternal'  => (bool)$m['is_internal'],
                 'createdAt'   => $m['created_at'],
+<<<<<<< HEAD
                 'attachments' => $atts,
+=======
+                'attachments' => $attachments,
+>>>>>>> origin/main
             ];
         }
 
         $ticket['messages'] = $messages;
         json_response(200, ['success' => true, 'ticket' => $ticket]);
+<<<<<<< HEAD
                // Fetch attachments for this ticket
         $attStmt = $db->prepare(
             'SELECT sa.id, sa.file_asset_id, sa.uploaded_by_type, sa.created_at,
@@ -155,6 +196,8 @@ if ($method === 'GET') {
         $ticket['messages']    = $messages;
         $ticket['attachments'] = $attachments;
         json_response(200, ['success' => true, 'ticket' => $ticket]);
+=======
+>>>>>>> origin/main
     }
 
     // ─── List ───
@@ -253,11 +296,29 @@ if ($method === 'POST') {
         $priority = in_array($body['priority'] ?? 'normal', $ALLOWED_PRIORITIES, true)
             ? $body['priority'] : 'normal';
 
+<<<<<<< HEAD
+=======
+        $orderId = isset($body['order_id']) && (int)$body['order_id'] > 0 ? (int)$body['order_id'] : null;
+        $vendorId = !empty($body['vendor_id']) ? (string)$body['vendor_id'] : null;
+        if (!$isAdmin && $principal['type'] === 'customer' && $orderId !== null) {
+            $ownedOrder = $db->prepare('SELECT id FROM orders WHERE id = ? AND user_id = ? LIMIT 1');
+            $ownedOrder->execute([$orderId, $principal['id']]);
+            if (!$ownedOrder->fetchColumn()) json_response(404, ['success' => false, 'message' => 'Order not found.']);
+        }
+        if (!$isAdmin) {
+            $vendorId = $principal['type'] === 'vendor' ? $principal['id'] : null;
+        }
+
+>>>>>>> origin/main
         $ticketId = uuid_string();
         $number   = 'SUP-' . gmdate('ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
 
         $db->beginTransaction();
         try {
+<<<<<<< HEAD
+=======
+            $firstMessageId = uuid_string();
+>>>>>>> origin/main
             $db->prepare(
                 'INSERT INTO support_tickets
                    (id, ticket_number, opened_by_type, opened_by_id,
@@ -274,13 +335,22 @@ if ($method === 'POST') {
                 'number'   => $number,
                 'type'     => $principal['type'],
                 'owner'    => $principal['id'],
+<<<<<<< HEAD
                 'order'    => isset($body['order_id'])  ? (int)$body['order_id'] : null,
                 'vendor'   => $body['vendor_id'] ?? null,
+=======
+                'order'    => $orderId,
+                'vendor'   => $vendorId,
+>>>>>>> origin/main
                 'category' => $category,
                 'subject'  => $subject,
                 'priority' => $priority,
             ]);
+<<<<<<< HEAD
             $firstMessageId = uuid_string();
+=======
+
+>>>>>>> origin/main
             $db->prepare(
                 'INSERT INTO support_messages (id, ticket_id, sender_type, sender_id, message, is_internal, created_at)
                  VALUES (:id, :ticket, :type, :owner, :message, 0, UTC_TIMESTAMP())'
@@ -304,8 +374,12 @@ if ($method === 'POST') {
                 'message'       => 'Support ticket created.',
                 'ticket_id'     => $ticketId,
                 'ticket_number' => $number,
+<<<<<<< HEAD
                                 'message_id'    => $firstMessageId,
 
+=======
+                'message_id'    => $firstMessageId,
+>>>>>>> origin/main
             ]);
         } catch (Throwable $e) {
             if ($db->inTransaction()) $db->rollBack();
@@ -327,13 +401,22 @@ if ($method === 'POST') {
     }
 
     $internal = ($isAdmin && !empty($body['is_internal'])) ? 1 : 0;
+<<<<<<< HEAD
     $replyMessageId = uuid_string();
 
+=======
+
+    $replyMessageId = uuid_string();
+>>>>>>> origin/main
     $db->prepare(
         'INSERT INTO support_messages (id, ticket_id, sender_type, sender_id, message, is_internal, created_at)
          VALUES (:id, :ticket, :type, :owner, :message, :internal, UTC_TIMESTAMP())'
     )->execute([
+<<<<<<< HEAD
         'id'       => uuid_string(),
+=======
+        'id'       => $replyMessageId,
+>>>>>>> origin/main
         'ticket'   => $ticketId,
         'type'     => $principal['type'],
         'owner'    => $principal['id'],
@@ -346,6 +429,7 @@ if ($method === 'POST') {
         ? ($internal ? $ticket['status'] : 'waiting_customer')
         : 'open';
 
+<<<<<<< HEAD
     // Set first_response_at if admin replies and it's null
     $extra = '';
     if ($isAdmin && !$internal && empty($ticket['first_response_at'])) {
@@ -353,6 +437,9 @@ if ($method === 'POST') {
     }
 
     $db->prepare("UPDATE support_tickets SET status = :status{$extra}, updated_at = UTC_TIMESTAMP() WHERE id = :id")
+=======
+    $db->prepare('UPDATE support_tickets SET status = :status, updated_at = UTC_TIMESTAMP() WHERE id = :id')
+>>>>>>> origin/main
        ->execute(['status' => $newStatus, 'id' => $ticketId]);
 
     if (!$internal && !$isAdmin && !empty($ticket['assigned_admin_id'])) {
@@ -367,7 +454,15 @@ if ($method === 'POST') {
         );
     }
 
+<<<<<<< HEAD
     json_response(201, ['success' => true, 'message' => 'Reply added.', 'message_id' => $replyMessageId,]);
+=======
+    json_response(201, [
+        'success' => true,
+        'message' => 'Reply added.',
+        'message_id' => $replyMessageId,
+    ]);
+>>>>>>> origin/main
 }
 
 // ════════════════════════════════════════════════
@@ -406,4 +501,8 @@ if ($method === 'PATCH' && $isAdmin) {
     json_response(200, ['success' => true, 'message' => 'Support ticket updated.']);
 }
 
+<<<<<<< HEAD
 json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
+=======
+json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
+>>>>>>> origin/main

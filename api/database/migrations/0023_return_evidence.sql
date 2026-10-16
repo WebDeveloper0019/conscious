@@ -24,5 +24,27 @@ CREATE TABLE IF NOT EXISTS `return_evidence` (
   CONSTRAINT `fk_re_file`   FOREIGN KEY (`file_asset_id`)     REFERENCES `file_assets`(`id`)     ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+<<<<<<< HEAD
 SET SQL_MODE = @OLD_SQL_MODE;
 SELECT '0023 applied' AS status;
+=======
+-- Migration 0005 already created this table on existing installations. Add
+-- the newer metadata columns explicitly instead of relying on CREATE IF NOT EXISTS.
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS
+             WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='return_evidence' AND COLUMN_NAME='caption');
+SET @sql := IF(@col=0, 'ALTER TABLE `return_evidence` ADD COLUMN `caption` VARCHAR(255) NULL AFTER `uploaded_by_id`', 'SELECT 1');
+PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
+
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS
+             WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='return_evidence' AND COLUMN_NAME='sort_order');
+SET @sql := IF(@col=0, 'ALTER TABLE `return_evidence` ADD COLUMN `sort_order` INT NOT NULL DEFAULT 0 AFTER `caption`', 'SELECT 1');
+PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
+
+SET @idx := (SELECT COUNT(*) FROM information_schema.STATISTICS
+             WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='return_evidence' AND INDEX_NAME='uniq_return_file');
+SET @sql := IF(@idx=0, 'ALTER TABLE `return_evidence` ADD UNIQUE KEY `uniq_return_file` (`return_request_id`,`file_asset_id`)', 'SELECT 1');
+PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
+
+SET SQL_MODE = @OLD_SQL_MODE;
+SELECT '0023 applied' AS status;
+>>>>>>> origin/main

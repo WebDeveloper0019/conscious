@@ -10,6 +10,37 @@
 SET @OLD_SQL_MODE = @@SQL_MODE;
 SET SQL_MODE = 'STRICT_TRANS_TABLES';
 
+<<<<<<< HEAD
+=======
+-- Add refund fields required by the asynchronous provider worker. These live
+-- here (not in an already-applied migration) so production upgrades are safe.
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='refunds' AND COLUMN_NAME='currency');
+SET @sql := IF(@col=0, 'ALTER TABLE `refunds` ADD COLUMN `currency` CHAR(3) NOT NULL DEFAULT ''INR'' AFTER `amount`', 'SELECT 1');
+PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
+
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='refunds' AND COLUMN_NAME='method');
+SET @sql := IF(@col=0, 'ALTER TABLE `refunds` ADD COLUMN `method` VARCHAR(24) NOT NULL DEFAULT ''manual'' AFTER `currency`', 'SELECT 1');
+PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
+
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='refunds' AND COLUMN_NAME='source');
+SET @sql := IF(@col=0, 'ALTER TABLE `refunds` ADD COLUMN `source` VARCHAR(24) NOT NULL DEFAULT ''return'' AFTER `method`', 'SELECT 1');
+PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
+
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='refunds' AND COLUMN_NAME='provider_payment_id');
+SET @sql := IF(@col=0, 'ALTER TABLE `refunds` ADD COLUMN `provider_payment_id` VARCHAR(180) NULL AFTER `provider_reference`', 'SELECT 1');
+PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
+
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='refunds' AND COLUMN_NAME='failure_message');
+SET @sql := IF(@col=0, 'ALTER TABLE `refunds` ADD COLUMN `failure_message` VARCHAR(500) NULL AFTER `provider_payment_id`', 'SELECT 1');
+PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
+
+UPDATE `refunds` SET `source`='cancellation' WHERE `return_request_id` IS NULL;
+
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='orders' AND COLUMN_NAME='payment_method');
+SET @sql := IF(@col=0, 'ALTER TABLE `orders` ADD COLUMN `payment_method` VARCHAR(24) NULL AFTER `payment_status`', 'SELECT 1');
+PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
+
+>>>>>>> origin/main
 -- ─────────────────────────────────────────────────────────
 -- 1. refund_jobs — async worker queue
 -- ─────────────────────────────────────────────────────────
@@ -59,4 +90,8 @@ PREPARE s FROM @sql; EXECUTE s; DEALLOCATE PREPARE s;
 
 SET SQL_MODE = @OLD_SQL_MODE;
 
+<<<<<<< HEAD
 SELECT '0018_refund_queue_and_partial_cancel applied' AS status;
+=======
+SELECT '0018_refund_queue_and_partial_cancel applied' AS status;
+>>>>>>> origin/main

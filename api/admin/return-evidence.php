@@ -14,7 +14,11 @@ if ($returnId === '') json_response(422, ['success' => false, 'message' => 'retu
 
 $stmt = $db->prepare(
     'SELECT re.id, re.file_asset_id, re.caption, re.uploaded_by_type, re.created_at,
+<<<<<<< HEAD
             f.original_name, f.mime_type, f.byte_size, f.width, f.height, f.scan_status,
+=======
+            f.original_name, f.mime_type, f.size_bytes, f.scan_status,
+>>>>>>> origin/main
             CONCAT("../files.php?id=", f.id) AS url
      FROM return_evidence re
      JOIN file_assets f ON f.id = re.file_asset_id
@@ -31,13 +35,21 @@ foreach ($stmt->fetchAll() as $r) {
         'url'        => $r['url'],
         'caption'    => $r['caption'],
         'mimeType'   => $r['mime_type'],
+<<<<<<< HEAD
         'byteSize'   => (int)$r['byte_size'],
         'width'      => $r['width'] ? (int)$r['width'] : null,
         'height'     => $r['height'] ? (int)$r['height'] : null,
+=======
+        'byteSize'   => (int)$r['size_bytes'],
+>>>>>>> origin/main
         'uploadedBy' => $r['uploaded_by_type'],
         'scanStatus' => $r['scan_status'],
         'uploadedAt' => $r['created_at'],
     ];
 }
 
+<<<<<<< HEAD
 json_response(200, ['success' => true, 'evidence' => $evidence]);
+=======
+json_response(200, ['success' => true, 'evidence' => $evidence]);
+>>>>>>> origin/main

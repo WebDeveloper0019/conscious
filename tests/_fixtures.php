@@ -65,7 +65,11 @@ if (!function_exists('fixture_user')) {
 
         if ($payStatus === 'paid') {
             $db->prepare('INSERT INTO payment_attempts (id, order_id, provider, provider_payment_id, amount, currency, status, created_at) VALUES (?, ?, ?, ?, ?, "INR", "paid", UTC_TIMESTAMP())')
+<<<<<<< HEAD
                ->execute([uuid_string(), $orderId, $payMethod === 'cod' ? 'cod' : 'razorpay', 'pay_it_' . bin2hex(random_bytes(6)), round($lineTotal + 50, 2)]);
+=======
+               ->execute([uuid_string(), $orderId, $payMethod === 'cod' ? 'cod' : 'online', 'pay_it_' . bin2hex(random_bytes(6)), round($lineTotal + 50, 2)]);
+>>>>>>> origin/main
         }
 
         return ['order_id'=>$orderId,'order_number'=>$orderNumber,'group_id'=>$groupId,'item_id'=>$itemId,'variant_id'=>$product['variant_id'],'total_amount'=>round($lineTotal + 50, 2),'vendor_net'=>$vendorNet];
@@ -222,6 +226,7 @@ if (!function_exists('run_cancel_logic')) {
                 $payment = $pay->fetch();
 
                 $refundId = uuid_string();
+<<<<<<< HEAD
                 if ($payment && $payment['provider'] === 'razorpay' && !empty($payment['provider_payment_id'])) {
                     $db->prepare(
                         'INSERT INTO refunds
@@ -229,6 +234,15 @@ if (!function_exists('run_cancel_logic')) {
                             provider_payment_id, reason, recommended_by_type, recommended_by_id,
                             created_at, updated_at)
                          VALUES (:id, :o, NULL, :amt, "INR", "razorpay", "cancellation", "processing",
+=======
+                if ($payment && !empty($payment['provider_payment_id'])) {
+                    $db->prepare(
+                        'INSERT INTO refunds
+                           (id, return_request_id, order_id, amount, currency, method, source, status,
+                            provider_payment_id, reason, recommended_by_type, recommended_by_id,
+                            created_at, updated_at)
+                         VALUES (:id, NULL, :o, :amt, "INR", "razorpay", "cancellation", "processing",
+>>>>>>> origin/main
                                  :ppid, :reason, "customer", :uid,
                                  UTC_TIMESTAMP(), UTC_TIMESTAMP())'
                     )->execute([
@@ -244,10 +258,17 @@ if (!function_exists('run_cancel_logic')) {
                 } else {
                     $db->prepare(
                         'INSERT INTO refunds
+<<<<<<< HEAD
                            (id, order_id, order_item_id, amount, currency, method, source, status,
                             reason, recommended_by_type, recommended_by_id,
                             created_at, updated_at)
                          VALUES (:id, :o, NULL, :amt, "INR", "manual", "cancellation", "recommended",
+=======
+                           (id, return_request_id, order_id, amount, currency, method, source, status,
+                            reason, recommended_by_type, recommended_by_id,
+                            created_at, updated_at)
+                         VALUES (:id, NULL, :o, :amt, "INR", "manual", "cancellation", "recommended",
+>>>>>>> origin/main
                                  :reason, "customer", :uid,
                                  UTC_TIMESTAMP(), UTC_TIMESTAMP())'
                     )->execute([
@@ -302,4 +323,8 @@ if (!function_exists('run_cancel_logic')) {
             throw $e;
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main
