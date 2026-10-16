@@ -114,9 +114,36 @@
     <button class="bc-btn bc-btn-outline bc-btn-sm" onclick="document.getElementById('ci-sidebar').classList.toggle('collapsed')">
       <i class="fa-solid fa-bars"></i>
     </button>
-    
   </div>
 </div>
+
+<!-- ════════════════════════════════════════════
+     DEV PANEL — Delivery OTP test (remove after UI wired)
+     ════════════════════════════════════════════ -->
+<div class="ci-order-detail-card mb-4" style="background:#FFF8E1;border:2px dashed #FF9933;">
+  <div style="padding:16px;">
+    <div style="font-weight:700;color:#8B5A30;margin-bottom:8px;">
+      <i class="fa-solid fa-flask"></i> Delivery OTP — Quick Test
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+      <div style="flex:1;min-width:220px;">
+        <label style="font-size:.8rem;font-weight:600;display:block;margin-bottom:4px;">Group ID</label>
+        <input type="text" id="otpTestGroupId" placeholder="Paste vendor_order_groups.id here" class="ci-form-input" style="width:100%;padding:8px;font-size:.8rem;font-family:monospace;">
+      </div>
+      <button class="bc-btn bc-btn-primary bc-btn-sm" onclick="generateDeliveryOtp(document.getElementById('otpTestGroupId').value.trim())">
+        <i class="fa-solid fa-key"></i> Generate OTP
+      </button>
+      <button class="bc-btn bc-btn-navy bc-btn-sm" onclick="verifyDeliveryOtp(document.getElementById('otpTestGroupId').value.trim())">
+        <i class="fa-solid fa-check-circle"></i> Verify OTP
+      </button>
+      <button class="bc-btn bc-btn-outline bc-btn-sm" onclick="checkOtpStatus(document.getElementById('otpTestGroupId').value.trim())">
+        <i class="fa-solid fa-circle-info"></i> Status
+      </button>
+    </div>
+    <div id="otpTestResult" style="margin-top:10px;font-size:.8rem;color:#666;font-family:monospace;white-space:pre-wrap;display:none;"></div>
+  </div>
+</div>
+
 <div class="d-flex gap-2 flex-wrap mb-4">
   <button class="ci-page-btn active">All Orders</button>
   <button class="ci-page-btn" style="position:relative;">New <span class="ci-sidebar-nav-badge" style="position:static;margin-left:4px;">7</span></button>
@@ -143,7 +170,8 @@
       <button class="ci-page-btn active">1</button>
       <button class="ci-page-btn">2</button>
       <button class="ci-page-btn">3</button>
-      <button class="ci-page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+      <button class="ci-page-btn"><i class="fa-solid fa-chevron-right"></i>
+      </button>
     </nav>
   </div>
 </div>
@@ -156,6 +184,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/bharatcraft.js"></script>
 <script src="../assets/js/vendor-panel.js"></script>
+<script src="../assets/js/vendor-delivery-otp.js"></script>
+
 
 </body>
 </html>

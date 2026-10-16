@@ -1157,17 +1157,41 @@
 </button>
 
               </div>
-              <a
+                         <a
                 href="checkout.html"
                 class="bc-btn bc-btn-navy"
                 style="
                   width: 100%;
                   justify-content: center;
-                  margin-bottom: 20px;
+                  margin-bottom: 12px;
                 "
                 ><i class="fa-solid fa-bolt"></i> Buy Now</a
               >
 
+              <!-- ── Back-in-Stock / Price-Drop subscribe ── -->
+              <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
+                <button
+                  type="button"
+                  class="bc-btn bc-btn-outline"
+                  style="flex: 1; min-width: 180px; justify-content: center; font-size: 0.8125rem;"
+                  data-stock-sub="price_drop"
+                  data-product-id="blue-pottery-vase-jaipur-heritage-craft"
+                  data-target-price="999"
+                  data-label-success="✓ Watching for price drop"
+                >
+                  <i class="fa-solid fa-arrow-down"></i> Notify on Price Drop
+                </button>
+                <button
+                  type="button"
+                  class="bc-btn bc-btn-outline"
+                  style="flex: 1; min-width: 180px; justify-content: center; font-size: 0.8125rem;"
+                  data-stock-sub="back_in_stock"
+                  data-product-id="blue-pottery-vase-jaipur-heritage-craft"
+                  data-label-success="✓ We'll notify you"
+                >
+                  <i class="fa-solid fa-bell"></i> Notify When Back in Stock
+                </button>
+              </div>
               <!-- Trust Signals -->
               <div
                 style="
@@ -1584,6 +1608,20 @@
           </div>
         </div>
       </section>
+      <!-- ── Product Q&A ── -->
+<section style="margin-top: 40px; max-width: 800px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+    <h3 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;margin:0;">
+      Questions &amp; Answers (<span id="productQaCount">0</span>)
+    </h3>
+    <button class="bc-btn bc-btn-primary bc-btn-sm" onclick="askProductQuestion('blue-pottery-vase-jaipur-heritage-craft')">
+      <i class="fa-solid fa-circle-question"></i> Ask a Question
+    </button>
+  </div>
+  <div class="ci-order-detail-card" style="padding:0 20px;">
+    <div id="productQaList"></div>
+  </div>
+</section>
 
       <section
         class="bc-newsletter-section section-py"
@@ -1884,5 +1922,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/bharatcraft.js"></script>
+        <script src="assets/js/stock-subscribe.js"></script>
+        <script src="assets/js/product-qa.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.loadProductQa) {
+      loadProductQa('blue-pottery-vase-jaipur-heritage-craft');
+    }
+  });
+</script>
+
   </body>
 </html>

@@ -118,6 +118,34 @@ function refund_queue_mark_succeeded(string $jobId, string $providerRefundId): v
         if ($db->inTransaction()) $db->rollBack();
         throw $e;
     }
+                // Reverse earned points for RETURN-linked refunds
+            if ($refundId) {
+                try {
+                    $rInfo = $db->prepare(
+                        'SELECT r.return_request_id, r.order_id, r.amount,
+                                o.total_amount, o.order_number, o.user_id
+                         FROM refunds r
+                         JOIN orders o ON o.id = r.order_id
+                         WHERE r.id = ? LIMIT 1'
+                    );
+                    $rInfo->execute([$refundId]);
+                    $info = $rInfo->fetch();
+
+                    if ($info && !empty($info['return_request_id'])) {
+                        require_once __DIR__ . '/rewards.php';
+                        reward_clawback_for_return(
+                            (string)$info['user_id'],
+                            (int)$info['order_id'],
+                            (float)$info['amount'],
+                            (float)$info['total_amount'],
+                            (string)$info['order_number'],
+                            (string)$info['return_request_id']
+                        );
+                    }
+                } catch (Throwable $e) {
+                    error_log('Return points reversal failed: ' . $e->getMessage());
+                }
+            }
 }
 
 function refund_queue_mark_failed(string $jobId, string $errorMessage): bool
