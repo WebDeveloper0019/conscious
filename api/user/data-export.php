@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'status'      => $job['status'],
         'sizeBytes'   => $job['size_bytes'] ? (int)$job['size_bytes'] : null,
         'expiresAt'   => $job['expires_at'],
-        'error'       => $job['error_message'],
+        'error'       => $job['status'] === 'failed' ? 'The export could not be completed. Please try again.' : null,
         'requestedAt' => $job['created_at'],
         'completedAt' => $job['completed_at'],
     ];

@@ -92,6 +92,29 @@ if ($method === 'GET') {
                     $n->closeCursor();
                 } catch (Throwable $e) {}
             }
+            $attachmentStmt = $db->prepare(
+                'SELECT f.id, f.original_name, f.mime_type, f.size_bytes, f.scan_status
+                 FROM support_attachments sa
+                 JOIN file_assets f ON f.id = sa.file_asset_id
+                 WHERE sa.message_id = :message AND f.deleted_at IS NULL
+                 ORDER BY f.created_at ASC'
+            );
+            $attachmentStmt->execute(['message' => $m['id']]);
+            $attachments = [];
+            foreach ($attachmentStmt->fetchAll() as $file) {
+                $attachment = [
+                    'id' => $file['id'],
+                    'name' => $file['original_name'],
+                    'mimeType' => $file['mime_type'],
+                    'sizeBytes' => (int)$file['size_bytes'],
+                    'scanStatus' => $file['scan_status'],
+                ];
+                if ($file['scan_status'] === 'clean') {
+                    $attachment['downloadUrl'] = '../api/support-attachment.php?file_id=' . urlencode((string)$file['id']);
+                }
+                $attachments[] = $attachment;
+            }
+
             $messages[] = [
                 'id'          => $m['id'],
                 'senderType'  => $m['sender_type'],
@@ -99,6 +122,7 @@ if ($method === 'GET') {
                 'message'     => $m['message'],
                 'isInternal'  => (bool)$m['is_internal'],
                 'createdAt'   => $m['created_at'],
+                'attachments' => $attachments,
             ];
         }
 
@@ -218,6 +242,7 @@ if ($method === 'POST') {
 
         $db->beginTransaction();
         try {
+            $firstMessageId = uuid_string();
             $db->prepare(
                 'INSERT INTO support_tickets
                    (id, ticket_number, opened_by_type, opened_by_id,
@@ -245,7 +270,7 @@ if ($method === 'POST') {
                 'INSERT INTO support_messages (id, ticket_id, sender_type, sender_id, message, is_internal, created_at)
                  VALUES (:id, :ticket, :type, :owner, :message, 0, UTC_TIMESTAMP())'
             )->execute([
-                'id'      => uuid_string(),
+                'id'      => $firstMessageId,
                 'ticket'  => $ticketId,
                 'type'    => $principal['type'],
                 'owner'   => $principal['id'],
@@ -264,6 +289,7 @@ if ($method === 'POST') {
                 'message'       => 'Support ticket created.',
                 'ticket_id'     => $ticketId,
                 'ticket_number' => $number,
+                'message_id'    => $firstMessageId,
             ]);
         } catch (Throwable $e) {
             if ($db->inTransaction()) $db->rollBack();
@@ -286,11 +312,12 @@ if ($method === 'POST') {
 
     $internal = ($isAdmin && !empty($body['is_internal'])) ? 1 : 0;
 
+    $replyMessageId = uuid_string();
     $db->prepare(
         'INSERT INTO support_messages (id, ticket_id, sender_type, sender_id, message, is_internal, created_at)
          VALUES (:id, :ticket, :type, :owner, :message, :internal, UTC_TIMESTAMP())'
     )->execute([
-        'id'       => uuid_string(),
+        'id'       => $replyMessageId,
         'ticket'   => $ticketId,
         'type'     => $principal['type'],
         'owner'    => $principal['id'],
@@ -318,7 +345,11 @@ if ($method === 'POST') {
         );
     }
 
-    json_response(201, ['success' => true, 'message' => 'Reply added.']);
+    json_response(201, [
+        'success' => true,
+        'message' => 'Reply added.',
+        'message_id' => $replyMessageId,
+    ]);
 }
 
 // ════════════════════════════════════════════════
