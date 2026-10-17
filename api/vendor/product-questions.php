@@ -5,6 +5,7 @@ require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/notifications.php';
 require_once __DIR__ . '/../lib/audit.php';
+require_once __DIR__ . '/../lib/idempotency.php';   // ← ADDED
 
 send_cors_headers();
 
@@ -101,14 +102,26 @@ if ($method !== 'POST') {
 
 require_csrf();
 
-$body         = get_json_body();
-$questionId   = trim((string)($body['question_id'] ?? ''));
-$answerText   = trim((string)($body['answer_text'] ?? ''));
+// Rate limit — NEW
+if (rate_limit('vendor-answer:' . $vendorId, 30, 3600)) {
+    json_response(429, ['success' => false, 'message' => 'Too many answers posted. Try again later.']);
+}
+
+$body       = get_json_body();
+$questionId = trim((string)($body['question_id'] ?? ''));
+$answerText = trim((string)($body['answer_text'] ?? ''));
 
 if ($questionId === '') json_response(422, ['success' => false, 'message' => 'question_id required.']);
 if (mb_strlen($answerText) < 10 || mb_strlen($answerText) > 1500) {
     json_response(422, ['success' => false, 'message' => 'Answer must be 10-1500 characters.']);
 }
+
+// Idempotency guard — NEW
+$idem = begin_idempotent_request(
+    'product_question.answer',
+    ['type' => 'vendor', 'id' => $vendorId],
+    ['question_id' => $questionId, 'answer_text' => $answerText]
+);
 
 // Verify the question belongs to my product
 $chk = $db->prepare(
@@ -159,11 +172,15 @@ try {
         'answer_id' => $id,
     ]);
 
-    json_response(201, [
+    $response = [
         'success'  => true,
         'message'  => 'Answer posted.',
         'answerId' => $id,
-    ]);
+    ];
+
+    finish_idempotent_request((int)$idem['id'], 201, $response);
+    json_response(201, $response);
+
 } catch (Throwable $e) {
     error_log('Vendor answer failed: ' . $e->getMessage());
     json_response(500, ['success' => false, 'message' => 'Unable to post answer.']);

@@ -234,105 +234,35 @@
             <div class="row g-4">
 
                 <!-- Notification Preferences -->
-                <div class="col-lg-6">
-                    <div class="ci-form-card mb-4">
-
-                        <div class="ci-form-card-head">
-                            <div class="ci-form-card-title">
-                                <div class="step-icon">
-                                    <i class="fa-solid fa-bell"></i>
-                                </div>
-                                Notification Preferences
-                            </div>
-                        </div>
-
-                        <div class="ci-form-card-body">
-
-                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                                <div>
-                                    <div style="font-weight: 600; font-size: .9375rem; color: var(--text-primary);">
-                                        Order Updates
-                                    </div>
-                                    <div style="font-size: .8125rem; color: var(--text-muted);">
-                                        Shipping, delivery, and status changes
-                                    </div>
-                                </div>
-
-                                <input
-                                    type="checkbox"
-                                    id="pref-order-updates"
-                                    style="accent-color: var(--saffron); width: 20px; height: 20px; cursor: pointer;"
-                                />
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                                <div>
-                                    <div style="font-weight: 600; font-size: .9375rem; color: var(--text-primary);">
-                                        Offers &amp; Promotions
-                                    </div>
-                                    <div style="font-size: .8125rem; color: var(--text-muted);">
-                                        Flash sales, coupons, and special deals
-                                    </div>
-                                </div>
-
-                                <input
-                                    type="checkbox"
-                                    id="pref-offers"
-                                    style="accent-color: var(--saffron); width: 20px; height: 20px; cursor: pointer;"
-                                />
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                                <div>
-                                    <div style="font-weight: 600; font-size: .9375rem; color: var(--text-primary);">
-                                        Wishlist Alerts
-                                    </div>
-                                    <div style="font-size: .8125rem; color: var(--text-muted);">
-                                        Price drops and low stock alerts
-                                    </div>
-                                </div>
-
-                                <input
-                                    type="checkbox"
-                                    id="pref-wishlist"
-                                    style="accent-color: var(--saffron); width: 20px; height: 20px; cursor: pointer;"
-                                />
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center py-2">
-                                <div>
-                                    <div style="font-weight: 600; font-size: .9375rem; color: var(--text-primary);">
-                                        Newsletter
-                                    </div>
-                                    <div style="font-size: .8125rem; color: var(--text-muted);">
-                                        Weekly craft stories and artisan features
-                                    </div>
-                                </div>
-
-                                <input
-                                    type="checkbox"
-                                    id="pref-newsletter"
-                                    style="accent-color: var(--saffron); width: 20px; height: 20px; cursor: pointer;"
-                                />
-                            </div>
-
-                            <div style="margin-top: 16px; gap: 12px;" class="d-flex align-items-center">
-                                <button
-                                    class="bc-btn bc-btn-primary bc-btn-sm"
-                                    id="pref-save-btn"
-                                >
-                                    <i class="fa-solid fa-save"></i>
-                                    Save Preferences
-                                </button>
-
-                                <span
-                                    id="pref-status"
-                                    style="font-size: .8125rem; color: var(--text-muted);"
-                                ></span>
-                            </div>
-                        </div>
-                    </div>
+             <!-- Notification Preferences -->
+<div class="col-lg-6">
+    <div class="ci-form-card mb-4">
+        <div class="ci-form-card-head">
+            <div class="ci-form-card-title">
+                <div class="step-icon">
+                    <i class="fa-solid fa-bell"></i>
                 </div>
+                Notification Preferences
+            </div>
+        </div>
+        <div class="ci-form-card-body">
+            <div style="font-size:.8rem;color:var(--text-muted);margin-bottom:14px;">
+                Choose how you want to be notified for each category.
+            </div>
+
+            <div id="notifPrefsGrid" style="overflow-x:auto;">
+                <div style="padding:20px;text-align:center;color:var(--text-muted);">Loading…</div>
+            </div>
+
+            <div style="margin-top:16px;display:flex;align-items:center;gap:12px;">
+                <button class="bc-btn bc-btn-primary bc-btn-sm" id="notifPrefsSaveBtn">
+                    <i class="fa-solid fa-save"></i> Save Preferences
+                </button>
+                <span id="notifPrefsStatus" style="font-size:.8125rem;color:var(--text-muted);"></span>
+            </div>
+        </div>
+    </div>
+</div>
 
                 <!-- Privacy & Security -->
                 <div class="col-lg-6">
@@ -606,5 +536,7 @@
     <script src="../assets/js/bharatcraft.js"></script>
     <script src="../assets/js/customer-panel.js"></script>
     <script src="../assets/js/settings.js"></script>
+        <script src="../assets/js/notification-prefs.js"></script>
+
 </body>
 </html>

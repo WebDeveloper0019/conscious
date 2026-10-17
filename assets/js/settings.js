@@ -71,48 +71,6 @@ if (av) av.textContent = (first.charAt(0) || u.email || '?').toUpperCase();
 }).catch(function () {});
 }
 
-// ── Notification Preferences ──
-function loadPreferences() {
-return api('GET', URL_PREFS).then(function (res) {
-if (!res || res.success === false) return;
-var p = res.preferences || {};
-document.getElementById('pref-order-updates').checked = !!p.orderUpdates;
-document.getElementById('pref-offers').checked = !!p.offersPromotions;
-document.getElementById('pref-wishlist').checked = !!p.wishlistAlerts;
-document.getElementById('pref-newsletter').checked = !!p.newsletter;
-});
-}
-
-function savePreferences() {
-var btn = document.getElementById('pref-save-btn');
-var status = document.getElementById('pref-status');
-btn.disabled = true;
-status.textContent = 'Saving…';
-
-var body = {
-orderUpdates: document.getElementById('pref-order-updates').checked,
-offersPromotions: document.getElementById('pref-offers').checked,
-wishlistAlerts: document.getElementById('pref-wishlist').checked,
-newsletter: document.getElementById('pref-newsletter').checked
-};
-
-api('PUT', URL_PREFS, body).then(function (res) {
-btn.disabled = false;
-if (res && res.success) {
-status.style.color = '#065F46';
-status.textContent = '✓ Saved';
-setTimeout(function () { status.textContent = ''; }, 2500);
-} else {
-status.style.color = '#991B1B';
-status.textContent = (res && res.message) || 'Save failed.';
-}
-}).catch(function () {
-btn.disabled = false;
-status.style.color = '#991B1B';
-status.textContent = 'Save failed.';
-});
-}
-
 // ── Data export ──
 function renderExportStatus(job) {
 var el = document.getElementById('export-status');
@@ -122,8 +80,11 @@ if (!el) return;
 if (!job) {
 el.textContent = 'No export requested yet.';
 el.style.color = 'var(--text-muted)';
+if (btn) {
 btn.disabled = false;
 btn.innerHTML = '<i class="fa-solid fa-download"></i> Request Export';
+btn.onclick = requestExport;
+}
 return;
 }
 
@@ -131,18 +92,22 @@ var s = job.status;
 if (s === 'queued' || s === 'processing') {
 el.textContent = '⏳ Export ' + s + '… we\'ll email you when ready.';
 el.style.color = '#1E40AF';
+if (btn) {
 btn.disabled = true;
 btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ' + s;
+}
 } else if (s === 'ready') {
     var size = job.sizeBytes ? (Math.round(job.sizeBytes / 1024) + ' KB') : '';
     el.textContent = '✓ Ready ' + size;
     el.style.color = '#065F46';
 
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-download"></i> Download';
-    btn.onclick = function () {
-        if (job.downloadUrl) window.location.href = job.downloadUrl;
-    };
+    if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-download"></i> Download';
+        btn.onclick = function () {
+            if (job.downloadUrl) window.location.href = job.downloadUrl;
+        };
+    }
 
     // Show a small "request new" link below
     var newLinkId = 'ci-export-new-link';
@@ -162,12 +127,18 @@ btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ' + s;
 } else if (s === 'failed') {
 el.textContent = '✗ Export failed. ' + (job.error || '');
 el.style.color = '#991B1B';
+if (btn) {
 btn.disabled = false;
 btn.innerHTML = '<i class="fa-solid fa-download"></i> Retry Export';
+btn.onclick = requestExport;
+}
 } else {
 el.textContent = 'Status: ' + s;
 el.style.color = 'var(--text-muted)';
+if (btn) {
 btn.disabled = false;
+btn.onclick = requestExport;
+}
 }
 }
 
@@ -180,8 +151,10 @@ renderExportStatus(res.job || null);
 
 function requestExport() {
 var btn = document.getElementById('btn-export-request');
+if (btn) {
 btn.disabled = true;
 btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Requesting…';
+}
 
 api('POST', URL_EXPORT, {}).then(function (res) {
 if (res && res.success) {
@@ -189,13 +162,17 @@ showBanner('success', res.message || 'Export queued.');
 loadExportStatus();
 } else {
 showBanner('error', (res && res.message) || 'Could not start export.');
+if (btn) {
 btn.disabled = false;
 btn.innerHTML = '<i class="fa-solid fa-download"></i> Request Export';
 }
+}
 }).catch(function () {
 showBanner('error', 'Network error.');
+if (btn) {
 btn.disabled = false;
 btn.innerHTML = '<i class="fa-solid fa-download"></i> Request Export';
+}
 });
 }
 
@@ -204,8 +181,10 @@ function revokeAllSessions() {
 if (!confirm('Sign out of ALL devices? You will need to sign in again on this device too.')) return;
 
 var btn = document.getElementById('btn-revoke-sessions');
+if (btn) {
 btn.disabled = true;
 btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Working…';
+}
 
 api('POST', URL_REVOKE, {}).then(function (res) {
 if (res && res.success) {
@@ -213,13 +192,17 @@ showBanner('success', res.message || 'All sessions revoked. Redirecting to login
 setTimeout(function () { window.location.href = '../login.html'; }, 1500);
 } else {
 showBanner('error', (res && res.message) || 'Failed to revoke sessions.');
+if (btn) {
 btn.disabled = false;
 btn.innerHTML = '<i class="fa-solid fa-laptop"></i> Log out from all devices';
 }
+}
 }).catch(function () {
 showBanner('error', 'Network error.');
+if (btn) {
 btn.disabled = false;
 btn.innerHTML = '<i class="fa-solid fa-laptop"></i> Log out from all devices';
+}
 });
 }
 
@@ -297,32 +280,36 @@ btn.textContent = 'Delete Permanently';
 });
 }
 
+// ── Safe event binding helper ──
+function on(id, event, fn) {
+var el = document.getElementById(id);
+if (el) el.addEventListener(event, fn);
+}
+
 function init() {
 loadSidebarUser();
-loadPreferences().catch(function () {});
 loadExportStatus();
 
-document.getElementById('pref-save-btn').addEventListener('click', savePreferences);
-document.getElementById('btn-export-request').addEventListener('click', requestExport);
-document.getElementById('btn-revoke-sessions').addEventListener('click', revokeAllSessions);
+on('btn-export-request', 'click', requestExport);
+on('btn-revoke-sessions', 'click', revokeAllSessions);
 
-document.getElementById('btn-deactivate').addEventListener('click', function () {
+on('btn-deactivate', 'click', function () {
 document.getElementById('deactivate-reason').value = '';
 document.getElementById('deactivate-confirm').value = '';
 document.getElementById('deactivate-error').style.display = 'none';
 var m = new bootstrap.Modal(document.getElementById('modal-deactivate'));
 m.show();
 });
-document.getElementById('deactivate-submit').addEventListener('click', submitDeactivate);
+on('deactivate-submit', 'click', submitDeactivate);
 
-document.getElementById('btn-delete').addEventListener('click', function () {
+on('btn-delete', 'click', function () {
 document.getElementById('delete-reason').value = '';
 document.getElementById('delete-confirm').value = '';
 document.getElementById('delete-error').style.display = 'none';
 var m = new bootstrap.Modal(document.getElementById('modal-delete'));
 m.show();
 });
-document.getElementById('delete-submit').addEventListener('click', submitDelete);
+on('delete-submit', 'click', submitDelete);
 }
 
 if (document.readyState === 'loading') {

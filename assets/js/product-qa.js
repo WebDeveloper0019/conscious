@@ -96,10 +96,17 @@
         text = text.trim();
         if (text.length < 10) { alert('Question must be at least 10 characters.'); return; }
 
+              // Unique idempotency key per click
+        var idemKey = 'q-' + Date.now() + '-' + Math.random().toString(36).slice(2, 12);
+
         fetch(API_ASK, {
             method: 'POST',
             credentials: 'include',
-            headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf() },
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': csrf(),
+                'Idempotency-Key': idemKey
+            },
             body: JSON.stringify({ product_id: productId, question_text: text })
         })
         .then(function (r) { return r.json(); })

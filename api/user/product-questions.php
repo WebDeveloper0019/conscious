@@ -5,6 +5,7 @@ require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/audit.php';
 require_once __DIR__ . '/../lib/notifications.php';
+require_once __DIR__ . '/../lib/idempotency.php';   // ← ADDED
 
 send_cors_headers();
 
@@ -80,14 +81,21 @@ if (rate_limit('product-q:' . $userId, 10, 3600)) {
     json_response(429, ['success' => false, 'message' => 'Too many questions. Please try again later.']);
 }
 
-$body        = get_json_body();
-$productId   = trim((string)($body['product_id'] ?? ''));
+$body         = get_json_body();
+$productId    = trim((string)($body['product_id'] ?? ''));
 $questionText = trim((string)($body['question_text'] ?? ''));
 
 if ($productId === '') json_response(422, ['success' => false, 'message' => 'product_id required.']);
 if (mb_strlen($questionText) < 10 || mb_strlen($questionText) > 500) {
     json_response(422, ['success' => false, 'message' => 'Question must be 10-500 characters.']);
 }
+
+// Idempotency guard
+$idem = begin_idempotent_request(
+    'product_question.create',
+    ['type' => 'customer', 'id' => $userId],
+    ['product_id' => $productId, 'question_text' => $questionText]
+);
 
 // Product must exist
 $pStmt = $db->prepare('SELECT id, name, vendor_id FROM products WHERE id = ? LIMIT 1');
@@ -132,12 +140,16 @@ try {
         );
     }
 
-    json_response(201, [
+    $response = [
         'success'    => true,
         'message'    => 'Question submitted. It will appear once approved.',
         'questionId' => $id,
         'status'     => 'pending',
-    ]);
+    ];
+
+    finish_idempotent_request((int)$idem['id'], 201, $response);
+    json_response(201, $response);
+
 } catch (Throwable $e) {
     error_log('Question create failed: ' . $e->getMessage());
     json_response(500, ['success' => false, 'message' => 'Unable to submit question.']);
