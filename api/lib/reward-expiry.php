@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/notifications.php';
 
@@ -22,7 +23,6 @@ function reward_expiry_cfg(string $key, $default = null)
 
 /**
  * Find all active earned points that have expired (expires_at <= now).
- * Groups by user + expiry date for efficient processing.
  */
 function reward_expiry_find_expired(int $limit = 500): array
 {
@@ -45,8 +45,7 @@ function reward_expiry_find_expired(int $limit = 500): array
 }
 
 /**
- * Find upcoming expiries within N days (for pre-expiry warnings).
- * Returns users with points expiring on a specific date in the window.
+ * Find upcoming expiries within N days.
  */
 function reward_expiry_find_upcoming(int $minDays, int $maxDays, int $limit = 1000): array
 {
@@ -109,8 +108,6 @@ function reward_expiry_mark_sent(string $userId, string $type, string $expiryDat
 
 /**
  * Sweep: mark expired ledger entries + reconcile the balance cache.
- *
- * Returns [entries_expired, users_affected].
  */
 function reward_expiry_sweep(): array
 {
@@ -133,18 +130,6 @@ function reward_expiry_sweep(): array
     }
 
     // 2. Reconcile balance for every affected user.
-    //    Source of truth = ledger. Balance is derived.
-<<<<<<< HEAD
-    $affected = $db->query(
-        'SELECT DISTINCT user_id FROM customer_reward_ledger
-         WHERE status = "expired" AND updated_at IS NULL OR updated_at >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 5 MINUTE)'
-    )->fetchAll();
-
-    // Simpler + safer: recalc for every user with any expired rows in ledger
-=======
-    // Recalculate every user with expired rows; the ledger has no updated_at
-    // column, so the ledger itself remains the source of truth.
->>>>>>> origin/main
     $userStmt = $db->query(
         'SELECT DISTINCT user_id FROM customer_reward_ledger WHERE status = "expired"'
     );
@@ -179,7 +164,6 @@ function reward_expiry_sweep(): array
 
 /**
  * Send warnings for a given window. Stage name = warn_30d / warn_7d / warn_1d.
- * Skips users already notified for that (user, stage, expiry_date).
  */
 function reward_expiry_send_warnings(int $minDays, int $maxDays, string $stage): int
 {
@@ -194,23 +178,26 @@ function reward_expiry_send_warnings(int $minDays, int $maxDays, string $stage):
         if ($points <= 0) continue;
         if (reward_expiry_already_sent($userId, $stage, $expiryDate)) continue;
 
-        // Compute days-left for the message
         $expiryTs = strtotime($expiryDate . ' 23:59:59 UTC');
         $daysLeft = max(0, (int)ceil(($expiryTs - time()) / 86400));
 
-        $title = match ($stage) {
-            'warn_30d' => 'Your reward points will expire soon',
-            'warn_7d'  => 'Reminder: reward points expiring in 7 days',
-            'warn_1d'  => 'Last chance: reward points expire tomorrow',
-            default    => 'Reward points expiring',
-        };
+        if ($stage === 'warn_30d') {
+            $title = 'Your reward points will expire soon';
+        } elseif ($stage === 'warn_7d') {
+            $title = 'Reminder: reward points expiring in 7 days';
+        } elseif ($stage === 'warn_1d') {
+            $title = 'Last chance: reward points expire tomorrow';
+        } else {
+            $title = 'Reward points expiring';
+        }
 
+        $dayWord = ($daysLeft === 1) ? 'day' : 'days';
         $message = sprintf(
-            'You have %s Craft Points expiring on %s (in %d day%s). Redeem them at checkout before they\'re gone.',
+            'You have %s Craft Points expiring on %s (in %d %s). Redeem them at checkout before they are gone.',
             number_format($points),
             date('d M Y', strtotime($expiryDate)),
             $daysLeft,
-            $daysLeft === 1 ? '' : 's'
+            $dayWord
         );
 
         try {
@@ -280,8 +267,4 @@ function reward_expiry_send_expired_notifications(): int
     }
 
     return $sent;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/main

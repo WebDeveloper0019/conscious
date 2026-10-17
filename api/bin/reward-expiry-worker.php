@@ -4,21 +4,25 @@ declare(strict_types=1);
 /**
  * Reward expiry worker.
  *
- * Run daily:   * 3 * * * cd /path && php api/bin/reward-expiry-worker.php >> /var/log/reward-expiry.log 2>&1
- * Run hourly:  0 * * * * cd /path && php api/bin/reward-expiry-worker.php
+ * Run daily:
+ *   0 3 * * * cd /path/to/project && php api/bin/reward-expiry-worker.php >> /var/log/reward-expiry.log 2>&1
  *
  * Steps:
- *   1. Send 30-day warnings for points expiring in 29-30 days
- *   2. Send 7-day warnings for points expiring in 6-7 days
- *   3. Send 1-day warnings for points expiring in 0-1 days
+ *   1. Send 30-day warnings
+ *   2. Send 7-day warnings
+ *   3. Send 1-day warnings
  *   4. Expire past-due points + reconcile balances
  *   5. Send post-expiry notifications
  */
 
-if (PHP_SAPI !== 'cli') { fwrite(STDERR, "CLI only.\n"); exit(1); }
+if (PHP_SAPI !== 'cli') {
+    fwrite(STDERR, "CLI only.\n");
+    exit(1);
+}
 
 require_once __DIR__ . '/../config.php';
 
+// Override HTTP error handlers for CLI safety
 restore_error_handler();
 restore_exception_handler();
 set_exception_handler(function (Throwable $e) {
@@ -26,9 +30,11 @@ set_exception_handler(function (Throwable $e) {
     exit(1);
 });
 
+// Stub HTTP environment
 $_SERVER['REQUEST_METHOD'] ??= 'CLI';
 $_SERVER['REMOTE_ADDR']    ??= '127.0.0.1';
 $_SERVER['HTTP_HOST']      ??= 'localhost';
+$_SERVER['CONTENT_LENGTH'] ??= 0;
 
 require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/helpers.php';
@@ -44,7 +50,6 @@ $totalNotifs   = 0;
 
 try {
     // ── 1. Pre-expiry warnings ──
-
     if (reward_expiry_cfg('reward_expiry_warn_30d', true)) {
         $n = reward_expiry_send_warnings(29, 30, 'warn_30d');
         echo "  Sent 30-day warnings: {$n}\n";
@@ -82,9 +87,3 @@ try {
     fwrite(STDERR, $e->getTraceAsString() . "\n");
     exit(2);
 }
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> origin/main
