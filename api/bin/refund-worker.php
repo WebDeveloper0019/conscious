@@ -5,9 +5,9 @@ declare(strict_types=1);
  * Refund queue worker.
  *
  * Run manually:  php api/bin/refund-worker.php
- * Run via cron:  * * * * * cd /path && php api/bin/refund-worker.php >> /dev/null 2>&1
+ * Run via cron:  * * * * * cd /path && php api/bin/refund-worker.php >> /var/log/refund-worker.log 2>&1
  *
- * Processes up to 20 refund jobs per invocation, exits when queue drains.
+ * Processes one batch of up to 20 refund jobs per invocation, then exits.
  * Safe to run concurrently (uses FOR UPDATE SKIP LOCKED).
  */
 
@@ -44,6 +44,12 @@ $permanently = 0;
 
 echo "[" . date('Y-m-d H:i:s') . "] Refund worker started\n";
 
+// Check config BEFORE claiming, so a misconfiguration doesn't burn job attempts.
+if (!razorpay_is_configured()) {
+    fwrite(STDERR, "[" . date('Y-m-d H:i:s') . "] Razorpay not configured. Exiting without claiming jobs.\n");
+    exit(2);
+}
+
 try {
     $jobs = refund_queue_claim($batchSize);
     if (!$jobs) {
@@ -68,41 +74,25 @@ try {
         // Skip if refund is already marked processed (defensive)
         if (strtolower((string)$job['refund_status']) === 'processed') {
             echo "already processed (skip)\n";
-<<<<<<< HEAD
             refund_queue_mark_succeeded($jobId, '');
-=======
-            $db = get_db();
-            $db->prepare(
-                'UPDATE refund_jobs SET status="succeeded",completed_at=UTC_TIMESTAMP(),
-                 locked_by=NULL,locked_until=NULL,updated_at=UTC_TIMESTAMP() WHERE id=?'
-            )->execute([$jobId]);
->>>>>>> origin/main
             continue;
         }
 
         if ($paymentId === '') {
-            echo "no provider_payment_id (permanent fail)\n";
-            refund_queue_mark_failed($jobId, 'Missing provider_payment_id');
-            $permanently++;
-            continue;
-        }
-
-        if (!razorpay_is_configured()) {
-            echo "Razorpay not configured\n";
-            refund_queue_mark_failed($jobId, 'Razorpay not configured');
-            $permanently++;
+            $willRetry = refund_queue_mark_failed($jobId, 'Missing provider_payment_id');
+            echo "no provider_payment_id (" . ($willRetry ? 'will retry' : 'permanent fail') . ")\n";
+            $willRetry ? $retried++ : $permanently++;
             continue;
         }
 
         try {
-<<<<<<< HEAD
-=======
             // Reconcile before creating a refund. If a prior request reached
             // Razorpay but our worker timed out before saving the response,
             // this stable local refund id prevents a duplicate payout.
             $remoteRefunds = razorpay_request('GET', 'payments/' . $paymentId . '/refunds?count=100');
             foreach (($remoteRefunds['items'] ?? []) as $remoteRefund) {
-                if (($remoteRefund['notes']['conscious_refund_id'] ?? null) === $refundId && !empty($remoteRefund['id'])) {
+                if ((string)($remoteRefund['notes']['conscious_refund_id'] ?? '') === $refundId
+                    && !empty($remoteRefund['id'])) {
                     refund_queue_mark_succeeded($jobId, (string)$remoteRefund['id']);
                     echo "reconciled (refund {$remoteRefund['id']})\n";
                     $succeeded++;
@@ -110,20 +100,16 @@ try {
                 }
             }
 
->>>>>>> origin/main
             $api = razorpay_request(
                 'POST',
                 'payments/' . $paymentId . '/refund',
                 [
                     'amount' => (int)round($amount * 100),
                     'notes'  => [
-                        'order_number' => $orderNumber,
-                        'source'       => 'refund_worker',
-<<<<<<< HEAD
-=======
+                        'order_number'        => $orderNumber,
+                        'source'              => 'refund_worker',
                         'conscious_refund_id' => $refundId,
->>>>>>> origin/main
-                        'attempt'      => $attempt,
+                        'attempt'             => (string)$attempt,
                     ],
                 ]
             );
@@ -156,8 +142,4 @@ try {
 } catch (Throwable $e) {
     fwrite(STDERR, "[" . date('Y-m-d H:i:s') . "] WORKER ERROR: " . $e->getMessage() . "\n");
     exit(2);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/main
