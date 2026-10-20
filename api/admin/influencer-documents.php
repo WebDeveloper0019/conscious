@@ -7,7 +7,7 @@ $context=require_admin('influencers.manage');$db=get_db();$method=$_SERVER['REQU
 if($method==='GET'){
     $creator=trim((string)($_GET['influencer_id']??''));
     if($creator==='')json_response(422,['success'=>false,'message'=>'Creator id is required.']);
-    $stmt=$db->prepare('SELECT d.id,d.document_type,d.verification_status,d.rejection_reason,d.created_at,f.id AS file_id,f.scan_status,f.mime_type,f.original_name FROM influencer_documents d JOIN file_assets f ON f.id=d.file_asset_id WHERE d.influencer_id=:owner AND f.deleted_at IS NULL ORDER BY d.created_at DESC');
+    $stmt=$db->prepare('SELECT d.id,d.document_type,d.verification_status,d.rejection_reason,d.created_at,d.uploaded_at,f.id AS file_id,f.scan_status,f.mime_type,f.original_name FROM influencer_documents d JOIN file_assets f ON f.id=d.file_asset_id WHERE d.influencer_id=:owner AND f.deleted_at IS NULL ORDER BY d.uploaded_at DESC,d.id DESC');
     $stmt->execute(['owner'=>$creator]);
     json_response(200,['success'=>true,'documents'=>$stmt->fetchAll()]);
 }

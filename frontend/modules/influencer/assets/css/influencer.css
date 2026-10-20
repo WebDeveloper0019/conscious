@@ -56,3 +56,8 @@ html{font-size:16px}
 .if-grid>.if-card small i{color:#be713d;margin-right:5px}.if-grid>.if-card strong{font-family:Georgia,serif;color:#244834;margin-top:12px}
 .if-section .if-card{box-shadow:0 5px 20px #1c39260b}
 @media(max-width:700px){.if-overview-hero{align-items:flex-start;flex-direction:column}.if-overview-actions{align-self:stretch}.if-overview-actions .if-button{flex:1}}
+.if-auth-body .if-auth-helper{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;text-align:left;margin-top:0}
+.if-auth-body .if-auth-helper>a{white-space:nowrap}
+.if-auth-body .if-auth-helper .if-check{max-width:260px}
+.if-field select:focus{outline:2px solid #7fae89}
+@media(max-width:450px){.if-auth-body .if-auth-helper{flex-direction:column;align-items:flex-start}}

@@ -15,9 +15,9 @@ This module owns the authenticated creator experience and its data-binding scrip
 ## End-to-end flow
 
 1. Register and verify email. In `APP_ENV=local`, the code is written to `api/data/mail-outbox/`; production requires Resend configuration.
-2. In Creator Studio, save a detailed bio and social profile, upload identity, PAN and social-ownership evidence, and submit the application.
+2. In Creator Studio, save a detailed bio, one to five HTTPS social profiles, creator niches, languages, and optional Indian city/state, then upload identity, PAN and social-ownership evidence. The latest version of each required document must pass its security scan before submission. Editing a submitted application returns it to a draft requiring resubmission; editing an active profile pauses public visibility for re-review.
 3. A configured malware scanner must process private uploads (`CLAMAV_BINARY`, then `php api/bin/scan-files.php`). The UI correctly keeps files pending until the scan succeeds. Do not mark files clean manually in production.
-4. Admin opens the creator review page, checks each clean private document, approves the documents, then approves the creator application.
+4. Admin opens the creator review page, checks and approves the latest clean version of each required private document, then approves the creator application. Review reasons and rejected document feedback appear in Creator Studio.
 5. Admin creates an active campaign and assigns the approved creator to it. Creator Studio then shows the referral link and required disclosure.
 6. Referral visits, attributed paid orders, delivered-order eligibility, analytics and commission history use the backend APIs. The creator can request a withdrawal only against eligible, unreserved funds and a verified payout profile.
 7. Admin verifies payout details through the business's separate bank/PAN checks, reviews the withdrawal, sends money manually, then records the actual bank transfer reference. The application does not initiate a transfer.
@@ -27,6 +27,8 @@ This module owns the authenticated creator experience and its data-binding scrip
 ## Local UI walkthrough
 
 Run `php api/bin/seed-influencer-demo.php` in the local environment to create the safe draft-only demo account. Sign in as `creator.demo@conscious.test` with `DemoCreator#2026!`. This account has no fabricated approval, documents, sales or payout; it exists only for reviewing the form and empty states. Use the sidebar (or Menu on narrow screens) to visit Profile & verification, Campaign links, Curated products, Analytics, Earnings, Withdrawals, Partnership inquiries, Notifications and Settings. The demo seeder refuses non-local environments.
+
+For an automated HTTP check, run the PHP server against an isolated `conscious_backend_merge_*` database and then run `php tests/influencer-auth-onboarding-e2e.php` with the same `DB_NAME` and `TEST_BASE_URL`. The test creates local-only accounts, exercises signup/login/reset, CSRF, upload, review feedback and resubmission, and simulates a clean malware-scan result only inside that isolated database.
 
 ## Deployment requirements and current limitations
 
