@@ -114,22 +114,19 @@
   
 <div class="ci-stat-card saffron">
   <div class="ci-stat-icon"><i class="fa-solid fa-heart"></i></div>
-  <div class="ci-stat-value">12</div>
-  <div class="ci-stat-label">Saved Items</div>
+<div class="ci-stat-value" id="ci-wishlist-count">0</div>  <div class="ci-stat-label">Saved Items</div>
   <div class="ci-stat-change up"><i class="fa-solid fa-arrow-trend-up"></i> +3 this week <span class="vs">vs last month</span></div>
 </div>
   
 <div class="ci-stat-card navy">
   <div class="ci-stat-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div>
-  <div class="ci-stat-value">₹52,490</div>
-  <div class="ci-stat-label">Total Value</div>
+<div class="ci-stat-value" id="ci-wishlist-total-value">₹0</div>  <div class="ci-stat-label">Total Value</div>
   <div class="ci-stat-change up"><i class="fa-solid fa-arrow-trend-up"></i>  <span class="vs">vs last month</span></div>
 </div>
   
 <div class="ci-stat-card green">
   <div class="ci-stat-icon"><i class="fa-solid fa-tag"></i></div>
-  <div class="ci-stat-value">₹18,300</div>
-  <div class="ci-stat-label">Potential Savings</div>
+<div class="ci-stat-value" id="ci-wishlist-savings">₹0</div>  <div class="ci-stat-label">Potential Savings</div>
   <div class="ci-stat-change up"><i class="fa-solid fa-arrow-trend-up"></i>  <span class="vs">vs last month</span></div>
 </div>
 </div>
@@ -139,9 +136,33 @@
     <div class="ci-data-table-search"><i class="fa-solid fa-magnifying-glass"></i><input type="search" placeholder="Search…" aria-label="Search table" /></div>
   </div>
   <div class="ci-table-wrap">
-    <table class="ci-data-table">
-      <thead><tr><th>Product</th><th>Price</th><th>Stock</th><th>Date Added</th><th>Actions</th></tr></thead>
-      <tbody><tr><td><div class="ci-table-product-cell"><div class="ci-table-product-img">💎</div><div><div class="ci-table-product-name">Kundan Bridal Necklace Set</div><div class="ci-table-product-sku">By Shilpa Crafts</div></div></div></td><td><strong>₹8,499</strong></td><td><span class="ci-status ci-status-active">In Stock</span></td><td>Jun 14, 2025</td><td><div class="ci-table-actions"><button class="ci-table-action-btn" title="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button><button class="ci-table-action-btn danger" title="Remove"><i class="fa-solid fa-trash-can"></i></button></div></td></tr><tr><td><div class="ci-table-product-cell"><div class="ci-table-product-img">🧵</div><div><div class="ci-table-product-name">Banarasi Silk Saree</div><div class="ci-table-product-sku">By Varanasi Weavers</div></div></div></td><td><strong>₹14,500</strong></td><td><span class="ci-status ci-status-pending">Only 3 left</span></td><td>Jun 12, 2025</td><td><div class="ci-table-actions"><button class="ci-table-action-btn" title="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button><button class="ci-table-action-btn danger" title="Remove"><i class="fa-solid fa-trash-can"></i></button></div></td></tr><tr><td><div class="ci-table-product-cell"><div class="ci-table-product-img">🏺</div><div><div class="ci-table-product-name">Blue Pottery Vase Set</div><div class="ci-table-product-sku">By Blue Pottery Co.</div></div></div></td><td><strong>₹3,200</strong></td><td><span class="ci-status ci-status-active">In Stock</span></td><td>Jun 10, 2025</td><td><div class="ci-table-actions"><button class="ci-table-action-btn"><i class="fa-solid fa-bag-shopping"></i></button><button class="ci-table-action-btn danger"><i class="fa-solid fa-trash-can"></i></button></div></td></tr></tbody>
+<table class="ci-data-table" id="ci-wishlist-table">      `
+<thead>
+  <tr>
+    <th>Product</th>
+    <th>Price</th>
+    <th>Stock</th>
+    <th>Date Added</th>
+    <th>Actions</th>
+  </tr>
+</thead>
+
+  <tr>
+    <td colspan="5" style="text-align:center; padding:24px;">
+      Loading wishlist...
+    </td>
+  </tr>
+
+
+      <tbody>
+<tbody id="ci-wishlist-body">
+  <tr>
+    <td colspan="5" style="text-align:center; padding:24px;">
+      Loading wishlist...
+    </td>
+  </tr>
+</tbody>
+</tbody>
     </table>
   </div>
   <div class="ci-table-footer">
@@ -170,6 +191,7 @@
 <!-- Conscious Indi Main JS -->
 <script src="../assets/js/bharatcraft.js"></script>
 <script src="../assets/js/customer-panel.js"></script>
+<script src="../assets/js/customer-wishlist.js"></script>
 
 </body>
 </html>

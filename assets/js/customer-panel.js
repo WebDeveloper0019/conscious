@@ -164,37 +164,121 @@
     }
   }
 
+   function isLogoutTrigger(el) {
+    if (!el) return false;
+    // Explicit attribute
+    if (el.matches('[data-customer-logout]')) return true;
+    // Any link/button whose visible text says "Log Out" / "Logout"
+    var tag = (el.tagName || '').toLowerCase();
+    if (tag !== 'a' && tag !== 'button') return false;
+    var text = (el.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    if (text === 'log out' || text === 'logout') return true;
+    // Links whose href points at logout / login
+    var href = (el.getAttribute('href') || '').toLowerCase();
+    if (href.includes('logout')) return true;
+    return false;
+  }
+
   function initLogout() {
-    document.querySelectorAll('a[data-customer-logout]').forEach(function (link) {
-      link.addEventListener('click', async function (e) {
-        e.preventDefault();
-        try {
-          await fetch('../api/auth/logout.php', { method: 'POST', credentials: 'same-origin', headers: { Accept: 'application/json', 'X-CSRF-Token': csrfToken() } });
-        } finally {
-          window.location.href = '../login.html';
-        }
-      });
+    // Event delegation — survives re-renders, works on every page,
+    // matches attribute OR visible text OR href pattern.
+    document.addEventListener('click', async function (e) {
+      var trigger = e.target.closest('a, button');
+      if (!isLogoutTrigger(trigger)) return;
+
+      e.preventDefault();
+
+      try {
+        await fetch('../api/auth/logout.php', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Accept': 'application/json',
+            'X-CSRF-Token': csrfToken()
+          }
+        });
+      } catch (err) {
+        // Silent — still redirect even if network hiccups
+        console.warn('Logout request failed:', err);
+      }
+
+      // Force redirect even if 401 (session already gone)
+      window.location.href = '../login.html';
     });
   }
+
 
   function initProfileSave() {
     var form = document.querySelector('[data-profile-form]');
     if (!form) return;
+
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
+
       var button = form.querySelector('[type="submit"]');
       if (button) button.disabled = true;
+
       var body = {};
-      form.querySelectorAll('[data-profile-field]').forEach(function (el) { body[el.getAttribute('data-profile-field')] = el.value; });
+
+      form.querySelectorAll('[data-profile-field]').forEach(function (el) {
+        body[el.getAttribute('data-profile-field')] = el.value;
+      });
+
       try {
-        var response = await fetch('../api/user/profile.php', { method: 'PUT', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'X-CSRF-Token': csrfToken() }, body: JSON.stringify(body) });
+        var authResponse = await fetch('../api/auth/me.php', {
+          method: 'GET',
+          credentials: 'same-origin',
+          headers: { Accept: 'application/json' }
+        });
+
+        var authData = await authResponse.json();
+
+        if (!authResponse.ok || authData.success === false) {
+          throw new Error(
+            authData.message || 'Please sign in again.'
+          );
+        }
+
+        var token =
+          authData.csrfToken ||
+          authData.csrf_token ||
+          '';
+
+        if (!token) {
+          throw new Error('Security token missing. Refresh and try again.');
+        }
+
+        var response = await fetch('../api/user/profile.php', {
+          method: 'PUT',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'X-CSRF-Token': token
+          },
+          body: JSON.stringify(body)
+        });
+
         var data = await response.json();
-        if (!response.ok || data.success === false) throw new Error(data.message || 'Unable to save profile.');
+
+        if (!response.ok || data.success === false) {
+          throw new Error(data.message || 'Unable to save profile.');
+        }
+
         hydrateProfile(data.user || {});
-        if (typeof showToast === 'function') showToast('Profile updated successfully.', 'success');
+
+        if (typeof showToast === 'function') {
+          showToast('Profile updated successfully.', 'success');
+        }
       } catch (error) {
-        if (typeof showToast === 'function') showToast(error.message, 'error');
-      } finally { if (button) button.disabled = false; }
+        if (typeof showToast === 'function') {
+          showToast(error.message || 'Unable to save profile.', 'error');
+        } else {
+          alert(error.message || 'Unable to save profile.');
+        }
+      } finally {
+        if (button) button.disabled = false;
+      }
     });
   }
 

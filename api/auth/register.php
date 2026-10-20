@@ -15,6 +15,8 @@ $mobile=preg_replace('/\D+/', '', (string)($body['phone'] ?? $body['mobile'] ?? 
 $password=(string)($body['password'] ?? '');
 $terms=filter_var($body['terms'] ?? $body['agreeTerms'] ?? false, FILTER_VALIDATE_BOOL);
 $marketing=filter_var($body['marketing'] ?? false, FILTER_VALIDATE_BOOL);
+$refCode=strtoupper(trim((string)($body['ref'] ?? $body['referral_code'] ?? '')));
+
 $errors=[];
 if (mb_strlen($first)<2 || mb_strlen($first)>60) $errors['first_name']='Enter a valid first name.';
 if (mb_strlen($last)<2 || mb_strlen($last)>60) $errors['last_name']='Enter a valid last name.';
@@ -43,8 +45,8 @@ try {
         $stmt=$db->prepare('INSERT INTO users (id,first_name,last_name,email,mobile,password_hash,email_verified,marketing_opt_in,otp_hash,otp_expires_at,otp_attempts,otp_last_sent_at,created_at) VALUES (:id,:first,:last,:email,:mobile,:hash,0,:marketing,:otp,:expires,0,:sent,:created)');
         $stmt->execute(['id'=>$id,'first'=>$first,'last'=>$last,'email'=>$email,'mobile'=>$mobile,'hash'=>password_hash($password,PASSWORD_DEFAULT),'marketing'=>$marketing?1:0,'otp'=>$otpHash,'expires'=>$expires,'sent'=>$now,'created'=>$now]);
     }
-    [$sent,$mailError]=send_otp_email($email,$first,$otp);
-    if (!$sent) { error_log('OTP email failed: '.$mailError); throw new RuntimeException('mail'); }
+    if ($refCode !== '') { require_once __DIR__ . '/../lib/referral.php'; referral_attach_on_signup($id, $refCode); }
+    [$sent,$mailError]=send_otp_email($email,$first,$otp);    if (!$sent) { error_log('OTP email failed: '.$mailError); throw new RuntimeException('mail'); }
     $db->commit();
 } catch (Throwable $e) {
     if ($db->inTransaction()) $db->rollBack();

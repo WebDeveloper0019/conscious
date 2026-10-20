@@ -547,48 +547,36 @@ function initReviewCarousel() {
 }
 
 function initWishlistButtons() {
-  document.addEventListener('click', function (e) {
-    const btn = e.target.closest('.bc-product-action-btn.wishlist');
-    if (!btn) return;
-
-    btn.classList.toggle('wishlist-active');
-    const icon = btn.querySelector('i');
-
-    if (btn.classList.contains('wishlist-active')) {
-      icon && icon.classList.replace('fa-regular', 'fa-solid');
-      showToast('Added to Wishlist ♥', 'saffron');
-    } else {
-      icon && icon.classList.replace('fa-solid', 'fa-regular');
-      showToast('Removed from Wishlist', 'neutral');
-    }
-
-    // Scale animation
-    btn.style.transform = 'scale(1.3)';
-    setTimeout(() => { btn.style.transform = ''; }, 250);
-  });
-
-  // Add to cart buttons
-  document.addEventListener('click', function (e) {
-    const btn = e.target.closest('.bc-product-add-btn');
-    if (!btn) return;
-
-    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
-    btn.style.background = 'var(--green)';
-    showToast('Added to Cart 🛒', 'green');
-
-    setTimeout(function () {
-      btn.innerHTML = '<i class="fa-solid fa-plus"></i>';
-      btn.style.background = '';
-    }, 1500);
-
-    // Update cart badge
-    const badge = document.querySelector('.bc-action-badge');
-    if (badge) {
-      const count = parseInt(badge.textContent) || 0;
-      badge.textContent = count + 1;
-      badge.style.transform = 'scale(1.5)';
-      setTimeout(() => { badge.style.transform = ''; }, 200);
-    }
+  const script = document.querySelector('script[src*="assets/js/bharatcraft.js"]');
+  const apiBase = new URL('../../api/', script ? script.src : location.href);
+  document.addEventListener('click', async function (event) {
+    const button = event.target.closest('.bc-product-action-btn.wishlist');
+    if (!button || button.disabled) return;
+    event.preventDefault();
+    const productId = button.dataset.productId;
+    if (!productId) { showToast('Open the marketplace to save a published product.', 'neutral'); return; }
+    button.disabled = true;
+    try {
+      const session = await fetch(new URL('auth/me.php', apiBase), {credentials:'same-origin', cache:'no-store'});
+      if (!session.ok) throw new Error('Sign in to save products to your wishlist.');
+      const identity = await session.json();
+      const remove = button.classList.contains('wishlist-active');
+      const url = new URL('user/wishlist.php', apiBase);
+      if (remove) url.searchParams.set('productId', productId);
+      const response = await fetch(url, {
+        method: remove ? 'DELETE' : 'POST', credentials:'same-origin',
+        headers:{'Content-Type':'application/json','X-CSRF-Token':identity.csrf_token || ''},
+        body: remove ? undefined : JSON.stringify({productId})
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) throw new Error(result.message || 'Your wishlist could not be updated. Please try again.');
+      button.classList.toggle('wishlist-active', !remove);
+      button.setAttribute('aria-pressed', remove ? 'false' : 'true');
+      const icon=button.querySelector('i');
+      if(icon) icon.className=remove ? 'fa-regular fa-heart' : 'fa-solid fa-heart';
+      showToast(remove ? 'Removed from your wishlist.' : 'Saved to your wishlist.', 'green');
+    } catch(error) { showToast(error.message || 'Unable to update your wishlist. Please try again.', 'neutral'); }
+    finally { button.disabled=false; }
   });
 }
 

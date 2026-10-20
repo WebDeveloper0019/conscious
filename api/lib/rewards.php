@@ -65,9 +65,9 @@ function reward_earn_for_order(string $userId, int $orderId, float $orderTotal, 
         'expires_at' => $expiresAt,
     ]);
     $db->prepare(
-        'UPDATE customer_rewards SET balance_points=balance_points+:points,
-         lifetime_earned=lifetime_earned+:points,updated_at=UTC_TIMESTAMP() WHERE user_id=:user'
-    )->execute(['points' => $points, 'user' => $userId]);
+        'UPDATE customer_rewards SET balance_points=balance_points+:balance_points,
+         lifetime_earned=lifetime_earned+:earned_points,updated_at=UTC_TIMESTAMP() WHERE user_id=:user'
+    )->execute(['balance_points' => $points,'earned_points'=>$points, 'user' => $userId]);
     return $points;
 }
 
@@ -105,9 +105,9 @@ function reward_redeem_for_order(string $userId, int $orderId, int $requestedPoi
         'order_id' => (string)$orderId, 'description' => 'Redeemed on order #' . $orderNumber,
     ]);
     $db->prepare(
-        'UPDATE customer_rewards SET balance_points=balance_points-:points,
-         lifetime_redeemed=lifetime_redeemed+:points,updated_at=UTC_TIMESTAMP() WHERE user_id=:user'
-    )->execute(['points' => $requestedPoints, 'user' => $userId]);
+        'UPDATE customer_rewards SET balance_points=balance_points-:balance_points,
+         lifetime_redeemed=lifetime_redeemed+:redeemed_points,updated_at=UTC_TIMESTAMP() WHERE user_id=:user'
+    )->execute(['balance_points' => $requestedPoints,'redeemed_points'=>$requestedPoints, 'user' => $userId]);
     return $requestedPoints;
 }
 
@@ -134,4 +134,138 @@ function reward_refund_for_order(string $userId, int $orderId, string $orderNumb
     $db->prepare('UPDATE customer_rewards SET balance_points=balance_points+:points,updated_at=UTC_TIMESTAMP() WHERE user_id=:user')
        ->execute(['points' => $points, 'user' => $userId]);
     return $points;
+}
+
+
+function reward_clawback_for_order(string $userId, int $orderId, string $orderNumber): int
+{
+    if (reward_reference_exists($userId, $orderId, 'clawback')) return 0;
+    $db = get_db();
+    $stmt = $db->prepare(
+        'SELECT COALESCE(SUM(points),0) FROM customer_reward_ledger
+         WHERE user_id=:user AND entry_type="earned" AND reference_type="order" AND reference_id=:order_id'
+    );
+    $stmt->execute(['user' => $userId, 'order_id' => (string)$orderId]);
+    $earned = (int)$stmt->fetchColumn();
+    if ($earned <= 0) return 0;
+    reward_balance($userId, true);
+    $db->prepare(
+        'INSERT INTO customer_reward_ledger
+         (id,user_id,points,entry_type,reference_type,reference_id,description,expires_at,status,created_at)
+         VALUES (:id,:user,:points,"clawback","order",:order_id,:description,NULL,"active",UTC_TIMESTAMP())'
+    )->execute([
+        'id' => uuid_string(), 'user' => $userId, 'points' => -$earned,
+        'order_id' => (string)$orderId,
+        'description' => 'Clawback for cancelled order #' . $orderNumber,
+    ]);
+    $db->prepare(
+        'UPDATE customer_rewards SET balance_points=GREATEST(0,balance_points-:points),updated_at=UTC_TIMESTAMP()
+         WHERE user_id=:user'
+    )->execute(['points' => $earned, 'user' => $userId]);
+    return $earned;
+}
+/**
+ * Return/refund ke liye earned points proportionally reverse karta hai.
+ * Idempotent: ek return = ek reversal.
+ * Balance floor at 0.
+ */
+function reward_clawback_for_return(
+    string $userId,
+    int    $orderId,
+    float  $returnedAmount,
+    float  $orderTotal,
+    string $orderNumber,
+    string $returnId
+): array {
+    $db = get_db();
+
+    // ── Idempotency: same return_id pe already reversed? ──
+    $chk = $db->prepare(
+        "SELECT COUNT(*) FROM customer_reward_ledger
+         WHERE user_id = ? AND entry_type = 'clawback'
+           AND reference_type = 'return' AND reference_id = ?"
+    );
+    $chk->execute([$userId, $returnId]);
+    if ((int)$chk->fetchColumn() > 0) {
+        return ['clawed' => 0, 'shortfall' => 0, 'ratio' => 0.0, 'reason' => 'already_done'];
+    }
+
+    // ── Is order pe total kitne points earn hue? ──
+    $earnedStmt = $db->prepare(
+        "SELECT COALESCE(SUM(points),0) FROM customer_reward_ledger
+         WHERE user_id = ? AND entry_type = 'earned'
+           AND reference_type = 'order' AND reference_id = ?"
+    );
+    $earnedStmt->execute([$userId, (string)$orderId]);
+    $totalEarned = (int)$earnedStmt->fetchColumn();
+
+    if ($totalEarned <= 0) {
+        return ['clawed' => 0, 'shortfall' => 0, 'ratio' => 0.0, 'reason' => 'no_earned_points'];
+    }
+
+    // ── Proportional reversal amount ──
+    $ratio = $orderTotal > 0 ? min(1.0, $returnedAmount / $orderTotal) : 0.0;
+    $pointsToClaw = (int)floor($totalEarned * $ratio);
+
+    if ($pointsToClaw <= 0) {
+        return ['clawed' => 0, 'shortfall' => 0, 'ratio' => round($ratio, 4), 'reason' => 'proportional_zero'];
+    }
+
+    // ── Ensure balance row + lock ──
+    $db->prepare(
+        'INSERT INTO customer_rewards (user_id, balance_points, lifetime_earned, lifetime_redeemed, updated_at)
+         VALUES (?, 0, 0, 0, UTC_TIMESTAMP())
+         ON DUPLICATE KEY UPDATE user_id = user_id'
+    )->execute([$userId]);
+
+    $acct = $db->prepare('SELECT balance_points FROM customer_rewards WHERE user_id = ? FOR UPDATE');
+    $acct->execute([$userId]);
+    $balance = (int)$acct->fetchColumn();
+    $shortfall = max(0, $pointsToClaw - $balance);
+
+    // ── Ledger entry (negative points) ──
+    try {
+        $db->prepare(
+            "INSERT INTO customer_reward_ledger
+             (id, user_id, points, entry_type, reference_type, reference_id,
+              description, expires_at, status, created_at, metadata_json)
+             VALUES (?, ?, ?, 'clawback', 'return', ?, ?, NULL, 'active', UTC_TIMESTAMP(), ?)"
+        )->execute([
+            uuid_string(),
+            $userId,
+            -$pointsToClaw,
+            $returnId,
+            'Points reversal for return on order #' . $orderNumber,
+            json_encode([
+                'order_id'        => $orderId,
+                'return_id'       => $returnId,
+                'returned_amount' => $returnedAmount,
+                'order_total'     => $orderTotal,
+                'ratio'           => round($ratio, 4),
+                'total_earned'    => $totalEarned,
+                'points_reversed' => $pointsToClaw,
+                'balance_before'  => $balance,
+                'shortfall'       => $shortfall,
+            ], JSON_UNESCAPED_SLASHES),
+        ]);
+    } catch (PDOException $e) {
+        if ((string)$e->getCode() === '23000') {
+            return ['clawed' => 0, 'shortfall' => 0, 'ratio' => 0.0, 'reason' => 'already_done'];
+        }
+        throw $e;
+    }
+
+    // ── Balance update — floor at 0 ──
+    $db->prepare(
+        'UPDATE customer_rewards
+         SET balance_points = GREATEST(0, balance_points - ?), updated_at = UTC_TIMESTAMP()
+         WHERE user_id = ?'
+    )->execute([$pointsToClaw, $userId]);
+
+    return [
+        'clawed'       => $pointsToClaw,
+        'shortfall'    => $shortfall,
+        'ratio'        => round($ratio, 4),
+        'total_earned' => $totalEarned,
+    ];
 }

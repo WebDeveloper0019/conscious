@@ -3,4 +3,4 @@ Options -Indexes
     Require all denied
 </FilesMatch>
 RewriteEngine On
-RewriteRule ^(lib|database|bin|data)(/|$) - [F,L]
+RewriteRule ^(lib|database|bin|data|dependencies)(/|$) - [F,L]

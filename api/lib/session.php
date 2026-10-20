@@ -17,12 +17,39 @@ function create_auth_session(string $principalType,string $principalId,bool $rem
     if(!in_array($principalType,['customer','vendor','admin','influencer'],true))throw new InvalidArgumentException('Unsupported principal type.');
     $token=rtrim(strtr(base64_encode(random_bytes(48)),'+/','-_'),'='); $csrf=bin2hex(random_bytes(24));
     $ttl=$remember?SESSION_TTL_REMEMBER:SESSION_TTL; $id=uuid_string(); $expires=gmdate('Y-m-d H:i:s',time()+$ttl);
-    $stmt=get_db()->prepare('INSERT INTO auth_sessions (id,principal_type,principal_id,token_hash,csrf_hash,ip_hash,user_agent_hash,created_at,last_seen_at,expires_at) VALUES (:id,:type,:principal,:token,:csrf,:ip,:agent,UTC_TIMESTAMP(),UTC_TIMESTAMP(),:expires)');
-    $stmt->execute(['id'=>$id,'type'=>$principalType,'principal'=>$principalId,'token'=>session_hash($token),'csrf'=>session_hash($csrf),'ip'=>request_fingerprint((string)($_SERVER['REMOTE_ADDR']??'')),'agent'=>request_fingerprint((string)($_SERVER['HTTP_USER_AGENT']??'')),'expires'=>$expires]);
+$uaText = mb_substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 500);
+$ipText = (string)($_SERVER['REMOTE_ADDR'] ?? '');
+$deviceLabel = detect_device_label($uaText);
+
+$stmt=get_db()->prepare(
+    'INSERT INTO auth_sessions
+       (id,principal_type,principal_id,token_hash,csrf_hash,ip_hash,user_agent_hash,
+        user_agent_text,ip_address,device_label,created_at,last_seen_at,expires_at)
+     VALUES (:id,:type,:principal,:token,:csrf,:ip,:agent,
+             :ua_text,:ip_text,:device,UTC_TIMESTAMP(),UTC_TIMESTAMP(),:expires)'
+);
+$stmt->execute([
+    'id'=>$id,
+    'type'=>$principalType,
+    'principal'=>$principalId,
+    'token'=>session_hash($token),
+    'csrf'=>session_hash($csrf),
+    'ip'=>request_fingerprint($ipText),
+    'agent'=>request_fingerprint($uaText),
+    'ua_text'=>$uaText,
+    'ip_text'=>$ipText,
+    'device'=>$deviceLabel,
+    'expires'=>$expires,
+]);
     set_session_cookies($token,$csrf,$remember);
     return ['session_id'=>$id,'csrf_token'=>$csrf,'expires_in'=>$ttl];
 }
 function current_auth_session(bool $required=true): ?array {
+    // CLI mode: there is never an HTTP session to inspect. Never kill
+    // the process with a JSON 401 — just return null so callers that
+    // pass $required=false (audit_event, record_status_change) work.
+    if (PHP_SAPI === 'cli') return null;
+
     static $loaded=false,$session=null; if($loaded){if(!$session&&$required)json_response(401,['success'=>false,'message'=>'Please sign in again.']);return $session;} $loaded=true;
     $token=session_token(); if(!$token){if($required)json_response(401,['success'=>false,'message'=>'Your session has expired. Please sign in again.']);return null;}
     $stmt=get_db()->prepare('SELECT * FROM auth_sessions WHERE token_hash=:hash AND revoked_at IS NULL AND expires_at>UTC_TIMESTAMP() LIMIT 1');
@@ -39,6 +66,33 @@ function require_principal(array $allowedTypes=[]): array {
     if(!$table)json_response(401,['success'=>false,'message'=>'Please sign in again.']);
     $check=get_db()->prepare("SELECT status FROM {$table} WHERE id=:id");$check->execute(['id'=>$session['principal_id']]);$status=$check->fetchColumn();
     if($status===false||in_array($status,['restricted','suspended','blocked','inactive'],true))json_response(403,['success'=>false,'message'=>'This account is not permitted to access the service.']);
+    // For customers, also reject deactivated / deletion-pending accounts
+// For customers, reject deactivated / deletion-pending accounts.
+// BUT: allow requests to auth endpoints (login, logout, me, register)
+//      so the user can reactivate by logging in again.
+if ($session['principal_type'] === 'customer') {
+    $script = $_SERVER['SCRIPT_NAME'] ?? '';
+    $isAuthPath = (
+        str_contains($script, '/api/auth/')
+        || str_contains($script, '/api/user/account-deactivate.php')
+    );
+
+    if (!$isAuthPath) {
+        $acc = get_db()->prepare('SELECT account_status FROM users WHERE id = :id');
+        $acc->execute(['id' => $session['principal_id']]);
+        $accStatus = (string)($acc->fetchColumn() ?: 'active');
+
+        if (in_array($accStatus, ['deactivated', 'pending_deletion','deleted'], true)) {
+            // Do NOT revoke — the user might want to log back in to reactivate
+            json_response(403, [
+                'success' => false,
+                'message' => 'This account is not active. Please log in again to reactivate.',
+                'code'    => 'ACCOUNT_INACTIVE',
+                'account_status' => $accStatus,
+            ]);
+        }
+    }
+}
     require_csrf();
     return ['session_id'=>$session['id'],'type'=>$session['principal_type'],'id'=>$session['principal_id']];
 }
@@ -59,4 +113,31 @@ function revoke_current_session(string $reason='logout'): void {
 function revoke_principal_sessions(string $type,string $id,string $reason='security_change',?string $exceptSessionId=null): void {
     $sql='UPDATE auth_sessions SET revoked_at=UTC_TIMESTAMP(),revoke_reason=:reason WHERE principal_type=:type AND principal_id=:id AND revoked_at IS NULL';$params=['reason'=>$reason,'type'=>$type,'id'=>$id];
     if($exceptSessionId!==null){$sql.=' AND id<>:except';$params['except']=$exceptSessionId;} get_db()->prepare($sql)->execute($params);
+}
+/**
+ * Human-friendly device label from a User-Agent string.
+ * "Chrome on Windows", "Safari on iPhone", etc.
+ */
+function detect_device_label(string $ua): string
+{
+    if ($ua === '') return 'Unknown device';
+
+    $browser = 'Unknown browser';
+    if (stripos($ua, 'Edg/') !== false)          $browser = 'Edge';
+    elseif (stripos($ua, 'OPR/') !== false || stripos($ua, 'Opera') !== false) $browser = 'Opera';
+    elseif (stripos($ua, 'Chrome') !== false)    $browser = 'Chrome';
+    elseif (stripos($ua, 'Firefox') !== false)   $browser = 'Firefox';
+    elseif (stripos($ua, 'Safari') !== false)    $browser = 'Safari';
+    elseif (stripos($ua, 'curl') !== false)      $browser = 'CLI';
+    elseif (stripos($ua, 'PostmanRuntime') !== false) $browser = 'Postman';
+
+    $os = 'Unknown OS';
+    if (stripos($ua, 'Windows NT') !== false)      $os = 'Windows';
+    elseif (stripos($ua, 'iPhone') !== false)      $os = 'iPhone';
+    elseif (stripos($ua, 'iPad') !== false)        $os = 'iPad';
+    elseif (stripos($ua, 'Android') !== false)     $os = 'Android';
+    elseif (stripos($ua, 'Mac OS X') !== false)    $os = 'macOS';
+    elseif (stripos($ua, 'Linux') !== false)       $os = 'Linux';
+
+    return $browser . ' on ' . $os;
 }

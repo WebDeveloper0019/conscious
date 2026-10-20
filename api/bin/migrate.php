@@ -11,9 +11,14 @@ $files=glob($migrationDir.'/*.sql') ?: []; sort($files,SORT_STRING);
 $applied=$db->query('SELECT version,checksum FROM schema_migrations')->fetchAll(PDO::FETCH_KEY_PAIR);
 
 foreach($files as $file){
-    $version=basename($file,'.sql'); $sql=file_get_contents($file); $checksum=hash('sha256',(string)$sql);
+    $version=basename($file,'.sql'); $sql=file_get_contents($file);
+    $normalizedSql=str_replace(["\r\n","\r"],"\n",(string)$sql);
+    $checksum=hash('sha256',$normalizedSql);
     if(isset($applied[$version])){
-        if(!hash_equals((string)$applied[$version],$checksum)){fwrite(STDERR,"Migration checksum changed: {$version}\n");exit(1);} continue;
+        // Older Windows installations stored CRLF hashes. Accept only newline
+        // equivalents; any actual SQL change must still stop the upgrade.
+        $knownHashes=[$checksum,hash('sha256',(string)$sql),hash('sha256',str_replace("\n","\r\n",$normalizedSql))];
+        if(!in_array((string)$applied[$version],$knownHashes,true)){fwrite(STDERR,"Migration checksum changed: {$version}\n");exit(1);} continue;
     }
     try{
         $db->exec((string)$sql);

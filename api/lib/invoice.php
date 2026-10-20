@@ -123,9 +123,7 @@ function invoice_generate_for_order(int $orderId): array
     $oStmt->execute(['oid' => $orderId]);
     $order = $oStmt->fetch();
     if (!$order) throw new RuntimeException('Order not found for invoice.');
-    if ((string)$order['payment_status'] !== 'paid') {
-        throw new RuntimeException('Invoice can be issued only after payment is complete.');
-    }
+    if(!in_array((string)$order['payment_status'],['paid','cod_pending'],true))throw new RuntimeException('Invoice is available after payment or cash-on-delivery confirmation.');
 
     $iStmt = $db->prepare(
         'SELECT oi.*, f.commission_percent, f.commission_amount, f.vendor_net_amount
@@ -175,7 +173,7 @@ function invoice_generate_for_order(int $orderId): array
         $snap = json_decode((string)($it['product_snapshot_json'] ?? '{}'), true) ?: [];
         $gstPct = (float)($snap['gst_percent'] ?? invoice_setting('default_gst_percent', 5));
 
-        // Checkout persists the authoritative per-line tax amount.
+        // Use the authoritative amount saved with the order item.
         $lineTotal = (float)$it['line_total'];
         $taxAmount = round((float)$it['tax_amount'], 2);
         $taxable   = round($lineTotal - $taxAmount, 2);

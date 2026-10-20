@@ -9,6 +9,8 @@ api/.env
 api/data/rate-limit/*.json
 api/data/mail-outbox/*.json
 storage/private/
+api/dependencies/
+api/lib/tcpdf/
 
 # Editor settings
 .vscode/
@@ -23,3 +25,6 @@ storage/private/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+storage/private/data-exports/
+storage/private/return-evidence/

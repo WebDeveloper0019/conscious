@@ -37,7 +37,7 @@ try {
 
     $row = $stmt->fetch();
 
-    // Generate lazily only after payment is complete.
+    // If no invoice yet, and this order belongs to the user and is paid/confirmed, generate it
     if (!$row && $orderNumber !== '') {
         $orderStmt = $db->prepare(
             'SELECT id, payment_status, status FROM orders
@@ -50,8 +50,11 @@ try {
             json_response(404, ['success' => false, 'message' => 'Order not found.']);
         }
 
-        if (strtolower((string)$order['payment_status']) !== 'paid') {
-            json_response(409, ['success' => false, 'message' => 'Invoice is available once payment is complete.']);
+        $paidOrConfirmed = in_array(strtolower((string)$order['payment_status']), ['paid', 'cod_pending'], true)
+            || in_array(strtolower((string)$order['status']), ['confirmed', 'processing', 'shipped', 'delivered'], true);
+
+        if (!$paidOrConfirmed) {
+            json_response(409, ['success' => false, 'message' => 'Invoice is available once the order is confirmed.']);
         }
 
         $db->beginTransaction();

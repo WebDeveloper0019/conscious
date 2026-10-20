@@ -41,7 +41,7 @@
     </div>
   </div>
   <nav class="ci-sidebar-nav">
-    
+
         <div class="ci-sidebar-section-label">Main</div>
         <a href="dashboard.html" class="ci-sidebar-nav-item"><i class="fa-solid fa-chart-pie"></i><span>Dashboard</span></a>
 
@@ -81,7 +81,7 @@
 
         <a href="settings.html" class="ci-sidebar-nav-item"><i class="fa-solid fa-gear"></i><span>Account Settings</span></a>
 
-        
+
   </nav>
   <div style="padding:12px 20px 20px;border-top:1px solid rgba(255,255,255,0.07);">
     <a href="../index.html" class="ci-sidebar-nav-item" style="border-radius:var(--r-sm);">
@@ -106,18 +106,31 @@
     <button class="bc-btn bc-btn-outline bc-btn-sm" onclick="document.getElementById('ci-sidebar').classList.toggle('collapsed')">
       <i class="fa-solid fa-bars"></i>
     </button>
-    
+
   </div>
 </div>
 <div class="ci-data-table-card">
   <div class="ci-data-table-head">
     <div class="ci-table-title">Invoice History</div>
-    <div class="ci-data-table-search"><i class="fa-solid fa-magnifying-glass"></i><input type="search" placeholder="Search…" aria-label="Search table" /></div>
+    <div class="ci-data-table-search"><i class="fa-solid fa-magnifying-glass"></i>
+      <input
+  type="search"
+  id="invoice-search"
+  placeholder="Search…"
+  aria-label="Search invoices"
+/></div>
   </div>
   <div class="ci-table-wrap">
     <table class="ci-data-table">
       <thead><tr><th>Invoice No.</th><th>Order ID</th><th>Date</th><th>Amount</th><th>GST</th><th>Actions</th></tr></thead>
-      <tbody><tr><td>INV-2025-0684</td><td>#CI-84729</td><td>Jun 15, 2025</td><td>₹20,998</td><td>₹3,779</td><td><div class="ci-table-actions"><button class="ci-table-action-btn" title="Download"><i class="fa-solid fa-download"></i></button><button class="ci-table-action-btn" title="View"><i class="fa-solid fa-eye"></i></button></div></td></tr><tr><td>INV-2025-0521</td><td>#CI-82190</td><td>Jun 5, 2025</td><td>₹7,499</td><td>₹1,349</td><td><div class="ci-table-actions"><button class="ci-table-action-btn" title="Download"><i class="fa-solid fa-download"></i></button><button class="ci-table-action-btn" title="View"><i class="fa-solid fa-eye"></i></button></div></td></tr><tr><td>INV-2025-0408</td><td>#CI-79844</td><td>May 20, 2025</td><td>₹12,300</td><td>₹2,214</td><td><div class="ci-table-actions"><button class="ci-table-action-btn" title="Download"><i class="fa-solid fa-download"></i></button><button class="ci-table-action-btn" title="View"><i class="fa-solid fa-eye"></i></button></div></td></tr></tbody>
+
+<tbody id="invoices-tbody">
+  <tr>
+    <td colspan="6" class="text-center py-4">
+      Loading invoices...
+    </td>
+  </tr>
+</tbody>
     </table>
   </div>
   <div class="ci-table-footer">
@@ -146,6 +159,131 @@
 <!-- Conscious Indi Main JS -->
 <script src="../assets/js/bharatcraft.js"></script>
 <script src="../assets/js/customer-panel.js"></script>
+
+<script>
+(function () {
+  'use strict';
+
+  const tbody       = document.getElementById('invoices-tbody');
+  const searchInput = document.getElementById('invoice-search');
+  if (!tbody) return;
+
+  let invoices = [];
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  function formatDate(value) {
+    if (!value) return '—';
+    const d = new Date(String(value).replace(' ', 'T') + (String(value).includes('Z') ? '' : 'Z'));
+    return Number.isNaN(d.getTime()) ? '—'
+      : d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function money(v) {
+    return '₹' + Number(v || 0).toLocaleString('en-IN', {
+      minimumFractionDigits: 2, maximumFractionDigits: 2
+    });
+  }
+
+  function renderInvoices() {
+    const q = (searchInput?.value || '').trim().toLowerCase();
+
+    const filtered = invoices.filter(inv =>
+      [inv.invoiceNumber, inv.orderNumber, inv.date, inv.amount, inv.orderStatus]
+        .some(v => String(v ?? '').toLowerCase().includes(q))
+    );
+
+    if (!filtered.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6" class="text-center py-4">
+            ${invoices.length ? 'No matching invoices found.' : 'No invoices yet.'}
+          </td>
+        </tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(inv => `
+      <tr>
+        <td>${escapeHtml(inv.invoiceNumber || 'Not issued')}</td>
+        <td>#${escapeHtml(inv.orderNumber || inv.orderId)}</td>
+        <td>${escapeHtml(formatDate(inv.date))}</td>
+        <td>${money(inv.amount)}</td>
+        <td>${inv.gstAmount == null ? '—' : money(inv.gstAmount)}</td>
+        <td>
+          <div class="ci-table-actions">
+            <button class="ci-table-action-btn" type="button"
+                    data-invoice-download="${escapeHtml(inv.invoiceNumber || '')}"
+                    title="Download invoice as PDF" aria-label="Download invoice">
+              <i class="fa-solid fa-download"></i>
+            </button>
+            <button class="ci-table-action-btn" type="button"
+                    data-invoice-view="${escapeHtml(inv.invoiceNumber || '')}"
+                    title="Preview invoice" aria-label="Preview invoice">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  async function loadInvoices() {
+    try {
+      const res  = await fetch('../api/user/invoices.php?limit=50', {
+        method: 'GET', credentials: 'include',
+        headers: { 'Accept': 'application/json' }
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) throw new Error(data.message || 'Unable to load invoices.');
+
+      invoices = Array.isArray(data.invoices) ? data.invoices : [];
+      renderInvoices();
+    } catch (err) {
+      console.error('Invoice loading error:', err);
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6" class="text-center py-4">
+            Unable to load invoices. Please log in again.
+          </td>
+        </tr>`;
+    }
+  }
+
+  searchInput?.addEventListener('input', renderInvoices);
+
+  tbody.addEventListener('click', function (event) {
+    const viewBtn     = event.target.closest('[data-invoice-view]');
+    const downloadBtn = event.target.closest('[data-invoice-download]');
+    if (!viewBtn && !downloadBtn) return;
+
+    const invoiceNumber = (viewBtn?.dataset.invoiceView || downloadBtn?.dataset.invoiceDownload || '').trim();
+    if (!invoiceNumber) {
+      alert('Invoice number not available. Try refreshing the page.');
+      return;
+    }
+
+    if (typeof window.downloadInvoice !== 'function') {
+      alert('Invoice PDF module is not loaded. Please refresh the page.');
+      return;
+    }
+
+    if (viewBtn) {
+      window.downloadInvoice(invoiceNumber, 'number', { preview: true });
+    } else {
+      window.downloadInvoice(invoiceNumber, 'number');
+    }
+  });
+
+  loadInvoices();
+})();
+</script>
+<script src="../assets/js/invoice-pdf.js"></script>
 
 </body>
 </html>

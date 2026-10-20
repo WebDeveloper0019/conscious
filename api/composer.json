@@ -1,0 +1,14 @@
+{
+  "name": "conscious-indi/backend",
+  "description": "Runtime dependencies for Conscious Indi",
+  "type": "project",
+  "require": {
+    "php": "^8.2",
+    "tecnickcom/tcpdf": "^6.10"
+  },
+  "config": {
+    "vendor-dir": "dependencies",
+    "allow-plugins": false,
+    "sort-packages": true
+  }
+}

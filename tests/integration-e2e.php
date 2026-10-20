@@ -12,6 +12,7 @@ if (PHP_SAPI !== 'cli') { fwrite(STDERR, "CLI only.\n"); exit(1); }
 
 require_once __DIR__ . '/../api/config.php';
 if (APP_ENV !== 'local') { fwrite(STDERR, "Refusing non-local APP_ENV.\n"); exit(1); }
+if(DB_NAME!=='conscious_backend_test'&&!preg_match('/^conscious_backend_merge_[0-9_]+$/',DB_NAME)){fwrite(STDERR,"Use a dedicated backend test database.\n");exit(1);}
 
 require_once __DIR__ . '/../api/lib/db.php';
 require_once __DIR__ . '/../api/lib/helpers.php';

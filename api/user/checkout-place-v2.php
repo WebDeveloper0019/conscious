@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/../lib/rewards.php';
+require_once __DIR__ . '/../lib/invoice.php';
 
 require_once __DIR__ . '/../lib/coupon.php';
-require_once __DIR__ . '/../lib/rewards.php';
 require_once __DIR__ . '/../lib/razorpay.php';
 
 function checkout_place_v2(): void
@@ -105,17 +106,27 @@ function checkout_place_v2(): void
         ]);
         $orderId = (int)$db->lastInsertId();
 
+
+        // Redeem reward points atomically
+        // ── Redeem reward points atomically ──
+        // Uses the canonical reward_redeem_for_order() helper.
+        // Called after order creation, inside the same transaction,
+        // so a failed redeem rolls back the whole order.
         $rewardPoints = (int)($pricing['reward_points_redeem'] ?? 0);
         if ($rewardPoints > 0) {
-            $applied = reward_redeem_for_order(
-                $userId,
-                $orderId,
-                $rewardPoints,
-                (float)$quote['subtotal'],
-                (string)$orderNumber
-            );
-            if ($applied !== $rewardPoints) {
-                throw new RuntimeException('Reward points changed. Please recalculate checkout.');
+            try {
+                $applied = reward_redeem_for_order(
+                    $userId,
+                    $orderId,
+                    $rewardPoints,
+                    (float)$quote['subtotal'],
+                    (string)$orderNumber
+                );
+                if ($applied !== $rewardPoints) {
+                    throw new RuntimeException('Reward points changed. Please try again.');
+                }
+            } catch (Throwable $e) {
+                throw new RuntimeException('Reward redemption failed: ' . $e->getMessage());
             }
         }
 
@@ -270,18 +281,10 @@ function checkout_place_v2(): void
 
         $db->prepare('UPDATE checkout_quotes SET status="converted" WHERE id=:converted_quote_id')->execute(['converted_quote_id' => $quoteId]);
         $db->prepare('UPDATE carts SET status="converted",updated_at=UTC_TIMESTAMP() WHERE id=:converted_cart_id')->execute(['converted_cart_id' => $cart['id']]);
-
-        // Online coupons are redeemed only after payment confirmation. COD orders
-        // are confirmed immediately, so record their redemption in this transaction.
-        if ($paymentMethod === 'cod' && $quote['coupon_id'] !== null) {
-            $db->prepare(
-                'INSERT INTO coupon_redemptions
-                 (id,coupon_id,user_id,order_id,discount_amount,created_at)
-                 VALUES (:redemption_id,:redemption_coupon,:redemption_user,:redemption_order,:redemption_amount,UTC_TIMESTAMP())'
-            )->execute([
-                'redemption_id' => uuid_string(), 'redemption_coupon' => $quote['coupon_id'],
-                'redemption_user' => $userId, 'redemption_order' => $orderId,
-                'redemption_amount' => (float)($pricing['coupon_discount'] ?? $quote['discount_amount']),
+        if($paymentMethod==='cod'&&$quote['coupon_id']!==null){
+            $db->prepare('INSERT INTO coupon_redemptions (id,coupon_id,user_id,order_id,discount_amount,created_at) VALUES (:id,:coupon,:user,:order,:amount,UTC_TIMESTAMP())')->execute([
+                'id'=>uuid_string(),'coupon'=>$quote['coupon_id'],'user'=>$userId,'order'=>$orderId,
+                'amount'=>(float)($pricing['coupon_discount']??$quote['discount_amount']),
             ]);
         }
 
@@ -293,6 +296,14 @@ function checkout_place_v2(): void
             'payment_id' => $paymentAttemptId, 'payment_order' => $orderId, 'payment_provider' => $paymentMethod,
             'payment_amount' => $quote['total_amount'], 'payment_status' => $paymentMethod === 'cod' ? 'cod_pending' : 'created',
         ]);
+        // ── Generate invoice for COD orders ──
+        if ($paymentMethod === 'cod') {
+            try {
+                invoice_generate_for_order($orderId);
+            } catch (Throwable $e) {
+                error_log('COD invoice generation failed for order ' . $orderId . ': ' . $e->getMessage());
+            }
+        }
 
         record_status_change('order', (string)$orderId, null, $orderStatus);
         attribute_influencer_order($orderId, $userId, (float)$quote['total_amount']);
