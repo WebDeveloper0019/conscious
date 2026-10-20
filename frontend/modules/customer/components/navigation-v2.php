@@ -21,13 +21,13 @@ function customerNavLinks(array $items, string $activePage): void {
     foreach ($items as [$href,$key,$icon,$label]) {
         $active = $activePage === $key ? ' active' : '';
         echo '<a class="cc-nav-link'.$active.'" href="'.htmlspecialchars($href,ENT_QUOTES,'UTF-8').'"><i class="fa-solid '.htmlspecialchars($icon,ENT_QUOTES,'UTF-8').'"></i><span>'.htmlspecialchars($label,ENT_QUOTES,'UTF-8').'</span>';
-        if ($key === 'orders') echo '<b>3</b>';
+        if ($key === 'orders') echo '<b data-customer-order-count>0</b>';
         echo '</a>';
     }
 }
 ?>
 <aside class="cc-sidebar" aria-label="Customer account navigation">
-    <div class="cc-user"><span class="cc-avatar">RS</span><div><b>Rahul Sharma</b><small>Gold member · 2,840 points</small></div><a href="account.php" aria-label="Edit profile"><i class="fa-solid fa-chevron-right"></i></a></div>
+    <div class="cc-user"><span class="cc-avatar">CI</span><div><b>Customer account</b><small data-customer-rewards>Rewards loading…</small></div><a href="account.php" aria-label="Edit profile"><i class="fa-solid fa-chevron-right"></i></a></div>
     <nav>
         <p class="cc-nav-label">My account</p><?php customerNavLinks($accountItems,$activePage); ?>
         <p class="cc-nav-label">Conscious journey</p><?php customerNavLinks($consciousItems,$activePage); ?>
@@ -37,7 +37,7 @@ function customerNavLinks(array $items, string $activePage): void {
 </aside>
 <nav class="cc-mobile-bottom" aria-label="Mobile customer navigation">
     <a class="<?=$activePage==='dashboard'?'active':''?>" href="index.php"><i class="fa-solid fa-house"></i><span>Home</span></a>
-    <a class="<?=$activePage==='shop'?'active':''?>" href="shop.php"><i class="fa-solid fa-store"></i><span>Shop</span></a>
+    <a href="../../../shop.html"><i class="fa-solid fa-store"></i><span>Shop</span></a>
     <a class="<?=$activePage==='events'?'active':''?>" href="events.php"><i class="fa-solid fa-calendar-days"></i><span>Events</span></a>
     <a class="<?=$activePage==='orders'?'active':''?>" href="orders.php"><i class="fa-solid fa-box"></i><span>Orders</span></a>
     <a class="<?=$activePage==='account'?'active':''?>" href="account.php"><i class="fa-solid fa-user"></i><span>Account</span></a>

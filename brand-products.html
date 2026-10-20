@@ -138,22 +138,22 @@
 
         <!-- Header Actions -->
         <div class="bc-header-actions">
-          <a href="become-brand-partner.html" class="bc-btn-seller">
+          <a href="frontend/modules/vendor/auth/register.php" class="bc-btn-seller">
             <i class="fa-solid fa-user-plus"></i> Join as Partner
           </a>
-          <a href="creators.html" class="bc-btn-influencer">
+          <a href="frontend/modules/influencer/auth/register.php" class="bc-btn-influencer">
             <i class="fa-solid fa-star"></i> Become a Creator
           </a>
-          <a href="customer/wishlist.html" class="bc-header-action-link" aria-label="Wishlist">
+          <a href="frontend/modules/customer/wishlist.php" class="bc-header-action-link" aria-label="Wishlist">
             <i class="fa-regular fa-heart"></i>
             <span>Wishlist</span>
           </a>
-          <a href="cart.html" class="bc-header-action-link" aria-label="Cart (0 items)">
+          <a href="frontend/modules/customer/cart.php" class="bc-header-action-link" aria-label="Cart (0 items)">
             <i class="fa-solid fa-bag-shopping"></i>
             <span class="bc-action-badge" aria-label="0 items in cart">0</span>
             <span>Cart</span>
           </a>
-          <a href="customer/dashboard.html" class="bc-header-action-link" aria-label="My Account">
+          <a href="frontend/modules/customer/index.php" class="bc-header-action-link" aria-label="My Account">
             <i class="fa-regular fa-circle-user"></i>
             <span>Account</span>
           </a>
@@ -297,12 +297,12 @@
 
     <!-- Mobile Actions -->
     <div class="bc-mobile-actions">
-      <a href="customer/wishlist.html" class="bc-mobile-action-btn" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
-      <a href="cart.html" class="bc-mobile-action-btn" aria-label="Cart" style="position:relative;">
+      <a href="frontend/modules/customer/wishlist.php" class="bc-mobile-action-btn" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
+      <a href="frontend/modules/customer/cart.php" class="bc-mobile-action-btn" aria-label="Cart" style="position:relative;">
         <i class="fa-solid fa-bag-shopping"></i>
         <span class="bc-action-badge" style="top:2px;right:2px;">0</span>
       </a>
-      <a href="customer/dashboard.html" class="bc-mobile-action-btn" aria-label="Account"><i class="fa-regular fa-circle-user"></i></a>
+      <a href="frontend/modules/customer/index.php" class="bc-mobile-action-btn" aria-label="Account"><i class="fa-regular fa-circle-user"></i></a>
     </div>
 
   </div>
@@ -355,8 +355,8 @@
     <a href="creators.html"><i class="fa-solid fa-star"></i> Become a Creator</a>
 
     <div class="bc-drawer-divider"></div>
-    <a href="customer/tracking.html"><i class="fa-regular fa-clock"></i> Track Order</a>
-    <a href="customer/dashboard.html"><i class="fa-regular fa-circle-user"></i> My Account</a>
+    <a href="frontend/modules/customer/tracking.php"><i class="fa-regular fa-clock"></i> Track Order</a>
+    <a href="frontend/modules/customer/index.php"><i class="fa-regular fa-circle-user"></i> My Account</a>
     <a href="help.html"><i class="fa-regular fa-circle-question"></i> Help &amp; Support</a>
   </div>
 </nav>
@@ -430,9 +430,9 @@
         <div>
           <div class="bc-footer-col-title">Customer Care</div>
           <ul class="bc-footer-links">
-            <li><a href="customer/dashboard.html"><i class="fa-solid fa-chevron-right"></i> My Account</a></li>
-            <li><a href="customer/tracking.html"><i class="fa-solid fa-chevron-right"></i> Track My Order</a></li>
-            <li><a href="returns.html"><i class="fa-solid fa-chevron-right"></i> Returns &amp; Refunds</a></li>
+            <li><a href="frontend/modules/customer/index.php"><i class="fa-solid fa-chevron-right"></i> My Account</a></li>
+            <li><a href="frontend/modules/customer/tracking.php"><i class="fa-solid fa-chevron-right"></i> Track My Order</a></li>
+            <li><a href="frontend/modules/customer/returns.php"><i class="fa-solid fa-chevron-right"></i> Returns &amp; Refunds</a></li>
             <li><a href="faq.html"><i class="fa-solid fa-chevron-right"></i> FAQs</a></li>
             <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
             <li><a href="help.html"><i class="fa-solid fa-chevron-right"></i> Help Centre</a></li>
@@ -493,6 +493,6 @@
 </button>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/bharatcraft.js"></script>
+<script src="assets/js/bharatcraft.js?v=20261017-1"></script>
 
-<script>const data={kantha:['Kantha Collective','GI Tag certified','Hand-stitched Bengal textiles',[['Kantha Cushion','assets/images/products/kantha-cushion.svg','₹1,850'],['Kantha Throw','assets/images/products/pashmina-shawl.svg','₹3,200']]],'blue-pottery':['Blue Pottery House','GI Tag certified','Jaipur blue pottery in its place of origin',[['Blue Pottery Vase','assets/images/products/blue-pottery-vase.svg','₹2,200']]],muga:['Muga Loom Studio','GOTS certified','Golden Assam Muga silk',[['Muga Silk Shawl','assets/images/products/pashmina-shawl.svg','₹5,500']]],'forest-form':['Forest Form','Vegan certified','Botanical body care',[['Botanical Cleansing Bar','assets/images/categories/eco.svg','₹295']]],'valley-saffron':['Valley Saffron Co.','India Organic certified','Pampore saffron grown with care',[['Saffron Gift Box','assets/images/products/sandalwood-box.svg','₹1,490']]],'earthy-home':['Earthy Home','Zero Waste certified','Low-waste everyday essentials',[['Terracotta Tea Set','assets/images/products/blue-pottery-vase.svg','₹1,490']]]};let d=data[new URLSearchParams(location.search).get('brand')]||data.kantha;name.textContent=d[0];cert.textContent=d[1];about.textContent=d[2];mark.textContent=d[0][0];products.innerHTML=d[3].map(p=>`<article class="bp-product"><img src="${p[1]}" alt="${p[0]}"><h2>${p[0]}</h2><strong>${p[2]}</strong><p><a href="product-detail.html">View Product</a> · <a href="cart.html">Shop Now</a></p></article>`).join('')</script></body></html>
+<script>const data={kantha:['Kantha Collective','GI Tag certified','Hand-stitched Bengal textiles',[['Kantha Cushion','assets/images/products/kantha-cushion.svg','₹1,850'],['Kantha Throw','assets/images/products/pashmina-shawl.svg','₹3,200']]],'blue-pottery':['Blue Pottery House','GI Tag certified','Jaipur blue pottery in its place of origin',[['Blue Pottery Vase','assets/images/products/blue-pottery-vase.svg','₹2,200']]],muga:['Muga Loom Studio','GOTS certified','Golden Assam Muga silk',[['Muga Silk Shawl','assets/images/products/pashmina-shawl.svg','₹5,500']]],'forest-form':['Forest Form','Vegan certified','Botanical body care',[['Botanical Cleansing Bar','assets/images/categories/eco.svg','₹295']]],'valley-saffron':['Valley Saffron Co.','India Organic certified','Pampore saffron grown with care',[['Saffron Gift Box','assets/images/products/sandalwood-box.svg','₹1,490']]],'earthy-home':['Earthy Home','Zero Waste certified','Low-waste everyday essentials',[['Terracotta Tea Set','assets/images/products/blue-pottery-vase.svg','₹1,490']]]};let d=data[new URLSearchParams(location.search).get('brand')]||data.kantha;name.textContent=d[0];cert.textContent=d[1];about.textContent=d[2];mark.textContent=d[0][0];products.innerHTML=d[3].map(p=>`<article class="bp-product"><img src="${p[1]}" alt="${p[0]}"><h2>${p[0]}</h2><strong>${p[2]}</strong><p><a href="product-detail.html">View Product</a> · <a href="frontend/modules/customer/cart.php">Shop Now</a></p></article>`).join('')</script></body></html>

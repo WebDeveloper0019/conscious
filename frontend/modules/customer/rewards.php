@@ -1,1 +1,1 @@
-<?php $pageTitle='Rewards & Coupons';$pageSubtitle='Points, membership, coupons, referrals and transaction history';$activePage='rewards';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/rewards.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Rewards & Coupons';$pageSubtitle='Your recorded points and currently available offers';$activePage='rewards';$customerPageScript='assets/js/rewards-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/rewards.php';require __DIR__.'/layouts/foot.php';

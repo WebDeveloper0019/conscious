@@ -1,1 +1,1 @@
-<?php $pageTitle='Returns, Refunds & Disputes';$activePage='returns';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/returns.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Returns & Customer Review';$activePage='returns';$adminPageScript='assets/js/returns-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/returns.php';require __DIR__.'/layouts/foot.php';

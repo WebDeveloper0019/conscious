@@ -1,1 +1,1 @@
-<?php $pageTitle='My Orders';$pageSubtitle='Manage items, payments, invoices, deliveries and after-sales actions';$activePage='orders';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/orders.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='My Orders';$pageSubtitle='Manage items, payments, invoices, deliveries and after-sales actions';$activePage='orders';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/orders-live.php';require __DIR__.'/layouts/foot.php';

@@ -20,6 +20,7 @@ if (!$user || !password_verify($password, $user['password_hash'])) {
     if (rate_limit('login|' . request_ip() . '|' . $identifier, 10, 900)) json_response(429, ['success'=>false,'message'=>'Too many attempts. Try again in 15 minutes.']);
     json_response(401, ['success'=>false,'message'=>'The sign-in details are incorrect.']);
 }
+if (APP_ENV !== 'local' && preg_match('/^customer\.demo[0-9]{2}@conscious\.test$/', $user['email'])) json_response(403, ['success'=>false,'message'=>'Demo accounts are available only in the local test environment.']);
 if (empty($user['email_verified'])) json_response(403, ['success'=>false,'message'=>'Verify your email before signing in.','code'=>'EMAIL_NOT_VERIFIED','email'=>$user['email']]);
 if (($user['status'] ?? 'active') !== 'active') json_response(403, ['success'=>false,'message'=>'This customer account is not currently permitted to sign in.','code'=>'CUSTOMER_ACCOUNT_RESTRICTED']);
 if (($user['account_status'] ?? 'active') === 'deleted') json_response(403, ['success'=>false,'message'=>'This account has been deleted.','code'=>'ACCOUNT_DELETED']);

@@ -1259,7 +1259,7 @@ function toggleLoading(selector, show) {
 }
 
 /* --------------------------------------------------------------------------
-   Influencer Registration Route (frontend-only)
+   Influencer Registration Route
    -------------------------------------------------------------------------- */
 (function initInfluencerRegistration() {
   function setupInfluencerRegistration() {
@@ -1267,7 +1267,7 @@ function toggleLoading(selector, show) {
     if (!triggers.length) return;
 
     triggers.forEach(function (trigger) {
-      trigger.setAttribute('href', 'influencer-register.html');
+      trigger.setAttribute('href', 'frontend/modules/influencer/auth/register.php');
       trigger.setAttribute('aria-haspopup', 'false');
       trigger.innerHTML = '<i class="fa-solid fa-star" aria-hidden="true"></i> Register as an Influencer';
     });

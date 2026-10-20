@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/guard.php';
 $pageTitle = $pageTitle ?? 'Vendor Portal';
 $activePage = $activePage ?? 'dashboard';
 ?>
@@ -20,6 +21,7 @@ $activePage = $activePage ?? 'dashboard';
   
   <link rel="stylesheet" href="assets/css/app.css">
   <link rel="stylesheet" href="assets/css/vendor-experience.css">
+  <?php if (!empty($vendorPageCss)): ?><link rel="stylesheet" href="<?= htmlspecialchars($vendorPageCss, ENT_QUOTES, 'UTF-8') ?>"><?php endif; ?>
   <?php if (!empty($vendorOnboardingMode)): ?><link rel="stylesheet" href="assets/css/onboarding-v2.css"><?php endif; ?>
 </head>
 <body>
@@ -34,9 +36,9 @@ $activePage = $activePage ?? 'dashboard';
       <div><h1 class="ci-dash-page-title"><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></h1><p class="ci-dash-page-sub"><?= htmlspecialchars($pageSubtitle ?? 'Manage your Conscious Indi store', ENT_QUOTES, 'UTF-8') ?></p></div>
     </div>
     <div class="vc-top-actions">
-      <button type="button" class="vc-icon-button" data-demo-action="Open global search" aria-label="Search vendor portal"><i class="fa-solid fa-magnifying-glass"></i></button>
-      <a class="vc-icon-button" href="communication.php#notifications" aria-label="Notifications"><i class="fa-regular fa-bell"></i><span class="vc-dot" aria-hidden="true"></span></a>
-      <button type="button" class="vc-profile-button" data-demo-action="Open account menu"><span>RS</span><b>Rahul Sharma</b><i class="fa-solid fa-chevron-down"></i></button>
+      <a class="vc-icon-button" href="catalog.php" aria-label="Open products"><i class="fa-solid fa-magnifying-glass"></i></a>
+      <a class="vc-icon-button" href="communication.php#notifications" aria-label="Notifications"><i class="fa-regular fa-bell"></i></a>
+      <a class="vc-profile-button" href="account.php" aria-label="Open account settings"><span><?= htmlspecialchars($vendorInitials, ENT_QUOTES, 'UTF-8') ?></span><b><?= htmlspecialchars($vendorOwner, ENT_QUOTES, 'UTF-8') ?></b><i class="fa-solid fa-chevron-down"></i></a>
     </div>
   </header>
   <main id="main-content" class="vc-main" tabindex="-1">

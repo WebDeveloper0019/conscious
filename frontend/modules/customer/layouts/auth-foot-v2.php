@@ -1,2 +1,2 @@
 </div><p class="ca-legal-foot">By continuing, you acknowledge our <a href="../../../../terms.html">Terms</a> and <a href="../../../../privacy.html">Privacy Notice</a>.</p></section></main><div class="cc-toast-wrap" id="cc-toast-wrap" aria-live="polite"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script><script src="../assets/js/auth-config.js" defer></script><script src="../assets/js/auth.js" defer></script></body></html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script><script src="../assets/js/auth-config.js?v=20261017-1" defer></script><script src="../assets/js/auth.js?v=20261017-1" defer></script></body></html>

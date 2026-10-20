@@ -1,6 +1,6 @@
 # Conscious Indi admin frontend coverage
 
-This module is a frontend-only administrative workspace. It contains no database, payment, authentication, email, file-upload or delivery-provider integration. Every sensitive action must be connected later to an authorised backend with server-side validation, access control, CSRF protection, rate limiting and immutable audit records.
+This module is still largely a sample-data administrative workspace. Sign-in and MFA now call the backend, and workspace pages require an active admin session. Most operational forms and buttons are not yet connected to their backend APIs; do not treat displayed approvals, refunds, payouts, or reports as live data. Every sensitive action must be connected to an authorised endpoint with server-side validation, access control, CSRF protection, rate limiting and audit records.
 
 ## Legacy screen coverage
 
@@ -45,4 +45,4 @@ Operational entry: `index.php`
 
 Authentication entry: `auth/login.php`
 
-The UI uses Conscious Indi's existing typography and colour system without changing the public website. Forms validate in the browser and intentionally stop at a backend-ready confirmation.
+The UI uses Conscious Indi's existing typography and colour system without changing the public website. Authentication is live; most other forms currently validate in the browser and stop at a backend-ready confirmation.

@@ -33,6 +33,10 @@
 .bc-shop-sort-controls{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
 
 .bc-shop-product-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.bc-live-filter-group{margin-bottom:22px}.bc-live-filter-group h3{font-size:.8125rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-primary);margin:0 0 12px}.bc-live-options{display:flex;flex-direction:column;gap:9px}.bc-live-options label{display:flex;align-items:center;gap:9px;font-size:.875rem;color:var(--text-secondary);cursor:pointer}.bc-live-options input{accent-color:var(--saffron)}.bc-product-card.bc-live-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border-warm);border-radius:18px;background:white;box-shadow:0 8px 22px rgba(30,43,34,.05)}.bc-live-card .bc-product-img-wrap{aspect-ratio:4/4.2;overflow:hidden;background:#ece8e1}.bc-live-card .bc-product-img-wrap>a,.bc-live-card .bc-product-img-wrap img{display:block;width:100%;height:100%}.bc-live-card .bc-product-img-wrap img{object-fit:cover;transition:transform .35s}.bc-live-card:hover .bc-product-img-wrap img{transform:scale(1.035)}.bc-live-card .bc-product-body{display:flex;flex:1;flex-direction:column;gap:7px;padding:15px}.bc-live-card .bc-product-artisan{margin:0;color:var(--text-muted);font-size:.78rem}.bc-live-card .bc-product-title{margin:0;font-size:1rem;line-height:1.35;min-height:2.65em}.bc-live-card .bc-product-title a{color:var(--text-primary);text-decoration:none}.bc-live-card .bc-product-price-row{display:flex;align-items:baseline;gap:8px;margin-top:auto}.bc-live-card .bc-product-price{font-size:1.13rem;font-weight:800}.bc-live-card .bc-product-price-original{font-size:.82rem}.bc-live-card .bc-live-add{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:7px;padding:11px 12px;border:0;border-radius:10px;background:var(--saffron);color:white;font-size:.86rem;font-weight:800;cursor:pointer}.bc-live-card .bc-live-add:hover{background:var(--saffron-dark)}.bc-live-card .bc-live-add:disabled{opacity:.65;cursor:wait}.bc-live-card .bc-live-save{position:absolute;right:11px;top:11px;z-index:2;display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--border-warm);border-radius:50%;background:white;color:var(--text-primary);cursor:pointer}.bc-live-card .bc-live-category{font-size:.72rem;font-weight:700;color:var(--saffron-dark);text-transform:uppercase;letter-spacing:.045em}.bc-shop-toast{position:fixed;right:20px;bottom:22px;z-index:9999;max-width:min(380px,calc(100vw - 40px));padding:13px 16px;border:1px solid var(--border-warm);border-radius:12px;background:white;box-shadow:0 12px 30px rgba(20,37,24,.18);color:var(--text-primary)}.bc-shop-toast a{color:var(--saffron-dark);font-weight:700}
+.bc-shop-product-grid:not([data-live-ready])>.bc-product-card{display:none!important}
+.bc-shop-product-grid:not([data-live-ready])::before{content:"Loading published products…";display:block;color:var(--text-muted);padding:24px}
+.bc-shop-pagination{display:none!important}
 
 .bc-shop-pagination{ display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin-top:40px; }
 
@@ -127,15 +131,15 @@
           </div>
         </div>
         <div class="bc-header-actions">
-          <a href="become-brand-partner.html" class="bc-btn-seller"><i class="fa-solid fa-store"></i> Sell With Us</a>
-          <a href="creators.html" class="bc-btn-influencer"><i class="fa-solid fa-star"></i> Become a Creator</a>
-          <a href="customer/wishlist.html" class="bc-header-action-link" aria-label="Wishlist"><i class="fa-regular fa-heart"></i><span>Wishlist</span></a>
-          <a href="cart.html" class="bc-header-action-link" aria-label="Cart (0 items)">
+          <a href="frontend/modules/vendor/auth/register.php" class="bc-btn-seller"><i class="fa-solid fa-store"></i> Sell With Us</a>
+          <a href="frontend/modules/influencer/auth/register.php" class="bc-btn-influencer"><i class="fa-solid fa-star"></i> Become a Creator</a>
+          <a href="frontend/modules/customer/wishlist.php" class="bc-header-action-link" aria-label="Wishlist"><i class="fa-regular fa-heart"></i><span>Wishlist</span></a>
+          <a href="frontend/modules/customer/cart.php" class="bc-header-action-link" aria-label="Cart (0 items)">
             <i class="fa-solid fa-bag-shopping"></i>
             <span class="bc-action-badge" aria-label="0 items in cart">0</span>
             <span>Cart</span>
           </a>
-          <a href="customer/dashboard.html" class="bc-header-action-link" aria-label="My Account"><i class="fa-regular fa-circle-user"></i><span>Account</span></a>
+          <a href="frontend/modules/customer/index.php" class="bc-header-action-link" aria-label="My Account"><i class="fa-regular fa-circle-user"></i><span>Account</span></a>
         </div>
       </div>
     </div>
@@ -222,7 +226,7 @@
           </ul>
         </nav>
         <div class="bc-nav-extras">
-          <a href="customer/tracking.html"><i class="fa-regular fa-clock"></i> Track Order</a>
+          <a href="frontend/modules/customer/tracking.php"><i class="fa-regular fa-clock"></i> Track Order</a>
           <a href="help.html"><i class="fa-regular fa-circle-question"></i> Help</a>
         </div>
       </div>
@@ -240,12 +244,12 @@
       <img src="assets/images/logo-horizontal.png" alt="Conscious Indi" class="bc-logo-img bc-logo-horizontal bc-logo-mobile" width="160" height="44" loading="eager" />
     </a>
     <div class="bc-mobile-actions">
-      <a href="customer/wishlist.html" class="bc-mobile-action-btn" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
-      <a href="cart.html" class="bc-mobile-action-btn" aria-label="Cart" style="position:relative;">
+      <a href="frontend/modules/customer/wishlist.php" class="bc-mobile-action-btn" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
+      <a href="frontend/modules/customer/cart.php" class="bc-mobile-action-btn" aria-label="Cart" style="position:relative;">
         <i class="fa-solid fa-bag-shopping"></i>
         <span class="bc-action-badge" style="top:2px;right:2px;">0</span>
       </a>
-      <a href="customer/dashboard.html" class="bc-mobile-action-btn" aria-label="Account"><i class="fa-regular fa-circle-user"></i></a>
+      <a href="frontend/modules/customer/index.php" class="bc-mobile-action-btn" aria-label="Account"><i class="fa-regular fa-circle-user"></i></a>
     </div>
   </div>
   <div class="bc-mobile-search-wrap">
@@ -283,8 +287,8 @@
     <a href="become-exhibitor.html"><i class="fa-solid fa-people-roof"></i> Exhibit With Us</a>
     <a href="creators.html"><i class="fa-solid fa-star"></i> Become a Creator</a>
     <div class="bc-drawer-divider"></div>
-    <a href="customer/tracking.html"><i class="fa-regular fa-clock"></i> Track Order</a>
-    <a href="customer/dashboard.html"><i class="fa-regular fa-circle-user"></i> My Account</a>
+    <a href="frontend/modules/customer/tracking.php"><i class="fa-regular fa-clock"></i> Track Order</a>
+    <a href="frontend/modules/customer/index.php"><i class="fa-regular fa-circle-user"></i> My Account</a>
     <a href="help.html"><i class="fa-regular fa-circle-question"></i> Help &amp; Support</a>
   </div>
 </nav>
@@ -308,7 +312,7 @@
     <div class="bc-reveal" style="text-align:center;color:white;">
       <div class="bc-section-label" style="color:var(--saffron-light);justify-content:center;">Curated Marketplace</div>
       <h1 class="bc-section-title" id="shop-heading" style="color:white;font-size:clamp(2rem,4vw,3rem);">Shop Conscious. Shop India.</h1>
-      <p class="bc-section-desc" style="color:rgba(255,255,255,0.75);margin:0 auto 28px;">Handcrafted treasures from verified artisans &amp; sustainable brands across India.</p>
+      <p class="bc-section-desc" style="color:rgba(255,255,255,0.75);margin:0 auto 28px;">Discover handcrafted products from artisans and sustainable brands across India.</p>
     </div>
   </div>
 </section>
@@ -325,58 +329,19 @@
             <i class="fa-solid fa-sliders" style="color:var(--saffron);margin-right:8px;"></i> Filters
           </h2>
 
-          <!-- Category Filter -->
-          <div style="margin-bottom:24px;">
-            <h3 style="font-size:0.8125rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-primary);margin-bottom:12px;">Category</h3>
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;">
-                <input type="checkbox" checked style="accent-color:var(--saffron);"> All Products
-              </label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);"> Pottery &amp; Ceramics</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);"> Handmade Jewelry</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);"> Handloom &amp; Textiles</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);"> Paintings</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);"> Wood Crafts</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);"> Home Decor</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);"> Traditional Art</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);"> Eco Friendly</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);"> Fashion Accessories</label>
-            </div>
-          </div>
-
-          <!-- Price Range -->
+          <!-- Category Filter --><div class="bc-live-filter-group" id="bc-live-categories"><h3>Category</h3><div class="bc-live-options" data-category-options></div></div><!-- Price Range -->
           <div style="margin-bottom:24px;">
             <h3 style="font-size:0.8125rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-primary);margin-bottom:12px;">Price Range</h3>
             <div style="display:flex;gap:8px;margin-bottom:10px;">
               <input type="number" placeholder="Min ₹" style="flex:1;padding:8px 10px;border:1.5px solid var(--border-warm);border-radius:var(--r-sm);font-size:0.875rem;color:var(--text-primary);background:var(--bg-cream);width:100%;" />
               <input type="number" placeholder="Max ₹" style="flex:1;padding:8px 10px;border:1.5px solid var(--border-warm);border-radius:var(--r-sm);font-size:0.875rem;color:var(--text-primary);background:var(--bg-cream);width:100%;" />
             </div>
-            <input type="range" min="0" max="50000" value="25000" style="width:100%;accent-color:var(--saffron);" />
-            <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-top:4px;"><span>₹0</span><span>₹50,000</span></div>
+            <small style="color:var(--text-muted);">Enter a minimum, maximum, or both.</small>
           </div>
 
-          <!-- Rating -->
-          <div style="margin-bottom:24px;">
-            <h3 style="font-size:0.8125rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-primary);margin-bottom:12px;">Customer Rating</h3>
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="radio" name="rating" style="accent-color:var(--saffron);"> ★★★★★ &nbsp;(4.5+)</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="radio" name="rating" style="accent-color:var(--saffron);"> ★★★★☆ &nbsp;(4.0+)</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="radio" name="rating" style="accent-color:var(--saffron);"> ★★★☆☆ &nbsp;(3.0+)</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="radio" name="rating" checked style="accent-color:var(--saffron);"> All Ratings</label>
-            </div>
-          </div>
-
-          <!-- Brand Type -->
-          <div style="margin-bottom:24px;">
-            <h3 style="font-size:0.8125rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-primary);margin-bottom:12px;">Seller Type</h3>
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);"> Verified Artisans</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);"> Sustainable Brands</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);"> GI Tagged Products</label>
-            </div>
-          </div>
-
-          <button class="bc-btn bc-btn-primary" style="width:100%;">Apply Filters</button>
+          <div class="bc-live-filter-group" id="bc-live-materials" hidden><h3>Material</h3><div class="bc-live-options" data-material-options></div></div>
+          <div class="bc-live-filter-group" id="bc-live-origins" hidden><h3>Made in</h3><div class="bc-live-options" data-origin-options></div></div>
+          <!-- Seller Type --><div class="bc-live-filter-group"><h3>Seller type</h3><div class="bc-live-options"><label><input type="checkbox" value="artisan" data-seller-type> Artisan or maker</label><label><input type="checkbox" value="brand" data-seller-type> Brand or business</label></div></div><button class="bc-btn bc-btn-primary" style="width:100%;">Apply Filters</button>
           <button class="bc-btn bc-btn-outline" style="width:100%;margin-top:8px;">Clear All</button>
         </div>
       </aside>
@@ -385,7 +350,7 @@
       <div>
         <!-- Sort Bar -->
         <div class="bc-shop-sortbar">
-          <span style="font-size:0.875rem;color:var(--text-muted);">Showing <strong style="color:var(--text-primary);">248 products</strong></span>
+          <span style="font-size:0.875rem;color:var(--text-muted);">Showing <strong style="color:var(--text-primary);">Loading products…</strong></span>
           <div class="bc-shop-sort-controls">
             <label style="font-size:0.875rem;color:var(--text-muted);">Sort by:</label>
             <select style="border:1.5px solid var(--border-warm);border-radius:var(--r-sm);padding:6px 12px;font-size:0.875rem;color:var(--text-secondary);background:var(--bg-cream);">
@@ -393,155 +358,17 @@
               <option>Price: Low to High</option>
               <option>Price: High to Low</option>
               <option>Newest First</option>
-              <option>Best Rated</option>
-              <option>Best Selling</option>
             </select>
-            <div style="display:flex;gap:4px;">
-              <button style="width:32px;height:32px;border-radius:var(--r-sm);border:1.5px solid var(--border-warm);background:var(--saffron);color:white;display:flex;align-items:center;justify-content:center;" aria-label="Grid view"><i class="fa-solid fa-grid-2"></i></button>
-              <button style="width:32px;height:32px;border-radius:var(--r-sm);border:1.5px solid var(--border-warm);background:var(--bg-cream);display:flex;align-items:center;justify-content:center;" aria-label="List view"><i class="fa-solid fa-list"></i></button>
-            </div>
+
           </div>
         </div>
 
-        <!-- Filter Tabs -->
-        <div class="bc-product-tabs" style="margin-bottom:20px;">
-          <button class="bc-product-tab active" data-filter="all">All</button>
-          <button class="bc-product-tab" data-filter="pottery">Pottery</button>
-          <button class="bc-product-tab" data-filter="jewelry">Jewelry</button>
-          <button class="bc-product-tab" data-filter="handloom">Handloom</button>
-          <button class="bc-product-tab" data-filter="paintings">Paintings</button>
-          <button class="bc-product-tab" data-filter="wood">Wood Crafts</button>
-          <button class="bc-product-tab" data-filter="eco">Eco</button>
-        </div>
-
+        <p id="bc-shop-demo-note" role="status" hidden></p>
+        <!-- Product categories are rendered from the catalogue database -->
+        <div class="bc-product-tabs" id="bc-live-tabs" aria-label="Product categories"></div>
         <!-- Products -->
-        <div class="bc-shop-product-grid">
-          <!-- Product Cards -->
-          <article class="bc-product-card bc-reveal" data-category="pottery">
-            <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-1" style="display:flex;align-items:center;justify-content:center;font-size:4rem;">🏺</div>
-              <span class="bc-product-badge bc-product-badge-new">New</span>
-              <div class="bc-product-actions"><button class="bc-product-action-btn wishlist" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button><button class="bc-product-action-btn" aria-label="Quick view"><i class="fa-regular fa-eye"></i></button></div>
-            </div>
-            <div class="bc-product-body">
-              <div class="bc-product-artisan"><div class="bc-product-artisan-dot" style="background:var(--saffron-pale);">🧑</div><span class="bc-product-artisan-name">by Rajan Kumhar</span></div>
-              <h3 class="bc-product-title"><a href="product-detail.html">Blue Pottery Vase — Jaipur Craft</a></h3>
-              <div class="bc-product-rating"><div class="bc-stars">★★★★★</div><span class="bc-product-rating-val">4.9</span><span class="bc-product-rating-count">(87)</span></div>
-              <div class="bc-product-price-row"><div><span class="bc-product-price">₹1,299</span> <span class="bc-product-price-original">₹1,799</span> <span class="bc-product-price-off">28% off</span></div><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-            </div>
-          </article>
+        <div class="bc-shop-product-grid" aria-live="polite"></div>
 
-          <article class="bc-product-card bc-reveal delay-1" data-category="jewelry">
-            <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-2" style="display:flex;align-items:center;justify-content:center;font-size:4rem;">💍</div>
-              <span class="bc-product-badge bc-product-badge-hot">Hot</span>
-              <div class="bc-product-actions"><button class="bc-product-action-btn wishlist" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button><button class="bc-product-action-btn" aria-label="Quick view"><i class="fa-regular fa-eye"></i></button></div>
-            </div>
-            <div class="bc-product-body">
-              <div class="bc-product-artisan"><div class="bc-product-artisan-dot" style="background:var(--gold-pale);">🧑</div><span class="bc-product-artisan-name">by Silver Craft Studios</span></div>
-              <h3 class="bc-product-title"><a href="product-detail.html">Kundan Meenakari Necklace Set</a></h3>
-              <div class="bc-product-rating"><div class="bc-stars">★★★★★</div><span class="bc-product-rating-val">4.8</span><span class="bc-product-rating-count">(143)</span></div>
-              <div class="bc-product-price-row"><div><span class="bc-product-price">₹3,499</span> <span class="bc-product-price-original">₹4,999</span> <span class="bc-product-price-off">30% off</span></div><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-            </div>
-          </article>
-
-          <article class="bc-product-card bc-reveal delay-2" data-category="handloom">
-            <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-3" style="display:flex;align-items:center;justify-content:center;font-size:4rem;">🧵</div>
-              <span class="bc-product-badge bc-product-badge-new">New</span>
-              <div class="bc-product-actions"><button class="bc-product-action-btn wishlist" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button><button class="bc-product-action-btn" aria-label="Quick view"><i class="fa-regular fa-eye"></i></button></div>
-            </div>
-            <div class="bc-product-body">
-              <div class="bc-product-artisan"><div class="bc-product-artisan-dot" style="background:var(--navy-pale);">🧑</div><span class="bc-product-artisan-name">by Weavers of Varanasi</span></div>
-              <h3 class="bc-product-title"><a href="product-detail.html">Banarasi Silk Dupatta — Handwoven</a></h3>
-              <div class="bc-product-rating"><div class="bc-stars">★★★★★</div><span class="bc-product-rating-val">4.7</span><span class="bc-product-rating-count">(92)</span></div>
-              <div class="bc-product-price-row"><div><span class="bc-product-price">₹2,199</span> <span class="bc-product-price-original">₹2,999</span> <span class="bc-product-price-off">27% off</span></div><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-            </div>
-          </article>
-
-          <article class="bc-product-card bc-reveal" data-category="paintings">
-            <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-4" style="display:flex;align-items:center;justify-content:center;font-size:4rem;">🎨</div>
-              <div class="bc-product-actions"><button class="bc-product-action-btn wishlist" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button><button class="bc-product-action-btn" aria-label="Quick view"><i class="fa-regular fa-eye"></i></button></div>
-            </div>
-            <div class="bc-product-body">
-              <div class="bc-product-artisan"><div class="bc-product-artisan-dot" style="background:var(--saffron-pale);">🧑</div><span class="bc-product-artisan-name">by Madhubani Masters</span></div>
-              <h3 class="bc-product-title"><a href="product-detail.html">Madhubani Painting — Mithila Folk Art</a></h3>
-              <div class="bc-product-rating"><div class="bc-stars">★★★★★</div><span class="bc-product-rating-val">5.0</span><span class="bc-product-rating-count">(56)</span></div>
-              <div class="bc-product-price-row"><div><span class="bc-product-price">₹4,500</span></div><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-            </div>
-          </article>
-
-          <article class="bc-product-card bc-reveal delay-1" data-category="wood">
-            <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-5" style="display:flex;align-items:center;justify-content:center;font-size:4rem;">🪵</div>
-              <span class="bc-product-badge bc-product-badge-sale">Sale</span>
-              <div class="bc-product-actions"><button class="bc-product-action-btn wishlist" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button><button class="bc-product-action-btn" aria-label="Quick view"><i class="fa-regular fa-eye"></i></button></div>
-            </div>
-            <div class="bc-product-body">
-              <div class="bc-product-artisan"><div class="bc-product-artisan-dot" style="background:var(--green-pale);">🧑</div><span class="bc-product-artisan-name">by Saharanpur Woodcraft</span></div>
-              <h3 class="bc-product-title"><a href="product-detail.html">Sheesham Wood Carved Box — Intricate</a></h3>
-              <div class="bc-product-rating"><div class="bc-stars">★★★★☆</div><span class="bc-product-rating-val">4.6</span><span class="bc-product-rating-count">(74)</span></div>
-              <div class="bc-product-price-row"><div><span class="bc-product-price">₹1,799</span> <span class="bc-product-price-original">₹2,499</span> <span class="bc-product-price-off">28% off</span></div><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-            </div>
-          </article>
-
-          <article class="bc-product-card bc-reveal delay-2" data-category="eco">
-            <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-6" style="display:flex;align-items:center;justify-content:center;font-size:4rem;">🌿</div>
-              <span class="bc-product-badge bc-product-badge-new">Eco</span>
-              <div class="bc-product-actions"><button class="bc-product-action-btn wishlist" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button><button class="bc-product-action-btn" aria-label="Quick view"><i class="fa-regular fa-eye"></i></button></div>
-            </div>
-            <div class="bc-product-body">
-              <div class="bc-product-artisan"><div class="bc-product-artisan-dot" style="background:var(--green-pale);">🧑</div><span class="bc-product-artisan-name">by EarthWeave Co.</span></div>
-              <h3 class="bc-product-title"><a href="product-detail.html">Bamboo Dining Set — Zero Waste</a></h3>
-              <div class="bc-product-rating"><div class="bc-stars">★★★★★</div><span class="bc-product-rating-val">4.9</span><span class="bc-product-rating-count">(211)</span></div>
-              <div class="bc-product-price-row"><div><span class="bc-product-price">₹899</span> <span class="bc-product-price-original">₹1,299</span> <span class="bc-product-price-off">31% off</span></div><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-            </div>
-          </article>
-
-          <article class="bc-product-card bc-reveal" data-category="pottery">
-            <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-7" style="display:flex;align-items:center;justify-content:center;font-size:4rem;">🫖</div>
-              <div class="bc-product-actions"><button class="bc-product-action-btn wishlist" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button></div>
-            </div>
-            <div class="bc-product-body">
-              <div class="bc-product-artisan"><div class="bc-product-artisan-dot" style="background:var(--saffron-pale);">🧑</div><span class="bc-product-artisan-name">by Khurja Pottery</span></div>
-              <h3 class="bc-product-title"><a href="product-detail.html">Hand-painted Terracotta Tea Set</a></h3>
-              <div class="bc-product-rating"><div class="bc-stars">★★★★★</div><span class="bc-product-rating-val">4.8</span><span class="bc-product-rating-count">(63)</span></div>
-              <div class="bc-product-price-row"><div><span class="bc-product-price">₹1,599</span></div><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-            </div>
-          </article>
-
-          <article class="bc-product-card bc-reveal delay-1" data-category="jewelry">
-            <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-8" style="display:flex;align-items:center;justify-content:center;font-size:4rem;">📿</div>
-              <span class="bc-product-badge bc-product-badge-hot">Hot</span>
-              <div class="bc-product-actions"><button class="bc-product-action-btn wishlist" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button></div>
-            </div>
-            <div class="bc-product-body">
-              <div class="bc-product-artisan"><div class="bc-product-artisan-dot" style="background:var(--gold-pale);">🧑</div><span class="bc-product-artisan-name">by Tribal Adornments</span></div>
-              <h3 class="bc-product-title"><a href="product-detail.html">Dhokra Brass Tribal Necklace</a></h3>
-              <div class="bc-product-rating"><div class="bc-stars">★★★★★</div><span class="bc-product-rating-val">4.7</span><span class="bc-product-rating-count">(38)</span></div>
-              <div class="bc-product-price-row"><div><span class="bc-product-price">₹2,799</span> <span class="bc-product-price-original">₹3,599</span></div><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-            </div>
-          </article>
-
-          <article class="bc-product-card bc-reveal delay-2" data-category="handloom">
-            <div class="bc-product-img-wrap"><div class="bc-product-img bc-prod-bg-1" style="display:flex;align-items:center;justify-content:center;font-size:4rem;">🧶</div>
-              <div class="bc-product-actions"><button class="bc-product-action-btn wishlist" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button></div>
-            </div>
-            <div class="bc-product-body">
-              <div class="bc-product-artisan"><div class="bc-product-artisan-dot" style="background:var(--navy-pale);">🧑</div><span class="bc-product-artisan-name">by Kashmir Looms</span></div>
-              <h3 class="bc-product-title"><a href="product-detail.html">Pure Pashmina Shawl — Hand-embroidered</a></h3>
-              <div class="bc-product-rating"><div class="bc-stars">★★★★★</div><span class="bc-product-rating-val">4.9</span><span class="bc-product-rating-count">(182)</span></div>
-              <div class="bc-product-price-row"><div><span class="bc-product-price">₹8,999</span> <span class="bc-product-price-original">₹12,000</span> <span class="bc-product-price-off">25% off</span></div><button class="bc-product-add-btn" aria-label="Add to cart"><i class="fa-solid fa-plus"></i></button></div>
-            </div>
-          </article>
-        </div>
-
-        <!-- Pagination -->
-        <div class="bc-shop-pagination">
-          <button style="width:38px;height:38px;border-radius:var(--r-sm);border:1.5px solid var(--border-warm);background:var(--bg-cream);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-chevron-left"></i></button>
-          <button style="width:38px;height:38px;border-radius:var(--r-sm);border:1.5px solid var(--saffron);background:var(--saffron);color:white;font-weight:600;">1</button>
-          <button style="width:38px;height:38px;border-radius:var(--r-sm);border:1.5px solid var(--border-warm);background:var(--bg-cream);color:var(--text-secondary);cursor:pointer;">2</button>
-          <button style="width:38px;height:38px;border-radius:var(--r-sm);border:1.5px solid var(--border-warm);background:var(--bg-cream);color:var(--text-secondary);cursor:pointer;">3</button>
-          <span style="color:var(--text-muted);">...</span>
-          <button style="width:38px;height:38px;border-radius:var(--r-sm);border:1.5px solid var(--border-warm);background:var(--bg-cream);color:var(--text-secondary);cursor:pointer;">12</button>
-          <button style="width:38px;height:38px;border-radius:var(--r-sm);border:1.5px solid var(--border-warm);background:var(--bg-cream);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-chevron-right"></i></button>
-        </div>
       </div>
     </div>
   </div>
@@ -551,11 +378,11 @@
 <section class="bc-trust-strip" aria-label="Shopping trust signals">
   <div class="container">
     <div class="bc-trust-inner">
-      <div class="bc-trust-item"><div class="bc-trust-icon saffron"><i class="fa-solid fa-shield-halved"></i></div><div><div class="bc-trust-info-title">100% Authentic</div><div class="bc-trust-info-desc">Verified artisan products only</div></div></div>
+      <div class="bc-trust-item"><div class="bc-trust-icon saffron"><i class="fa-solid fa-shield-halved"></i></div><div><div class="bc-trust-info-title">Seller transparency</div><div class="bc-trust-info-desc">Local demo items are clearly marked</div></div></div>
       <div class="bc-trust-divider"></div>
-      <div class="bc-trust-item"><div class="bc-trust-icon navy"><i class="fa-solid fa-truck-fast"></i></div><div><div class="bc-trust-info-title">Free Shipping ₹999+</div><div class="bc-trust-info-desc">Pan-India delivery</div></div></div>
+      <div class="bc-trust-item"><div class="bc-trust-icon navy"><i class="fa-solid fa-truck-fast"></i></div><div><div class="bc-trust-info-title">Vendor-managed delivery</div><div class="bc-trust-info-desc">Rates shown at checkout</div></div></div>
       <div class="bc-trust-divider"></div>
-      <div class="bc-trust-item"><div class="bc-trust-icon green"><i class="fa-solid fa-rotate-left"></i></div><div><div class="bc-trust-info-title">Easy 7-Day Returns</div><div class="bc-trust-info-desc">Hassle-free returns policy</div></div></div>
+      <div class="bc-trust-item"><div class="bc-trust-icon green"><i class="fa-solid fa-rotate-left"></i></div><div><div class="bc-trust-info-title">Policy-based returns</div><div class="bc-trust-info-desc">Eligibility shown per order</div></div></div>
       <div class="bc-trust-divider"></div>
       <div class="bc-trust-item"><div class="bc-trust-icon gold"><i class="fa-solid fa-lock"></i></div><div><div class="bc-trust-info-title">Secure Payments</div><div class="bc-trust-info-desc">UPI, Cards, Net Banking</div></div></div>
     </div>
@@ -629,9 +456,9 @@
         <div>
           <div class="bc-footer-col-title">Customer Care</div>
           <ul class="bc-footer-links">
-            <li><a href="customer/dashboard.html"><i class="fa-solid fa-chevron-right"></i> My Account</a></li>
-            <li><a href="customer/tracking.html"><i class="fa-solid fa-chevron-right"></i> Track My Order</a></li>
-            <li><a href="returns.html"><i class="fa-solid fa-chevron-right"></i> Returns &amp; Refunds</a></li>
+            <li><a href="frontend/modules/customer/index.php"><i class="fa-solid fa-chevron-right"></i> My Account</a></li>
+            <li><a href="frontend/modules/customer/tracking.php"><i class="fa-solid fa-chevron-right"></i> Track My Order</a></li>
+            <li><a href="frontend/modules/customer/returns.php"><i class="fa-solid fa-chevron-right"></i> Returns &amp; Refunds</a></li>
             <li><a href="faq.html"><i class="fa-solid fa-chevron-right"></i> FAQs</a></li>
             <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
             <li><a href="help.html"><i class="fa-solid fa-chevron-right"></i> Help Centre</a></li>
@@ -682,6 +509,7 @@
 </button>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/bharatcraft.js"></script>
+<script src="assets/js/bharatcraft.js?v=20261017-1"></script>
+<script src="assets/js/shop-live.js?v=20261017-3"></script>
 </body>
 </html>

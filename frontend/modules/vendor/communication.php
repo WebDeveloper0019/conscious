@@ -1,1 +1,1 @@
-<?php $pageTitle='Communication';$pageSubtitle='Customer messages, reviews, questions, notifications, and announcements';$activePage='communication';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/communication.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Customers & updates';$pageSubtitle='Your notifications and product reviews';$activePage='communication';$vendorPageScript='assets/js/communication-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/communication.php';require __DIR__.'/layouts/foot.php';

@@ -1,1 +1,1 @@
-<?php $pageTitle='Returns & Replacements';$pageSubtitle='Review requests, arrange pickup, inspect items, and recommend refunds';$activePage='returns';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/returns.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Returns & Replacements';$pageSubtitle='Review real requests and record an auditable decision';$activePage='returns';$vendorPageScript='assets/js/returns-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/returns-live.php';require __DIR__.'/layouts/foot.php';

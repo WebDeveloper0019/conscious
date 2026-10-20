@@ -1,0 +1,18 @@
+.cp-tracking-selector{display:flex;align-items:center;gap:12px;margin:18px 0}
+.cp-tracking-selector label{font-size:13px;font-weight:700}
+.cp-tracking-selector select{width:min(360px,100%);min-height:44px;font-size:13px}
+.cp-live-track-heading,.cp-live-vendor-track,.cp-live-track-address{margin:14px 0;padding:20px;border-radius:16px}
+.cp-live-track-heading h2,.cp-live-vendor-track h2{margin:5px 0 7px;font-size:21px}
+.cp-live-track-heading p,.cp-live-vendor-track>p,.cp-live-track-address p,.cp-live-track-empty{font-size:13px;line-height:1.55;color:var(--cx-sub)}
+.cp-live-track-items{display:grid;gap:8px;margin:14px 0}
+.cp-live-track-items>div{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--cx-line);border-radius:10px}
+.cp-live-track-items strong{font-size:13px}.cp-live-track-items small{font-size:12px;color:var(--cx-sub)}
+.cp-live-package{margin:15px 0;padding:17px;border:1px solid var(--cx-line);border-radius:13px;background:#fbfcfa}
+.cp-live-package h3{margin:0 0 12px;font-size:16px}
+.cp-live-package-meta{display:flex;flex-wrap:wrap;gap:8px 17px;margin-bottom:12px;font-size:12px;color:var(--cx-sub)}
+.cp-live-package>.cc-btn{margin:2px 0 15px}
+.cp-live-timeline{margin-top:12px}.cp-live-timeline h4{margin:0 0 12px;font-size:14px}
+.cp-live-timeline>article{display:flex;gap:12px;padding:0 0 17px}.cp-live-timeline>article:not(:last-child) .cp-live-marker:after{content:"";position:absolute;top:20px;bottom:-22px;left:9px;width:1px;background:var(--cx-line)}
+.cp-live-marker{position:relative;flex:none;color:var(--cx-green);font-size:18px}.cp-live-timeline strong{font-size:13px}.cp-live-timeline p{margin:4px 0;font-size:12px;color:var(--cx-sub)}.cp-live-timeline small{font-size:11px;color:var(--cx-sub)}
+.cp-live-track-address h3{margin:0 0 8px;font-size:16px}.cp-live-track-address strong{font-size:13px}
+@media(max-width:600px){.cp-tracking-selector{align-items:stretch;flex-direction:column}.cp-tracking-selector select{width:100%}.cp-live-track-items>div{flex-direction:column}}

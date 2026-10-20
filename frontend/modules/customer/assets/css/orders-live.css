@@ -1,0 +1,32 @@
+.cp-order-list{display:grid;gap:14px}
+[data-order-more][hidden],[data-order-detail][hidden],[data-order-cancel-dialog]:not([open]){display:none!important}
+.cp-search-control .cc-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.cp-order-list .cp-order-card{padding:0;overflow:hidden}
+.cp-order-list .cp-order-card header{padding:18px 20px;gap:14px}
+.cp-order-list .cp-order-card header span,.cp-order-list .cp-order-card header b{font-size:14px}
+.cp-order-list .cp-order-card header small{font-size:12px}
+.cp-live-order-body{padding:16px 20px}
+.cp-live-order-body p{margin:0 0 14px;color:var(--cx-sub);font-size:13px}
+.cp-live-order-body .cp-order-buttons{display:flex;gap:10px;flex-wrap:wrap}
+.cp-order-more{display:flex;justify-content:center;margin:20px 0}
+.cp-orders-empty{padding:30px;border-radius:16px;text-align:center}
+.cp-orders-empty h2{margin:0 0 8px;font-size:20px}
+.cp-orders-empty p,.cp-orders-error{font-size:14px;color:var(--cx-sub)}
+.cp-orders-empty .cc-btn{margin-top:12px}
+.cp-order-detail{margin-top:20px;scroll-margin-top:90px}
+.cp-order-detail[hidden]{display:none}
+.cp-live-order-items{display:grid;gap:10px;margin:20px 0}
+.cp-live-order-item{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--cx-line);border-radius:12px}
+.cp-live-order-item img{width:54px;height:54px;object-fit:cover;border-radius:8px}
+.cp-live-order-item>div{display:grid;gap:3px}
+.cp-live-order-item strong{font-size:13px}
+.cp-live-order-item small{font-size:12px;color:var(--cx-sub)}
+.cp-live-order-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.cp-live-invoice{margin-top:18px;padding:16px;border:1px solid var(--cx-line);border-radius:12px}
+.cp-live-invoice h3{margin:0 0 8px}
+.cp-live-invoice p{font-size:13px;color:var(--cx-sub)}
+[data-order-cancel-dialog] .cc-card-body{display:grid;gap:14px}
+[data-order-cancel-dialog] .cc-field{display:grid;gap:7px;font-size:13px}
+[data-order-cancel-dialog] .cc-check{font-size:12px;line-height:1.5}
+[data-order-cancel-dialog] [data-cancel-status]{font-size:13px}
+@media(max-width:600px){.cp-order-list .cp-order-card header{align-items:flex-start;flex-direction:column}.cp-live-order-body .cp-order-buttons{display:grid;grid-template-columns:1fr 1fr}.cp-live-order-actions{display:grid}.cp-live-order-actions>*{width:100%}.cp-search-control{gap:8px}.cp-search-control button{min-width:84px}}

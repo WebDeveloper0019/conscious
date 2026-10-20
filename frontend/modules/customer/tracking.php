@@ -1,1 +1,1 @@
-<?php $pageTitle='Track Delivery';$pageSubtitle='Vendor-entered delivery updates, attempts and proof';$activePage='tracking';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/tracking.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Track Delivery';$pageSubtitle='Vendor-entered delivery updates, attempts and proof';$activePage='tracking';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/tracking-live.php';require __DIR__.'/layouts/foot.php';

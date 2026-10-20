@@ -1,1 +1,1 @@
-<?php $pageTitle='Promotions';$pageSubtitle='Coupons, offers, campaigns, and vendor-funded delivery benefits';$activePage='promotions';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/promotions.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Promotions';$pageSubtitle='Create and manage your store coupons';$activePage='promotions';$vendorPageScript='assets/js/promotions-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/promotions.php';require __DIR__.'/layouts/foot.php';

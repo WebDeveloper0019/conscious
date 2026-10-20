@@ -1,1 +1,1 @@
-<?php $pageTitle='Admin Dashboard';$activePage='dashboard';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/index.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Admin Dashboard';$pageSubtitle='Live marketplace operations and review queues';$activePage='dashboard';$adminPageScript='assets/js/dashboard-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/index.php';require __DIR__.'/layouts/foot.php';

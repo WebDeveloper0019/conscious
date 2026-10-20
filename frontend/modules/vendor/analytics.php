@@ -1,1 +1,1 @@
-<?php $pageTitle='Analytics & Reports';$pageSubtitle='Sales, products, delivery, returns, customers, and exports';$activePage='analytics';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/analytics.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Reports';$pageSubtitle='Recorded orders, catalogue status, and returns';$activePage='analytics';$vendorPageScript='assets/js/analytics-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/analytics.php';require __DIR__.'/layouts/foot.php';

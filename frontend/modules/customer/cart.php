@@ -1,1 +1,1 @@
-<?php $pageTitle='Shopping Cart';$pageSubtitle='Review products, vendors, delivery and savings';$activePage='cart';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/cart.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Shopping Bag';$pageSubtitle='Review products before secure checkout';$activePage='cart';$commercePage=true;require __DIR__.'/layouts/head.php';require __DIR__.'/pages/cart.php';require __DIR__.'/layouts/foot.php';

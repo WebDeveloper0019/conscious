@@ -17,7 +17,7 @@ require __DIR__ . '/../layouts/auth-head.php';
             <input class="ac-input" id="admin-password" name="password" type="password" autocomplete="current-password" minlength="12" maxlength="128" required>
             <button class="ac-password-toggle" type="button" data-password-toggle="admin-password" aria-label="Show password"><i class="fa-regular fa-eye"></i></button>
         </div>
-        <small>Minimum 12 characters. This frontend does not store or transmit credentials.</small>
+        <small>Minimum 12 characters. Credentials are sent only to the secure sign-in endpoint.</small>
     </div>
     <label class="ac-check"><input type="checkbox" name="remember_device" value="yes"> Trust this device only after secure device verification</label>
     <button class="ac-btn primary ac-auth-submit" type="submit">Continue securely <i class="fa-solid fa-arrow-right"></i></button>

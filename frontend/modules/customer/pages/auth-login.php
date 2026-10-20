@@ -1,7 +1,6 @@
 <article class="ca-card" data-auth-card>
 <header class="ca-card-head"><span class="ca-card-icon"><i class="fa-regular fa-user"></i></span><div><p class="ca-overline">Customer account</p><h2>Welcome back</h2></div></header>
 <p class="ca-card-copy">Sign in to view orders, delivery updates, returns, rewards and your impact.</p>
-<div class="ca-demo-box" data-demo-box><div><strong><i class="fa-solid fa-wand-magic-sparkles"></i> Try the working demo</strong><small>Use the prepared account—no real data is sent.</small></div><button type="button" class="ca-text-btn" data-fill-demo>Fill demo details</button></div>
 <form id="customer-auth-form" class="ca-auth-form" novalidate data-auth-form="login" data-api-endpoint="/api/v1/customer/auth/login">
 <div class="ca-form-alert" role="alert" aria-live="assertive" tabindex="-1" hidden data-form-alert></div>
 <div class="cc-field ca-field"><label for="login-identifier">Email address or mobile number</label><div class="ca-input-wrap"><i class="fa-regular fa-envelope" aria-hidden="true"></i><input class="cc-input" id="login-identifier" name="identifier" type="text" required maxlength="254" autocomplete="username" inputmode="email" placeholder="you@example.com" aria-describedby="login-identifier-error"></div><small class="ca-field-error" id="login-identifier-error" data-error-for="identifier"></small></div>
@@ -9,5 +8,5 @@
 <label class="cc-check ca-remember"><input name="remember" type="checkbox" value="1"><span>Keep me signed in on this private device</span></label>
 <button class="cc-btn primary ca-submit" type="submit" data-submit-button><span>Sign in securely</span><i class="fa-solid fa-arrow-right"></i><i class="fa-solid fa-circle-notch fa-spin ca-spinner" aria-hidden="true"></i></button>
 </form>
-<p class="ca-switch">New to Conscious Indi? <a href="register.php">Create your account</a></p><div class="ca-security-note"><i class="fa-solid fa-shield-halved"></i><span>Your password is never stored by this demo frontend. Production authentication uses the configured API.</span></div>
+<p class="ca-switch">New to Conscious Indi? <a href="register.php">Create your account</a></p><div class="ca-security-note"><i class="fa-solid fa-shield-halved"></i><span>Sign-in uses your account in the Conscious Indi database. Your password is never stored in this browser.</span></div>
 </article>

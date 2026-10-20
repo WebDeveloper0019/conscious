@@ -24,13 +24,12 @@ if ($method === 'GET') {
 
     $stmt = $db->prepare(
         'SELECT re.id, re.file_asset_id, re.caption, re.sort_order, re.created_at,
-                f.original_name, f.mime_type, f.size_bytes,
-                CONCAT("../files.php?id=", f.id) AS url
+                f.original_name, f.mime_type, f.size_bytes, f.scan_status,
+                CASE WHEN f.scan_status="clean" THEN CONCAT("../files.php?id=", f.id) ELSE NULL END AS url
          FROM return_evidence re
          JOIN file_assets f ON f.id = re.file_asset_id
          WHERE re.return_request_id = ?
            AND f.deleted_at IS NULL
-           AND f.scan_status = "clean"
          ORDER BY re.sort_order ASC, re.created_at ASC'
     );
     $stmt->execute([$returnId]);
@@ -44,6 +43,7 @@ if ($method === 'GET') {
             'caption'     => $r['caption'],
             'mimeType'    => $r['mime_type'],
             'byteSize'    => (int)$r['size_bytes'],
+            'scanStatus'  => $r['scan_status'],
             'uploadedAt'  => $r['created_at'],
         ];
     }
@@ -128,7 +128,7 @@ if (!empty($_FILES['file'])) {
             'INSERT INTO file_assets
                (id, owner_type, owner_id, purpose, storage_key, original_name, mime_type,
                 extension, size_bytes, sha256, visibility, scan_status, created_at)
-             VALUES (?, "customer", ?, "return_evidence", ?, ?, ?, ?, ?, ?, "private", "clean", UTC_TIMESTAMP())'
+             VALUES (?, "customer", ?, "return_evidence", ?, ?, ?, ?, ?, ?, "private", "pending", UTC_TIMESTAMP())'
         )->execute([
             $fileId,
             $userId,
@@ -204,10 +204,11 @@ try {
 
     json_response(201, [
         'success'    => true,
-        'message'    => 'Evidence attached.',
+        'message'    => 'Evidence uploaded and queued for security scanning.',
         'evidenceId' => $evidenceId,
         'fileId'     => $fileId,
-        'url'        => '../files.php?id=' . $fileId,
+        'scanStatus' => $createdAssetPath !== null ? 'pending' : 'clean',
+        'url'        => $createdAssetPath !== null ? null : '../files.php?id=' . $fileId,
     ]);
 } catch (PDOException $e) {
     if ($createdAssetPath !== null) {

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
+require_once __DIR__ . '/../lib/india.php';
 
 send_cors_headers();
 $payload=require_auth();
@@ -21,6 +22,10 @@ function validate_address(array $b): array {
     $phone=preg_replace('/\\D+/', '', (string)($b['phone']??''));
     if(!is_valid_indian_mobile($phone)) json_response(422,['success'=>false,'message'=>'Enter a valid Indian mobile number.']);
     if(!preg_match('/^[1-9][0-9]{5}$/',(string)($b['pincode']??''))) json_response(422,['success'=>false,'message'=>'Enter a valid six-digit PIN code.']);
+    $state=canonical_india_state((string)$b['state']);
+    if($state===null) json_response(422,['success'=>false,'message'=>'Choose a valid Indian state or union territory.']);
+    if(mb_strlen(trim((string)$b['city']))<2||mb_strlen((string)$b['city'])>100||mb_strlen((string)$b['fullName'])>120||mb_strlen((string)$b['addressLine1'])>255||mb_strlen((string)$b['label'])>60) json_response(422,['success'=>false,'message'=>'Address name, city or street length is invalid.']);
+    $b['state']=$state;
     return $b;
 }
 

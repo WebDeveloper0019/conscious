@@ -1,1 +1,1 @@
-<?php $pageTitle='Events';$pageSubtitle='Discover events, submit applications, payments, passes, and history';$activePage='events';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/events.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Events';$pageSubtitle='Explore upcoming events and manage your applications';$activePage='events';$vendorPageScript='assets/js/events-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/events.php';require __DIR__.'/layouts/foot.php';

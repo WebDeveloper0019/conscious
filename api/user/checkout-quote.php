@@ -22,19 +22,16 @@ $addressStmt->execute(['id' => $addressId, 'user' => $userId]);
 $address = $addressStmt->fetch();
 if (!$address) json_response(404, ['success' => false, 'message' => 'Delivery address not found.']);
 
-$cart = cart_details($userId);
-if (!$cart['items']) json_response(422, ['success' => false, 'message' => 'Your cart is empty.']);
-
 $db->beginTransaction();
 try {
-    $old = $db->prepare('SELECT id FROM checkout_quotes WHERE user_id=:user AND status="open" FOR UPDATE');
-    $old->execute(['user' => $userId]);
-    foreach ($old->fetchAll() as $quote) release_quote_reservations((string)$quote['id']);
-    $db->prepare('UPDATE checkout_quotes SET status="expired" WHERE user_id=:user AND status="open"')->execute(['user' => $userId]);
+    $owner=$db->prepare('SELECT id FROM users WHERE id=:id FOR UPDATE');$owner->execute(['id'=>$userId]);$owner->fetch();
+    expire_customer_quotes($userId);
+    $cart=cart_details($userId);
+    if(!$cart['items'])json_response(422,['success'=>false,'message'=>'Your bag is empty. Add a product before checkout.']);
 
     $groups = [];
     foreach ($cart['items'] as $item) {
-        if (!in_array($item['status'], ['approved', 'active'], true)) json_response(409, ['success' => false, 'message' => $item['name'] . ' is no longer available.']);
+        if (!$item['can_purchase'] || (float)$item['unit_price']<0) json_response(409, ['success' => false, 'message' => $item['name'] . ' is no longer available. Remove it from your bag to continue.']);
         if ((int)$item['available_quantity'] < (int)$item['quantity']) json_response(409, ['success' => false, 'message' => 'Not enough stock for ' . $item['name'] . '.']);
         $vendorId = (string)$item['vendor_id'];
         if (!isset($groups[$vendorId])) $groups[$vendorId] = ['value' => 0.0, 'weight' => 0, 'vendor_name' => $item['vendor_name']];
@@ -47,8 +44,11 @@ try {
     foreach ($groups as $vendorId => $group) {
         $shippingQuote = shipping_for_vendor($vendorId, $address, $group['value'], $group['weight']);
         if (!$shippingQuote['serviceable']) json_response(422, ['success' => false, 'message' => $group['vendor_name'] . ': ' . $shippingQuote['reason'], 'code' => 'ADDRESS_NOT_SERVICEABLE']);
+        $codQuery = $db->prepare('SELECT cod_enabled FROM vendor_shipping_settings WHERE vendor_id=:vendor');
+        $codQuery->execute(['vendor' => $vendorId]);
+        $codEnabled = (int)$codQuery->fetchColumn() === 1;
         $shipping += (float)$shippingQuote['amount'];
-        $pricingGroups[$vendorId] = ['subtotal' => round($group['value'], 2), 'shipping' => $shippingQuote['amount'], 'rule' => $shippingQuote['rule']];
+        $pricingGroups[$vendorId] = ['vendor_name'=>$group['vendor_name'],'subtotal' => round($group['value'], 2), 'shipping' => $shippingQuote['amount'], 'cod_enabled' => $codEnabled, 'rule' => $shippingQuote['rule']];
     }
 
     $couponDiscount = 0.0;

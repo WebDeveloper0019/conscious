@@ -1,1 +1,1 @@
-</div></section></main><div class="vc-toast-wrap" id="vc-toast-wrap" aria-live="polite"></div><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script><script src="../assets/js/vendor-auth.js" defer></script></body></html>
+</div></section></main><div class="vc-toast-wrap" id="vc-toast-wrap" aria-live="polite"></div><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script><script src="../assets/js/vendor-auth-live.js?v=20261017-2" defer></script></body></html>

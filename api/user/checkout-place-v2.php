@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../lib/coupon.php';
 require_once __DIR__ . '/../lib/rewards.php';
+require_once __DIR__ . '/../lib/razorpay.php';
 
 function checkout_place_v2(): void
 {
@@ -18,6 +19,9 @@ function checkout_place_v2(): void
     if ($quoteId === '' || !in_array($paymentMethod, ['cod', 'online'], true)) {
         json_response(422, ['success' => false, 'message' => 'A valid quote and payment method are required.']);
     }
+    if ($paymentMethod === 'online' && APP_ENV !== 'local' && !razorpay_is_configured()) {
+        json_response(503, ['success' => false, 'message' => 'Online payment is temporarily unavailable.']);
+    }
 
     $userId = auth_user_id($auth);
     $principal = ['type' => 'customer', 'id' => $userId];
@@ -26,6 +30,7 @@ function checkout_place_v2(): void
     $db->beginTransaction();
 
     try {
+        $owner=$db->prepare('SELECT id FROM users WHERE id=:id FOR UPDATE');$owner->execute(['id'=>$userId]);$owner->fetch();
         $quoteStmt = $db->prepare(
             'SELECT q.*,a.full_name,a.phone,a.pincode,a.address_line1,a.address_line2,a.city,a.state,a.landmark
              FROM checkout_quotes q JOIN user_addresses a ON a.id=q.address_id
@@ -41,9 +46,24 @@ function checkout_place_v2(): void
         if (!is_array($pricing)) {
             json_response(409, ['success' => false, 'message' => 'Checkout pricing is no longer valid.']);
         }
+        if ($paymentMethod === 'cod') {
+            foreach (array_keys((array)($pricing['groups'] ?? [])) as $vendorId) {
+                $codQuery = $db->prepare('SELECT cod_enabled FROM vendor_shipping_settings WHERE vendor_id=:vendor');
+                $codQuery->execute(['vendor' => $vendorId]);
+                if ((int)$codQuery->fetchColumn() !== 1) json_response(422, ['success' => false, 'message' => 'Cash on delivery is not available for every vendor in this order. Choose online payment.']);
+            }
+        }
         $cart = cart_details($userId);
         if (!$cart['items']) {
             json_response(409, ['success' => false, 'message' => 'Your cart is empty.']);
+        }
+        $quotedItems=array_column((array)($pricing['items']??[]),null,'variant_id');
+        if($cart['id']!==$quote['cart_id']||count($quotedItems)!==count($cart['items']))json_response(409,['success'=>false,'message'=>'Your bag changed. Calculate delivery and total again before placing your order.']);
+        foreach($cart['items'] as $item){
+            $quoted=$quotedItems[$item['variant_id']]??null;
+            if(!$item['can_purchase']||!$quoted||(int)$quoted['quantity']!==(int)$item['quantity']||abs((float)$quoted['unit_price']-(float)$item['unit_price'])>0.001||abs((float)$quoted['tax_percent']-(float)$item['gst_percent'])>0.001){
+                json_response(409,['success'=>false,'message'=>'A product, price or quantity changed. Calculate delivery and total again to review the latest amount.']);
+            }
         }
         $vendorIds = array_values(array_unique(array_map(fn($item) => (string)$item['vendor_id'], $cart['items'])));
         if ($quote['coupon_id'] !== null) {

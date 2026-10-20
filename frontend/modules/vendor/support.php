@@ -1,1 +1,1 @@
-<?php $pageTitle='Support & Disputes';$pageSubtitle='Tickets, delivery incidents, evidence, appeals, and help';$activePage='support';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/support.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Help & support';$pageSubtitle='Open a ticket and track replies from the support team';$activePage='support';$vendorPageScript='assets/js/support-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/support.php';require __DIR__.'/layouts/foot.php';

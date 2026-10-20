@@ -1,1 +1,1 @@
-</main></div></div><div class="ac-toast-wrap" id="ac-toast-wrap" aria-live="polite"></div><script src="assets/js/app.js" defer></script></body></html>
+</main></div></div><div class="ac-toast-wrap" id="ac-toast-wrap" aria-live="polite"></div><script src="assets/js/app.js" defer></script><script src="assets/js/session.js" defer></script><?php if (!empty($adminPageScript)): ?><script src="<?= htmlspecialchars($adminPageScript, ENT_QUOTES, 'UTF-8') ?>" defer></script><?php endif; ?></body></html>

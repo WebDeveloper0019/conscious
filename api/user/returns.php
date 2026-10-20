@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/notifications.php';
 require_once __DIR__ . '/../lib/idempotency.php';
+require_once __DIR__ . '/../lib/return-risk.php';
 
 send_cors_headers();
 $auth   = require_auth();
@@ -144,6 +145,9 @@ try {
             }
         }
     }
+
+    // Flag repeated requests for human review; this never changes return eligibility.
+    flag_repeated_customer_returns($db,$userId,(string)$item['vendor_id'],$returnId);
 
     // ── Notifications + audit ──
     create_notification(

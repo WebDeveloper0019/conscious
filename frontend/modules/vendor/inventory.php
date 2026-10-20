@@ -1,1 +1,1 @@
-<?php $pageTitle='Inventory';$pageSubtitle='Stock, reservations, adjustments, transfers, batches, and expiry';$activePage='inventory';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/inventory.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Inventory';$pageSubtitle='Live stock for your own product variants';$activePage='inventory';$vendorPageScript='assets/js/inventory-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/inventory-live.php';require __DIR__.'/layouts/foot.php';

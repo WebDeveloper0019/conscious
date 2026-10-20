@@ -8,7 +8,30 @@ function active_cart(string $userId,bool $forUpdate=false): array {
     return $cart;
 }
 function cart_details(string $userId): array {
-    $cart=active_cart($userId);$stmt=get_db()->prepare('SELECT ci.id,ci.variant_id,ci.quantity,p.id AS product_id,p.vendor_id,p.name,p.slug,p.sku,p.mrp,p.selling_price,p.gst_percent,p.package_weight_grams,p.processing_min_days,p.processing_max_days,p.status,pv.name AS variant_name,pv.sku AS variant_sku,pv.price_adjustment,i.stock_quantity,i.reserved_quantity,(i.stock_quantity-i.reserved_quantity) AS available_quantity,v.display_name AS vendor_name,(SELECT CONCAT("../files.php?id=",f.id) FROM product_images pi JOIN file_assets f ON f.id=pi.file_asset_id WHERE pi.product_id=p.id AND f.visibility="public" AND f.scan_status="clean" AND f.deleted_at IS NULL ORDER BY pi.is_primary DESC,pi.sort_order LIMIT 1) AS image_url FROM cart_items ci JOIN product_variants pv ON pv.id=ci.variant_id JOIN products p ON p.id=pv.product_id JOIN vendors v ON v.id=p.vendor_id JOIN inventory_levels i ON i.variant_id=pv.id WHERE ci.cart_id=:cart ORDER BY ci.created_at');$stmt->execute(['cart'=>$cart['id']]);$items=$stmt->fetchAll();$subtotal=0.0;foreach($items as &$item){$item['unit_price']=round((float)$item['selling_price']+(float)$item['price_adjustment'],2);$item['line_subtotal']=round($item['unit_price']*(int)$item['quantity'],2);$subtotal+=$item['line_subtotal'];}$cart['items']=$items;$cart['subtotal']=round($subtotal,2);$cart['item_count']=array_sum(array_map(fn($i)=>(int)$i['quantity'],$items));return $cart;
+    $cart=active_cart($userId);
+    $stmt=get_db()->prepare('SELECT ci.id,ci.variant_id,ci.quantity,p.id AS product_id,p.vendor_id,p.name,p.slug,p.sku,
+        p.mrp,p.selling_price,p.gst_percent,COALESCE(NULLIF(pv.weight_grams,0),p.package_weight_grams) AS package_weight_grams,
+        p.processing_min_days,p.processing_max_days,p.status,pv.name AS variant_name,pv.sku AS variant_sku,
+        pv.price_adjustment,pv.is_active AS variant_active,i.stock_quantity,i.reserved_quantity,
+        v.display_name AS vendor_name,v.status AS vendor_status,v.verification_status AS vendor_verification_status,
+        (SELECT COALESCE(SUM(r.quantity),0) FROM inventory_reservations r JOIN checkout_quotes q ON q.id=r.quote_id
+         WHERE q.user_id=:reservation_user AND q.status="open" AND r.variant_id=ci.variant_id AND r.status="reserved") AS own_reserved,
+        (SELECT CONCAT("../files.php?id=",f.id) FROM product_images pi JOIN file_assets f ON f.id=pi.file_asset_id
+         WHERE pi.product_id=p.id AND f.visibility="public" AND f.scan_status="clean" AND f.deleted_at IS NULL
+         ORDER BY pi.is_primary DESC,pi.sort_order LIMIT 1) AS image_url
+        FROM cart_items ci JOIN product_variants pv ON pv.id=ci.variant_id JOIN products p ON p.id=pv.product_id
+        JOIN vendors v ON v.id=p.vendor_id JOIN inventory_levels i ON i.variant_id=pv.id
+        WHERE ci.cart_id=:cart ORDER BY ci.created_at');
+    $stmt->execute(['cart'=>$cart['id'],'reservation_user'=>$userId]);$items=$stmt->fetchAll();$subtotal=0.0;
+    foreach($items as &$item){
+        $item['available_quantity']=max(0,(int)$item['stock_quantity']-(int)$item['reserved_quantity']+(int)$item['own_reserved']);
+        $approved=$item['vendor_verification_status']==='approved'||(APP_ENV==='local'&&$item['vendor_verification_status']==='demo_fixture');
+        $item['can_purchase']=(bool)$item['variant_active']&&in_array($item['status'],['approved','active'],true)&&$item['vendor_status']==='active'&&$approved;
+        $item['unit_price']=round((float)$item['selling_price']+(float)$item['price_adjustment'],2);
+        $item['line_subtotal']=round($item['unit_price']*(int)$item['quantity'],2);$subtotal+=$item['line_subtotal'];
+    }
+    unset($item);
+    $cart['items']=$items;$cart['subtotal']=round($subtotal,2);$cart['item_count']=array_sum(array_map(fn($i)=>(int)$i['quantity'],$items));return $cart;
 }
 function shipping_for_vendor(string $vendorId,array $address,float $orderValue,int $weightGrams): array {
     $db=get_db();$stmt=$db->prepare('SELECT * FROM vendor_shipping_settings WHERE vendor_id=:vendor');$stmt->execute(['vendor'=>$vendorId]);$settings=$stmt->fetch();if(!$settings)return ['serviceable'=>false,'amount'=>0.0,'reason'=>'Vendor delivery settings are incomplete.','rule'=>null];
@@ -21,6 +44,14 @@ function shipping_for_vendor(string $vendorId,array $address,float $orderValue,i
 }
 function release_quote_reservations(string $quoteId): void {
     $db=get_db();$stmt=$db->prepare('SELECT * FROM inventory_reservations WHERE quote_id=:quote AND status="reserved" FOR UPDATE');$stmt->execute(['quote'=>$quoteId]);foreach($stmt->fetchAll() as $reservation){$db->prepare('UPDATE inventory_levels SET reserved_quantity=reserved_quantity-:qty_decrease,updated_at=UTC_TIMESTAMP() WHERE variant_id=:variant AND reserved_quantity>=:qty_guard')->execute(['qty_decrease'=>$reservation['quantity'],'qty_guard'=>$reservation['quantity'],'variant'=>$reservation['variant_id']]);$db->prepare('UPDATE inventory_reservations SET status="released",released_at=UTC_TIMESTAMP() WHERE id=:id')->execute(['id'=>$reservation['id']]);}
+}
+/** Call inside a transaction while holding the customer's row lock. */
+function expire_customer_quotes(string $userId): void {
+    $db=get_db();
+    $stmt=$db->prepare('SELECT id FROM checkout_quotes WHERE user_id=:user AND status="open" FOR UPDATE');
+    $stmt->execute(['user'=>$userId]);
+    foreach($stmt->fetchAll() as $quote)release_quote_reservations((string)$quote['id']);
+    $db->prepare('UPDATE checkout_quotes SET status="expired" WHERE user_id=:user AND status="open"')->execute(['user'=>$userId]);
 }
 function order_number(): string {return 'CI-'.gmdate('ymd').'-'.strtoupper(substr(bin2hex(random_bytes(4)),0,8));}
 

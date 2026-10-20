@@ -1,1 +1,27 @@
-<section class="ac-grid four"><article class="ac-card ac-stat"><small>Platform GMV</small><strong>₹4.2Cr</strong><span class="ac-status success">+28% this month</span></article><article class="ac-card ac-stat"><small>Customers</small><strong>8,42,000</strong><span>+3,200 this week</span></article><article class="ac-card ac-stat"><small>Active vendors</small><strong>50,240</strong><span>180 added this month</span></article><article class="ac-card ac-stat"><small>Orders this month</small><strong>1,24,800</strong><span>18% growth</span></article></section><div class="ac-grid two mt-3"><section class="ac-card"><div class="ac-head"><h2>Priority work queue</h2><a class="ac-btn small" href="queue.php">Open all</a></div><div class="ac-body ac-list"><div class="ac-item"><div class="ac-item-copy"><b>14 products pending approval</b><p>3 contain sustainability claims requiring evidence review.</p></div><span class="ac-status warning">Due today</span></div><div class="ac-item"><div class="ac-item-copy"><b>8 vendor KYC applications</b><p>2 high-risk mismatches need escalation.</p></div><span class="ac-status danger">Risk</span></div><div class="ac-item"><div class="ac-item-copy"><b>24 open returns and 5 disputes</b><p>Customer/vendor evidence deadlines approaching.</p></div><span class="ac-status info">Review</span></div><div class="ac-item"><div class="ac-item-copy"><b>28 payout requests</b><p>₹38L awaiting maker/checker approval.</p></div><span class="ac-status warning">Finance</span></div></div></section><section class="ac-card"><div class="ac-head"><h2>Platform health</h2></div><div class="ac-body"><p>Order acceptance <b>98.1%</b></p><p>Vendor on-time dispatch <b>94.2%</b></p><p>Manual delivery success <b>96.8%</b></p><p>Return rate <b>3.8%</b></p><p>Support SLA met <b>92.4%</b></p><p>Unresolved security alerts <b>2</b></p><div class="ac-callout warning">Five public sustainability claims expire within 30 days; automatic public withdrawal requires backend enforcement.</div></div></section></div><section class="ac-card mt-3"><div class="ac-head"><h2>Recent platform activity</h2><a class="ac-btn small" href="audit.php">Audit trail</a></div><div class="ac-table-wrap"><table class="ac-table"><thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Entity</th><th>Result</th></tr></thead><tbody><tr><td>10:45 AM</td><td>Amit Kumar</td><td>Commission rate updated</td><td>Jewellery</td><td><span class="ac-status success">Success</span></td></tr><tr><td>9:12 AM</td><td>Priya Singh</td><td>Vendor approved</td><td>Artisan Crafts</td><td><span class="ac-status success">Success</span></td></tr></tbody></table></div></section>
+<section class="ac-dashboard-intro ac-card">
+  <div><span class="ac-status info">Platform overview</span><h2>Run the marketplace with clarity</h2><p>Live totals and the work waiting for your team. Open a queue to review its underlying records.</p></div>
+  <a class="ac-btn" href="queue.php"><i class="fa-solid fa-list-check"></i> Open work queue</a>
+</section>
+<div class="ac-callout info mt-3" id="ac-dashboard-message" role="status">Loading platform activity…</div>
+<section class="ac-grid four mt-3" aria-label="Live platform metrics">
+  <article class="ac-card ac-stat"><small>Customers</small><strong id="ad-customers">—</strong><span>Active customer accounts</span></article>
+  <article class="ac-card ac-stat"><small>Active vendors</small><strong id="ad-vendors">—</strong><span>Artisans and brands</span></article>
+  <article class="ac-card ac-stat"><small>Orders today</small><strong id="ad-orders">—</strong><span>Placed since midnight</span></article>
+  <article class="ac-card ac-stat"><small>Sales today</small><strong id="ad-sales">—</strong><span>Paid and COD pending</span></article>
+</section>
+<section class="ac-grid four mt-3" aria-label="Review counts">
+  <a class="ac-card ac-stat ac-dashboard-link" href="vendors.php"><small>Vendor applications</small><strong id="ad-applications">—</strong><span>Waiting for review</span></a>
+  <a class="ac-card ac-stat ac-dashboard-link" href="catalog.php"><small>Products</small><strong id="ad-products">—</strong><span>Waiting for review</span></a>
+  <a class="ac-card ac-stat ac-dashboard-link" href="finance.php"><small>Refunds</small><strong id="ad-refunds">—</strong><span>Need a decision or processing</span></a>
+  <a class="ac-card ac-stat ac-dashboard-link" href="finance.php"><small>Payouts</small><strong id="ad-payouts">—</strong><span>Waiting for approval or processing</span></a>
+</section>
+<section class="ac-grid two mt-3">
+  <div class="ac-card"><div class="ac-head"><h2>Priority work</h2><a class="ac-btn small" href="queue.php">View all</a></div><div class="ac-body ac-list" id="ad-priority"><p>Loading queues…</p></div></div>
+  <div class="ac-card"><div class="ac-head"><h2>Operations watch</h2></div><div class="ac-body ac-list">
+    <a class="ac-dashboard-row" href="orders.php"><span>Delivery exceptions</span><strong id="ad-delivery">—</strong></a>
+    <a class="ac-dashboard-row" href="support.php"><span>Open support tickets</span><strong id="ad-support">—</strong></a>
+    <a class="ac-dashboard-row" href="influencers.php"><span>Active creators</span><strong id="ad-influencers">—</strong></a>
+    <a class="ac-dashboard-row" href="events.php"><span>Upcoming events</span><strong id="ad-events">—</strong></a>
+    <a class="ac-dashboard-row" href="returns.php"><span>Repeated-return reviews</span><strong>Review</strong></a>
+  </div></div>
+</section>

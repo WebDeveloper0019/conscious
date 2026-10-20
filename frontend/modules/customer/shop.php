@@ -1,1 +1,5 @@
-<?php $pageTitle='Conscious Marketplace';$pageSubtitle='Verified craft and sustainability information';$activePage='shop';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/shop.php';require __DIR__.'/layouts/foot.php';
+<?php
+declare(strict_types=1);
+$query=isset($_SERVER['QUERY_STRING'])&&$_SERVER['QUERY_STRING']!==''?'?'.$_SERVER['QUERY_STRING']:'';
+header('Location: ../../../shop.html'.$query,true,302);
+exit;

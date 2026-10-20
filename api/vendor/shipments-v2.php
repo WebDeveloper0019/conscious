@@ -41,8 +41,14 @@ function vendor_shipments_v2(): void
         $items = (array)($body['items'] ?? []);
         $courier = trim((string)($body['courier_name'] ?? ''));
         $tracking = trim((string)($body['tracking_reference'] ?? ''));
-        if ($groupId === '' || !$items || mb_strlen($courier) < 2 || mb_strlen($tracking) < 2) {
-            json_response(422, ['success' => false, 'message' => 'Package items, courier name and tracking reference are required.']);
+        if ($groupId === '' || !$items || mb_strlen($courier) < 2 || mb_strlen($courier) > 120 || mb_strlen($tracking) > 120) {
+            json_response(422, ['success' => false, 'message' => 'Package items and a delivery service name are required.']);
+        }
+        // A vendor-managed delivery needs an internal reference, not a courier AWB.
+        if ($tracking === '') $tracking = 'MANUAL-'.strtoupper(bin2hex(random_bytes(6)));
+        $trackingUrl = trim((string)($body['tracking_url'] ?? ''));
+        if ($trackingUrl !== '' && (!filter_var($trackingUrl, FILTER_VALIDATE_URL) || !in_array(strtolower((string)parse_url($trackingUrl, PHP_URL_SCHEME)), ['http','https'], true))) {
+            json_response(422, ['success' => false, 'message' => 'Tracking URL must be an HTTPS or HTTP address.']);
         }
         $idempotency = begin_idempotent_request('vendor.shipment.create', ['type' => 'vendor', 'id' => $vendorId], $body);
         $db->beginTransaction();
@@ -60,7 +66,7 @@ function vendor_shipments_v2(): void
             )->execute([
                 'package_id' => $packageId, 'package_group' => $groupId, 'package_number' => $packageNumber,
                 'package_courier' => $courier, 'package_tracking' => $tracking,
-                'package_url' => trim((string)($body['tracking_url'] ?? '')) ?: null,
+                'package_url' => $trackingUrl ?: null,
                 'package_cost' => isset($body['vendor_shipping_cost']) ? max(0, (float)$body['vendor_shipping_cost']) : null,
                 'package_weight' => isset($body['weight_grams']) ? max(1, (int)$body['weight_grams']) : null,
                 'package_length' => $body['length_cm'] ?? null, 'package_width' => $body['width_cm'] ?? null,
