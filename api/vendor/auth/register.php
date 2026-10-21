@@ -2,11 +2,19 @@
 declare(strict_types=1);
 require_once __DIR__.'/../../lib/helpers.php';require_once __DIR__.'/../../lib/validation.php';require_once __DIR__.'/../../lib/resend.php';
 send_cors_headers();if(($_SERVER['REQUEST_METHOD']??'')!=='POST')json_response(405,['success'=>false,'message'=>'Method not allowed.']);
-if(rate_limit('vendor-register|'.request_ip(),6,3600))json_response(429,['success'=>false,'message'=>'Too many registration attempts. Try again later.']);
+// A low IP-only cap locks out everyone behind the same office/network (and
+// quickly blocks local QA). Keep a broad network cap and a stricter cap for
+// repeated attempts against the same contact details.
+if(rate_limit('vendor-register|'.request_ip(),60,3600))json_response(429,['success'=>false,'message'=>'Too many sign-up requests from this network. Please try again in an hour.']);
 $body=get_json_body();$data=validate_fields($body,['vendor_type'=>'required|in:brand,artisan','owner_name'=>'required|string|min:2|max:100','display_name'=>'required|string|min:2|max:140','email'=>'required|email|max:190','phone'=>'required|mobile','password'=>'required|string','terms'=>'required|boolean']);
 if(!is_strong_enough_password((string)$data['password']))json_response(422,['success'=>false,'message'=>'Please correct the highlighted fields.','errors'=>['password'=>'Use 12+ characters with upper, lower, number and symbol.']]);
 if(!filter_var($data['terms'],FILTER_VALIDATE_BOOL))json_response(422,['success'=>false,'message'=>'Accept the vendor terms and privacy notice.','errors'=>['terms'=>'Required.']]);
-$email=strtolower((string)$data['email']);$mobile=preg_replace('/\D+/','',(string)$data['phone']);$db=get_db();
+$email=strtolower((string)$data['email']);$mobile=preg_replace('/\D+/','',(string)$data['phone']);
+if(rate_limit('vendor-register-email|'.request_ip().'|'.$email,5,3600)
+    || rate_limit('vendor-register-mobile|'.request_ip().'|'.$mobile,5,3600)){
+    json_response(429,['success'=>false,'message'=>'Too many sign-up attempts for this email or mobile. Please wait up to an hour, or sign in if you already registered.']);
+}
+$db=get_db();
 $check=$db->prepare('SELECT id FROM vendors WHERE email=:email OR mobile=:mobile LIMIT 1');$check->execute(['email'=>$email,'mobile'=>$mobile]);if($check->fetch())json_response(409,['success'=>false,'message'=>'A vendor account already uses this email or mobile number.']);
 $vendorId=uuid_string();$applicationId=uuid_string();$reference='VND-'.($data['vendor_type']==='brand'?'BR':'AR').'-'.gmdate('Y').'-'.strtoupper(bin2hex(random_bytes(4)));$otp=(string)random_int(100000,999999);$now=gmdate('Y-m-d H:i:s');
 $db->beginTransaction();try{
