@@ -9,6 +9,7 @@ api/.env
 api/data/rate-limit/*.json
 api/data/mail-outbox/*.json
 storage/private/
+storage/private_uploads/
 api/dependencies/
 api/lib/tcpdf/
 
