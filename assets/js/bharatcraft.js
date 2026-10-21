@@ -824,14 +824,14 @@ function initMegaMenu() {
       clearTimeout(timer);
       menu.style.opacity    = '1';
       menu.style.visibility = 'visible';
-      menu.style.transform  = 'translateY(0)';
+      menu.style.transform  = 'translate(-50%, 0)';
     });
 
     item.addEventListener('mouseleave', function () {
       timer = setTimeout(function () {
         menu.style.opacity    = '0';
         menu.style.visibility = 'hidden';
-        menu.style.transform  = 'translateY(8px)';
+        menu.style.transform  = 'translate(-50%, 8px)';
       }, 120);
     });
   });

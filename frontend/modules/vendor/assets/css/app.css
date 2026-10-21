@@ -13,7 +13,7 @@
 .vc-journey a>div{min-width:0}.vc-journey strong,.vc-journey small{display:block}.vc-journey strong{font-size:.82rem}.vc-journey small{font-size:.7rem;color:#69766d;line-height:1.45;margin-top:3px}.vc-journey a>i{margin-left:auto;font-size:.7rem;color:#ab7460}
 .vc-dashboard-hero+.vc-callout{margin-top:16px}
 .vc-stat{min-height:132px;background:linear-gradient(180deg,#fff,#fcfdfb)}
-.vc-stat-value{font-family:var(--display);color:#2f5038}
+.vc-stat-value{font-family:var(--display);color:#4B572C}
 .vc-card-head h2{font-family:var(--display);font-size:1.1rem}
 @media(max-width:1150px){.vc-journey{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.vc-journey{grid-template-columns:1fr}.vc-dashboard-hero .vc-actions{align-self:stretch}.vc-dashboard-hero .vc-actions .vc-btn{flex:1}}

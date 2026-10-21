@@ -1,0 +1,23 @@
+Options -Indexes
+DirectoryIndex index.php index.html
+
+RewriteEngine On
+RewriteBase /conscious/
+
+# Dashboard and API routes retain their own PHP architecture.
+RewriteRule ^(?:admin|vendor|customer|frontend|api)(?:/|$) - [L]
+
+# Canonical public home URL.
+RewriteCond %{THE_REQUEST} \s/+conscious/index\.(?:html|php)[\s?] [NC]
+RewriteRule ^index\.(?:html|php)$ /conscious/ [R=302,L]
+
+# Hide extensions for generated public PHP pages only.
+RewriteCond %{THE_REQUEST} \s/+conscious/(.+?)\.(?:html|php)[\s?] [NC]
+RewriteCond %{REQUEST_FILENAME} !^.*[\\/](?:admin|vendor|customer|frontend|api)[\\/]
+RewriteRule ^(.+?)\.(?:html|php)$ $1 [R=302,L,NE]
+
+# Resolve extensionless public routes to their PHP templates.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [L,QSA]

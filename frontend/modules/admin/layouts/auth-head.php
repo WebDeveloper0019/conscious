@@ -9,9 +9,9 @@ $authStep = $authStep ?? 'Secure administrator access';
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="referrer" content="no-referrer">
     <meta name="robots" content="noindex,nofollow">
-    <meta name="theme-color" content="#2F5038">
+    <meta name="theme-color" content="#4B572C">
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?> — Conscious Indi Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../../../../assets/css/bharatcraft.css">
     <link rel="stylesheet" href="../../../../assets/css/conscious-pages.css">

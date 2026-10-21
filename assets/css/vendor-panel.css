@@ -97,7 +97,7 @@
 .ci-alert i { font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
 .ci-alert-info    { background: var(--navy-pale);   color: var(--navy);       border-color: rgba(0,0,128,0.12); }
 .ci-alert-success { background: var(--green-pale);  color: var(--green-dark); border-color: rgba(19,136,8,0.15); }
-.ci-alert-warning { background: var(--gold-pale);   color: var(--gold-dark);  border-color: rgba(201,164,74,0.25); }
+.ci-alert-warning { background: var(--gold-pale);   color: var(--gold-dark);  border-color: rgba(200,132,34,0.25); }
 .ci-alert-danger  { background: var(--danger-pale); color: var(--danger-dark);border-color: rgba(229,62,62,0.2); }
 
 /* ============================================================

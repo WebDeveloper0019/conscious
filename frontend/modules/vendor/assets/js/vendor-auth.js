@@ -43,6 +43,8 @@
     var password = register.elements.password; var confirmPassword = register.elements.confirm_password; var phone = register.elements.phone;
     function updateType() { var label = register.querySelector('[data-name-label]'); if (label) label.textContent = register.elements.vendor_type.value === 'artisan' ? 'Artisan, group or store name' : 'Brand or store name'; }
     register.querySelectorAll('[name="vendor_type"]').forEach(function (input) { input.addEventListener('change', updateType); });
+    var requestedType = new URLSearchParams(location.search).get('type');
+    if (requestedType === 'brand' || requestedType === 'artisan') { register.elements.vendor_type.value = requestedType; updateType(); }
     phone.addEventListener('input', function () { phone.value = phone.value.replace(/\D/g, '').slice(0, 10); });
     password.addEventListener('input', function () { updateRules(register, password.value); });
     register.addEventListener('submit', function (event) {

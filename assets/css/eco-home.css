@@ -9,19 +9,19 @@
    1. TOKENS
    ────────────────────────────────────────────── */
 :root {
-  --eco-forest:        #2F5038;
+  --eco-forest:        #4B572C;
   --eco-forest-deep:   #1E3527;
   --eco-forest-ink:    #16261C;
-  --eco-moss:          #58755C;
-  --eco-sage:          #8A9A5B;
+  --eco-moss:          #697746;
+  --eco-sage:          #C88422;
   --eco-sage-soft:     #C3CFAE;
 
   --eco-cream:         #FBF7F1;
   --eco-sand:          #F1E9DC;
   --eco-sand-deep:     #E4D8C6;
-  --eco-clay:          #C96A30;
+  --eco-clay:          #A63D24;
   --eco-clay-soft:     #E8B694;
-  --eco-bark:          #683F24;
+  --eco-bark:          #4A210D;
 
   --eco-charcoal:      #262523;
   --eco-ink:           #333333;
@@ -30,7 +30,7 @@
   --eco-line:          rgba(47, 80, 56, .14);
   --eco-line-soft:     rgba(47, 80, 56, .08);
 
-  --eco-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --eco-display: 'Poppins', Arial, sans-serif;
   --eco-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   --eco-r-sm: 10px;
