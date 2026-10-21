@@ -8,7 +8,20 @@
   async function request(path,method,body,extra){var headers={Accept:'application/json'};if(method!=='GET')headers['X-CSRF-Token']=token();if(body&&! (body instanceof FormData))headers['Content-Type']='application/json';if(extra)Object.assign(headers,extra);var response=await fetch(api+path,{method:method,credentials:'same-origin',cache:'no-store',headers:headers,body:body instanceof FormData?body:body?JSON.stringify(body):undefined});var data=await response.json().catch(function(){return{};});if(!response.ok)throw new Error(data.message||'The action could not be completed.');return data;}
   function formData(form){return Object.fromEntries(new FormData(form).entries());}
   function bindForm(id,handler){var form=document.getElementById(id);form.addEventListener('submit',async function(event){event.preventDefault();if(!form.checkValidity()){form.reportValidity();return;}var button=form.querySelector('[type=submit]');button.disabled=true;try{await handler(form);}catch(error){show(error.message,true);}finally{button.disabled=false;}});}
-  function selectSection(){var key=location.hash.slice(1)||'overview';if(!document.getElementById(key)||!document.getElementById(key).classList.contains('if-section'))key='overview';document.querySelectorAll('.if-section').forEach(function(el){el.classList.toggle('active',el.id===key);});document.querySelectorAll('[data-nav]').forEach(function(el){el.classList.toggle('active',el.dataset.nav===key);});document.getElementById('if-title').textContent=({overview:'Overview',application:'Profile & verification',campaigns:'Campaign links',curations:'Curated products',analytics:'Analytics',earnings:'Earnings',withdrawals:'Withdrawals',inquiries:'Partnership inquiries',notifications:'Notifications',settings:'Settings'})[key];document.getElementById('if-sidebar').classList.remove('open');}
+  function selectSection()
+  {
+
+    var key=location.hash.slice(1)||'overview';
+
+    if(!document.getElementById(key)||!document.getElementById(key).classList.contains('if-section'))key='overview';document.querySelectorAll('.if-section').forEach(function(el){el.classList.toggle('active',el.id===key);});
+    document.querySelectorAll('[data-nav]').forEach(function(el){el.classList.toggle('active',el.dataset.nav===key);});
+  document.getElementById('if-title').textContent=({overview:'Overview',application:'Profile & verification',packages:'Service Packages',campaigns:'Campaign links',curations:'Curated products',analytics:'Analytics',earnings:'Earnings',withdrawals:'Withdrawals',inquiries:'Partnership inquiries',notifications:'Notifications',settings:'Settings'})[key];
+    document.getElementById('if-sidebar').classList.remove('open');
+  
+  
+  
+  }
+
   var curationNav=node('a','','');curationNav.href='#curations';curationNav.dataset.nav='curations';curationNav.append(node('i','fa-solid fa-bag-shopping'),document.createTextNode(' Curated products'));document.querySelector('[data-nav="analytics"]').before(curationNav);
   var inquiryNav=node('a','','');inquiryNav.href='#inquiries';inquiryNav.dataset.nav='inquiries';var inquiryIcon=node('i','fa-regular fa-envelope');inquiryNav.append(inquiryIcon,document.createTextNode(' Partnership inquiries'));document.querySelector('[data-nav="notifications"]').before(inquiryNav);
   addEventListener('hashchange',selectSection);selectSection();document.getElementById('if-menu').addEventListener('click',function(){document.getElementById('if-sidebar').classList.toggle('open');});
@@ -64,6 +77,113 @@
   async function loadCurations(){var data=await request('curations.php','GET');var box=document.getElementById('if-curated-products');box.replaceChildren();if(!data.products.length)box.append(node('p','if-empty','No products featured yet. Search the marketplace above.'));data.products.forEach(function(product){box.append(productRow(product,true));});}
   bindForm('if-product-search',async function(form){var query=form.elements.query.value.trim();var response=await fetch('../../../api/public/catalog.php?q='+encodeURIComponent(query)+'&limit=12',{headers:{Accept:'application/json'},cache:'no-store'});var data=await response.json().catch(function(){return{};});if(!response.ok)throw new Error(data.message||'Product search failed.');var box=document.getElementById('if-product-results');box.replaceChildren();if(!data.products.length)box.append(node('p','if-empty','No approved products match this search.'));data.products.forEach(function(product){box.append(productRow(product,false));});});
   bindForm('if-password-form',async function(form){var data=formData(form);await request('account.php','PATCH',data);form.reset();show('Password changed. Other sessions have been signed out.');});
-  async function boot(){try{await loadIdentity();await loadApplication();await Promise.all([loadDashboard(),loadAnalytics(),loadWithdrawals(),loadNotifications(),loadInquiries(),loadCurations()]);document.getElementById('if-eligible').textContent=money.format(Number(state.dashboard.available_to_withdraw)||0);document.getElementById('if-eligible').previousElementSibling.textContent='Available to withdraw';}catch(error){if(/session|sign in|permission|expired/i.test(error.message))location.replace('auth/login.php');else show(error.message,true);}}
+  // --- PACKAGES LOGIC ---
+  async function loadPackages() {
+    try {
+      var data = await request('packages.php', 'GET');
+      var box = document.getElementById('if-package-list');
+      if (!box) return;
+      box.replaceChildren();
+      
+      if (!data.packages || !data.packages.length) {
+        box.append(node('p', 'if-empty', 'No packages created yet. Create your first package below.'));
+        return;
+      }
+      
+      data.packages.forEach(function(pkg) {
+        var card = node('div', 'if-card');
+        card.style.borderLeft = '4px solid var(--saffron)';
+        card.style.padding = '16px';
+        
+        var head = node('div', '');
+        head.style.display = 'flex';
+        head.style.justifyContent = 'space-between';
+        head.style.alignItems = 'center';
+        
+        var title = node('h3', '', pkg.title);
+        title.style.margin = '0';
+        head.append(title);
+        
+        var badge = node('span', '', pkg.status.replace('_', ' ').toUpperCase());
+        badge.style.padding = '4px 8px';
+        badge.style.borderRadius = '4px';
+        badge.style.fontSize = '0.75rem';
+        badge.style.fontWeight = 'bold';
+        if (pkg.status === 'active') { badge.style.background = '#e6ffed'; badge.style.color = '#28a745'; }
+        else if (pkg.status === 'pending_approval') { badge.style.background = '#fff3cd'; badge.style.color = '#856404'; }
+        else { badge.style.background = '#f8f9fa'; badge.style.color = '#6c757d'; }
+        
+        head.append(badge);
+        card.append(head);
+        
+        card.append(node('p', 'if-muted', '₹' + pkg.price_inr + ' · ' + pkg.turnaround_days + ' days turnaround · ' + pkg.capacity + ' slots/month'));
+        card.append(node('p', '', pkg.description));
+        
+        var actions = node('div', '');
+        actions.style.display = 'flex';
+        actions.style.gap = '10px';
+        actions.style.marginTop = '12px';
+        
+        function createActionBtn(text, action, id, isSecondary) {
+          var btn = node('button', isSecondary ? 'if-text-button' : 'if-button', text);
+          btn.type = 'button';
+          if (isSecondary) btn.style.textDecoration = 'underline';
+          btn.addEventListener('click', async function() {
+            btn.disabled = true;
+            try {
+              await request('packages.php', 'PATCH', { id: id, action: action });
+              show('Package status updated.');
+              await loadPackages();
+            } catch(e) {
+              show(e.message, true);
+              btn.disabled = false;
+            }
+          });
+          return btn;
+        }
+
+        if (pkg.status === 'draft') {
+          actions.append(createActionBtn('Submit for Approval', 'submit', pkg.id, false));
+        }
+        if (pkg.status === 'active') {
+          actions.append(createActionBtn('Pause', 'pause', pkg.id, false));
+        }
+        if (pkg.status !== 'archived' && pkg.status !== 'pending_approval') {
+          actions.append(createActionBtn('Archive', 'archive', pkg.id, true));
+        }
+        
+        card.append(actions);
+        box.append(card);
+      });
+    } catch (e) {
+      console.error('Failed to load packages', e);
+    }
+  }
+
+  bindForm('if-package-form', async function(form) {
+    var d = formData(form);
+    var payload = {
+      title: d.title,
+      description: d.description,
+      price_inr: Number(d.price_inr),
+      turnaround_days: Number(d.turnaround_days),
+      revisions: Number(d.revisions),
+      capacity: Number(d.capacity),
+      deliverables_json: d.deliverables.split(',').map(s => s.trim()).filter(Boolean),
+      platforms_json: d.platforms.split(',').map(s => s.trim()).filter(Boolean),
+      usage_rights: d.usage_rights,
+      vendor_requirements: d.vendor_requirements,
+      tax_treatment: d.tax_treatment,
+      cancellation_terms: d.cancellation_terms
+    };
+    
+    await request('packages.php', 'POST', payload);
+    form.reset();
+    show('Package saved as Draft.');
+    await loadPackages();
+  });
+
+
+  async function boot(){try{await loadIdentity();await loadApplication();await Promise.all([loadDashboard(),loadAnalytics(),loadWithdrawals(),loadNotifications(),loadInquiries(),loadCurations(),loadPackages()]);document.getElementById('if-eligible').textContent=money.format(Number(state.dashboard.available_to_withdraw)||0);document.getElementById('if-eligible').previousElementSibling.textContent='Available to withdraw';}catch(error){if(/session|sign in|permission|expired/i.test(error.message))location.replace('auth/login.php');else show(error.message,true);}}
   boot();
 })();

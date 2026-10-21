@@ -9,11 +9,34 @@ $vendorApproval=APP_ENV==='local'?'v.verification_status IN ("approved","demo_fi
 $handle=strtolower(trim((string)($_GET['handle']??'')));
 if($handle!==''&&!preg_match('/^[a-z0-9._-]{3,100}$/',$handle))json_response(422,['success'=>false,'message'=>'Invalid creator handle.']);
 if($handle!==''){
-    $stmt=$db->prepare('SELECT id,full_name,handle,bio,platforms_json,audience_json,verification_status,created_at FROM influencers WHERE handle=:handle AND status="active" AND email_verified=1'.$visibility.' LIMIT 1');
-    $stmt->execute(['handle'=>$handle]);
+    $stmt=$db->prepare('SELECT id,full_name,handle,bio,platforms_json,audience_json,verification_status,created_at,profile_image_id,cover_image_id,portfolio_json FROM influencers WHERE handle=:handle AND status="active" AND email_verified=1'.$visibility.' LIMIT 1');    $stmt->execute(['handle'=>$handle]);
     $creator=$stmt->fetch();
     if(!$creator)json_response(404,['success'=>false,'message'=>'Creator not found.']);
     $public=public_influencer($creator);
+        // Fetch Image URLs
+    $public['profile_image'] = null;
+    $public['cover_image'] = null;
+    $public['portfolio'] = [];
+
+    if (!empty($creator['profile_image_id'])) {
+        $img = $db->prepare('SELECT CONCAT("../files.php?id=",id) FROM file_assets WHERE id=:id AND visibility="public"');
+        $img->execute(['id' => $creator['profile_image_id']]);
+        $public['profile_image'] = $img->fetchColumn() ?: null;
+    }
+
+    if (!empty($creator['cover_image_id'])) {
+        $img = $db->prepare('SELECT CONCAT("../files.php?id=",id) FROM file_assets WHERE id=:id AND visibility="public"');
+        $img->execute(['id' => $creator['cover_image_id']]);
+        $public['cover_image'] = $img->fetchColumn() ?: null;
+    }
+
+    $portfolioIds = json_decode((string)($creator['portfolio_json'] ?? '[]'), true) ?: [];
+    if (!empty($portfolioIds)) {
+        $inQuery = str_repeat('?,', count($portfolioIds) - 1) . '?';
+        $img = $db->prepare("SELECT CONCAT('../files.php?id=',id) FROM file_assets WHERE id IN ($inQuery) AND visibility='public'");
+        $img->execute($portfolioIds);
+        $public['portfolio'] = $img->fetchAll(PDO::FETCH_COLUMN);
+    }
     $products=$db->prepare('SELECT p.id,p.name,p.slug,p.selling_price,p.published_snapshot_json,(SELECT CONCAT("../files.php?id=",f.id) FROM product_images pi JOIN file_assets f ON f.id=pi.file_asset_id WHERE pi.product_id=p.id AND f.visibility="public" AND f.scan_status="clean" AND f.deleted_at IS NULL ORDER BY pi.is_primary DESC,pi.sort_order LIMIT 1) image_url FROM influencer_curated_products cp JOIN products p ON p.id=cp.product_id JOIN vendors v ON v.id=p.vendor_id WHERE cp.influencer_id=:owner AND p.published_snapshot_json IS NOT NULL AND p.status NOT IN ("suspended","archived") AND v.status="active" AND '.$vendorApproval.' ORDER BY cp.sort_order,cp.created_at LIMIT 24');
     $products->execute(['owner'=>$creator['id']]);$public['products']=[];
     foreach($products->fetchAll() as $product){$snapshot=json_decode((string)$product['published_snapshot_json'],true)?:[];$public['products'][]=['id'=>$product['id'],'name'=>(string)($snapshot['name']??$product['name']),'price'=>(float)($snapshot['selling_price']??$product['selling_price']),'image_url'=>$product['image_url']];}
@@ -21,8 +44,24 @@ if($handle!==''){
     $campaign->execute(['owner'=>$creator['id']]);$public['referral']=$campaign->fetch()?:null;
     json_response(200,['success'=>true,'creator'=>$public]);
 }
-$stmt=$db->query('SELECT full_name,handle,bio,platforms_json,audience_json,verification_status,created_at FROM influencers WHERE status="active" AND email_verified=1'.$visibility.' ORDER BY created_at DESC LIMIT 100');
-$creators=[];foreach($stmt->fetchAll() as $creator)$creators[]=public_influencer($creator);
+$stmt=$db->query('SELECT id,full_name,handle,bio,platforms_json,audience_json,verification_status,created_at,profile_image_id FROM influencers WHERE status="active" AND email_verified=1'.$visibility.' ORDER BY created_at DESC LIMIT 100');
+$creators=[];
+
+foreach($stmt->fetchAll() as $creator){
+    $pub = public_influencer($creator);
+    
+    // Fetch the profile image URL for the directory card
+    if (!empty($creator['profile_image_id'])) {
+        $img = $db->prepare('SELECT CONCAT("../files.php?id=",id) FROM file_assets WHERE id=:id AND visibility="public"');
+        $img->execute(['id' => $creator['profile_image_id']]);
+        $pub['profile_image'] = $img->fetchColumn() ?: null;
+    } else {
+        $pub['profile_image'] = null;
+    }
+    
+    $creators[] = $pub;
+}
+
 json_response(200,['success'=>true,'creators'=>$creators]);
 
 function public_influencer(array $row): array {

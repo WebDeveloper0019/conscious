@@ -20,10 +20,42 @@
     set('[data-profile-field="availability"]',creator.is_demo?'Demo profile':'Open to partnerships');
     const availabilityStatus=section.querySelector('.ip-availability-status span');if(availabilityStatus)availabilityStatus.textContent=creator.is_demo?'Demo profile':'Open to partnerships';
     if(creator.is_demo){const contactButton=section.querySelector('button[data-bs-target="#contactInfluencerModal"]');if(contactButton)contactButton.textContent='Send demo inquiry';}
-    const avatar=section.querySelector('[data-profile-field="profileImage"]');if(avatar){avatar.hidden=true;}
-    const portfolio=section.querySelector('[aria-labelledby="portfolio-title"]');if(portfolio)portfolio.hidden=true;
+  
     if((creator.products||[]).length){const card=document.createElement('article');card.className='ip-card';const heading=document.createElement('h2');heading.className='ip-title';heading.textContent='Curated products';const grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:16px';creator.products.forEach(product=>{const link=document.createElement('a');link.href=creator.referral?'api/public/creator-product-referral.php?code='+encodeURIComponent(creator.referral.code)+'&product_id='+encodeURIComponent(product.id):'frontend/modules/customer/product.php?id='+encodeURIComponent(product.id);link.style.cssText='display:block;overflow:hidden;border:1px solid #f2e8da;border-radius:10px;color:inherit;text-decoration:none;background:white';if(product.image_url){const image=document.createElement('img');image.src=new URL('api/public/'+product.image_url,location.href).href;image.alt=product.name;image.loading='lazy';image.style.cssText='width:100%;height:145px;object-fit:cover';link.append(image);}const copy=document.createElement('div');copy.style.padding='10px';const name=document.createElement('strong');name.textContent=product.name;const price=document.createElement('p');price.style.margin='5px 0 0';price.textContent=new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR'}).format(product.price);copy.append(name,price);link.append(copy);grid.append(link);});card.append(heading);if(creator.referral){const disclosure=document.createElement('p');disclosure.className='ip-about';disclosure.textContent=creator.referral.disclosure_text;card.append(disclosure);}card.append(grid);const stack=section.querySelector('.ip-stack');if(stack)stack.insertBefore(card,portfolio?portfolio.nextSibling:null);}
-    const stats=section.querySelector('.ip-stat-grid');if(stats){stats.replaceChildren();const item=document.createElement('div');item.className='ip-stat';const strong=document.createElement('strong');strong.textContent=new Intl.NumberFormat('en-IN',{notation:'compact',maximumFractionDigits:1}).format(creator.followers||0);const label=document.createElement('span');label.textContent='Reported followers';item.append(strong,label);stats.append(item);}
+    // Clear default placeholder portfolio images immediately
+    const portfolioGrid = section.querySelector('.ip-portfolio-grid');
+    if (portfolioGrid) portfolioGrid.innerHTML = '';
+
+    // 1. Render Profile Photo
+    const avatar = section.querySelector('[data-profile-field="profileImage"]');
+    if (avatar && creator.profile_image) {
+        avatar.src = new URL('api/public/' + creator.profile_image, location.href).href;
+        avatar.hidden = false;
+    }
+
+    // 2. Render Cover Image
+    if (creator.cover_image) {
+        const cover = section.querySelector('.ip-cover');
+        if (cover) {
+            cover.style.backgroundImage = `url('${new URL('api/public/' + creator.cover_image, location.href).href}')`;
+            cover.style.backgroundSize = 'cover';
+            cover.style.backgroundPosition = 'center';
+        }
+    }
+
+    // 3. Render Portfolio Grid
+    if (creator.portfolio && creator.portfolio.length > 0) {
+        if (portfolioGrid) {
+            portfolioGrid.innerHTML = creator.portfolio.map(url => `
+                <a class="ip-portfolio-item" href="#" target="_blank">
+                    <img src="${new URL('api/public/' + url, location.href).href}" alt="Portfolio image" />
+                </a>
+            `).join('');
+        }
+    }
+    const stats=section.querySelector('.ip-stat-grid');
+    
+    if(stats){stats.replaceChildren();const item=document.createElement('div');item.className='ip-stat';const strong=document.createElement('strong');strong.textContent=new Intl.NumberFormat('en-IN',{notation:'compact',maximumFractionDigits:1}).format(creator.followers||0);const label=document.createElement('span');label.textContent='Reported followers';item.append(strong,label);stats.append(item);}
     const tags=section.querySelector('.ip-tag-list');if(tags){tags.replaceChildren();(creator.platforms||[]).forEach(platform=>{const tag=document.createElement('span');tag.className='ip-tag';tag.textContent=platform.name;tags.append(tag);});}
     const socials=section.querySelector('.ip-social-list');if(socials){socials.replaceChildren();(creator.platforms||[]).forEach(platform=>{const link=document.createElement('a');link.className='ip-social';link.href=platform.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=platform.name+' ↗';socials.append(link);});}
     const topSocials=section.querySelector('.ip-hero-socials');if(topSocials){topSocials.replaceChildren();(creator.platforms||[]).forEach(platform=>{const link=document.createElement('a');link.href=platform.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=platform.name;topSocials.append(link);});}

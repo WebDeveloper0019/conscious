@@ -248,3 +248,16 @@
   }
 
 })();
+function initLogout() {
+  document.addEventListener('click', function (e) {
+    var trigger = e.target.closest('[data-customer-logout]');
+    if (!trigger) {
+      var link = e.target.closest('a');
+      if (link && /logout|log out|sign out/i.test(link.textContent || '')) trigger = link;
+    }
+    if (!trigger) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (window.InfluencerSession) window.InfluencerSession.logoutAndRedirect('../influencer-login.html');
+  }, true);
+}

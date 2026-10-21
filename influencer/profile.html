@@ -47,7 +47,7 @@
     <a href="packages.html" class="ci-sidebar-nav-item"><i class="fa-solid fa-box-open"></i><span>Packages</span></a>
     <a href="notifications.html" class="ci-sidebar-nav-item"><i class="fa-solid fa-bell"></i><span>Notifications</span><span class="ci-sidebar-nav-badge">3</span></a>
     <a href="settings.html" class="ci-sidebar-nav-item"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
-    <a href="../index.html" class="ci-sidebar-nav-item"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a>
+  <a href="#" class="ci-sidebar-nav-item" data-influencer-logout><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a>
   </nav>
   <div style="padding:12px 20px 20px;border-top:1px solid rgba(255,255,255,0.07);">
     <a href="../index.html" class="ci-sidebar-nav-item" style="border-radius:var(--r-sm);">
@@ -129,7 +129,7 @@
         <a href="settings.html" class="ci-profile-menu-item"><i class="fa-solid fa-gear"></i> Account Settings</a>
         <div class="ci-profile-menu-divider"></div>
         <a href="../index.html" class="ci-profile-menu-item"><i class="fa-solid fa-arrow-left"></i> Back to Store</a>
-        <a href="#" class="ci-profile-menu-item"><i class="fa-solid fa-right-from-bracket" data-customer-logout></i> Log Out</a>
+        <a href="#" class="ci-profile-menu-item" data-influencer-logout><i class="fa-solid fa-right-from-bracket"></i> Log Out</a>
       </div>
     </div>
 
@@ -145,10 +145,11 @@
       <div class="ci-form-card-head"><div class="ci-form-card-title"><div class="step-icon"><i class="fa-solid fa-user"></i></div>Profile Photo</div></div>
       <div class="ci-form-card-body" style="text-align:center;">
         <div class="ci-sidebar-avatar mx-auto mb-3" style="width:84px;height:84px;font-size:1.75rem;background:linear-gradient(135deg,var(--gold),var(--gold-dark));">M</div>
-        <div style="font-weight:700;font-size:1.125rem;">Meera Finds</div>
-        <div style="font-size:.875rem;color:var(--text-muted);">@meerafinds</div>
-        <span class="ci-verified-badge" style="margin:8px auto;display:inline-flex;"><i class="fa-solid fa-circle-check"></i> Verified Influencer</span>
-        <div style="margin-top:12px;font-size:.8125rem;color:var(--text-secondary);">Niche: Lifestyle &amp; Conscious Living<br>Followers: 2.4M<br>Audience Score: 4.8/5</div>
+<div style="font-weight:700;font-size:1.125rem;" data-display="brandName">Meera Finds</div>       
+<div style="font-size:.875rem;color:var(--text-muted);" data-display="handle">@meerafinds</div>      
+  <span class="ci-verified-badge" style="margin:8px auto;display:inline-flex;">
+  <i class="fa-solid fa-circle-check"></i> Verified Influencer</span>
+<div style="margin-top:12px;font-size:.8125rem;color:var(--text-secondary);" data-display="summary">Niche: Lifestyle &amp; Conscious Living<br>Followers: 2.4M<br>Audience Score: 4.8/5</div>
         <label class="bc-btn bc-btn-outline bc-btn-sm mt-3" style="cursor:pointer;"><i class="fa-solid fa-camera"></i> Upload Image</label>
       </div>
     </div>
@@ -179,7 +180,7 @@
     <div class="ci-form-card mt-4">
       <div class="ci-form-card-head"><div class="ci-form-card-title"><div class="step-icon"><i class="fa-solid fa-pen-nib"></i></div>About Me</div></div>
       <div class="ci-form-card-body">
-        <div class="ci-form-group"><label class="ci-form-label">A Little About Me</label><textarea class="ci-form-input ci-form-textarea" rows="4">Conscious lifestyle influencer sharing authentic Indian handcraft, sustainable living, and mindful shopping. 2.4M followers on Instagram &amp; YouTube.</textarea></div>
+        <div class="ci-form-group"><label class="ci-form-label">A Little About Me</label><textarea class="ci-form-input ci-form-textarea" rows="4"  data-field="about">Conscious lifestyle influencer sharing authentic Indian handcraft, sustainable living, and mindful shopping. 2.4M followers on Instagram &amp; YouTube.</textarea></div>
         <div class="small text-muted">Changes made here update the public creator profile automatically.</div>
       </div>
     </div>
@@ -207,9 +208,9 @@
       <div class="ci-form-card-head"><div class="ci-form-card-title"><div class="step-icon"><i class="fa-solid fa-clock"></i></div>Availability</div></div>
       <div class="ci-form-card-body">
         <div class="d-flex flex-wrap gap-3">
-          <label class="form-check-label"><input type="radio" name="availability" checked /> Full Time</label>
-          <label class="form-check-label"><input type="radio" name="availability" /> Part Time</label>
-          <label class="form-check-label"><input type="radio" name="availability" /> Freelance</label>
+          <label class="form-check-label"><input type="radio" name="availability" data-value="Full Time" checked /> Full Time</label>
+<label class="form-check-label"><input type="radio" name="availability" data-value="Part Time" /> Part Time</label>
+<label class="form-check-label"><input type="radio" name="availability" data-value="Freelance" /> Freelance</label>"radio" name="availability" /> Freelance</label>
         </div>
       </div>
     </div>
@@ -249,7 +250,7 @@
     </div>
 
     <div class="mt-4 d-flex gap-2">
-      <button class="bc-btn bc-btn-primary" type="button"><i class="fa-solid fa-save"></i> Save Changes</button>
+      <button class="bc-btn bc-btn-primary" type="button" id="save-profile-btn"><i class="fa-solid fa-save"></i> Save Changes</button>
       <button class="bc-btn bc-btn-outline" type="button"><i class="fa-solid fa-rotate-left"></i> Reset</button>
     </div>
   </div>
@@ -269,6 +270,136 @@
 <!-- Conscious Indi Main JS -->
 <script src="../assets/js/bharatcraft.js"></script>
 <script src="../assets/js/influencer-panel.js"></script>
+<script src="../assets/js/influencer-session.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.InfluencerSession) {
+      console.warn('influencer-session.js missing — dashboard will not bind.');
+      return;
+    }
+
+    var me = InfluencerSession.requireLogin('../influencer-login.html');
+    if (!me) return;   // redirected to login
+
+    /* ── Identity (sidebar + topbar + photo card) ── */
+    setText('.ci-sidebar-user-name',    me.fullName   || 'Influencer');
+    setText('.ci-sidebar-user-email',   me.email      || '');
+    setText('.ci-sidebar-avatar',       initial(me.fullName));
+    setText('.ci-profile-trigger-name', me.brandName  || me.fullName || 'Influencer');
+    setText('.ci-profile-trigger-avatar', initial(me.fullName));
+
+    var bigAvatar = document.querySelector('.ci-form-card-body .ci-sidebar-avatar');
+    if (bigAvatar) bigAvatar.textContent = initial(me.fullName);
+
+    setText('[data-display="brandName"]', me.brandName || me.fullName || 'Creator');
+    setText('[data-display="handle"]',    '@' + slug(me.brandName || me.fullName || 'creator'));
+    setHTML('[data-display="summary"]',
+      'Niche: ' + esc(me.category || '—') + '<br>' +
+      'Followers: ' + esc((me.stats && me.stats.followers) || '0') + '<br>' +
+      'Audience Score: ' + esc((me.stats && me.stats.rating) || '0') + '/5');
+
+    /* ── Form fields ── */
+    bind('fullName', me.fullName);
+    bind('email', me.email);
+    bind('password', me.password);
+    bind('contactNumber', me.contactNumber);
+    bind('city', me.city);
+    bind('about', me.about);
+    bind('portfolioUrl', me.portfolioUrl);
+    bind('category', me.category);
+    bind('niche', me.category);
+
+    if (me.stats) {
+      bind('stats.followers',  me.stats.followers);
+      bind('stats.rating',     me.stats.rating);
+      bind('stats.projects',   me.stats.projects);
+      bind('stats.experience', me.stats.experience);
+    }
+
+    document.querySelectorAll('input[name="availability"]').forEach(function (r) {
+      if (r.getAttribute('data-value') === me.availability) r.checked = true;
+    });
+
+    var hideToggle = document.getElementById('hide-profile-toggle');
+    if (hideToggle) hideToggle.checked = !!me.hideProfile;
+
+    /* ── Save ── */
+    var saveBtn = document.getElementById('save-profile-btn');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var checkedRadio = document.querySelector('input[name="availability"]:checked');
+        var patch = {
+          fullName:      val('fullName'),
+          email:         val('email'),
+          password:      val('password'),
+          contactNumber: val('contactNumber'),
+          city:          val('city'),
+          about:         val('about'),
+          portfolioUrl:  val('portfolioUrl'),
+          category:      val('category'),
+          availability:  checkedRadio ? checkedRadio.getAttribute('data-value') : me.availability,
+          hideProfile:   hideToggle ? hideToggle.checked : me.hideProfile,
+          stats: {
+            followers:  val('stats.followers')  || (me.stats && me.stats.followers),
+            rating:     val('stats.rating')     || (me.stats && me.stats.rating),
+            projects:   val('stats.projects')   || (me.stats && me.stats.projects),
+            experience: val('stats.experience') || (me.stats && me.stats.experience)
+          }
+        };
+        patch.visibility = patch.hideProfile ? 'hidden' : 'visible';
+
+        var updated = InfluencerSession.updateInfluencer(me.id, patch);
+        if (!updated) {
+          if (typeof showToast === 'function') showToast('Could not save — session expired.', 'error');
+          return;
+        }
+        me = updated;
+
+        /* refresh visible bits */
+        setText('.ci-sidebar-user-name',    me.fullName);
+        setText('.ci-sidebar-user-email',   me.email);
+        setText('.ci-profile-trigger-name', me.brandName || me.fullName);
+        setHTML('[data-display="summary"]',
+          'Niche: ' + esc(me.category || '—') + '<br>' +
+          'Followers: ' + esc((me.stats && me.stats.followers) || '0') + '<br>' +
+          'Audience Score: ' + esc((me.stats && me.stats.rating) || '0') + '/5');
+
+        if (typeof showToast === 'function') showToast('Profile updated ✓', 'success');
+      });
+    }
+
+    /* ── Logout ── */
+    document.querySelectorAll('[data-influencer-logout]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        InfluencerSession.logout();
+        window.location.href = '../influencer-login.html';
+      });
+    });
+
+    /* ── Helpers ── */
+    function bind(field, value) {
+      var el = document.querySelector('[data-field="' + field + '"]');
+      if (el) el.value = value == null ? '' : value;
+    }
+    function val(field) {
+      var el = document.querySelector('[data-field="' + field + '"]');
+      return el ? el.value : '';
+    }
+    function setText(sel, v) { var el = document.querySelector(sel); if (el) el.textContent = v; }
+    function setHTML(sel, v) { var el = document.querySelector(sel); if (el) el.innerHTML = v; }
+    function initial(name)   { return String(name || 'I').trim().charAt(0).toUpperCase(); }
+    function slug(s)         { return String(s || 'creator').toLowerCase().replace(/[^a-z0-9]+/g, '').slice(0, 20); }
+    function esc(s)          { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c];
+    }); }
+  });
+})();
+</script>
 
 </body>
 </html>
