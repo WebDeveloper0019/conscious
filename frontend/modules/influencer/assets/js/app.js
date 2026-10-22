@@ -69,8 +69,40 @@
   async function loadDashboard(){var data=await request('dashboard.php','GET');state.dashboard=data;var stats=data.stats||{};[['if-clicks',stats.clicks||0],['if-conversions',stats.conversions||0],['if-revenue',money.format(Number(stats.revenue)||0)],['if-commission',money.format(Number(stats.commission)||0)],['if-total-commission',money.format(Number(stats.commission)||0)]].forEach(function(pair){document.getElementById(pair[0]).textContent=pair[1];});var balances=Object.fromEntries((data.balances||[]).map(function(item){return[item.status,Number(item.amount)||0];}));document.getElementById('if-eligible').textContent=money.format(balances.eligible||0);document.getElementById('if-pending').textContent=money.format(balances.pending||0);document.getElementById('if-held').textContent=money.format((balances.held||0)+(balances.flagged||0));var next=document.getElementById('if-next-step');next.textContent=state.profile&&state.profile.status==='active'?'Share an assigned referral link with its required disclosure.':'Complete your profile and verification, then submit your application for review.';var campaignList=document.getElementById('if-campaign-list');var overview=document.getElementById('if-overview-campaigns');campaignList.replaceChildren();overview.replaceChildren();if(!data.campaigns.length){campaignList.append(node('p','if-empty','No campaigns assigned yet.'));overview.append(node('p','if-empty','No campaigns assigned yet.'));}data.campaigns.forEach(function(campaign){var row=node('article','if-card');row.append(node('strong','',campaign.name),node('p','if-muted',campaign.description||''));row.append(node('p','',campaign.status+' · '+campaign.link_status));var link=new URL('../../../api/public/referral.php?code='+encodeURIComponent(campaign.code),location.href).href;var input=node('input');input.value=link;input.readOnly=true;input.setAttribute('aria-label','Referral API link');row.append(input);row.append(node('p','if-muted','Disclosure: '+campaign.disclosure_text));var copy=node('button','if-button','Copy link');copy.type='button';copy.addEventListener('click',function(){navigator.clipboard.writeText(link).then(function(){show('Link copied. Include the disclosure when sharing.');}).catch(function(){show('Select and copy the link shown above.');});});row.append(copy);campaignList.append(row);overview.append(node('p','',campaign.name+' · '+campaign.link_status));});}
   async function loadAnalytics(){var days=document.getElementById('if-period').value;var data=await request('analytics.php?days='+encodeURIComponent(days),'GET');var clicks=(data.clicks||[]).reduce(function(sum,row){return sum+Number(row.clicks||0);},0);var conversions=(data.conversions||[]).reduce(function(sum,row){return sum+Number(row.conversions||0);},0);var box=document.getElementById('if-analytics');box.replaceChildren(node('p','',clicks+' clicks · '+conversions+' conversions in the selected period'));if(!data.conversions.length)box.append(node('p','if-muted','No attributed orders in this period.'));data.conversions.forEach(function(row){box.append(node('p','',row.day+' · '+row.status+' · '+row.conversions+' orders · '+money.format(Number(row.commission))))});var ledger=document.getElementById('if-ledger');ledger.replaceChildren();if(!data.ledger.length)ledger.append(node('p','if-empty','No commission entries yet.'));data.ledger.forEach(function(row){ledger.append(node('p','',row.created_at+' · '+row.entry_type+' · '+money.format(Number(row.amount))+' · '+row.status));});}
   document.getElementById('if-period').addEventListener('change',function(){loadAnalytics().catch(function(error){show(error.message,true);});});
-  async function loadWithdrawals(){var data=await request('withdrawals.php','GET');var box=document.getElementById('if-withdraw-list');box.replaceChildren();if(!data.withdrawals.length)box.append(node('p','if-empty','No withdrawal requests yet.'));data.withdrawals.forEach(function(row){box.append(node('p','',row.requested_at+' · '+money.format(Number(row.amount))+' · '+row.status));});}
-  bindForm('if-withdraw-form',async function(form){var amount=Number(form.elements.amount.value);await request('withdrawals.php','POST',{amount:amount},{'Idempotency-Key':crypto.randomUUID()});form.reset();show('Withdrawal requested.');await Promise.all([loadWithdrawals(),loadDashboard()]);document.getElementById('if-eligible').textContent=money.format(Number(state.dashboard.available_to_withdraw)||0);});
+   async function loadWithdrawals() {
+    try {
+      var data = await request('withdrawals.php', 'GET');
+      var box = document.getElementById('if-withdraw-list');
+      var balanceEl = document.getElementById('if-withdraw-balance');
+      
+      if (balanceEl) {
+        balanceEl.textContent = money.format(data.available_balance || 0);
+      }
+      
+      box.replaceChildren();
+      if (!data.withdrawals || !data.withdrawals.length) {
+        box.append(node('p', 'if-empty', 'No withdrawal requests yet.'));
+      } else {
+        data.withdrawals.forEach(function(row) {
+box.append(node('p', '', row.requested_at + ' · ' + money.format(Number(row.amount)) + ' · ' + row.status));
+        });
+      }
+    } catch (e) {
+      show(e.message, true);
+    }
+  }
+
+  bindForm('if-withdraw-form', async function(form) {
+    var amount = Number(form.elements.amount.value);
+    try {
+      await request('withdrawals.php', 'POST', { amount: amount });
+      form.reset();
+      show('Withdrawal requested successfully.', false);
+      await loadWithdrawals();
+    } catch (error) {
+      show(error.message, true); // This will show the red banner if it fails
+    }
+  });
   async function loadNotifications(){var data=await request('notifications.php','GET');var box=document.getElementById('if-notification-list');box.replaceChildren();if(!data.notifications.length)box.append(node('p','if-empty','No updates yet.'));data.notifications.forEach(function(item){var row=node('article','if-card');row.append(node('strong','',item.title),node('p','',item.message),node('small','',item.created_at));if(!item.read_at){var button=node('button','if-text-button','Mark read');button.type='button';button.addEventListener('click',async function(){try{await request('notifications.php','PATCH',{id:item.id});button.remove();}catch(error){show(error.message,true);}});row.append(button);}box.append(row);});}
   async function loadInquiries(){var data=await request('inquiries.php','GET');var box=document.getElementById('if-inquiry-list');box.replaceChildren();if(!data.inquiries.length){box.append(node('p','if-empty','No partnership inquiries yet.'));return;}data.inquiries.forEach(function(item){var row=node('article','if-card');row.append(node('strong','',item.sender_name+' · '+item.package_name),node('p','if-muted',item.created_at+' · '+item.status),node('p','',item.message||'No message supplied.'));var email=node('a','','Email '+item.sender_name);email.href='mailto:'+item.sender_email;row.append(email,node('p','',item.sender_phone));if(item.status!=='closed'){var action=node('button','if-text-button',item.status==='new'?'Mark read':'Close inquiry');action.type='button';action.addEventListener('click',async function(){action.disabled=true;try{await request('inquiries.php','PATCH',{id:item.id,status:item.status==='new'?'read':'closed'});await loadInquiries();}catch(error){show(error.message,true);action.disabled=false;}});row.append(action);}box.append(row);});}
   function productRow(product,featured){var row=node('article','if-product-row');if(product.image_url){var image=node('img');image.src=new URL('../../../api/public/'+product.image_url,location.href).href;image.alt=product.name;image.loading='lazy';row.append(image);}var copy=node('div');copy.append(node('strong','',product.name),node('p','if-muted',money.format(Number(product.selling_price||product.price||0))));row.append(copy);var action=node('button','if-button',featured?'Remove':'Feature');action.type='button';action.addEventListener('click',async function(){action.disabled=true;try{var result=await request('curations.php',featured?'DELETE':'POST',{product_id:product.product_id||product.id});show(result.message);await loadCurations();}catch(error){show(error.message,true);}finally{action.disabled=false;}});row.append(action);return row;}
@@ -184,6 +216,17 @@
   });
 
 
-  async function boot(){try{await loadIdentity();await loadApplication();await Promise.all([loadDashboard(),loadAnalytics(),loadWithdrawals(),loadNotifications(),loadInquiries(),loadCurations(),loadPackages()]);document.getElementById('if-eligible').textContent=money.format(Number(state.dashboard.available_to_withdraw)||0);document.getElementById('if-eligible').previousElementSibling.textContent='Available to withdraw';}catch(error){if(/session|sign in|permission|expired/i.test(error.message))location.replace('auth/login.php');else show(error.message,true);}}
+   async function boot() {
+    try {
+      await loadIdentity();
+      await loadApplication();
+      await Promise.all([loadDashboard(), loadAnalytics(), loadWithdrawals(), loadNotifications(), loadInquiries(), loadCurations(), loadPackages()]);
+      document.getElementById('if-eligible').textContent = money.format(Number(state.dashboard.available_to_withdraw)||0);
+      document.getElementById('if-eligible').previousElementSibling.textContent = 'Available to withdraw';
+    } catch (error) {
+      if (/session|sign in|permission|expired/i.test(error.message)) location.replace('auth/login.php');
+      else show(error.message, true);
+    }
+  }
   boot();
 })();

@@ -12,8 +12,7 @@ try {
     if($method==='GET'){
         $withdrawals = [];
         try {
-            $stmt = $db->prepare('SELECT * FROM influencer_withdrawals WHERE influencer_id=:id ORDER BY created_at DESC');
-            $stmt->execute(['id'=>$id]);
+$stmt = $db->prepare('SELECT * FROM influencer_withdrawals WHERE influencer_id=:id ORDER BY requested_at DESC');            $stmt->execute(['id'=>$id]);
             $withdrawals = $stmt->fetchAll();
         } catch(Throwable $e) {}
         
@@ -68,8 +67,7 @@ try {
 
         // 3. Create Withdrawal Request
         $withdrawalId = uuid_string();
-        $db->prepare('INSERT INTO influencer_withdrawals (id, influencer_id, amount, status, created_at) VALUES (:id, :owner, :amount, "requested", UTC_TIMESTAMP())')
-           ->execute(['id' => $withdrawalId, 'owner' => $id, 'amount' => $amount]);
+$db->prepare('INSERT INTO influencer_withdrawals (id, influencer_id, amount, status, requested_at) VALUES (:id, :owner, :amount, "requested", UTC_TIMESTAMP())')           ->execute(['id' => $withdrawalId, 'owner' => $id, 'amount' => $amount]);
 
         json_response(201,['success'=>true,'message'=>'Withdrawal requested successfully.']);
     }

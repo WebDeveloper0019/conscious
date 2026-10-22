@@ -98,7 +98,27 @@ if(in_array($check->fetchColumn(),[false,'suspended','blocked','inactive'],true)
 </section>
 <section id="analytics" class="if-section"><div class="if-card"><h2>Clicks and conversions</h2><label class="if-field">Period<select id="if-period"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last year</option></select></label><div id="if-analytics" class="if-empty">Loading…</div></div></section>
 <section id="earnings" class="if-section"><div class="if-grid"><article class="if-card"><small>Eligible balance</small><strong class="if-value" id="if-eligible">—</strong></article><article class="if-card"><small>Pending</small><strong class="if-value" id="if-pending">—</strong></article><article class="if-card"><small>Held / flagged</small><strong class="if-value" id="if-held">—</strong></article><article class="if-card"><small>Total commission</small><strong class="if-value" id="if-total-commission">—</strong></article></div><div class="if-card" style="margin-top:16px"><h2>Commission history</h2><div id="if-ledger" class="if-empty">Loading…</div></div></section>
-<section id="withdrawals" class="if-section"><div class="if-two"><article class="if-card"><h2>Request a withdrawal</h2><p>Minimum ₹100. Your payout profile must be verified and funds must be eligible.</p><form id="if-withdraw-form" class="if-form"><label>Amount (₹)<input name="amount" type="number" min="100" step="0.01" required></label><button class="if-button" type="submit">Request withdrawal</button></form></article><article class="if-card"><h2>Withdrawal history</h2><div id="if-withdraw-list" class="if-empty">Loading…</div></article></div></section>
+<section id="withdrawals" class="if-section">
+    <div class="if-two">
+        <article class="if-card">
+            <h2>Request a withdrawal</h2>
+            <p class="if-muted">Minimum ₹100. Your payout profile must be verified.</p>
+            <div style="margin: 16px 0; padding: 12px; background: #f0fdf4; border-left: 4px solid #22c55e; border-radius: 4px;">
+                <strong>Available Balance:</strong> <span id="if-withdraw-balance" style="font-size: 1.2rem; color: #15803d;">Loading...</span>
+            </div>
+            <form id="if-withdraw-form" class="if-form">
+                <label>Amount (₹)
+                    <input name="amount" type="number" min="100" step="0.01" required>
+                </label>
+                <button class="if-button" type="submit">Request withdrawal</button>
+            </form>
+        </article>
+        <article class="if-card">
+            <h2>Withdrawal history</h2>
+            <div id="if-withdraw-list" class="if-empty">Loading…</div>
+        </article>
+    </div>
+</section>
 <section id="notifications" class="if-section"><div class="if-card"><h2>Updates</h2><div id="if-notification-list" class="if-empty">Loading…</div></div></section>
 <section id="settings" class="if-section"><div class="if-two"><article class="if-card"><h2>Account security</h2><p>Your creator account uses a secure, revocable session. Never share verification codes or your password.</p><form id="if-password-form" class="if-form"><label>Current password<input name="current_password" type="password" required autocomplete="current-password"></label><label>New password<input name="new_password" type="password" minlength="12" required autocomplete="new-password"></label><button class="if-button" type="submit">Change password</button></form></article><article class="if-card"><h2>Public visibility</h2><p>Your profile is shown publicly only after admin approval. Claims, links and disclosures must remain truthful and current.</p><p id="if-visibility"></p></article></div></section>
 <section id="curations" class="if-section"><div class="if-stack"><div class="if-card"><h2>Curate approved products</h2><p class="if-muted">Feature up to 24 published products from approved makers on your public creator page. Products automatically disappear from your page if their listing is withdrawn.</p><form id="if-product-search" class="if-form"><label>Search the marketplace<input name="query" minlength="2" maxlength="80" placeholder="Try bamboo, handloom, pottery…" required></label><button class="if-button" type="submit">Find products</button></form><div id="if-product-results" class="if-stack" style="margin-top:16px"></div></div><div class="if-card"><h2>Your featured products</h2><div id="if-curated-products" class="if-stack">Loading…</div></div></div></section>
