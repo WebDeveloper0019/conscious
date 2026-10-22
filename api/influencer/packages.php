@@ -71,10 +71,41 @@ if ($method === 'PATCH') {
     
     if (!$currentStatus) json_response(404, ['success' => false, 'message' => 'Package not found.']);
 
+    if ($action === 'edit') {
+        $title = trim($body['title'] ?? '');
+        $description = trim($body['description'] ?? '');
+        $price = (float)($body['price_inr'] ?? 0);
+        $turnaround = (int)($body['turnaround_days'] ?? 0);
+        $revisions = (int)($body['revisions'] ?? 1);
+        $capacity = (int)($body['capacity'] ?? 1);
+        
+        if (mb_strlen($title) < 3 || $price < 100 || $turnaround < 1 || $capacity < 1) {
+            json_response(422, ['success' => false, 'message' => 'Please fill in all required fields correctly (Min price ₹100).']);
+        }
+
+        $db->prepare('UPDATE influencer_packages SET 
+            title=:title, description=:desc, price_inr=:price, deliverables_json=:deliv, 
+            platforms_json=:plat, turnaround_days=:turn, revisions=:rev, usage_rights=:usage, 
+            vendor_requirements=:vendor, capacity=:cap, tax_treatment=:tax, cancellation_terms=:cancel, 
+            updated_at=UTC_TIMESTAMP() WHERE id=:id')
+           ->execute([
+               'title' => $title, 'desc' => $description, 'price' => $price,
+               'deliv' => json_encode($body['deliverables_json'] ?? []),
+               'plat' => json_encode($body['platforms_json'] ?? []),
+               'turn' => $turnaround, 'rev' => $revisions, 'usage' => trim($body['usage_rights'] ?? ''),
+               'vendor' => trim($body['vendor_requirements'] ?? ''), 'cap' => $capacity,
+               'tax' => trim($body['tax_treatment'] ?? 'Inclusive of GST'), 'cancel' => trim($body['cancellation_terms'] ?? ''),
+               'id' => $pkgId
+           ]);
+        json_response(200, ['success' => true, 'message' => 'Package updated successfully.']);
+    }
+
     if ($action === 'submit') {
         $newStatus = 'pending_approval';
     } elseif ($action === 'pause') {
         $newStatus = 'paused';
+    } elseif ($action === 'resume' || $action === 'activate') {
+        $newStatus = 'active'; // Reactivating a paused package
     } elseif ($action === 'archive') {
         $newStatus = 'archived';
     } else {

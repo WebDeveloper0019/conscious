@@ -49,6 +49,13 @@ if(in_array($check->fetchColumn(),[false,'suspended','blocked','inactive'],true)
         
         <div class="if-card" id="if-create-package-card">
             <h2>Create a New Package</h2>
+
+
+                            <input type="hidden" id="edit-package-id" name="package_id" value="">
+                <input type="hidden" id="edit-deliverables" name="edit_deliverables" value="">
+                <input type="hidden" id="edit-platforms" name="edit_platforms" value="">
+
+
             <form id="if-package-form" class="if-form-grid">
                 <label class="if-field full">Package Title
                     <input name="title" required minlength="3" placeholder="e.g., 1x Instagram Reel + 2 Stories">
@@ -89,8 +96,9 @@ if(in_array($check->fetchColumn(),[false,'suspended','blocked','inactive'],true)
                     <input name="cancellation_terms" required placeholder="e.g., 50% refund if cancelled 3 days prior">
                 </label>
                 
-                <div class="full" style="margin-top: 12px;">
-                    <button class="if-button" type="submit">Save as Draft</button>
+                                <div class="full" style="margin-top: 12px; display: flex; gap: 10px;">
+                    <button class="if-button" type="submit" id="pkg-submit-btn">Save as Draft</button>
+                    <button class="if-text-button" type="button" id="pkg-cancel-btn" style="display: none;">Cancel Edit</button>
                 </div>
             </form>
         </div>

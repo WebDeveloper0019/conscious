@@ -110,7 +110,7 @@ box.append(node('p', '', row.requested_at + ' · ' + money.format(Number(row.amo
   bindForm('if-product-search',async function(form){var query=form.elements.query.value.trim();var response=await fetch('../../../api/public/catalog.php?q='+encodeURIComponent(query)+'&limit=12',{headers:{Accept:'application/json'},cache:'no-store'});var data=await response.json().catch(function(){return{};});if(!response.ok)throw new Error(data.message||'Product search failed.');var box=document.getElementById('if-product-results');box.replaceChildren();if(!data.products.length)box.append(node('p','if-empty','No approved products match this search.'));data.products.forEach(function(product){box.append(productRow(product,false));});});
   bindForm('if-password-form',async function(form){var data=formData(form);await request('account.php','PATCH',data);form.reset();show('Password changed. Other sessions have been signed out.');});
   // --- PACKAGES LOGIC ---
-  async function loadPackages() {
+   async function loadPackages() {
     try {
       var data = await request('packages.php', 'GET');
       var box = document.getElementById('if-package-list');
@@ -174,11 +174,42 @@ box.append(node('p', '', row.requested_at + ' · ' + money.format(Number(row.amo
           return btn;
         }
 
+        if (pkg.status === 'draft' || pkg.status === 'pending_approval' || pkg.status === 'paused') {
+            var editBtn = node('button', 'if-button', 'Edit');
+            editBtn.type = 'button';
+            editBtn.style.background = 'var(--navy)';
+            editBtn.addEventListener('click', function() {
+                document.getElementById('edit-package-id').value = pkg.id;
+                document.getElementById('pkg-submit-btn').textContent = 'Update Package';
+                document.getElementById('pkg-cancel-btn').style.display = 'inline-block';
+                
+                var form = document.getElementById('if-package-form');
+                form.elements.title.value = pkg.title;
+                form.elements.description.value = pkg.description;
+                form.elements.price_inr.value = pkg.price_inr;
+                form.elements.turnaround_days.value = pkg.turnaround_days;
+                form.elements.revisions.value = pkg.revisions;
+                form.elements.capacity.value = pkg.capacity;
+                form.elements.deliverables.value = (pkg.deliverables_json || []).join(', ');
+                form.elements.platforms.value = (pkg.platforms_json || []).join(', ');
+                form.elements.usage_rights.value = pkg.usage_rights;
+                form.elements.vendor_requirements.value = pkg.vendor_requirements;
+                form.elements.tax_treatment.value = pkg.tax_treatment;
+                form.elements.cancellation_terms.value = pkg.cancellation_terms;
+                
+                document.getElementById('if-create-package-card').scrollIntoView({behavior: 'smooth'});
+            });
+            actions.append(editBtn);
+        }
+
         if (pkg.status === 'draft') {
           actions.append(createActionBtn('Submit for Approval', 'submit', pkg.id, false));
         }
         if (pkg.status === 'active') {
           actions.append(createActionBtn('Pause', 'pause', pkg.id, false));
+        }
+        if (pkg.status === 'paused') {
+          actions.append(createActionBtn('Resume (Activate)', 'resume', pkg.id, false));
         }
         if (pkg.status !== 'archived' && pkg.status !== 'pending_approval') {
           actions.append(createActionBtn('Archive', 'archive', pkg.id, true));
@@ -192,9 +223,15 @@ box.append(node('p', '', row.requested_at + ' · ' + money.format(Number(row.amo
     }
   }
 
+  // Handle Package Form Submission (Create OR Update)
   bindForm('if-package-form', async function(form) {
     var d = formData(form);
+    var pkgId = document.getElementById('edit-package-id').value;
+    var isEdit = pkgId !== '';
+    
     var payload = {
+      id: pkgId,
+      action: isEdit ? 'edit' : 'create',
       title: d.title,
       description: d.description,
       price_inr: Number(d.price_inr),
@@ -209,11 +246,32 @@ box.append(node('p', '', row.requested_at + ' · ' + money.format(Number(row.amo
       cancellation_terms: d.cancellation_terms
     };
     
-    await request('packages.php', 'POST', payload);
+    if (isEdit) {
+        await request('packages.php', 'PATCH', payload);
+        show('Package updated successfully.');
+    } else {
+        await request('packages.php', 'POST', payload);
+        show('Package saved as Draft.');
+    }
+    
+    // Reset form state
     form.reset();
-    show('Package saved as Draft.');
+    document.getElementById('edit-package-id').value = '';
+    document.getElementById('pkg-submit-btn').textContent = 'Save as Draft';
+    document.getElementById('pkg-cancel-btn').style.display = 'none';
+    
     await loadPackages();
   });
+
+  // Handle Cancel Edit
+  document.getElementById('pkg-cancel-btn').addEventListener('click', function() {
+    var form = document.getElementById('if-package-form');
+    form.reset();
+    document.getElementById('edit-package-id').value = '';
+    document.getElementById('pkg-submit-btn').textContent = 'Save as Draft';
+    this.style.display = 'none';
+  });
+  
 
 
    async function boot() {
