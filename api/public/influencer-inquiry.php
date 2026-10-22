@@ -1,25 +1,66 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__.'/../lib/helpers.php';
-require_once __DIR__.'/../lib/notifications.php';
 send_cors_headers();
-if(($_SERVER['REQUEST_METHOD']??'')!=='POST')json_response(405,['success'=>false,'message'=>'Method not allowed.']);
-if(rate_limit('creator-inquiry|'.request_fingerprint(request_ip()),5,3600))json_response(429,['success'=>false,'message'=>'Too many inquiries. Please try again later.']);
-$body=get_json_body();
-$handle=strtolower(trim((string)($body['handle']??'')));
-$name=trim((string)($body['name']??''));
-$email=strtolower(trim((string)($body['email']??'')));
-$phone=preg_replace('/\D+/','',(string)($body['phone']??''));
-$package=trim((string)($body['package']??''));
-$message=trim((string)($body['message']??''));
-if(!preg_match('/^[a-z0-9._-]{3,100}$/',$handle)||mb_strlen($name)<2||mb_strlen($name)>140||!is_valid_email($email)||!preg_match('/^[6-9][0-9]{9}$/',$phone)||!in_array($package,['Basic','Gold','Platinum'],true)||mb_strlen($message)>3000)
-    json_response(422,['success'=>false,'message'=>'Check your name, email, Indian mobile, package and message.']);
-$db=get_db();
-$creator=$db->prepare('SELECT id FROM influencers WHERE handle=:handle AND status="active" AND email_verified=1 LIMIT 1');
-$creator->execute(['handle'=>$handle]);
-$id=$creator->fetchColumn();
-if(!$id)json_response(404,['success'=>false,'message'=>'This creator is not available for inquiries.']);
-$inquiry=uuid_string();
-$db->prepare('INSERT INTO influencer_inquiries (id,influencer_id,sender_name,sender_email,sender_phone,package_name,message,status,created_at) VALUES (:id,:owner,:name,:email,:phone,:package,:message,"new",UTC_TIMESTAMP())')->execute(['id'=>$inquiry,'owner'=>$id,'name'=>$name,'email'=>$email,'phone'=>$phone,'package'=>$package,'message'=>$message?:null]);
-create_notification('influencer',$id,'new_inquiry','New partnership inquiry','A new '.$package.' inquiry is waiting in Creator Studio.',null,['inquiry_id'=>$inquiry]);
-json_response(201,['success'=>true,'message'=>'Your inquiry has been sent to the creator.','inquiry_id'=>$inquiry]);
+
+if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+    json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
+}
+
+// Rate limit to prevent spam (max 5 inquiries per 10 mins per IP)
+if (rate_limit('inquiry|' . request_ip(), 5, 600)) {
+    json_response(429, ['success' => false, 'message' => 'Too many inquiries. Please try again later.']);
+}
+
+$body = get_json_body();
+$handle = trim($body['handle'] ?? '');
+$name = trim($body['name'] ?? '');
+$phone = trim($body['phone'] ?? '');
+$email = trim($body['email'] ?? '');
+$package = trim($body['package'] ?? '');
+$message = trim($body['message'] ?? '');
+
+if (!$handle || !$name || !$phone || !$email || !$package) {
+    json_response(422, ['success' => false, 'message' => 'Please fill in all required fields.']);
+}
+
+if (!is_valid_email($email)) {
+    json_response(422, ['success' => false, 'message' => 'Please enter a valid email address.']);
+}
+
+$db = get_db();
+
+// Find the influencer by handle
+$stmt = $db->prepare('SELECT id FROM influencers WHERE handle = :h AND status IN ("active", "pending_review") LIMIT 1');
+$stmt->execute(['h' => strtolower($handle)]);
+$influencerId = $stmt->fetchColumn();
+
+if (!$influencerId) {
+    json_response(404, ['success' => false, 'message' => 'Creator not found.']);
+}
+
+// Save the inquiry
+$db->prepare('INSERT INTO influencer_inquiries (id, influencer_id, sender_name, sender_email, sender_phone, package_name, message, status, created_at) 
+              VALUES (:id, :inf, :name, :email, :phone, :pkg, :msg, "new", UTC_TIMESTAMP())')
+   ->execute([
+       'id' => uuid_string(),
+       'inf' => $influencerId,
+       'name' => $name,
+       'email' => $email,
+       'phone' => $phone,
+       'pkg' => $package,
+       'msg' => $message
+   ]);
+
+// Optional: Insert a notification for the creator
+try {
+    $db->prepare('INSERT INTO influencer_notifications (id, influencer_id, title, message, read_at, created_at) 
+                  VALUES (:id, :inf, "New Partnership Inquiry", :msg, NULL, UTC_TIMESTAMP())')
+       ->execute([
+           'id' => uuid_string(), 
+           'inf' => $influencerId, 
+           'msg' => "$name sent an inquiry for $package."
+       ]);
+} catch(Throwable $e) {}
+
+json_response(201, ['success' => true, 'message' => 'Your inquiry has been sent to the creator!']);

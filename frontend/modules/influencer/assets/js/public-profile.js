@@ -117,15 +117,57 @@
     const modalTitle=document.getElementById('contactInfluencerModalTitle');if(modalTitle)modalTitle.textContent='Contact '+creator.full_name;
     const description=document.getElementById('contactInfluencerModalDescription');if(description)description.textContent='Share your project details. Your inquiry will be sent securely to this creator.';
     
-    // 6. Contact Form (Preview)
+    // 6. Contact Form (Real Submission)
     const form=document.getElementById('ip-contact-form');
-    if(form) form.addEventListener('submit', event => {
-        event.preventDefault(); event.stopImmediatePropagation();
+    if(form) form.addEventListener('submit', async event => {
+        event.preventDefault(); 
+        event.stopImmediatePropagation();
         form.classList.add('was-validated');
         if(!form.checkValidity()) return;
-        const feedback=document.getElementById('ip-contact-feedback');
-        feedback.textContent='This is a design preview. No message was sent.';
-        feedback.classList.remove('alert-danger'); feedback.classList.add('alert-success','show');
+        
+        const btn = form.querySelector('[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+        
+        const feedback = document.getElementById('ip-contact-feedback');
+        feedback.classList.remove('show', 'alert-danger', 'alert-success');
+        
+        try {
+            const res = await fetch('api/public/influencer-inquiry.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    handle: creator.handle,
+                    name: document.getElementById('contact-name').value.trim(),
+                    phone: document.getElementById('contact-number').value.trim(),
+                    email: document.getElementById('contact-email').value.trim(),
+                    package: document.getElementById('contact-service').value,
+                    message: document.getElementById('contact-query').value.trim()
+                })
+            });
+            
+            const result = await res.json();
+            if (!res.ok) throw Error(result.message || 'Could not send inquiry.');
+            
+            feedback.textContent = result.message;
+            feedback.classList.add('alert-success', 'show');
+            form.reset();
+            form.classList.remove('was-validated');
+            
+            // Auto-close modal after 3 seconds
+            setTimeout(() => {
+                bootstrap.Modal.getInstance(document.getElementById('contactInfluencerModal')).hide();
+                feedback.classList.remove('show');
+            }, 3000);
+            
+        } catch (error) {
+            feedback.textContent = error.message;
+            feedback.classList.add('alert-danger', 'show');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
     }, true);
 
   }).catch(error => {
