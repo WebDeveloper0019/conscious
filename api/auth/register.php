@@ -53,15 +53,12 @@ try {
     if ($db->inTransaction()) $db->rollBack();
     json_response(502, ['success'=>false,'message'=>'We could not send the verification email. Please try again.']);
 }
-$dummyOtp = customer_dummy_otp_enabled();
 $localOutbox = APP_ENV === 'local' && MAIL_TRANSPORT === 'log';
 json_response(201, [
     'success'=>true,
-    'message'=>$dummyOtp
-        ? 'Local test mode: use verification code 123456. No email was sent.'
-        : ($localOutbox
+    'message'=>$localOutbox
         ? 'Local test mode: your code was saved in api/data/mail-outbox, not sent to email.'
-        : 'We sent a 6-digit verification code to your email.'),
+        : 'We sent a 6-digit verification code to your email.',
     'requiresVerification'=>true,
     'email'=>$email,
     'redirect'=>'verify-email.php'

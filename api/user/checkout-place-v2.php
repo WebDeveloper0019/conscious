@@ -26,11 +26,13 @@ function checkout_place_v2(): void
 
     $userId = auth_user_id($auth);
     $principal = ['type' => 'customer', 'id' => $userId];
-    $idempotency = begin_idempotent_request('checkout.place', $principal, $body);
     $db = get_db();
     $db->beginTransaction();
 
     try {
+        // Keep the retry key in the same transaction as the order. A failed
+        // checkout must not leave behind a permanently "processing" key.
+        $idempotency = begin_idempotent_request('checkout.place', $principal, $body);
         $owner=$db->prepare('SELECT id FROM users WHERE id=:id FOR UPDATE');$owner->execute(['id'=>$userId]);$owner->fetch();
         $quoteStmt = $db->prepare(
             'SELECT q.*,a.full_name,a.phone,a.pincode,a.address_line1,a.address_line2,a.city,a.state,a.landmark

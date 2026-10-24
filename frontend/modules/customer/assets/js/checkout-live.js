@@ -71,12 +71,11 @@
   var recalculate = make('button', 'cc-btn', 'Calculate delivery and total'); recalculate.type = 'button'; pricing.append(recalculate);
   main.append(pricing);
   var payment = make('section', 'cp-check-section'); payment.append(make('h2', '', '3. Payment'));
-  payment.append(make('p', '', 'Choose Razorpay online payment or cash on delivery where every vendor offers it. Delivery remains vendor-managed.'));
+  payment.append(make('p', '', 'Choose how to pay. Cash on delivery is confirmed when we calculate delivery for your address; each vendor handles dispatch manually.'));
   var onlineChoice = make('label', 'cc-check cp-payment-method'); var onlineRadio = make('input'); onlineRadio.type='radio'; onlineRadio.name='checkout-payment'; onlineRadio.value='online'; onlineRadio.checked=true;
   onlineChoice.append(onlineRadio, document.createTextNode(' Pay online securely with Razorpay (UPI, card or net banking)'));
   var codChoice = make('label', 'cc-check cp-payment-method'); var codRadio = make('input'); codRadio.type='radio'; codRadio.name='checkout-payment'; codRadio.value='cod';
-  codRadio.disabled=true;
-  codChoice.append(codRadio, document.createTextNode(' Cash on delivery, if every vendor allows it'));
+  codChoice.append(codRadio, document.createTextNode(' Cash on delivery — pay when your order arrives'));
   payment.append(onlineChoice,codChoice);
   var terms = make('label', 'cc-check cp-terms-accept'); var accept = make('input'); accept.type = 'checkbox';
   terms.append(accept, document.createTextNode(' I accept the order, delivery, cancellation and return terms.'));
@@ -147,7 +146,9 @@
       var body = Object.fromEntries(new FormData(addressForm).entries());
       var result = await request('addresses.php', 'POST', body);
       addressForm.reset(); quote = null; place.disabled = true;
-      await refreshAddresses(result.address.id); feedback.textContent = 'Address saved. Calculate delivery to continue.';
+      await refreshAddresses(result.address.id);
+      feedback.textContent = 'Address saved. Checking delivery and payment options…';
+      if (cart && cart.items && cart.items.length) recalculate.click();
     } catch (error) { showError(error); }
     finally { saveAddress.disabled = false; }
   });
@@ -157,10 +158,14 @@
     try {
       var result = await request('checkout-quote.php', 'POST', { address_id: selectedAddress, coupon_code: couponLabel.querySelector('input').value.trim() });
       quote = result.quote; idempotency = '';
-      var canCod = Object.values(quote.vendors || {}).every(function(vendor){return Boolean(vendor.cod_enabled);});
+      var vendors = Object.values(quote.vendors || {});
+      var canCod = vendors.length > 0 && vendors.every(function(vendor){return vendor.cod_enabled === true || Number(vendor.cod_enabled) === 1;});
       codRadio.disabled = !canCod;
       if(!canCod && codRadio.checked){onlineRadio.checked=true;choosePayment();}
-      if(!canCod) feedback.textContent = 'Cash on delivery is unavailable for at least one vendor; choose online payment.';
+      if(!canCod) {
+        var unavailable = vendors.filter(function(vendor){return vendor.cod_enabled !== true && Number(vendor.cod_enabled) !== 1;}).map(function(vendor){return vendor.vendor_name;});
+        feedback.textContent = 'Cash on delivery is not offered by ' + (unavailable.join(', ') || 'this order') + '. Choose online payment or remove that vendor’s items.';
+      }
       quoteBox.replaceChildren();
       quoteBox.append(make('p', '', 'Products: ' + money.format(Number(quote.subtotal))));
       Object.keys(quote.vendors || {}).forEach(function (key) {
@@ -171,7 +176,7 @@
       if (Number(quote.discount_amount)) quoteBox.append(make('p', '', 'Discount: −' + money.format(Number(quote.discount_amount))));
       total.textContent = 'Total: ' + money.format(Number(quote.total_amount));
       place.disabled = false;
-      if(canCod) feedback.textContent = 'Price reserved for 15 minutes. Delivery is managed manually by each vendor.';
+      if(canCod) feedback.textContent = 'Cash on delivery is available. Price reserved for 15 minutes; delivery is managed manually by each vendor.';
     } catch (error) { quote = null; showError(error); }
     finally { recalculate.disabled = false; }
   });
@@ -195,7 +200,8 @@
     cart = results[0].cart;
     if (!cart || !cart.items || !cart.items.length) { itemBox.append(make('p', '', pendingPayment?'Your cart was converted to a pending online order.':'Your bag is empty. Add a product before checkout.')); recalculate.disabled = true; return; }
     cart.items.forEach(function (item) { itemBox.append(make('p', '', item.name + ' × ' + item.quantity + ' · ' + money.format(Number(item.line_subtotal)))); });
-    total.textContent = 'Products: ' + money.format(Number(cart.subtotal)) + ' · Delivery calculated next';
+    total.textContent = 'Products: ' + money.format(Number(cart.subtotal)) + ' · Checking delivery…';
+    if (selectedAddress && !pendingPayment) recalculate.click();
   }).catch(showError);
   if(pendingPayment)refreshPending();
 })();

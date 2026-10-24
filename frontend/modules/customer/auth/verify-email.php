@@ -1,16 +1,13 @@
 <?php
 require_once __DIR__.'/../../../../api/lib/customer-otp.php';
-$dummyOtp = customer_dummy_otp_enabled();
 $localMailOutbox = APP_ENV === 'local' && MAIL_TRANSPORT === 'log';
 $pageTitle='Verify customer email'; $authPage='verify'; require __DIR__.'/../layouts/auth-head-v2.php';
 ?>
 <article class="ca-card" data-auth-card>
 <header class="ca-card-head"><span class="ca-card-icon"><i class="fa-solid fa-envelope-circle-check"></i></span><div><p class="ca-overline">Secure verification</p><h2>Check your email</h2></div></header>
-<p class="ca-card-copy"><?= $dummyOtp
-  ? 'Local test mode: enter 123456 below. No email is sent. The code is valid for 10 minutes.'
-  : ($localMailOutbox
+<p class="ca-card-copy"><?= $localMailOutbox
   ? 'Local test mode: email is not sent. Open the latest matching message in api/data/mail-outbox to read your six-digit code. It is valid for 10 minutes.'
-  : 'Enter the six-digit code sent to your email. It remains valid for 10 minutes.') ?></p>
+  : 'Enter the six-digit code sent to your email. It remains valid for 10 minutes.' ?></p>
 <form id="verify-email-form" class="ca-auth-form" novalidate>
 <div class="ca-form-alert" role="alert" aria-live="assertive" tabindex="-1" hidden data-form-alert></div>
 <div class="cc-field ca-field"><label for="verify-email">Email address</label><div class="ca-input-wrap"><i class="fa-regular fa-envelope"></i><input class="cc-input" id="verify-email" name="email" type="email" required autocomplete="email" placeholder="you@example.com"></div></div>

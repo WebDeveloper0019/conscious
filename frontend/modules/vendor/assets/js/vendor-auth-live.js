@@ -62,7 +62,9 @@
   if (verify) {
     var email = sessionStorage.getItem('ci_vendor_pending_email');
     var demoCallout = verify.querySelector('.vc-callout');
-    if (email && demoCallout) demoCallout.textContent = 'Enter the code sent to ' + email + '.';
+    if (email && demoCallout) demoCallout.textContent = demoCallout.textContent.includes('Local test mode:')
+      ? 'Verifying ' + email + '. The random code is in api/data/mail-outbox; no email was sent.'
+      : 'Enter the code sent to ' + email + '.';
     if (email) verify.addEventListener('submit', async function (event) {
       event.preventDefault(); event.stopImmediatePropagation();
       if (!verify.checkValidity()) { verify.reportValidity(); return; }

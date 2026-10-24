@@ -7,11 +7,9 @@ $body=get_json_body(); $email=strtolower(trim((string)($body['email']??'')));
 if(!is_valid_email($email)) json_response(422,['success'=>false,'message'=>'Enter a valid email address.']);
 if(rate_limit('resend|'.request_ip().'|'.$email,5,3600)) json_response(429,['success'=>false,'message'=>'Too many requests. Try again later.']);
 $db=get_db(); $stmt=$db->prepare('SELECT * FROM users WHERE email=:email LIMIT 1'); $stmt->execute(['email'=>$email]); $user=$stmt->fetch();
-$generic=['success'=>true,'message'=>customer_dummy_otp_enabled()
-    ? 'Local test mode: if your account needs verification, use code 123456. No email was sent.'
-    : (APP_ENV === 'local' && MAIL_TRANSPORT === 'log'
+$generic=['success'=>true,'message'=>APP_ENV === 'local' && MAIL_TRANSPORT === 'log'
     ? 'If an unverified account exists, its new code was saved in api/data/mail-outbox. Local test mode does not send email.'
-    : 'If an unverified account exists, a new code has been sent.')];
+    : 'If an unverified account exists, a new code has been sent.'];
 if(!$user || !empty($user['email_verified'])) json_response(200,$generic);
 if(!empty($user['otp_last_sent_at'])&&strtotime($user['otp_last_sent_at'])>time()-60) json_response(429,['success'=>false,'message'=>'Please wait 60 seconds before requesting another code.']);
 $otp=customer_verification_code(); [$sent,$error]=send_otp_email($email,$user['first_name'],$otp);
