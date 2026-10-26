@@ -1,4 +1,5 @@
-<div class="vc-callout" role="note">Only products belonging to your vendor account appear here. A draft is not visible to customers. Images must pass security scanning and an admin must approve the product before it can go live.</div>
+<section class="vc-workflow-intro" aria-labelledby="catalog-intro-title"><div class="vc-workflow-icon"><i class="fa-solid fa-box-open"></i></div><div><span class="vc-section-kicker">PRODUCT WORKFLOW</span><h2 id="catalog-intro-title">Create an accurate listing, then send it for review</h2><p>Drafts stay private. Add genuine product photos and complete every detail before requesting admin approval.</p></div><ol class="vc-mini-steps" aria-label="Product publishing steps"><li><b>1</b><span>Save draft</span></li><li><b>2</b><span>Add images</span></li><li><b>3</b><span>Submit review</span></li><li><b>4</b><span>Publish after approval</span></li></ol></section>
+<div class="vc-callout" role="note"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i><span>Images must pass security scanning and an admin must approve the product before customers can see it.</span></div>
 <div id="catalog-message" class="vc-callout mt-3" role="status" hidden></div>
 <section class="vc-card mt-3" aria-label="Your products">
   <div class="vc-card-head"><div><h2>Your products</h2><span class="vc-help" id="catalog-count">Loading…</span></div><div class="vc-actions"><button type="button" class="vc-btn small" id="catalog-refresh">Refresh</button><button type="button" class="vc-btn small primary" id="catalog-new">Add product</button></div></div>
@@ -9,7 +10,7 @@
   <div class="vc-card-head"><h2 id="catalog-editor-title">New product draft</h2><button type="button" class="vc-btn small" id="catalog-close">Close editor</button></div>
   <div class="vc-card-body">
     <form id="catalog-form" class="vc-form-grid">
-      <div class="vc-field full"><label for="cat-name">Product name</label><input class="vc-input" id="cat-name" name="name" required minlength="3" maxlength="220"></div>
+      <div class="vc-field full"><label for="cat-name">Product name <span class="vc-required" aria-hidden="true">*</span></label><input class="vc-input" id="cat-name" name="name" required minlength="3" maxlength="220" aria-describedby="cat-name-help"><small class="vc-help" id="cat-name-help">Use the name a customer would recognise. Avoid promotional claims.</small></div>
       <div class="vc-field"><label for="cat-sku">SKU</label><input class="vc-input" id="cat-sku" name="sku" required minlength="2" maxlength="100" pattern="[A-Za-z0-9._-]{2,100}"></div>
       <div class="vc-field"><label for="cat-state">Origin state or UT</label><select class="vc-select" id="cat-state" name="origin_state"><option value="">Choose state or UT</option><?php require __DIR__.'/../components/india-states-options.php'; ?></select></div>
       <div class="vc-field full"><label for="cat-short">Short description</label><textarea class="vc-textarea" id="cat-short" name="short_description" maxlength="500"></textarea></div>
@@ -26,7 +27,7 @@
       <div class="vc-field"><label for="cat-days-min">Minimum processing days</label><input class="vc-input" id="cat-days-min" name="processing_min_days" type="number" min="0" max="90" step="1" value="1" required></div>
       <div class="vc-field"><label for="cat-days-max">Maximum processing days</label><input class="vc-input" id="cat-days-max" name="processing_max_days" type="number" min="0" max="90" step="1" value="3" required></div>
       <div class="vc-field full"><label class="vc-check"><input id="cat-attest" type="checkbox" required> I confirm these details are accurate and that I can provide evidence for every environmental or artisan claim.</label></div>
-      <div class="vc-field full"><button type="submit" class="vc-btn primary">Save product draft</button></div>
+      <div class="vc-field full"><div class="vc-form-actions vc-form-actions-inline"><span class="vc-help">You can return and finish this draft later.</span><button type="submit" class="vc-btn primary"><i class="fa-solid fa-floppy-disk"></i>Save product draft</button></div></div>
     </form>
   </div>
 </section>

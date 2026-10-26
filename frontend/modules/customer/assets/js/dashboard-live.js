@@ -3,11 +3,19 @@
   var root = document.querySelector('[data-customer-dashboard]');
   if (!root) return;
   var demo = sessionStorage.getItem('ci_demo_customer') || localStorage.getItem('ci_demo_customer');
+  var errorBox = root.querySelector('[data-dashboard-error]');
+  var retry = root.querySelector('[data-dashboard-retry]');
   function target(name) { return root.querySelector('[data-dashboard-' + name + ']'); }
   function put(name, value) { var el = target(name); if (el) el.textContent = value; }
   function element(tag, text, className) { var el = document.createElement(tag); if (text !== undefined) el.textContent = text; if (className) el.className = className; return el; }
   function money(value) { return new Intl.NumberFormat('en-IN', {style:'currency',currency:'INR'}).format(Number(value) || 0); }
   function date(value) { if (!value) return ''; var d = new Date(String(value).replace(' ', 'T') + (String(value).includes('Z') ? '' : 'Z')); return Number.isNaN(d.getTime()) ? '' : new Intl.DateTimeFormat('en-IN',{day:'numeric',month:'short',year:'numeric',timeZone:'Asia/Kolkata'}).format(d); }
+  function loading() {
+    if (errorBox) errorBox.hidden = true;
+    if (retry) retry.disabled = true;
+    put('intro', 'Loading your orders, bookings and rewards…');
+    ['orders','bookings','actions'].forEach(function (name) { put(name, 'Loading…'); });
+  }
   function render(data) {
     var customer = data.customer || {}, stats = data.stats || {};
     var name = customer.first_name || customer.firstName || 'there';
@@ -46,6 +54,8 @@
     var actions=Array.isArray(data.pendingActions)?data.pendingActions:[];
     if(!actions.length)actionBox.append(element('p','You are all caught up. We will show payment, review and delivery tasks here when needed.'));
     actions.forEach(function(action){var p=element('p',action.title || 'Action needed'); actionBox.append(p); if(action.type==='payment') {var a=element('a','View orders','cc-btn');a.href='orders.php';actionBox.append(a);} });
+    if (errorBox) errorBox.hidden = true;
+    if (retry) retry.disabled = false;
   }
   if (demo) {
     put('greeting','Preview dashboard'); put('intro','This browser-only preview has no real orders or bookings. Sign in with a seeded customer account to use the live workflow.');
@@ -53,5 +63,19 @@
     put('points','—'); put('order-count','Preview only'); put('active-count','Preview only'); put('booking-count','Preview only');
     return;
   }
-  fetch('../../../api/user/dashboard.php',{credentials:'same-origin',headers:{Accept:'application/json'},cache:'no-store'}).then(function(response){return response.json().then(function(data){if(!response.ok)throw Error(data.message || 'Dashboard is unavailable.');return data;});}).then(render).catch(function(error){put('intro','We could not load your account summary. '+error.message);['orders','bookings','actions'].forEach(function(name){put(name,'Unable to load right now. Please retry later.');});});
+  function load() {
+    loading();
+    fetch('../../../api/user/dashboard.php',{credentials:'same-origin',headers:{Accept:'application/json'},cache:'no-store'}).then(function(response){return response.json().then(function(data){if(!response.ok)throw Error(data.message || 'Dashboard is unavailable.');return data;});}).then(render).catch(function(error){
+      put('intro','Your account summary is temporarily unavailable.');
+      ['orders','bookings','actions'].forEach(function(name){put(name,'Unable to load right now.');});
+      if (errorBox) {
+        errorBox.hidden = false;
+        var message = errorBox.querySelector('[data-dashboard-error-message]');
+        if (message) message.textContent = error.message || 'Please check your connection and try again.';
+      }
+      if (retry) retry.disabled = false;
+    });
+  }
+  if (retry) retry.addEventListener('click', load);
+  load();
 })();

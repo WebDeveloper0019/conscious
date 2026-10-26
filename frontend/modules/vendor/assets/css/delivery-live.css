@@ -10,9 +10,9 @@
 .dl-history{border-left:2px solid var(--line);padding:3px 0 3px 13px;margin:12px 0;font-size:11px;color:var(--muted)}
 .dl-history p{margin:7px 0}
 .dl-milestone-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.dl-milestone-form textarea{grid-column:1/-1}
+.dl-milestone-form .full{grid-column:1/-1}
 .dl-milestone-form button{justify-self:start}
 .dl-item-quantity{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:7px 0;padding:9px 0;border-bottom:1px solid var(--line-soft)}
 .dl-item-quantity input{max-width:90px}
 .vc-delivery-error{background:var(--red-soft);border-color:#fac7c2;color:var(--red)}
-@media(max-width:700px){.dl-milestone-form{grid-template-columns:1fr}.dl-milestone-form textarea{grid-column:auto}.dl-row{align-items:flex-start}.dl-item-quantity{align-items:flex-start;flex-direction:column}.dl-item-quantity input{max-width:none}}
+@media(max-width:700px){.dl-milestone-form{grid-template-columns:1fr}.dl-milestone-form .full{grid-column:auto}.dl-row{align-items:flex-start}.dl-item-quantity{align-items:flex-start;flex-direction:column}.dl-item-quantity input{max-width:none}}

@@ -5,7 +5,7 @@ send_cors_headers();
 $db=get_db();
 $id=trim((string)($_GET['id']??''));
 if($id!==''){
-    $stmt=$db->prepare('SELECT e.*,h.display_name AS host_name FROM events e JOIN event_hosts h ON h.id=e.host_id WHERE e.id=:id AND e.status="published"');
+    $stmt=$db->prepare('SELECT e.*,h.display_name AS host_name,(SELECT f.id FROM event_media em JOIN file_assets f ON f.id=em.file_asset_id WHERE em.event_id=e.id AND f.visibility="public" AND f.scan_status="clean" AND f.deleted_at IS NULL ORDER BY em.sort_order LIMIT 1) AS primary_file_asset_id FROM events e JOIN event_hosts h ON h.id=e.host_id WHERE e.id=:id AND e.status="published"');
     $stmt->execute(['id'=>$id]);
     $event=$stmt->fetch();
     if(!$event)json_response(404,['success'=>false,'message'=>'Event not found.']);

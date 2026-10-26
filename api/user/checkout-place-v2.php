@@ -17,8 +17,8 @@ function checkout_place_v2(): void
     $body = get_json_body();
     $quoteId = trim((string)($body['quote_id'] ?? ''));
     $paymentMethod = trim((string)($body['payment_method'] ?? ''));
-    if ($quoteId === '' || !in_array($paymentMethod, ['cod', 'online'], true)) {
-        json_response(422, ['success' => false, 'message' => 'A valid quote and payment method are required.']);
+    if ($quoteId === '' || $paymentMethod !== 'online') {
+        json_response(422, ['success' => false, 'message' => 'Choose online payment and calculate a valid checkout quote. Cash on delivery is currently unavailable.']);
     }
     if ($paymentMethod === 'online' && APP_ENV !== 'local' && !razorpay_is_configured()) {
         json_response(503, ['success' => false, 'message' => 'Online payment is temporarily unavailable.']);

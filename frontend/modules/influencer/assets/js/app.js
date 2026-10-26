@@ -7,24 +7,26 @@
   function token(){var cookie=document.cookie.match(/(?:^|;\s*)ci_csrf=([^;]+)/);return sessionStorage.getItem('ci_influencer_csrf')||(cookie?decodeURIComponent(cookie[1]):'');}
   async function request(path,method,body,extra){var headers={Accept:'application/json'};if(method!=='GET')headers['X-CSRF-Token']=token();if(body&&! (body instanceof FormData))headers['Content-Type']='application/json';if(extra)Object.assign(headers,extra);var response=await fetch(api+path,{method:method,credentials:'same-origin',cache:'no-store',headers:headers,body:body instanceof FormData?body:body?JSON.stringify(body):undefined});var data=await response.json().catch(function(){return{};});if(!response.ok)throw new Error(data.message||'The action could not be completed.');return data;}
   function formData(form){return Object.fromEntries(new FormData(form).entries());}
-  function bindForm(id,handler){var form=document.getElementById(id);form.addEventListener('submit',async function(event){event.preventDefault();if(!form.checkValidity()){form.reportValidity();return;}var button=form.querySelector('[type=submit]');button.disabled=true;try{await handler(form);}catch(error){show(error.message,true);}finally{button.disabled=false;}});}
+  function showFieldState(input){var field=input.closest('label,.if-field');if(!field)return;var error=field.querySelector('.if-field-error');if(input.validity.valid){input.removeAttribute('aria-invalid');if(error)error.remove();return;}if(!error){error=node('small','if-field-error');error.setAttribute('role','alert');field.append(error);}error.textContent=input.validity.valueMissing?'This field is required.':input.validationMessage;input.setAttribute('aria-invalid','true');}
+  document.addEventListener('invalid',function(event){showFieldState(event.target);},true);document.addEventListener('input',function(event){if(event.target.matches('input,select,textarea'))showFieldState(event.target);});
+  function bindForm(id,handler){var form=document.getElementById(id);form.addEventListener('submit',async function(event){event.preventDefault();form.classList.add('if-validated');if(!form.checkValidity()){form.reportValidity();return;}var button=form.querySelector('[type=submit]');var label=button.textContent;button.disabled=true;button.setAttribute('aria-busy','true');button.textContent='Saving…';try{await handler(form);}catch(error){show(error.message,true);}finally{button.disabled=false;button.removeAttribute('aria-busy');button.textContent=label;}});}
   function selectSection()
   {
 
     var key=location.hash.slice(1)||'overview';
 
     if(!document.getElementById(key)||!document.getElementById(key).classList.contains('if-section'))key='overview';document.querySelectorAll('.if-section').forEach(function(el){el.classList.toggle('active',el.id===key);});
-    document.querySelectorAll('[data-nav]').forEach(function(el){el.classList.toggle('active',el.dataset.nav===key);});
+    document.querySelectorAll('[data-nav]').forEach(function(el){var active=el.dataset.nav===key;el.classList.toggle('active',active);if(active)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
   document.getElementById('if-title').textContent=({overview:'Overview',application:'Profile & verification',packages:'Service Packages',campaigns:'Campaign links',curations:'Curated products',analytics:'Analytics',earnings:'Earnings',withdrawals:'Withdrawals',inquiries:'Partnership inquiries',notifications:'Notifications',settings:'Settings'})[key];
-    document.getElementById('if-sidebar').classList.remove('open');
+    closeNavigation();
 
 
 
   }
 
-  var curationNav=node('a','','');curationNav.href='#curations';curationNav.dataset.nav='curations';curationNav.append(node('i','fa-solid fa-bag-shopping'),document.createTextNode(' Curated products'));document.querySelector('[data-nav="analytics"]').before(curationNav);
-  var inquiryNav=node('a','','');inquiryNav.href='#inquiries';inquiryNav.dataset.nav='inquiries';var inquiryIcon=node('i','fa-regular fa-envelope');inquiryNav.append(inquiryIcon,document.createTextNode(' Partnership inquiries'));document.querySelector('[data-nav="notifications"]').before(inquiryNav);
-  addEventListener('hashchange',selectSection);selectSection();document.getElementById('if-menu').addEventListener('click',function(){document.getElementById('if-sidebar').classList.toggle('open');});
+  var sidebar=document.getElementById('if-sidebar'),menu=document.getElementById('if-menu'),overlay=document.getElementById('if-sidebar-overlay');
+  function closeNavigation(){sidebar.classList.remove('open');overlay.classList.remove('show');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');document.body.classList.remove('if-nav-open');}
+  addEventListener('hashchange',selectSection);selectSection();menu.addEventListener('click',function(){var open=sidebar.classList.toggle('open');overlay.classList.toggle('show',open);menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close navigation':'Open navigation');document.body.classList.toggle('if-nav-open',open);});overlay.addEventListener('click',closeNavigation);document.addEventListener('keydown',function(event){if(event.key==='Escape')closeNavigation();});
   document.getElementById('if-logout').addEventListener('click',async function(event){event.preventDefault();try{await request('auth/logout.php','POST');}finally{sessionStorage.removeItem('ci_influencer_csrf');location.replace('auth/login.php');}});
   async function loadIdentity(){var result=await request('auth/me.php','GET');if(result.csrf_token)sessionStorage.setItem('ci_influencer_csrf',result.csrf_token);var creator=result.influencer||{};document.getElementById('if-identity').textContent=(creator.full_name||'Creator')+' · '+(creator.email||'');document.getElementById('if-account-status').textContent=String(creator.status||'').replaceAll('_',' ');document.getElementById('if-visibility').textContent=creator.status==='active'?'Your approved profile is eligible for public listing.':'Your profile remains private until admin approval.';return creator;}
   function platformField(label,name,value,type){var field=node('label','if-field',label);var input=node('input');input.name=name;input.required=true;input.value=value||'';input.maxLength=name==='platform'?50:255;if(type)input.type=type;if(name==='followers'){input.inputMode='numeric';input.pattern='[0-9]{1,12}';input.maxLength=12;}if(name==='platform_url')input.placeholder='https://…';field.append(input);return field;}
@@ -91,27 +93,14 @@
       }
 
       data.packages.forEach(function(pkg) {
-        var card = node('div', 'if-card');
-        card.style.borderLeft = '4px solid var(--saffron)';
-        card.style.padding = '16px';
+        var card = node('article', 'if-card if-package-card');
 
-        var head = node('div', '');
-        head.style.display = 'flex';
-        head.style.justifyContent = 'space-between';
-        head.style.alignItems = 'center';
+        var head = node('div', 'if-package-head');
 
         var title = node('h3', '', pkg.title);
-        title.style.margin = '0';
         head.append(title);
 
-        var badge = node('span', '', pkg.status.replace('_', ' ').toUpperCase());
-        badge.style.padding = '4px 8px';
-        badge.style.borderRadius = '4px';
-        badge.style.fontSize = '0.75rem';
-        badge.style.fontWeight = 'bold';
-        if (pkg.status === 'active') { badge.style.background = '#e6ffed'; badge.style.color = '#28a745'; }
-        else if (pkg.status === 'pending_approval') { badge.style.background = '#fff3cd'; badge.style.color = '#856404'; }
-        else { badge.style.background = '#f8f9fa'; badge.style.color = '#6c757d'; }
+        var badge = node('span', 'if-package-status '+pkg.status, pkg.status.replaceAll('_', ' '));
 
         head.append(badge);
         card.append(head);
@@ -120,15 +109,11 @@
         card.append(node('p', '', pkg.description));
         if (pkg.review_note) card.append(node('p', 'if-notice', 'Review note: ' + pkg.review_note));
 
-        var actions = node('div', '');
-        actions.style.display = 'flex';
-        actions.style.gap = '10px';
-        actions.style.marginTop = '12px';
+        var actions = node('div', 'if-actions');
 
         function createActionBtn(text, action, id, isSecondary) {
           var btn = node('button', isSecondary ? 'if-text-button' : 'if-button', text);
           btn.type = 'button';
-          if (isSecondary) btn.style.textDecoration = 'underline';
           btn.addEventListener('click', async function() {
             btn.disabled = true;
             try {

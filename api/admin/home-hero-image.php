@@ -1,0 +1,26 @@
+<?php
+declare(strict_types=1);
+require_once __DIR__.'/../lib/helpers.php';
+require_once __DIR__.'/../lib/admin.php';
+send_cors_headers();
+if (($_SERVER['REQUEST_METHOD']??'')!=='POST') json_response(405,['success'=>false,'message'=>'Method not allowed.']);
+$context=require_admin('content.manage');
+require_csrf();
+$file=$_FILES['image']??null;
+if (!is_array($file)||($file['error']??UPLOAD_ERR_NO_FILE)!==UPLOAD_ERR_OK) json_response(422,['success'=>false,'message'=>'Select a JPG, PNG or WebP image to upload.']);
+$size=(int)($file['size']??0);
+if ($size<1||$size>6*1024*1024) json_response(422,['success'=>false,'message'=>'Image must be smaller than 6 MB.']);
+$tmp=(string)($file['tmp_name']??'');
+if (!is_uploaded_file($tmp)) json_response(422,['success'=>false,'message'=>'Image upload was not valid.']);
+$mime=(new finfo(FILEINFO_MIME_TYPE))->file($tmp)?:'';
+$extensions=['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'];
+if (!isset($extensions[$mime])) json_response(422,['success'=>false,'message'=>'Only JPG, PNG and WebP images are allowed.']);
+$dimensions=@getimagesize($tmp);
+if (!$dimensions||$dimensions[0]<900||$dimensions[1]<400||$dimensions[0]>8000||$dimensions[1]>8000) json_response(422,['success'=>false,'message'=>'Use an image between 900×400 and 8000×8000 pixels. A wide image works best.']);
+$directory=__DIR__.'/../../assets/images/hero-banners';
+if (!is_dir($directory)&&!mkdir($directory,0755,true)&&!is_dir($directory)) throw new RuntimeException('Banner image directory could not be created.');
+$filename=bin2hex(random_bytes(20)).'.'.$extensions[$mime];
+if (!move_uploaded_file($tmp,$directory.'/'.$filename)) throw new RuntimeException('Banner image could not be saved.');
+$url='/conscious/assets/images/hero-banners/'.$filename;
+audit_event('admin.home_hero_image_uploaded','home_hero_image',$filename,['size_bytes'=>$size],['type'=>'admin','id'=>$context['admin']['id']]);
+json_response(201,['success'=>true,'image_url'=>$url,'message'=>'Image uploaded.']);

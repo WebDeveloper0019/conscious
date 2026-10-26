@@ -12,6 +12,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   initPreloader();
   initAnnouncementBar();
+  initUtilityMenus();
   initHeader();
   initMobileDrawer();
   initHeroParticles();
@@ -83,6 +84,39 @@ function initAnnouncementBar() {
       }
     });
   }
+}
+
+function initUtilityMenus() {
+  document.querySelectorAll('.bc-utility-links').forEach(function (nav) {
+    const menus = Array.from(nav.querySelectorAll('.bc-utility-menu'));
+    if (!menus.length) return;
+    function closeOthers(active) {
+      menus.forEach(function (menu) { if (menu !== active) menu.open = false; });
+    }
+    menus.forEach(function (menu) {
+      menu.addEventListener('toggle', function () { if (menu.open) closeOthers(menu); });
+      menu.addEventListener('mouseenter', function () {
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          closeOthers(menu);
+          menu.open = true;
+        }
+      });
+      menu.addEventListener('mouseleave', function () { menu.open = false; });
+    });
+    nav.querySelectorAll(':scope > a').forEach(function (link) {
+      link.addEventListener('mouseenter', function () { closeOthers(null); });
+    });
+    document.addEventListener('pointerdown', function (event) {
+      if (!nav.contains(event.target)) closeOthers(null);
+    });
+    nav.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        closeOthers(null);
+        const summary = event.target.closest('.bc-utility-menu')?.querySelector('summary');
+        if (summary) summary.focus();
+      }
+    });
+  });
 }
 
 /* ──────────────────────────────────────────────
@@ -868,6 +902,19 @@ function initMegaMenu() {
   });
 
   observer.observe(grid);
+})();
+
+/* --------------------------------------------------------------------------
+   Public website guide — rule-based, non-AI discovery and reviewed help.
+   -------------------------------------------------------------------------- */
+(function loadConsciousIndiGuide() {
+  var current = document.currentScript;
+  if (!current || document.querySelector('[data-ci-guide-loader]')) return;
+  var path = location.pathname.toLowerCase();
+  if (/\/(?:admin|customer|vendor)\//.test(path) || path.includes('/frontend/modules/')) return;
+  var marker = document.createElement('meta'); marker.setAttribute('data-ci-guide-loader', ''); document.head.appendChild(marker);
+  var stylesheet = document.createElement('link'); stylesheet.rel = 'stylesheet'; stylesheet.href = new URL('../css/site-assistant.css?v=20261024-2', current.src).href; document.head.appendChild(stylesheet);
+  var assistant = document.createElement('script'); assistant.src = new URL('site-assistant.js?v=20261024-6', current.src).href; assistant.async = false; document.head.appendChild(assistant);
 })();
 
 /* ──────────────────────────────────────────────

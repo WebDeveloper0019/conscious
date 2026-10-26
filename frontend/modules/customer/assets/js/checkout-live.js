@@ -6,7 +6,7 @@
     host.replaceChildren();
     var demoNotice=document.createElement('section');demoNotice.className='cp-check-section';
     var title=document.createElement('h2');title.textContent='Preview account cannot place orders';
-    var copy=document.createElement('p');copy.textContent='Sign in with a real customer account to check delivery prices and use Razorpay or cash on delivery. This browser-only preview never processes a payment.';
+    var copy=document.createElement('p');copy.textContent='Sign in with a real customer account to check delivery prices and use the local demo payment. The preview account cannot place orders.';
     var link=document.createElement('a');link.className='cc-btn primary';link.href='auth/login.php';link.textContent='Sign in to continue';
     demoNotice.append(title,copy,link);host.append(demoNotice);return;
   }
@@ -17,6 +17,7 @@
   var cart = null;
   var idempotency = '';
   var paymentMethod = 'online';
+  var paymentMode = 'loading';
   var pendingPayment = null;
   try { pendingPayment = JSON.parse(sessionStorage.getItem('ci_pending_online_order') || 'null'); } catch (_) { pendingPayment = null; }
   function make(tag, className, value) {
@@ -71,12 +72,10 @@
   var recalculate = make('button', 'cc-btn', 'Calculate delivery and total'); recalculate.type = 'button'; pricing.append(recalculate);
   main.append(pricing);
   var payment = make('section', 'cp-check-section'); payment.append(make('h2', '', '3. Payment'));
-  payment.append(make('p', '', 'Choose how to pay. Cash on delivery is confirmed when we calculate delivery for your address; each vendor handles dispatch manually.'));
+  var paymentIntro=make('p','','Checking the available online payment option…');payment.append(paymentIntro);
   var onlineChoice = make('label', 'cc-check cp-payment-method'); var onlineRadio = make('input'); onlineRadio.type='radio'; onlineRadio.name='checkout-payment'; onlineRadio.value='online'; onlineRadio.checked=true;
-  onlineChoice.append(onlineRadio, document.createTextNode(' Pay online securely with Razorpay (UPI, card or net banking)'));
-  var codChoice = make('label', 'cc-check cp-payment-method'); var codRadio = make('input'); codRadio.type='radio'; codRadio.name='checkout-payment'; codRadio.value='cod';
-  codChoice.append(codRadio, document.createTextNode(' Cash on delivery — pay when your order arrives'));
-  payment.append(onlineChoice,codChoice);
+  var paymentLabel=document.createTextNode(' Online payment');onlineChoice.append(onlineRadio,paymentLabel);
+  payment.append(onlineChoice);
   var terms = make('label', 'cc-check cp-terms-accept'); var accept = make('input'); accept.type = 'checkbox';
   terms.append(accept, document.createTextNode(' I accept the order, delivery, cancellation and return terms.'));
   payment.append(terms); main.append(payment);
@@ -87,19 +86,18 @@
   side.append(place);
   var feedback = make('p','cp-checkout-feedback'); feedback.setAttribute('role', 'status'); side.append(feedback);
   host.append(main, side);
+  request('../payment/methods.php','GET').then(function(result){paymentMode=result.gateway;if(paymentMode==='local_demo'){paymentIntro.textContent='Local demonstration: see the payment steps without a Razorpay key. No real money is charged.';paymentLabel.textContent=' Razorpay-style demo — UPI, card or net banking preview';place.textContent='Continue to demo payment';}else if(paymentMode==='razorpay'){paymentIntro.textContent='Pay securely online. Your order is confirmed only after Razorpay verifies the payment.';paymentLabel.textContent=' Pay online with Razorpay — UPI, card or net banking';place.textContent='Continue to secure payment';}else{paymentIntro.textContent='Online payment is not configured yet. Checkout is temporarily unavailable.';paymentLabel.textContent=' Online payment temporarily unavailable';}place.disabled=!quote||!!pendingPayment||!result.online_available;}).catch(function(error){paymentMode='unavailable';paymentIntro.textContent='Could not check payment availability. Please refresh and try again.';place.disabled=true;showError(error);});
   var alert=document.getElementById('cc-alert'),alertTimer;
   new MutationObserver(function(){var message=feedback.textContent.trim();if(!message||!alert)return;alert.textContent=message;clearTimeout(alertTimer);alertTimer=setTimeout(function(){alert.textContent='';},8000);}).observe(feedback,{childList:true,subtree:true,characterData:true});
   function showError(error) { feedback.textContent = error.message || String(error); }
-  function choosePayment(){paymentMethod=codRadio.checked?'cod':'online';place.textContent=paymentMethod==='cod'?'Place cash-on-delivery order':'Continue to online payment';}
-  onlineRadio.addEventListener('change',choosePayment);codRadio.addEventListener('change',choosePayment);
-  function finishOrder(order, simulated){sessionStorage.removeItem('ci_pending_online_order');host.replaceChildren();var confirmation=make('section','cp-check-section');confirmation.append(make('h2','','Order confirmed'),make('p','','Order '+order.order_number+' is confirmed.'),make('p','',simulated?'This was a local demo payment. No money was charged.':paymentMethod==='cod'?'Pay the order amount to the vendor on delivery. Your vendor will update each delivery milestone.':'Your vendor will manually update packing, dispatch and delivery status.'));var orders=make('a','cc-btn primary','View your orders');orders.href='orders.php';confirmation.append(orders);host.append(confirmation);}
+  function finishOrder(order, simulated){sessionStorage.removeItem('ci_pending_online_order');pendingPayment=null;host.replaceChildren();var confirmation=make('section','cp-check-section');confirmation.append(make('h2','',simulated?'Demo order confirmed':'Order confirmed'),make('p','','Order '+order.order_number+' is confirmed.'),make('p','',simulated?'Local demonstration only. No money was charged or transferred.':'Your vendor will manually update packing, dispatch and delivery status.'));var orders=make('a','cc-btn primary','View your orders');orders.href='orders.php';confirmation.append(orders);host.append(confirmation);}
   function loadRazorpay(){if(window.Razorpay)return Promise.resolve();return new Promise(function(resolve,reject){var script=document.createElement('script');script.src='https://checkout.razorpay.com/v1/checkout.js';script.async=true;script.onload=function(){window.Razorpay?resolve():reject(Error('Razorpay checkout did not load.'));};script.onerror=function(){reject(Error('Could not load secure Razorpay checkout. Please retry.'));};document.head.append(script);});}
   function showPending(){if(!pendingPayment)return;place.disabled=true;feedback.replaceChildren();feedback.append(document.createTextNode('Online payment for order '+pendingPayment.order_number+' is pending. Do not place a duplicate order. '));var retry=make('button','cc-btn','Continue payment');retry.type='button';retry.addEventListener('click',function(){retry.disabled=true;startOnlinePayment(pendingPayment).catch(showError).finally(function(){retry.disabled=false;});});feedback.append(retry);}
   async function refreshPending(){
     if(!pendingPayment)return;
     try{
       var status=await request('../payment/order-status.php?payment_attempt_id='+encodeURIComponent(pendingPayment.attempt_id),'GET');
-      if(status.payment_status==='paid'){finishOrder({order_number:status.order_number},false);return;}
+      if(status.payment_status==='paid'){finishOrder({order_number:status.order_number},status.local_demo===true);return;}
       if(status.payment_status==='failed'||status.order_status==='payment_failed'){
         sessionStorage.removeItem('ci_pending_online_order');pendingPayment=null;
         feedback.textContent='The previous online payment was not completed. No new payment was taken. You can add products and place a new order.';
@@ -120,7 +118,29 @@
       }else{place.disabled=true;feedback.textContent='Could not check the pending payment. Do not pay again until your order status is available. '+error.message;}
     }
   }
-  async function startOnlinePayment(pending){var gateway=await request('../payment/razorpay-order.php','POST',{payment_attempt_id:pending.attempt_id});if(gateway.gateway==='mock'){feedback.replaceChildren();feedback.append(document.createTextNode('Local demo payment only — no charge will be made. '));var simulate=make('button','cc-btn primary','Simulate successful online payment');simulate.type='button';simulate.addEventListener('click',async function(){simulate.disabled=true;try{var done=await request('../payment/local-demo-confirm.php','POST',{payment_attempt_id:pending.attempt_id});finishOrder({order_number:done.order_number},true);}catch(error){showError(error);simulate.disabled=false;}});feedback.append(simulate);return;}if(gateway.gateway!=='razorpay'||!gateway.key_id)throw Error('Online payment is not configured.');await loadRazorpay();var options={key:gateway.key_id,amount:gateway.amount,currency:gateway.currency,name:'Conscious Indi',description:'Order '+pending.order_number,order_id:gateway.order_id,handler:async function(response){try{await request('../payment/razorpay-verify.php','POST',{payment_attempt_id:pending.attempt_id,razorpay_order_id:response.razorpay_order_id,razorpay_payment_id:response.razorpay_payment_id,razorpay_signature:response.razorpay_signature});finishOrder(pending,false);}catch(error){feedback.textContent='Payment confirmation needs attention. '+error.message+' Do not pay again; check your orders or contact support.';}},modal:{ondismiss:function(){feedback.textContent='Payment was not confirmed. Your order remains pending; use Continue payment to retry before the reservation expires.';showPending();}}};new window.Razorpay(options).open();}
+  function showDemoPayment(gateway,pending){
+    if(document.querySelector('.cp-demo-payment-backdrop'))return;
+    var backdrop=make('div','cp-demo-payment-backdrop');
+    var dialog=make('section','cp-demo-payment');dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-labelledby','cp-demo-payment-title');
+    var header=make('div','cp-demo-payment-head');var heading=make('div');heading.append(make('span','cp-demo-payment-kicker','LOCAL RAZORPAY-STYLE DEMO'),make('h2','','Conscious India payment'));heading.querySelector('h2').id='cp-demo-payment-title';
+    var close=make('button','cp-demo-payment-close','×');close.type='button';close.setAttribute('aria-label','Close demo payment');header.append(heading,close);
+    var summary=make('div','cp-demo-payment-summary');summary.append(make('span','','Order '+pending.order_number),make('strong','',money.format(Number(gateway.amount)/100)));
+    var notice=make('p','cp-demo-payment-notice','Simulation only — no Razorpay connection, card details, UPI request or money transfer.');
+    var methods=make('div','cp-demo-payment-methods');methods.setAttribute('role','group');methods.setAttribute('aria-label','Choose a demonstration payment method');
+    var selected='UPI';var buttons=[];
+    [['UPI','fa-mobile-screen-button'],['Card','fa-credit-card'],['Net banking','fa-building-columns']].forEach(function(entry){var button=make('button','cp-demo-method'+(entry[0]===selected?' active':''));button.type='button';var icon=make('i','fa-solid '+entry[1]);icon.setAttribute('aria-hidden','true');button.append(icon,document.createTextNode(entry[0]));button.addEventListener('click',function(){selected=entry[0];buttons.forEach(function(item){item.classList.toggle('active',item===button);});detail.textContent='Demo '+selected+' selected. No account or payment details are required.';});buttons.push(button);methods.append(button);});
+    var detail=make('p','cp-demo-payment-detail','Demo UPI selected. No account or payment details are required.');
+    var state=make('p','cp-demo-payment-state');state.setAttribute('role','status');state.setAttribute('aria-live','polite');
+    var actions=make('div','cp-demo-payment-actions');var pay=make('button','cc-btn primary','Simulate payment');pay.type='button';var fail=make('button','cc-btn','Show failed payment');fail.type='button';actions.append(pay,fail);
+    dialog.append(header,summary,notice,methods,detail,state,actions);backdrop.append(dialog);document.body.append(backdrop);document.body.classList.add('cp-demo-payment-open');var previousFocus=document.activeElement;close.focus();
+    function dismiss(){backdrop.remove();document.body.classList.remove('cp-demo-payment-open');if(previousFocus&&previousFocus.focus)previousFocus.focus();}
+    close.addEventListener('click',dismiss);backdrop.addEventListener('click',function(event){if(event.target===backdrop)dismiss();});
+    function onKey(event){if(event.key==='Escape'){dismiss();}if(event.key==='Tab'){var focusable=Array.from(dialog.querySelectorAll('button:not([disabled])'));if(!focusable.length)return;var first=focusable[0],last=focusable[focusable.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}}
+    backdrop.addEventListener('keydown',onKey);
+    fail.addEventListener('click',function(){state.textContent='Demo payment failed. Your order is still pending. Choose a method and retry before the reservation expires.';state.classList.add('error');pay.textContent='Retry demo payment';pay.focus();});
+    pay.addEventListener('click',async function(){pay.disabled=true;fail.disabled=true;close.disabled=true;state.classList.remove('error');state.textContent='Processing demo '+selected+' payment…';try{var done=await request('../payment/local-demo-confirm.php','POST',{payment_attempt_id:pending.attempt_id});state.textContent='Demo payment successful. No money was charged.';dismiss();finishOrder({order_number:done.order_number},true);}catch(error){state.textContent=error.message;state.classList.add('error');pay.disabled=false;fail.disabled=false;close.disabled=false;}});
+  }
+  async function startOnlinePayment(pending){var gateway=await request('../payment/razorpay-order.php','POST',{payment_attempt_id:pending.attempt_id});if(gateway.gateway==='mock'){showDemoPayment(gateway,pending);return;}if(gateway.gateway!=='razorpay'||!gateway.key_id)throw Error('Online payment is not configured.');await loadRazorpay();var options={key:gateway.key_id,amount:gateway.amount,currency:gateway.currency,name:'Conscious India',description:'Order '+pending.order_number,order_id:gateway.order_id,handler:async function(response){try{await request('../payment/razorpay-verify.php','POST',{payment_attempt_id:pending.attempt_id,razorpay_order_id:response.razorpay_order_id,razorpay_payment_id:response.razorpay_payment_id,razorpay_signature:response.razorpay_signature});finishOrder(pending,false);}catch(error){feedback.textContent='Payment confirmation needs attention. '+error.message+' Do not pay again; check your orders or contact support.';}},modal:{ondismiss:function(){feedback.textContent='Payment was not confirmed. Your order remains pending; use Continue payment to retry before the reservation expires.';showPending();}}};new window.Razorpay(options).open();}
   function showAddresses(list) {
     addressList.replaceChildren();
     if (!list.length) addressList.append(make('p', '', 'Add your first delivery address below.'));
@@ -158,14 +178,6 @@
     try {
       var result = await request('checkout-quote.php', 'POST', { address_id: selectedAddress, coupon_code: couponLabel.querySelector('input').value.trim() });
       quote = result.quote; idempotency = '';
-      var vendors = Object.values(quote.vendors || {});
-      var canCod = vendors.length > 0 && vendors.every(function(vendor){return vendor.cod_enabled === true || Number(vendor.cod_enabled) === 1;});
-      codRadio.disabled = !canCod;
-      if(!canCod && codRadio.checked){onlineRadio.checked=true;choosePayment();}
-      if(!canCod) {
-        var unavailable = vendors.filter(function(vendor){return vendor.cod_enabled !== true && Number(vendor.cod_enabled) !== 1;}).map(function(vendor){return vendor.vendor_name;});
-        feedback.textContent = 'Cash on delivery is not offered by ' + (unavailable.join(', ') || 'this order') + '. Choose online payment or remove that vendor’s items.';
-      }
       quoteBox.replaceChildren();
       quoteBox.append(make('p', '', 'Products: ' + money.format(Number(quote.subtotal))));
       Object.keys(quote.vendors || {}).forEach(function (key) {
@@ -175,8 +187,8 @@
       quoteBox.append(make('p', '', 'GST: ' + money.format(Number(quote.tax_amount))));
       if (Number(quote.discount_amount)) quoteBox.append(make('p', '', 'Discount: −' + money.format(Number(quote.discount_amount))));
       total.textContent = 'Total: ' + money.format(Number(quote.total_amount));
-      place.disabled = false;
-      if(canCod) feedback.textContent = 'Cash on delivery is available. Price reserved for 15 minutes; delivery is managed manually by each vendor.';
+      place.disabled = paymentMode==='loading'||paymentMode==='unavailable';
+      feedback.textContent = paymentMode==='local_demo'?'Total reserved for 15 minutes. Continue to the local demo payment; no money will be charged.':'Total reserved for 15 minutes. Continue to online payment.';
     } catch (error) { quote = null; showError(error); }
     finally { recalculate.disabled = false; }
   });
@@ -188,7 +200,6 @@
     if (!idempotency) idempotency = crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + '-checkout-' + Math.random().toString(36).slice(2);
     try {
       var result = await request('checkout-place.php', 'POST', { quote_id: quote.id, payment_method: paymentMethod }, idempotency);
-      if(paymentMethod==='cod'){finishOrder(result.order,false);return;}
       pendingPayment={attempt_id:result.payment.attempt_id,order_number:result.order.order_number};
       sessionStorage.setItem('ci_pending_online_order',JSON.stringify(pendingPayment));
       showPending();

@@ -1,0 +1,63 @@
+/* Shared visual language for the three workspaces, aligned with the customer account. */
+.ci-role-vendor,.ci-role-admin,.ci-role-influencer{--cw-bg:#f7f5ef;--cw-line:#e6e0d5;--cw-ink:#263b30;--cw-muted:#68766e;--cw-green:#4b572c;--cw-orange:#a63d24;--cw-shadow:0 12px 32px rgba(32,59,42,.065);background:var(--cw-bg);color:var(--cw-ink);font-family:Poppins,Arial,sans-serif}
+.ci-role-vendor .ci-dash-wrap,.ci-role-admin .ci-dash-wrap{display:grid;grid-template-columns:238px minmax(0,1fr);align-items:start;gap:28px;width:min(1500px,calc(100% - 56px));min-height:100vh;margin:auto;padding:26px 0 56px}
+.ci-role-vendor .ci-dash-sidebar,.ci-role-admin .ci-dash-sidebar{position:sticky;inset:auto;top:26px;display:flex;flex-direction:column;width:238px;height:calc(100vh - 52px);padding:0;background:transparent;color:var(--cw-ink);box-shadow:none;transform:none;overflow-y:auto}
+.ci-role-vendor .ci-dash-main,.ci-role-admin .ci-dash-main{width:100%;min-width:0;margin:0;padding:0;background:transparent}
+.ci-role-vendor .ci-sidebar-brand,.ci-role-admin .ci-sidebar-brand{display:flex;min-height:66px;margin:0 0 14px;padding:10px 12px;border:1px solid var(--cw-line);border-radius:15px;background:#fff;color:var(--cw-ink);box-shadow:var(--cw-shadow);text-decoration:none}
+.ci-role-vendor .ci-sidebar-brand-name,.ci-role-admin .ci-sidebar-brand-name{color:#263b30;font-size:15px;line-height:1.2}
+.ci-role-vendor .ci-sidebar-brand-role,.ci-role-admin .ci-sidebar-brand-role{color:var(--cw-muted);font-size:9px;letter-spacing:.08em;opacity:1}
+.ci-role-vendor .ci-sidebar-logo,.ci-role-admin .ac-sidebar-logo{width:42px;height:42px;object-fit:contain}
+.ci-role-vendor .ci-sidebar-user,.ci-role-admin .ci-sidebar-user{margin:0 0 13px;padding:13px;border:1px solid var(--cw-line);border-radius:15px;background:#fff;color:var(--cw-ink);box-shadow:var(--cw-shadow)}
+.ci-role-vendor .ci-sidebar-avatar,.ci-role-admin .ci-sidebar-avatar{background:#e7efe6;color:var(--cw-green)}
+.ci-role-vendor .ci-sidebar-user-name,.ci-role-admin .ci-sidebar-user-name{color:var(--cw-ink);font-size:12px}
+.ci-role-vendor .ci-sidebar-user-email,.ci-role-admin .ci-sidebar-user-email{color:var(--cw-muted);font-size:10px;opacity:1}
+.ci-role-vendor .ci-sidebar-nav,.ci-role-admin .ci-sidebar-nav{flex:1;overflow-y:auto;padding:0 2px}
+.ci-role-vendor .ci-sidebar-section-label,.ci-role-admin .ci-sidebar-section-label{margin:16px 10px 5px;color:#8a958e;font-size:9px;letter-spacing:.13em}
+.ci-role-vendor .ci-sidebar-nav-item,.ci-role-admin .ci-sidebar-nav-item{min-height:37px;margin:2px 0;padding:8px 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:#526159;font-size:11px;box-shadow:none}
+.ci-role-vendor .ci-sidebar-nav-item:hover,.ci-role-vendor .ci-sidebar-nav-item.active,.ci-role-admin .ci-sidebar-nav-item:hover,.ci-role-admin .ci-sidebar-nav-item.active{border-color:var(--cw-line);background:#fff;color:var(--cw-green);box-shadow:0 5px 18px rgba(32,59,42,.055)}
+.ci-role-vendor .ci-sidebar-nav-item.active,.ci-role-admin .ci-sidebar-nav-item.active{font-weight:700}
+.ci-role-vendor .ci-sidebar-nav-item.active i,.ci-role-admin .ci-sidebar-nav-item.active i{color:var(--cw-orange)}
+.ci-role-vendor .vc-sidebar-foot,.ci-role-admin .ac-side-foot{padding:10px 2px;border-top:1px solid var(--cw-line)}
+.ci-role-vendor .ci-dash-topbar,.ci-role-admin .ci-dash-topbar{position:relative;top:auto;height:auto;min-height:68px;margin:0 0 20px;padding:3px 0 17px;border:0;border-bottom:1px solid var(--cw-line);background:transparent;box-shadow:none;backdrop-filter:none}
+.ci-role-vendor .ci-dash-page-title,.ci-role-admin .ci-dash-page-title{color:var(--cw-ink);font-size:clamp(22px,2vw,27px);line-height:1.2}
+.ci-role-vendor .ci-dash-page-sub,.ci-role-admin .ci-dash-page-sub{margin:4px 0 0;color:var(--cw-muted);font-size:11px}
+.ci-role-vendor .vc-main,.ci-role-admin .ac-main{max-width:none;margin:0;padding:0 0 40px}
+.ci-role-vendor .vc-card,.ci-role-admin .ac-card{border:1px solid var(--cw-line);border-radius:16px;background:#fff;box-shadow:var(--cw-shadow)}
+.ci-role-vendor .vc-card-head,.ci-role-admin .ac-head{background:#fff}
+.ci-role-vendor .vc-dashboard-hero,.ci-role-admin .ac-dashboard-intro,.ci-role-influencer .if-overview-hero{position:relative;overflow:hidden;border:0;border-radius:20px;background:linear-gradient(115deg,#30391b,#365d43 76%,#467657);color:#fff;box-shadow:0 18px 42px rgba(32,59,42,.16)}
+.ci-role-vendor .vc-dashboard-hero::after,.ci-role-admin .ac-dashboard-intro::after,.ci-role-influencer .if-overview-hero::after{content:"";position:absolute;right:-110px;top:-120px;width:270px;height:270px;border:1px solid rgba(255,255,255,.2);border-radius:50%;box-shadow:0 0 0 50px rgba(255,255,255,.035),0 0 0 100px rgba(255,255,255,.025);pointer-events:none}
+.ci-role-vendor .vc-dashboard-hero>*,.ci-role-admin .ac-dashboard-intro>*,.ci-role-influencer .if-overview-hero>*{position:relative;z-index:1}
+.ci-role-vendor .vc-dashboard-hero h2,.ci-role-admin .ac-dashboard-intro h2,.ci-role-influencer .if-overview-hero h2{color:#fff;font-size:clamp(24px,2.5vw,34px);line-height:1.13}
+.ci-role-vendor .vc-dashboard-hero p,.ci-role-admin .ac-dashboard-intro p,.ci-role-influencer .if-overview-hero p{color:#e2eee3;font-size:12px;line-height:1.6}
+.ci-role-vendor .vc-dashboard-eyebrow,.ci-role-admin .ac-dashboard-intro .ac-kicker,.ci-role-influencer .if-overview-hero .if-kicker{color:#efbd8d;font-size:10px;letter-spacing:.14em}
+.ci-role-vendor .vc-dashboard-hero .vc-btn:not(.primary),.ci-role-admin .ac-dashboard-intro .ac-btn,.ci-role-influencer .if-overview-hero .if-button.secondary{border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff}
+.ci-role-vendor .vc-dashboard-hero .vc-btn.primary,.ci-role-influencer .if-overview-hero .if-button:not(.secondary){background:#a63d24;color:#fff}
+.ci-role-vendor .vc-journey>a,.ci-role-influencer .if-journey li{border:1px solid var(--cw-line);border-radius:14px;background:#fff;box-shadow:0 6px 20px rgba(32,59,42,.045)}
+.ci-role-vendor .vc-start-guide{border:0;background:transparent;box-shadow:none}
+.ci-role-vendor .vc-start-guide .vc-card-head,.ci-role-vendor .vc-start-guide .vc-card-body{padding-left:0;padding-right:0;background:transparent}
+.ci-role-vendor .vc-stat,.ci-role-admin .ac-stat,.ci-role-influencer .if-grid .if-card{border:1px solid var(--cw-line);border-radius:15px;background:#fff;box-shadow:var(--cw-shadow)}
+.ci-role-vendor .vc-stat-value,.ci-role-admin .ac-stat strong,.ci-role-influencer .if-card strong.if-value{color:var(--cw-green)}
+.ci-workspace-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0 20px}
+.ci-workspace-shortcuts a{display:flex;align-items:center;gap:10px;min-width:0;padding:12px;border:1px solid var(--cw-line);border-radius:14px;background:#fff;color:var(--cw-ink);text-decoration:none;box-shadow:0 6px 20px rgba(32,59,42,.045)}
+.ci-workspace-shortcuts a:hover{border-color:#c9d5c8;transform:translateY(-1px)}
+.ci-workspace-shortcuts i{display:grid;place-items:center;flex:none;width:35px;height:35px;border-radius:10px;background:#e7f0e9;color:#34704c;font-size:13px}
+.ci-workspace-shortcuts a:nth-child(2) i{background:#fae9dd;color:#b65a28}.ci-workspace-shortcuts a:nth-child(3) i{background:#fbf1d9;color:#92701f}.ci-workspace-shortcuts a:nth-child(4) i{background:#e8eff7;color:#456988}
+.ci-workspace-shortcuts span{display:grid;min-width:0}.ci-workspace-shortcuts b{font-size:11px}.ci-workspace-shortcuts small{overflow:hidden;color:var(--cw-muted);font-size:9px;text-overflow:ellipsis;white-space:nowrap}
+.ci-role-influencer .if-app{display:grid;grid-template-columns:238px minmax(0,1fr);gap:28px;width:min(1500px,calc(100% - 56px));min-height:100vh;margin:auto;padding:26px 0 56px}
+.ci-role-influencer .if-sidebar{position:sticky;inset:auto;top:26px;width:238px;height:calc(100vh - 52px);padding:0;background:transparent;color:var(--cw-ink);box-shadow:none;transform:none}
+.ci-role-influencer .if-sidebar .if-brand{margin:0 0 14px;padding:10px 12px;min-height:66px;border:1px solid var(--cw-line);border-radius:15px;background:#fff;color:var(--cw-ink);box-shadow:var(--cw-shadow)}
+.ci-role-influencer .if-sidebar .if-brand b{color:var(--cw-ink);font-size:15px}.ci-role-influencer .if-sidebar .if-brand small{color:var(--cw-muted);font-size:9px}
+.ci-role-influencer .if-sidebar nav{padding:0 2px}.ci-role-influencer .if-nav-label{margin:14px 10px 4px;padding:0;color:#8a958e;font-size:9px}
+.ci-role-influencer .if-sidebar a:not(.if-brand){min-height:37px;margin:2px 0;padding:8px 10px;border:1px solid transparent;border-radius:10px;color:#526159;font-size:11px}
+.ci-role-influencer .if-sidebar a:not(.if-brand).active,.ci-role-influencer .if-sidebar a:not(.if-brand):hover{border-color:var(--cw-line);background:#fff;color:var(--cw-green);box-shadow:0 5px 18px rgba(32,59,42,.055)}
+.ci-role-influencer .if-sidebar a.active i{color:var(--cw-orange)}.ci-role-influencer .if-sidebar-foot{padding-top:10px;border-color:var(--cw-line)}
+.ci-role-influencer .if-main{min-width:0;margin:0;padding:0 0 40px;background:transparent}
+.ci-role-influencer .if-top{position:relative;top:auto;min-height:68px;margin:0 0 20px;padding:3px 0 17px;border-bottom:1px solid var(--cw-line);background:transparent;backdrop-filter:none}
+.ci-role-influencer .if-top h1{color:var(--cw-ink);font-size:clamp(22px,2vw,27px)}.ci-role-influencer .if-top #if-identity{color:var(--cw-muted)}
+.ci-role-influencer .if-overview-hero{align-items:center;flex-direction:row;padding:28px 31px}.ci-role-influencer .if-overview-hero h2{max-width:620px}.ci-role-influencer .if-overview-hero .if-overview-actions{display:flex;flex-wrap:wrap;max-width:250px}
+.ci-role-influencer .if-card{border:1px solid var(--cw-line);border-radius:16px;background:#fff;box-shadow:var(--cw-shadow)}.ci-role-influencer .if-card:nth-child(2n){border-top-color:var(--cw-line)}
+.ci-role-influencer .if-card h2{color:var(--cw-ink);font-size:18px}.ci-role-influencer .if-card strong{color:var(--cw-green)}
+@media(max-width:1100px){.ci-workspace-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.ci-role-influencer .if-overview-hero{align-items:flex-start;flex-direction:column}}
+@media(max-width:900px){.ci-role-vendor .ci-dash-wrap,.ci-role-admin .ci-dash-wrap,.ci-role-influencer .if-app{display:block;width:auto;min-height:100vh;margin:0;padding:0 0 60px}.ci-role-vendor .ci-dash-main,.ci-role-admin .ci-dash-main,.ci-role-influencer .if-main{width:100%;padding:0 16px 50px}.ci-role-vendor .ci-dash-sidebar,.ci-role-admin .ci-dash-sidebar,.ci-role-influencer .if-sidebar{position:fixed;inset:0 auto 0 0;top:0;z-index:100;width:min(290px,86vw);height:100vh;padding:16px;background:var(--cw-bg);box-shadow:12px 0 30px rgba(19,40,28,.18);transform:translateX(-105%)}.ci-role-vendor .ci-dash-sidebar.open,.ci-role-admin .ci-dash-sidebar.open,.ci-role-influencer .if-sidebar.open{transform:none}.ci-role-vendor .ci-dash-topbar,.ci-role-admin .ci-dash-topbar,.ci-role-influencer .if-top{margin:0 0 18px;padding:14px 0}.ci-role-vendor .vc-main,.ci-role-admin .ac-main,.ci-role-influencer .if-main{max-width:none}.ci-role-vendor .vc-dashboard-hero,.ci-role-admin .ac-dashboard-intro,.ci-role-influencer .if-overview-hero{padding:22px}}
+@media(max-width:600px){.ci-role-vendor .ci-dash-main,.ci-role-admin .ci-dash-main,.ci-role-influencer .if-main{padding:0 12px 45px}.ci-workspace-shortcuts{gap:8px}.ci-workspace-shortcuts a{padding:10px}.ci-workspace-shortcuts small{display:none}.ci-role-vendor .vc-grid.four,.ci-role-admin .ac-grid.four,.ci-role-influencer .if-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ci-role-vendor .vc-dashboard-hero h2,.ci-role-admin .ac-dashboard-intro h2,.ci-role-influencer .if-overview-hero h2{font-size:25px}}
+@media(max-width:390px){.ci-workspace-shortcuts{grid-template-columns:1fr}.ci-role-vendor .vc-grid.four,.ci-role-admin .ac-grid.four,.ci-role-influencer .if-grid{grid-template-columns:1fr}}

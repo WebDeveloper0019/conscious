@@ -12,6 +12,12 @@
     <div class="cx-membership"><span><i class="fa-solid fa-gift"></i></span><div><small>Your rewards</small><strong data-dashboard-points>—</strong><p>Available reward points</p></div></div>
   </section>
 
+  <div class="cx-dashboard-feedback" data-dashboard-error role="alert" hidden>
+    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+    <div><strong>We could not load your account summary.</strong><p data-dashboard-error-message>Please check your connection and try again.</p></div>
+    <button class="cc-btn" type="button" data-dashboard-retry><i class="fa-solid fa-rotate-right"></i> Try again</button>
+  </div>
+
   <section class="cx-quick-grid" aria-label="Quick actions" data-reveal>
     <a href="orders.php"><span class="green"><i class="fa-solid fa-box"></i></span><div><strong>My orders</strong><small data-dashboard-order-count>Loading…</small></div><i class="fa-solid fa-chevron-right"></i></a>
     <a href="tracking.php"><span class="orange"><i class="fa-solid fa-route"></i></span><div><strong>Track delivery</strong><small data-dashboard-active-count>Loading…</small></div><i class="fa-solid fa-chevron-right"></i></a>

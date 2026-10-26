@@ -9,3 +9,20 @@
 .cc-commerce-page .cc-content{max-width:none}
 .cc-commerce-page .cc-alert:not(:empty){position:fixed;right:18px;bottom:18px;z-index:100;width:min(390px,calc(100vw - 36px));padding:13px 16px;border:1px solid #e5b695;border-radius:12px;background:#fff3e9;color:#7c3d1d;box-shadow:0 8px 25px #75401c34;font-weight:600;line-height:1.5}
 @media(max-width:700px){.cc-commerce-page .cc-portal-shell{padding:20px 14px 65px}}
+
+/* Focused 2026 account refinements — aligned with the Conscious Indi identity. */
+:root{--cx-ink:#4A210D;--cx-sub:#6f6259;--cx-line:#eadcc7;--cx-paper:#FFFFFF;--cx-bg:#FFF8E9;--cx-green:#4B572C;--cx-deep:#4A210D;--cx-orange:#A63D24;--cx-ochre:#C88422;--cx-soft:#fff1df;--cx-shadow:0 14px 38px rgba(74,33,13,.08)}
+body{font-family:'Poppins',system-ui,sans-serif;background:var(--cx-bg)}
+.cc-site-brand>img{display:block;width:40px;height:40px;object-fit:contain;border-radius:11px}
+.cc-site-brand strong{color:var(--cx-deep)}
+.cx-welcome{background:linear-gradient(120deg,#4A210D,#4B572C)}
+.cc-btn:focus-visible,.cc-icon:focus-visible,.cc-cart:focus-visible,.cc-nav-link:focus-visible,.cc-side-foot a:focus-visible,.cc-mobile-bottom a:focus-visible,.cc-site-links a:focus-visible,.cc-site-search input:focus-visible,.cc-input:focus-visible,.cc-select:focus-visible,.cc-textarea:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid rgba(200,132,34,.42);outline-offset:3px}
+.cc-input[aria-invalid="true"],.cc-select[aria-invalid="true"],.cc-textarea[aria-invalid="true"]{border-color:#A63D24;box-shadow:0 0 0 3px rgba(166,61,36,.1)}
+.cc-field-error{display:block;color:#8b2f1d;font-size:11px;font-weight:600}
+.cx-dashboard-feedback{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:13px;margin:16px 0;padding:14px 16px;border:1px solid #e3b79e;border-left:4px solid #A63D24;border-radius:13px;background:#fff4e9;color:#6d2b18}
+.cx-dashboard-feedback[hidden]{display:none}
+.cx-dashboard-feedback>i{font-size:18px}
+.cx-dashboard-feedback strong{display:block}
+.cx-dashboard-feedback p{margin:2px 0 0;color:#775647;font-size:12px}
+.cc-nav-open{overflow:hidden}
+@media(max-width:600px){.cc-site-brand>img{width:34px;height:34px}.cx-membership{display:flex;margin-top:18px;padding:13px}.cx-membership>span{width:40px;height:40px}.cx-quick-grid small{display:block;line-height:1.35}.cx-quick-grid>a{align-items:flex-start;min-height:76px}.cx-dashboard-feedback{grid-template-columns:auto 1fr}.cx-dashboard-feedback .cc-btn{grid-column:1/-1;width:100%}}

@@ -1,12 +1,12 @@
-<div class="vc-callout" role="note">You arrange every delivery yourself. Conscious Indi does not book a courier or use Shiprocket. The order and tracking updates below are saved to the backend and shown to the customer.</div>
+<section class="vc-workflow-intro" aria-labelledby="delivery-intro-title"><div class="vc-workflow-icon"><i class="fa-solid fa-truck-fast"></i></div><div><span class="vc-section-kicker">VENDOR-MANAGED SHIPPING</span><h2 id="delivery-intro-title">Set where you ship, price it, then update every package</h2><p>You choose and pay the courier. Conscious Indi saves your serviceability, charges and customer-visible milestones; it does not book delivery for you.</p></div><ol class="vc-mini-steps" aria-label="Shipping setup steps"><li><b>1</b><span>Set coverage</span></li><li><b>2</b><span>Add rates</span></li><li><b>3</b><span>Test a PIN</span></li><li><b>4</b><span>Dispatch orders</span></li></ol></section>
 <div id="dl-message" class="vc-callout mt-3" role="status" hidden></div>
 
 <div data-tabs class="mt-3">
   <div class="vc-tabs" role="tablist">
-    <button type="button" class="vc-tab active" data-tab-target="queue" aria-selected="true">Order delivery</button>
-    <button type="button" class="vc-tab" data-tab-target="coverage" aria-selected="false">India coverage</button>
-    <button type="button" class="vc-tab" data-tab-target="rates" aria-selected="false">Location rates</button>
-    <button type="button" class="vc-tab" data-tab-target="check" aria-selected="false">Check serviceability</button>
+    <button type="button" class="vc-tab active" data-tab-target="queue" aria-selected="true"><span>4</span> Dispatch orders</button>
+    <button type="button" class="vc-tab" data-tab-target="coverage" aria-selected="false"><span>1</span> Coverage &amp; defaults</button>
+    <button type="button" class="vc-tab" data-tab-target="rates" aria-selected="false"><span>2</span> Location rates</button>
+    <button type="button" class="vc-tab" data-tab-target="check" aria-selected="false"><span>3</span> Test a destination</button>
   </div>
 
   <section data-tab-panel="queue" class="vc-grid" aria-label="Vendor-managed order delivery">

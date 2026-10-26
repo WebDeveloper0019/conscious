@@ -4,11 +4,23 @@
     <div class="bc-utility-inner">
       <span class="bc-utility-trust"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Conscious commerce · Verified brands &amp; artisans</span>
       <nav class="bc-utility-links" aria-label="Partner and experience links">
-        <a href="/conscious/frontend/modules/vendor/auth/register.php?type=brand">Sell With Us</a>
-        <a href="/conscious/frontend/modules/vendor/auth/register.php?type=artisan">Join as Artisan</a>
-        <a href="/conscious/frontend/modules/influencer/auth/register.php">Become a Creator</a>
-        <a href="/conscious/events">Events</a>
-        <a href="/conscious/corporate-gifting">Corporate Gifting</a>
+        <a href="/conscious/become-brand-partner">Sell With Us</a>
+        <details class="bc-utility-menu"><summary>Join Us <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary><div class="bc-utility-menu-panel">
+          <a href="/conscious/become-brand-partner">Conscious Brand</a>
+          <a href="/conscious/become-artisan-partner">Artisan/SHG</a>
+          <a href="/conscious/creators">Conscious Creator / Influencer</a>
+        </div></details>
+        <details class="bc-utility-menu"><summary>Register As <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary><div class="bc-utility-menu-panel">
+          <a href="/conscious/frontend/modules/vendor/auth/register.php?type=brand">Conscious Brand</a>
+          <a href="/conscious/frontend/modules/vendor/auth/register.php?type=artisan">Artisan</a>
+          <a href="/conscious/frontend/modules/influencer/auth/register.php">Conscious Creator</a>
+        </div></details>
+        <details class="bc-utility-menu"><summary>Book/Collab For <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary><div class="bc-utility-menu-panel">
+          <a href="/conscious/events#event-stall-booking">Event Stall</a>
+          <a href="/conscious/events#event-workshop-booking">Workshops</a>
+          <a href="/conscious/creators">Conscious Creator / Influencer</a>
+        </div></details>
+        <a href="/conscious/corporate-gifting">Conscious Gifting</a>
       </nav>
     </div>
   </div>
@@ -21,10 +33,10 @@
       <div class="bc-header-top-inner">
 
         <!-- Logo -->
-        <a href="/conscious/" class="bc-logo bc-logo-real" aria-label="Conscious Indi — Story-Led Commerce, Conscious Living Marketplace & Events Platform">
+        <a href="/conscious/" class="bc-logo bc-logo-real" aria-label="Conscious India — Story-Led Commerce, Conscious Living Marketplace & Events Platform">
           <img
             src="/conscious/assets/images/logo-horizontal.png"
-            alt="Conscious Indi"
+            alt="Conscious India"
             class="bc-logo-img bc-logo-horizontal"
             width="68"
             height="64"
@@ -440,6 +452,23 @@
           </ul>
         </nav>
 
+        <div class="bc-nav-extras">
+          <label class="bc-language-selector">
+            <i class="fa-solid fa-language" aria-hidden="true"></i>
+            <span class="visually-hidden">Language</span>
+            <select aria-label="Language" class="bc-language-select">
+              <option value="en" selected>English</option>
+              <option value="hi">Hindi</option>
+              <option value="gu">Gujarati</option>
+              <option value="bn">Bengali</option>
+              <option value="ta">Tamil</option>
+              <option value="te">Telugu</option>
+              <option value="mr">Marathi</option>
+              <option value="pa">Punjabi</option>
+            </select>
+          </label>
+        </div>
+
       </div>
     </div>
   </div>
@@ -459,10 +488,10 @@
     </button>
 
     <!-- Mobile Logo -->
-    <a href="/conscious/" class="bc-logo bc-logo-real" aria-label="Conscious Indi">
+    <a href="/conscious/" class="bc-logo bc-logo-real" aria-label="Conscious India">
       <img
         src="/conscious/assets/images/logo-horizontal.png"
-        alt="Conscious Indi"
+        alt="Conscious India"
         class="bc-logo-img bc-logo-horizontal bc-logo-mobile"
         width="47"
         height="44"
@@ -494,10 +523,10 @@
 <!-- Mobile Drawer -->
 <nav class="bc-mobile-drawer" id="bc-mobile-drawer" aria-label="Mobile Navigation" aria-hidden="true">
   <div class="bc-drawer-head">
-    <a href="/conscious/" class="bc-logo bc-logo-real" aria-label="Conscious Indi Home">
+    <a href="/conscious/" class="bc-logo bc-logo-real" aria-label="Conscious India Home">
       <img
         src="/conscious/assets/images/logo-square.png"
-        alt="Conscious Indi"
+        alt="Conscious India"
         class="bc-logo-img bc-logo-square-img"
         width="130"
         height="130"
@@ -510,6 +539,20 @@
   </div>
 
   <div class="bc-drawer-nav">
+    <label class="bc-language-selector bc-language-selector-mobile">
+      <i class="fa-solid fa-language" aria-hidden="true"></i>
+      <span class="visually-hidden">Language</span>
+      <select aria-label="Language" class="bc-language-select">
+        <option value="en" selected>English</option>
+        <option value="hi">Hindi</option>
+        <option value="gu">Gujarati</option>
+        <option value="bn">Bengali</option>
+        <option value="ta">Tamil</option>
+        <option value="te">Telugu</option>
+        <option value="mr">Marathi</option>
+        <option value="pa">Punjabi</option>
+      </select>
+    </label>
     <div class="bc-drawer-section-title">Explore</div>
     <a href="/conscious/"><i class="fa-solid fa-house"></i> Home</a>
     <a href="/conscious/shop"><i class="fa-solid fa-store"></i> Marketplace</a>
@@ -524,7 +567,7 @@
     <a href="/conscious/events"><i class="fa-regular fa-calendar"></i> Events &amp; Experiences</a>
     <a href="/conscious/community"><i class="fa-solid fa-people-group"></i> Community</a>
     <a href="/conscious/creators"><i class="fa-solid fa-star"></i> Creator Shops</a>
-    <a href="/conscious/corporate-gifting"><i class="fa-solid fa-gift"></i> Corporate Gifting</a>
+    <a href="/conscious/corporate-gifting"><i class="fa-solid fa-gift"></i> Conscious Gifting</a>
 
     <div class="bc-drawer-divider"></div>
     <div class="bc-drawer-section-title">Partners</div>

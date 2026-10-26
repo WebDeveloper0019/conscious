@@ -28,6 +28,7 @@
   <!-- Conscious Indi Design System -->
   <link rel="stylesheet" href="assets/css/bharatcraft.css" />
   <link rel="stylesheet" href="assets/css/home-sustainable.css?v=5" />
+  <link rel="stylesheet" href="assets/css/home-hero.css?v=20261025-1" />
   <style>
     /* Homepage preview intentionally mirrors the first three live-experience cards on events.html. */
     #bc-events-grid > .bc-event-card:nth-child(n+4){display:none}
@@ -202,16 +203,14 @@
      MAIN CONTENT
      ════════════════════════════════════════════ -->
 <main class="ci-home" id="main-content">
-  <section class="ci-hero" aria-label="Conscious and sustainable shopping">
-    <div class="ci-hero-shade"></div><div class="ci-hero-orb orb-one"></div><div class="ci-hero-orb orb-two"></div>
-    <div class="ci-hero-content"><div class="ci-hero-copy">
-      <p class="ci-overline">Earth-minded marketplace · India</p>
-      <h1><span>Live</span><span class="ci-script">a little lighter.</span></h1>
-      <p class="ci-hero-lead">Beautiful essentials shaped by nature, made by people, and chosen to leave less behind.</p>
-      <div class="ci-hero-actions"><a class="ci-btn ci-btn-primary" href="/conscious/shop">Explore the collection <b>↗</b></a><a class="ci-link" href="#earth-journey">Scroll to discover <span>↓</span></a></div>
-      <div class="ci-hero-notes"><span>01 Natural materials</span><span>02 Fairly made</span><span>03 Plastic-light</span></div>
-    </div></div>
-    <div class="ci-scroll-cue"><span></span><small>SCROLL</small></div>
+  <section class="ci-hero ci-hero-slider" id="home-hero" aria-label="Featured collections">
+    <div class="ci-hero-slides" id="ci-hero-slides" aria-live="off"></div>
+    <div class="ci-hero-controls" id="ci-hero-controls" hidden>
+      <button type="button" id="ci-hero-prev" aria-label="Previous banner"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button>
+      <span class="ci-hero-progress" id="ci-hero-progress" aria-hidden="true"></span>
+      <div class="ci-hero-dots" id="ci-hero-dots" aria-label="Choose a banner"></div>
+      <button type="button" id="ci-hero-next" aria-label="Next banner"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+    </div>
   </section>
 
   <section class="ci-manifesto">
@@ -2059,6 +2058,7 @@
 <script src="assets/js/gsap.min.js?v=2"></script>
 <script src="assets/js/ScrollTrigger.min.js?v=2"></script>
 <script src="assets/js/home-sustainable.js?v=5"></script>
+<script src="assets/js/home-hero.js?v=20261025-1"></script>
 
 </body>
 </html>

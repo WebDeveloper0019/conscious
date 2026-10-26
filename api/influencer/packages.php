@@ -8,20 +8,7 @@ $db = get_db();
 $ownerId = $principal['id'];
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
-if ($method === 'GET') {
-    $query = $db->prepare('SELECT id,title,description,price_inr,deliverables_json,platforms_json,turnaround_days,revisions,usage_rights,vendor_requirements,capacity,tax_treatment,cancellation_terms,status,review_note,created_at,updated_at FROM influencer_packages WHERE influencer_id=:owner ORDER BY created_at DESC LIMIT 100');
-    $query->execute(['owner' => $ownerId]);
-    $packages = $query->fetchAll();
-    foreach ($packages as &$package) {
-        $package['deliverables_json'] = json_decode((string)$package['deliverables_json'], true) ?: [];
-        $package['platforms_json'] = json_decode((string)$package['platforms_json'], true) ?: [];
-    }
-    unset($package);
-    json_response(200, ['success' => true, 'packages' => $packages]);
-}
-
-if ($method === 'POST') {
-    $body = get_json_body();
+function validated_package_fields(array $body): array {
     $textFields = [
         'title' => [3, 160], 'description' => [20, 3000],
         'usage_rights' => [5, 1000], 'vendor_requirements' => [5, 1000],
@@ -29,7 +16,8 @@ if ($method === 'POST') {
     ];
     $clean = [];
     foreach ($textFields as $field => [$min, $max]) {
-        $value = trim((string)($body[$field] ?? ''));
+        $raw = $body[$field] ?? null;
+        $value = is_string($raw) ? trim($raw) : '';
         if (mb_strlen($value) < $min || mb_strlen($value) > $max) {
             json_response(422, ['success' => false, 'message' => 'Check the ' . str_replace('_', ' ', $field) . ' field.']);
         }
@@ -59,15 +47,37 @@ if ($method === 'POST') {
         }
         $clean[$field] = json_encode($validated, JSON_UNESCAPED_UNICODE);
     }
+    $clean['price_inr'] = round((float)$price, 2);
+    $clean['turnaround_days'] = $turnaround;
+    $clean['revisions'] = $revisions;
+    $clean['capacity'] = $capacity;
+    return $clean;
+}
+
+if ($method === 'GET') {
+    $query = $db->prepare('SELECT id,title,description,price_inr,deliverables_json,platforms_json,turnaround_days,revisions,usage_rights,vendor_requirements,capacity,tax_treatment,cancellation_terms,status,review_note,created_at,updated_at FROM influencer_packages WHERE influencer_id=:owner ORDER BY created_at DESC LIMIT 100');
+    $query->execute(['owner' => $ownerId]);
+    $packages = $query->fetchAll();
+    foreach ($packages as &$package) {
+        $package['deliverables_json'] = json_decode((string)$package['deliverables_json'], true) ?: [];
+        $package['platforms_json'] = json_decode((string)$package['platforms_json'], true) ?: [];
+    }
+    unset($package);
+    json_response(200, ['success' => true, 'packages' => $packages]);
+}
+
+if ($method === 'POST') {
+    $body = get_json_body();
+    $clean = validated_package_fields($body);
     $id = uuid_string();
     $insert = $db->prepare('INSERT INTO influencer_packages (id,influencer_id,title,description,price_inr,deliverables_json,platforms_json,turnaround_days,revisions,usage_rights,vendor_requirements,capacity,tax_treatment,cancellation_terms,status,created_at,updated_at) VALUES (:id,:owner,:title,:description,:price,:deliverables,:platforms,:turnaround,:revisions,:rights,:requirements,:capacity,:tax,:cancellation,"draft",UTC_TIMESTAMP(),UTC_TIMESTAMP())');
     $insert->execute([
         'id' => $id, 'owner' => $ownerId, 'title' => $clean['title'],
-        'description' => $clean['description'], 'price' => round((float)$price, 2),
+        'description' => $clean['description'], 'price' => $clean['price_inr'],
         'deliverables' => $clean['deliverables_json'], 'platforms' => $clean['platforms_json'],
-        'turnaround' => $turnaround, 'revisions' => $revisions,
+        'turnaround' => $clean['turnaround_days'], 'revisions' => $clean['revisions'],
         'rights' => $clean['usage_rights'], 'requirements' => $clean['vendor_requirements'],
-        'capacity' => $capacity, 'tax' => $clean['tax_treatment'],
+        'capacity' => $clean['capacity'], 'tax' => $clean['tax_treatment'],
         'cancellation' => $clean['cancellation_terms'],
     ]);
     audit_event('influencer.package_created', 'influencer_package', $id);
@@ -78,6 +88,32 @@ if ($method === 'PATCH') {
     $body = get_json_body();
     $id = trim((string)($body['id'] ?? ''));
     $action = trim((string)($body['action'] ?? ''));
+    if ($action === 'edit') {
+        if (!preg_match('/^[a-f0-9-]{36}$/i', $id)) json_response(422, ['success' => false, 'message' => 'Choose a valid package.']);
+        $clean = validated_package_fields($body);
+        $db->beginTransaction();
+        $query = $db->prepare('SELECT p.status FROM influencer_packages p WHERE p.id=:id AND p.influencer_id=:owner FOR UPDATE');
+        $query->execute(['id' => $id, 'owner' => $ownerId]);
+        $package = $query->fetch();
+        if (!$package) json_response(404, ['success' => false, 'message' => 'Package not found.']);
+        if (!in_array($package['status'], ['draft', 'changes_requested', 'active', 'paused'], true)) {
+            json_response(409, ['success' => false, 'message' => 'This package cannot be edited while it is under review or archived.']);
+        }
+        $next = in_array($package['status'], ['active', 'paused'], true) ? 'pending_approval' : 'draft';
+        $db->prepare('UPDATE influencer_packages SET title=:title,description=:description,price_inr=:price,deliverables_json=:deliverables,platforms_json=:platforms,turnaround_days=:turnaround,revisions=:revisions,usage_rights=:rights,vendor_requirements=:requirements,capacity=:capacity,tax_treatment=:tax,cancellation_terms=:cancellation,status=:status,review_note=NULL,reviewed_by=NULL,reviewed_at=NULL,updated_at=UTC_TIMESTAMP() WHERE id=:id AND influencer_id=:owner')
+            ->execute([
+                'title' => $clean['title'], 'description' => $clean['description'], 'price' => $clean['price_inr'],
+                'deliverables' => $clean['deliverables_json'], 'platforms' => $clean['platforms_json'],
+                'turnaround' => $clean['turnaround_days'], 'revisions' => $clean['revisions'],
+                'rights' => $clean['usage_rights'], 'requirements' => $clean['vendor_requirements'],
+                'capacity' => $clean['capacity'], 'tax' => $clean['tax_treatment'],
+                'cancellation' => $clean['cancellation_terms'], 'status' => $next,
+                'id' => $id, 'owner' => $ownerId,
+            ]);
+        $db->commit();
+        audit_event('influencer.package_edited', 'influencer_package', $id, ['previous_status' => $package['status'], 'status' => $next]);
+        json_response(200, ['success' => true, 'status' => $next, 'message' => $next === 'pending_approval' ? 'Changes saved. The package is hidden until admin approves the revised terms.' : 'Package draft updated.']);
+    }
     $transitions = [
         'submit' => ['draft' => 'pending_approval', 'changes_requested' => 'pending_approval'],
         'pause' => ['active' => 'paused'],

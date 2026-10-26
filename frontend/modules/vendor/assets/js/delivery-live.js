@@ -22,6 +22,12 @@
     if (value !== undefined) item.textContent = String(value);
     return item;
   }
+  function field(labelText, control, className='') {
+    const wrap=element('div','vc-field '+className);
+    const label=element('label','',labelText);
+    if(!control.id)control.id='dl-dynamic-'+crypto.randomUUID();
+    label.htmlFor=control.id;wrap.append(label,control);return wrap;
+  }
   function announce(value, error) {
     message.textContent = value;
     message.hidden = false;
@@ -49,10 +55,10 @@
       event.preventDefault();
       if (!form.reportValidity()) return;
       const button = form.querySelector('[type=submit]');
-      button.disabled = true;
+      const originalLabel=button.textContent;button.disabled = true;button.setAttribute('aria-busy','true');button.textContent='Saving…';
       try { await handler(new FormData(form)); }
       catch (error) { announce(error.message, true); }
-      finally { button.disabled = false; }
+      finally { button.disabled = false;button.removeAttribute('aria-busy');button.textContent=originalLabel; }
     });
   }
 
@@ -136,7 +142,7 @@
         const note=element('textarea','vc-textarea');note.name='note';note.maxLength=500;note.placeholder='Customer-visible update or failure reason';
         const date=element('input','vc-input');date.type='datetime-local';date.name='event_at';date.value=localNow();date.required=true;
         const button=element('button','vc-btn small primary','Record milestone');button.type='submit';
-        form.append(select,date,location,note,button);
+        form.append(field('Next milestone',select),field('Date and time',date),field('Current location',location),field('Customer-visible note',note,'full'),button);
         submit(form,async data=>{
           const status=String(data.get('status')||'');
           if(['delivery_attempted','delivery_failed','return_in_transit','returned_to_vendor'].includes(status)&&String(data.get('note')||'').trim().length<10)throw Error('Enter at least 10 characters explaining this milestone.');

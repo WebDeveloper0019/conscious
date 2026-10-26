@@ -29,3 +29,8 @@ Desktop.ini
 
 storage/private/data-exports/
 storage/private/return-evidence/
+
+# Local browser inspection and scratch files
+.edge-product-debug/
+index.html.bak
+product-gsap-probe.js

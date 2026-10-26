@@ -37,8 +37,8 @@
     var open = document.getElementById('ci-sidebar-hamburger');
     var overlay = document.getElementById('ci-sidebar-overlay');
     if (!sidebar || !open) return;
-    function close() { sidebar.classList.remove('open'); if (overlay) overlay.classList.remove('show'); open.setAttribute('aria-expanded', 'false'); document.body.classList.remove('vc-nav-open'); }
-    open.addEventListener('click', function () { var isOpen = sidebar.classList.toggle('open'); if (overlay) overlay.classList.toggle('show', isOpen); open.setAttribute('aria-expanded', String(isOpen)); document.body.classList.toggle('vc-nav-open', isOpen); });
+    function close() { sidebar.classList.remove('open'); if (overlay) overlay.classList.remove('show'); open.setAttribute('aria-expanded', 'false'); open.setAttribute('aria-label', 'Open navigation'); document.body.classList.remove('vc-nav-open'); }
+    open.addEventListener('click', function () { var isOpen = sidebar.classList.toggle('open'); if (overlay) overlay.classList.toggle('show', isOpen); open.setAttribute('aria-expanded', String(isOpen)); open.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation'); document.body.classList.toggle('vc-nav-open', isOpen); });
     if (overlay) overlay.addEventListener('click', close);
     document.addEventListener('keydown', function (event) { if (event.key === 'Escape') close(); });
   }
@@ -115,6 +115,88 @@
         toast(form.dataset.success || 'Saved in this frontend preview.', 'success');
       });
     });
+  }
+
+  function initAccessibleForms() {
+    var controlIndex = 0;
+    function messageFor(input) {
+      if (input.validity.valueMissing) return 'This field is required.';
+      if (input.validity.typeMismatch) return input.type === 'email' ? 'Enter a valid email address.' : 'Enter a valid value.';
+      if (input.validity.patternMismatch) return input.validationMessage || 'Use the requested format.';
+      if (input.validity.tooShort) return 'Enter at least ' + input.minLength + ' characters.';
+      if (input.validity.tooLong) return 'Use no more than ' + input.maxLength + ' characters.';
+      if (input.validity.rangeUnderflow) return 'Enter a value of at least ' + input.min + '.';
+      if (input.validity.rangeOverflow) return 'Enter a value no greater than ' + input.max + '.';
+      if (input.validity.stepMismatch) return 'Enter a valid increment.';
+      return input.validationMessage || 'Check this field.';
+    }
+    function prepare(input) {
+      if (!input.matches('input:not([type="hidden"]),select,textarea')) return;
+      if (!input.id) input.id = 'vendor-field-' + (++controlIndex);
+      var field = input.closest('.vc-field');
+      var label = field && field.querySelector('label:not([for])');
+      if (label && !label.contains(input)) label.htmlFor = input.id;
+      if (input.required) input.setAttribute('aria-required', 'true');
+    }
+    function showState(input) {
+      prepare(input);
+      var field = input.closest('.vc-field');
+      if (!field) return;
+      var error = field.querySelector('.vc-field-error');
+      if (input.validity.valid) {
+        input.removeAttribute('aria-invalid');
+        if (error) { error.textContent = ''; error.hidden = true; }
+        return;
+      }
+      if (!error) {
+        error = document.createElement('small');
+        error.className = 'vc-field-error';
+        error.id = input.id + '-error';
+        error.setAttribute('role', 'alert');
+        field.appendChild(error);
+      }
+      error.textContent = messageFor(input);
+      error.hidden = false;
+      input.setAttribute('aria-invalid', 'true');
+      var described = (input.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
+      if (!described.includes(error.id)) described.push(error.id);
+      input.setAttribute('aria-describedby', described.join(' '));
+    }
+    document.querySelectorAll('input,select,textarea').forEach(prepare);
+    document.addEventListener('invalid', function (event) { showState(event.target); }, true);
+    document.addEventListener('input', function (event) { if (event.target.matches('input,select,textarea') && (event.target.validity.valid || event.target.getAttribute('aria-invalid') === 'true')) showState(event.target); });
+    document.addEventListener('change', function (event) { if (event.target.matches('input,select,textarea')) showState(event.target); });
+    document.addEventListener('submit', function (event) {
+      var form = event.target;
+      if (!(form instanceof HTMLFormElement)) return;
+      form.classList.add('was-validated');
+      if (!form.checkValidity()) {
+        var first = form.querySelector(':invalid');
+        if (first) { showState(first); setTimeout(function () { first.focus(); }, 0); }
+      }
+    }, true);
+  }
+
+  function initResponsiveTables() {
+    function prepare(table) {
+      if (!table.classList.contains('vc-table')) return;
+      table.classList.add('vc-table-responsive');
+      var headings = Array.from(table.querySelectorAll('thead th')).map(function (item) { return item.textContent.trim(); });
+      table.querySelectorAll('tbody tr').forEach(function (row) {
+        Array.from(row.children).forEach(function (cell, index) {
+          if (cell.colSpan > 1) cell.dataset.fullRow = 'true';
+          else if (headings[index]) cell.dataset.label = headings[index];
+        });
+      });
+    }
+    document.querySelectorAll('table.vc-table').forEach(prepare);
+    var observer = new MutationObserver(function (records) {
+      records.forEach(function (record) {
+        var table = record.target.closest && record.target.closest('table.vc-table');
+        if (table) prepare(table);
+      });
+    });
+    document.querySelectorAll('table.vc-table tbody').forEach(function (body) { observer.observe(body, {childList:true, subtree:true}); });
   }
 
   function initSearchAndFilters() {
@@ -326,6 +408,6 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    initSidebar(); initTabs(); initValidation(); initCommerceValidation(); initSearchAndFilters(); initPincodeChecker(); initRateCalculator(); initDialogActions(); initDemoReset(); renderDemoActivity();
+    initSidebar(); initTabs(); initValidation(); initAccessibleForms(); initResponsiveTables(); initCommerceValidation(); initSearchAndFilters(); initPincodeChecker(); initRateCalculator(); initDialogActions(); initDemoReset(); renderDemoActivity();
   });
 })();

@@ -17,5 +17,6 @@ json_response(200,[
     'order_status'=>$row['order_status'],
     'payment_status'=>$row['payment_status'],
     'attempt_status'=>$row['attempt_status'],
+    'local_demo'=>APP_ENV==='local' && str_starts_with((string)($row['provider_order_id'] ?? ''),'mock_'),
     'reservation_expired'=>strtotime((string)$row['expires_at']) <= time(),
 ]);
