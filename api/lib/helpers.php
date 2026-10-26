@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
-if (!defined('APP_KEY')) define('APP_KEY', 'your-super-secret-32-character-key-here');
-// Define the secure upload path (points to the storage folder in your project root)
+if (!defined('APP_ENV')) define('APP_ENV', getenv('APP_ENV') ?: 'local');// Define the secure upload path (points to the storage folder in your project root)
 if (!defined('PRIVATE_STORAGE_PATH')) {
     define('PRIVATE_STORAGE_PATH', realpath(__DIR__ . '/../../storage') . DIRECTORY_SEPARATOR . 'private_uploads');
 }

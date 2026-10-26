@@ -3,20 +3,17 @@ declare(strict_types=1);
 require_once __DIR__.'/../lib/helpers.php';
 send_cors_headers();
 
-// If you want to use your admin auth, uncomment the line below:
-// require_once __DIR__.'/../lib/admin.php'; require_admin('orders.oversee');
-
 $db = get_db();
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 if ($method === 'GET') {
     $stmt = $db->prepare('
-        SELECT o.*, p.title AS package_title, i.full_name AS influencer_name, i.handle AS influencer_handle, v.display_name AS vendor_name
-        FROM package_orders o
-        JOIN influencer_packages p ON p.id = o.package_id
+        SELECT o.*, s.package_title, i.full_name AS influencer_name, i.handle AS influencer_handle, v.display_name AS vendor_name
+        FROM service_orders o
+        JOIN service_order_snapshots s ON s.order_id = o.id
         JOIN influencers i ON i.id = o.influencer_id
         LEFT JOIN vendors v ON v.id = o.vendor_id
-        WHERE o.status IN ("paid", "in_progress")
+        WHERE o.status IN ("paid", "in_progress", "contact_pending", "scheduled", "delivered")
         ORDER BY o.created_at DESC
     ');
     $stmt->execute();
@@ -26,40 +23,57 @@ if ($method === 'GET') {
 if ($method === 'POST') {
     $body = get_json_body();
     $orderId = trim($body['id'] ?? '');
-    $action = trim($body['action'] ?? ''); // 'complete' or 'refund'
+    $newStatus = trim($body['status'] ?? ''); 
+    $notes = trim($body['notes'] ?? 'Admin updated status');
 
-    if (!$orderId || !in_array($action, ['complete', 'refund'])) {
-        json_response(422, ['success' => false, 'message' => 'Invalid request.']);
+    $allowedStatuses = ['contact_pending', 'scheduled', 'in_progress', 'delivered', 'completed', 'cancelled'];
+    
+    if (!$orderId || !in_array($newStatus, $allowedStatuses)) {
+        json_response(422, ['success' => false, 'message' => 'Invalid status request.']);
     }
 
     $db->beginTransaction();
     try {
-        // Idempotency Check: Ensure it's not already completed
-        $check = $db->prepare('SELECT status, influencer_id, amount_inr FROM package_orders WHERE id = :id FOR UPDATE');
+        $check = $db->prepare('SELECT status, influencer_id, base_amount FROM service_orders WHERE id = :id FOR UPDATE');
         $check->execute(['id' => $orderId]);
         $order = $check->fetch();
 
-        if (!$order || $order['status'] !== 'paid') {
-            throw new Exception('Order cannot be processed or is already completed.');
+        if (!$order || $order['status'] === 'completed' || $order['status'] === 'cancelled') {
+            throw new Exception('Order is already processed or closed.');
         }
 
-        if ($action === 'complete') {
-            $newStatus = 'completed';
-            // Credit the influencer's ledger so they can withdraw the money!
-            $db->prepare('INSERT INTO influencer_ledger_entries (id, influencer_id, amount, status, created_at) VALUES (:id, :inf, :amt, "eligible", UTC_TIMESTAMP())')
-               ->execute(['id' => uuid_string(), 'inf' => $order['influencer_id'], 'amt' => $order['amount_inr']]);
-               
-        } else {
-            $newStatus = 'cancelled'; // Refunded
+        // 1. If COMPLETED, pay the creator!
+        if ($newStatus === 'completed') {
+            $chk = $db->prepare('SELECT id FROM influencer_ledger_entries WHERE reference_type = "service_order" AND reference_id = :oid LIMIT 1');
+            $chk->execute(['oid' => $orderId]);
+            
+            if (!$chk->fetch()) {
+                $ledgerId = uuid_string();
+                $db->prepare('INSERT INTO influencer_ledger_entries (id, influencer_id, amount, status, reference_type, reference_id, created_at) VALUES (:id, :inf, :amt, "eligible", "service_order", :oid, UTC_TIMESTAMP())')
+                   ->execute(['id' => $ledgerId, 'inf' => $order['influencer_id'], 'amt' => $order['base_amount'], 'oid' => $orderId]);
+                   
+                $db->prepare('INSERT INTO service_earnings_links (id, order_id, influencer_id, ledger_entry_id, commission_amount, created_at) VALUES (:id, :oid, :inf, :lid, :amt, UTC_TIMESTAMP())')
+                   ->execute(['id' => uuid_string(), 'oid' => $orderId, 'inf' => $order['influencer_id'], 'lid' => $ledgerId, 'amt' => $order['base_amount']]);
+            }
+        } 
+        // 2. If CANCELLED, handle refund
+        else if ($newStatus === 'cancelled') {
+            $db->prepare('INSERT INTO service_refunds_disputes (id, order_id, type, amount, reason, status) VALUES (:id, :oid, "refund", :amt, :reason, "processed")')
+               ->execute(['id' => uuid_string(), 'oid' => $orderId, 'amt' => $order['base_amount'], 'reason' => $notes]);
         }
 
-        $db->prepare('UPDATE package_orders SET status = :status, updated_at = UTC_TIMESTAMP() WHERE id = :id')
+        // 3. Update Status
+        $db->prepare('UPDATE service_orders SET status = :status, updated_at = UTC_TIMESTAMP() WHERE id = :id')
            ->execute(['status' => $newStatus, 'id' => $orderId]);
+           
+        // 4. Log History with Notes (Yeh line aapki file mein missing thi)
+        $db->prepare('INSERT INTO service_order_status_history (id, order_id, status, notes, changed_by_type) VALUES (:id, :oid, :status, :notes, "admin")')
+           ->execute(['id' => uuid_string(), 'oid' => $orderId, 'status' => $newStatus, 'notes' => $notes]);
 
         $db->commit();
-        json_response(200, ['success' => true, 'message' => "Order marked as $newStatus."]);
+        json_response(200, ['success' => true, 'message' => "Order status updated to " . str_replace('_', ' ', $newStatus)]);
     } catch (Throwable $e) {
         $db->rollBack();
-        json_response(400, ['success' => false, 'message' => $e->getMessage()]);
+        json_response(400, ['success' => false, 'message' => 'An error occurred while processing the order.']);
     }
 }
