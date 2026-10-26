@@ -97,7 +97,7 @@ showMessage(
         'Courier, tracking number and estimated delivery date have not been recorded in the current order data.';
 
       document.title =
-        'Track Order ' + (order.orderNumber || '') + ' — Conscious Indi';
+        'Track Order ' + (order.orderNumber || '') + ' — Conscious India';
     } catch (error) {
       showMessage(error.message || 'Could not load tracking information.');
       console.error('Tracking error:', error);

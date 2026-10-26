@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="Track your Conscious Indi order in real-time. Get live updates on your handcrafted product delivery." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Track Your Order | Conscious Indi" />
-  <meta property="og:description" content="Real-time order tracking for your handcrafted product delivery from Conscious Indi." />
+  <meta name="description" content="Track your Conscious India order in real-time. Get live updates on your handcrafted product delivery." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Track Your Order | Conscious India" />
+  <meta property="og:description" content="Real-time order tracking for your handcrafted product delivery from Conscious India." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Track Order — Conscious Indi | Real-time Order Tracking</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Track Order — Conscious India | Real-time Order Tracking</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -181,9 +181,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 

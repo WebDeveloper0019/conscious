@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
   <meta name="description" content="Real stories of Indian artisans, women entrepreneurs, sustainable brands and circular economy heroes." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Stories That Matter | Conscious Indi" />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Stories That Matter | Conscious India" />
   <meta property="og:description" content="Inspiring stories of Indian artisans, women entrepreneurs and sustainable brands." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Stories That Matter — Conscious Indi | Artisan & Brand Stories</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Stories That Matter — Conscious India | Artisan & Brand Stories</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -26,9 +26,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 

@@ -215,7 +215,7 @@ try {
     audit_event('customer.order_cancelled', 'order', (string)$order['id'], ['scope' => $scope, 'items' => $cancelledResponseItems, 'refund' => $refund]);
     create_notification('customer', $userId, 'order_update', 'Order cancellation confirmed',
         'Your cancellation for order ' . $order['order_number'] . ' has been recorded.',
-        '/customer/order-details.html?orderNumber=' . urlencode((string)$order['order_number']),
+        '/portals/modules/customer/orders.php?orderNumber=' . urlencode((string)$order['order_number']),
         ['order_number' => $order['order_number'], 'status' => $newStatus, 'refund' => $refund]);
 
     $response = [

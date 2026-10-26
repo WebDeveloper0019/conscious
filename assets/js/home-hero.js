@@ -8,7 +8,9 @@
   const progress=document.getElementById('ci-hero-progress');
   let index=0;
   let timer=null;
-  let paused=false;
+  let pointerPaused=false;
+  let focusPaused=false;
+  const autoplayDelay=5000;
   function element(tag,className,content){const node=document.createElement(tag);if(className)node.className=className;if(content)node.textContent=content;return node;}
   function show(position){
     const all=Array.from(slides.children);if(!all.length)return;
@@ -20,7 +22,8 @@
     progress.textContent=String(index+1).padStart(2,'0')+' / '+String(all.length).padStart(2,'0');
   }
   function stop(){if(timer){clearInterval(timer);timer=null;}}
-  function start(){stop();if(slides.children.length<2||paused||document.hidden||matchMedia('(prefers-reduced-motion: reduce)').matches)return;timer=setInterval(()=>show(index+1),6500);}
+  function isPaused(){return pointerPaused||focusPaused||document.hidden;}
+  function start(){stop();if(slides.children.length<2||isPaused())return;timer=setInterval(()=>show(index+1),autoplayDelay);}
   function render(data){
     slides.replaceChildren();dots.replaceChildren();
     if(!data.length){
@@ -43,8 +46,10 @@
   }
   document.getElementById('ci-hero-prev').addEventListener('click',()=>{show(index-1);start();});
   document.getElementById('ci-hero-next').addEventListener('click',()=>{show(index+1);start();});
-  root.addEventListener('mouseenter',()=>{paused=true;stop();});root.addEventListener('mouseleave',()=>{paused=false;start();});
-  root.addEventListener('focusin',()=>{paused=true;stop();});root.addEventListener('focusout',event=>{if(!root.contains(event.relatedTarget)){paused=false;start();}});
+  root.addEventListener('pointerenter',()=>{pointerPaused=true;stop();});
+  root.addEventListener('pointerleave',()=>{pointerPaused=false;start();});
+  root.addEventListener('focusin',()=>{focusPaused=true;stop();});
+  root.addEventListener('focusout',event=>{if(!root.contains(event.relatedTarget)){focusPaused=false;start();}});
   root.addEventListener('keydown',event=>{if(event.key==='ArrowRight'){show(index+1);event.preventDefault();}if(event.key==='ArrowLeft'){show(index-1);event.preventDefault();}});
   document.addEventListener('visibilitychange',start);
   fetch('api/public/home-hero.php',{credentials:'same-origin',cache:'no-store',headers:{Accept:'application/json'}}).then(async response=>{const data=await response.json();if(!response.ok||!data.success)throw Error(data.message||'Banner content is unavailable.');return data.banners||[];}).then(render).catch(()=>render([]));

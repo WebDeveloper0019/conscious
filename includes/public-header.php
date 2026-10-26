@@ -1,4 +1,5 @@
 <?php /* Shared public storefront header. Dashboard layouts do not include this file. */ ?>
+<link rel="stylesheet" href="/conscious/assets/css/site-motion.css?v=20261026-1">
 <div class="bc-announce-bar" aria-label="Conscious India partner links">
   <div class="bc-announce-track container">
     <div class="bc-utility-inner">
@@ -11,9 +12,9 @@
           <a href="/conscious/creators">Conscious Creator / Influencer</a>
         </div></details>
         <details class="bc-utility-menu"><summary>Register As <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary><div class="bc-utility-menu-panel">
-          <a href="/conscious/frontend/modules/vendor/auth/register.php?type=brand">Conscious Brand</a>
-          <a href="/conscious/frontend/modules/vendor/auth/register.php?type=artisan">Artisan</a>
-          <a href="/conscious/frontend/modules/influencer/auth/register.php">Conscious Creator</a>
+          <a href="/conscious/portals/modules/vendor/auth/register.php?type=brand">Conscious Brand</a>
+          <a href="/conscious/portals/modules/vendor/auth/register.php?type=artisan">Artisan</a>
+          <a href="/conscious/portals/modules/influencer/auth/register.php">Conscious Creator</a>
         </div></details>
         <details class="bc-utility-menu"><summary>Book/Collab For <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary><div class="bc-utility-menu-panel">
           <a href="/conscious/events#event-stall-booking">Event Stall</a>
@@ -73,16 +74,16 @@
 
         <!-- Header Actions -->
         <div class="bc-header-actions">
-          <a href="/conscious/frontend/modules/customer/wishlist.php" class="bc-header-action-link" aria-label="Wishlist">
+          <a href="/conscious/portals/modules/customer/wishlist.php" class="bc-header-action-link" aria-label="Wishlist">
             <i class="fa-regular fa-heart"></i>
             <span>Wishlist</span>
           </a>
-          <a href="/conscious/frontend/modules/customer/cart.php" class="bc-header-action-link" aria-label="Cart (0 items)">
+          <a href="/conscious/portals/modules/customer/cart.php" class="bc-header-action-link" aria-label="Cart (0 items)">
             <i class="fa-solid fa-bag-shopping"></i>
             <span class="bc-action-badge" aria-label="0 items in cart">0</span>
             <span>Cart</span>
           </a>
-          <a href="/conscious/frontend/modules/customer/index.php" class="bc-header-action-link" aria-label="My Account">
+          <a href="/conscious/portals/modules/customer/index.php" class="bc-header-action-link" aria-label="My Account">
             <i class="fa-regular fa-circle-user"></i>
             <span>Account</span>
           </a>
@@ -338,6 +339,7 @@
                 <div class="bc-mega-grid">
                   <div class="bc-mega-col"><div class="bc-mega-group">
                     <h5><i class="fa-solid fa-book-open" aria-hidden="true"></i> Stories</h5><ul>
+                      <li><a href="/conscious/blog">The Conscious Journal</a></li>
                       <li><a href="/conscious/stories">Artisan Stories</a></li>
                       <li><a href="/conscious/stories">Brand Stories</a></li>
                       <li><a href="/conscious/stories">Women Entrepreneurs</a></li>
@@ -501,12 +503,12 @@
 
     <!-- Mobile Actions -->
     <div class="bc-mobile-actions">
-      <a href="/conscious/frontend/modules/customer/wishlist.php" class="bc-mobile-action-btn" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
-      <a href="/conscious/frontend/modules/customer/cart.php" class="bc-mobile-action-btn" aria-label="Cart" style="position:relative;">
+      <a href="/conscious/portals/modules/customer/wishlist.php" class="bc-mobile-action-btn" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
+      <a href="/conscious/portals/modules/customer/cart.php" class="bc-mobile-action-btn" aria-label="Cart" style="position:relative;">
         <i class="fa-solid fa-bag-shopping"></i>
         <span class="bc-action-badge" style="top:2px;right:2px;">0</span>
       </a>
-      <a href="/conscious/frontend/modules/customer/index.php" class="bc-mobile-action-btn" aria-label="Account"><i class="fa-regular fa-circle-user"></i></a>
+      <a href="/conscious/portals/modules/customer/index.php" class="bc-mobile-action-btn" aria-label="Account"><i class="fa-regular fa-circle-user"></i></a>
     </div>
 
   </div>
@@ -564,6 +566,7 @@
     <div class="bc-drawer-divider"></div>
     <div class="bc-drawer-section-title">Discover</div>
     <a href="/conscious/stories"><i class="fa-solid fa-book-open"></i> Stories &amp; Learn</a>
+    <a href="/conscious/blog"><i class="fa-regular fa-newspaper"></i> The Conscious Journal</a>
     <a href="/conscious/events"><i class="fa-regular fa-calendar"></i> Events &amp; Experiences</a>
     <a href="/conscious/community"><i class="fa-solid fa-people-group"></i> Community</a>
     <a href="/conscious/creators"><i class="fa-solid fa-star"></i> Creator Shops</a>
@@ -576,8 +579,8 @@
     <a href="/conscious/creators"><i class="fa-solid fa-star"></i> Become a Creator</a>
 
     <div class="bc-drawer-divider"></div>
-    <a href="/conscious/frontend/modules/customer/tracking.php"><i class="fa-regular fa-clock"></i> Track Order</a>
-    <a href="/conscious/frontend/modules/customer/index.php"><i class="fa-regular fa-circle-user"></i> My Account</a>
+    <a href="/conscious/portals/modules/customer/tracking.php"><i class="fa-regular fa-clock"></i> Track Order</a>
+    <a href="/conscious/portals/modules/customer/index.php"><i class="fa-regular fa-circle-user"></i> My Account</a>
     <a href="/conscious/help"><i class="fa-regular fa-circle-question"></i> Help &amp; Support</a>
   </div>
 </nav>

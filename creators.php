@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
   <meta name="description" content="Discover curated collections from India's conscious creators. Shop products reviewed and recommended by top sustainability influencers." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Creator Shops | Conscious Indi" />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Creator Shops | Conscious India" />
   <meta property="og:description" content="Shop curated collections from India's top sustainable living creators and influencers." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Creator Shops — Conscious Indi | Shop with India's Conscious Creators</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Creator Shops — Conscious India | Shop with India's Conscious Creators</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -27,9 +27,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -172,6 +172,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/bharatcraft.js?v=20261017-1"></script>
 <style>.creator-demo{display:inline-block;vertical-align:2px;margin-left:5px;padding:3px 5px;border-radius:5px;background:#fff0d5;color:#935c00;font-size:9px;font-weight:800;letter-spacing:.05em}</style>
-<script src="frontend/modules/influencer/assets/js/public-directory.js?v=20261017-3" defer></script>
+<script src="portals/modules/influencer/assets/js/public-directory.js?v=20261017-3" defer></script>
 </body>
 </html>

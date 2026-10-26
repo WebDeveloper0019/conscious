@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
   <meta name="description" content="Complete your purchase securely. Multiple payment options — UPI, Cards, Net Banking, COD." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Checkout | Conscious Indi" />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Checkout | Conscious India" />
   <meta property="og:description" content="Secure checkout for handcrafted Indian products. UPI, Cards & Net Banking accepted." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Checkout — Conscious Indi | Secure Payment</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Checkout — Conscious India | Secure Payment</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -45,9 +45,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -59,7 +59,7 @@
     <nav aria-label="Breadcrumb">
       <ol class="breadcrumb mb-0" style="font-size:0.8125rem;">
         <li class="breadcrumb-item"><a href="/conscious/">Home</a></li>
-            <li class="breadcrumb-item"><a href="frontend/modules/customer/cart.php">Cart</a></li>
+            <li class="breadcrumb-item"><a href="portals/modules/customer/cart.php">Cart</a></li>
             <li class="breadcrumb-item active" aria-current="page">Checkout</li>
       </ol>
     </nav>

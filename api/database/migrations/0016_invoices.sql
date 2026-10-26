@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `invoices` (
 --    Update these values in production BEFORE issuing invoices.
 -- ─────────────────────────────────────────────────────────
 INSERT INTO `platform_settings` (`setting_key`, `value_json`, `is_public`, `updated_by`, `updated_at`) VALUES
-  ('seller_legal_name',   '{"value":"Conscious Indi Private Limited"}',             1, '00000000-0000-0000-0000-000000000000', UTC_TIMESTAMP()),
+  ('seller_legal_name',   '{"value":"Conscious India Private Limited"}',             1, '00000000-0000-0000-0000-000000000000', UTC_TIMESTAMP()),
   ('seller_gstin',        '{"value":""}',                                           1, '00000000-0000-0000-0000-000000000000', UTC_TIMESTAMP()),
   ('seller_pan',          '{"value":""}',                                           1, '00000000-0000-0000-0000-000000000000', UTC_TIMESTAMP()),
   ('seller_address',      '{"value":"1 MG Road, Bangalore, Karnataka 560001"}',     1, '00000000-0000-0000-0000-000000000000', UTC_TIMESTAMP()),

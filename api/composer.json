@@ -1,7 +1,8 @@
 {
-  "name": "conscious-indi/backend",
-  "description": "Runtime dependencies for Conscious Indi",
+  "name": "conscious-india/backend",
+  "description": "Runtime dependencies for Conscious India",
   "type": "project",
+  "license": "proprietary",
   "require": {
     "php": "^8.2",
     "tecnickcom/tcpdf": "^6.10"

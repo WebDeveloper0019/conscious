@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
   <meta name="description" content="Discover India's leading sustainable brands. All brands verified for ethical practices, sustainability & authentic craftsmanship." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Sustainable Brands Directory | Conscious Indi" />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Sustainable Brands Directory | Conscious India" />
   <meta property="og:description" content="Discover India's finest verified sustainable brands — fashion, home, beauty, food & more." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Sustainable Brands — Conscious Indi | Verified Brand Directory</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Sustainable Brands — Conscious India | Verified Brand Directory</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -57,9 +57,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -82,7 +82,7 @@
     <div class="bc-reveal" style="text-align:center;color:white;">
       <div class="bc-section-label" style="color:var(--saffron-light);justify-content:center;">Verified Directory</div>
       <h1 class="bc-section-title brands-hero-title" style="color:white;" id="brands-heading">Sustainable Brands of India</h1>
-      <p class="bc-section-desc brands-hero-desc" style="color:rgba(255,255,255,0.75);">Every brand on Conscious Indi is verified for sustainability, ethical practices and genuine craftsmanship.</p>
+      <p class="bc-section-desc brands-hero-desc" style="color:rgba(255,255,255,0.75);">Every brand on Conscious India is verified for sustainability, ethical practices and genuine craftsmanship.</p>
     </div>
   </div>
 </section>

@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="How master potter Rajan Kumhar kept a 400-year-old Jaipur craft alive. A Conscious Indi artisan story." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Blue Pottery: A Tradition That Almost Disappeared | Conscious Indi" />
+  <meta name="description" content="How master potter Rajan Kumhar kept a 400-year-old Jaipur craft alive. A Conscious India artisan story." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Blue Pottery: A Tradition That Almost Disappeared | Conscious India" />
   <meta property="og:description" content="The story of how Jaipur's Blue Pottery survived plastic, globalization and almost disappeared." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Blue Pottery: A Tradition That Almost Disappeared — Conscious Indi</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Blue Pottery: A Tradition That Almost Disappeared — Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -26,9 +26,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -88,7 +88,7 @@
 
       <p style="font-size:1.0625rem;color:var(--text-secondary);line-height:1.85;margin-bottom:20px;">The revival began in the 1970s when Maharani Gayatri Devi of Jaipur championed our craft. Then in the 1990s, when exports began, we finally had a market. By the 2000s, Jaipur Blue Pottery had global recognition — but the irony was that mass-produced Chinese imitations flooded the market at a fraction of our prices.</p>
 
-      <p style="font-size:1.0625rem;color:var(--text-secondary);line-height:1.85;margin-bottom:0;">Platforms like Conscious Indi have become lifelines for authentic craftspeople. When someone buys one of my vases, they're not just buying pottery — they're buying four centuries of knowledge, the labor of my hands, and a vote for cultural preservation. That's worth every rupee of the price difference.</p>
+      <p style="font-size:1.0625rem;color:var(--text-secondary);line-height:1.85;margin-bottom:0;">Platforms like Conscious India have become lifelines for authentic craftspeople. When someone buys one of my vases, they're not just buying pottery — they're buying four centuries of knowledge, the labor of my hands, and a vote for cultural preservation. That's worth every rupee of the price difference.</p>
     </div>
 
     <!-- Share + Related Products -->

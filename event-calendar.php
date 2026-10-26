@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="Month-view calendar of all Conscious Indi events — pop-ups, exhibitions, workshops and summits." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Event Calendar | Conscious Indi" />
-  <meta property="og:description" content="See all upcoming Conscious Indi events in calendar view." />
+  <meta name="description" content="Month-view calendar of all Conscious India events — pop-ups, exhibitions, workshops and summits." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Event Calendar | Conscious India" />
+  <meta property="og:description" content="See all upcoming Conscious India events in calendar view." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Event Calendar — Conscious Indi</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Event Calendar — Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -26,9 +26,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -50,7 +50,7 @@
 <section class="section-py-sm" style="background:linear-gradient(135deg,var(--navy),#30391B);">
   <div class="container"><div class="bc-reveal" style="text-align:center;color:white;">
     <h1 class="bc-section-title" style="color:white;">Event Calendar</h1>
-    <p class="bc-section-desc" style="color:rgba(255,255,255,0.75);margin:0 auto;">All Conscious Indi events at a glance — pop-ups, exhibitions, workshops and summits.</p>
+    <p class="bc-section-desc" style="color:rgba(255,255,255,0.75);margin:0 auto;">All Conscious India events at a glance — pop-ups, exhibitions, workshops and summits.</p>
   </div></div>
 </section>
 <section class="section-py" style="background:var(--bg-cream);">

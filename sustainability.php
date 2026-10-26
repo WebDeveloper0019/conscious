@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="How Conscious Indi is building a sustainable commerce ecosystem — packaging, logistics and verified standards." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Sustainability | Conscious Indi" />
+  <meta name="description" content="How Conscious India is building a sustainable commerce ecosystem — packaging, logistics and verified standards." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Sustainability | Conscious India" />
   <meta property="og:description" content="Our sustainability practices, packaging standards and environmental commitments." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Sustainability — Conscious Indi | Our Environmental Commitment</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Sustainability — Conscious India | Our Environmental Commitment</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -26,9 +26,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -49,7 +49,7 @@
 <section class="section-py-sm" style="background:linear-gradient(135deg,var(--navy),#30391B);">
   <div class="container"><div class="bc-reveal" style="text-align:center;color:white;">
     <div class="bc-section-label" style="color:var(--saffron-light);justify-content:center;">Sustainability</div>
-    <h1 class="bc-section-title" style="color:white;">Sustainability at Conscious Indi</h1>
+    <h1 class="bc-section-title" style="color:white;">Sustainability at Conscious India</h1>
     <p class="bc-section-desc" style="color:rgba(255,255,255,0.75);margin:0 auto;">Every choice we make is filtered through environmental impact.</p>
   </div></div>
 </section>
@@ -61,7 +61,7 @@
           <div style="font-size:2.5rem;flex-shrink:0;">🌿</div>
           <div>
             <h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;">Our Environmental Commitment</h2>
-            <p style="color:var(--text-secondary);line-height:1.85;margin:0;">Conscious Indi is committed to minimising our environmental footprint at every stage — from the products we list to the packaging we use and the logistics networks we partner with. We offset 100% of our operational carbon through certified Indian forest conservation projects.</p>
+            <p style="color:var(--text-secondary);line-height:1.85;margin:0;">Conscious India is committed to minimising our environmental footprint at every stage — from the products we list to the packaging we use and the logistics networks we partner with. We offset 100% of our operational carbon through certified Indian forest conservation projects.</p>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
           <div style="font-size:2.5rem;flex-shrink:0;">📦</div>
           <div>
             <h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;">Eco Packaging Standard</h2>
-            <p style="color:var(--text-secondary);line-height:1.85;margin:0;">All Conscious Indi orders ship in recycled or FSC-certified paper packaging. We have eliminated all single-use plastic from our logistics chain. Our packaging is biodegradable, compostable or recyclable — and we're helping our seller partners transition too.</p>
+            <p style="color:var(--text-secondary);line-height:1.85;margin:0;">All Conscious India orders ship in recycled or FSC-certified paper packaging. We have eliminated all single-use plastic from our logistics chain. Our packaging is biodegradable, compostable or recyclable — and we're helping our seller partners transition too.</p>
           </div>
         </div>
       </div>

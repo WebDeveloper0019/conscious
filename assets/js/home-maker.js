@@ -5,7 +5,7 @@
   if (!productsRoot || !craftsRoot) return;
   const create = (tag, className, value) => { const node = document.createElement(tag); if (className) node.className = className; if (value !== undefined) node.textContent = value; return node; };
   const money = value => new Intl.NumberFormat('en-IN', {style:'currency', currency:'INR', maximumFractionDigits:0}).format(Number(value) || 0);
-  const imageUrl = raw => { if (!raw) return ''; try { const url = new URL(raw, new URL('api/public/catalog.php', location.href)); return url.origin === location.origin && /^https?:$/.test(url.protocol) ? url.href : ''; } catch { return ''; } };
+  const imageUrl = raw => { if (!raw) return ''; try { const url = new URL(raw, new URL('api/public/catalog.php', location.href)); if (url.origin !== location.origin || !/^https?:$/.test(url.protocol)) return ''; if (url.pathname.endsWith('/api/files.php')) url.searchParams.set('v', '20261026-images1'); return url.href; } catch { return ''; } };
   const feedback = create('p', 'ci-maker-feedback'); feedback.setAttribute('role', 'status'); productsRoot.after(feedback);
   async function request(path, options) { const response = await fetch(path, Object.assign({credentials:'same-origin', headers:{Accept:'application/json'}}, options || {})); const data = await response.json().catch(() => ({})); if (!response.ok || !data.success) { const error = Error(data.message || 'Please try again.'); error.login = response.status === 401; throw error; } return data; }
   async function addToCart(product, button) {
@@ -20,7 +20,7 @@
       const count = document.querySelector('.bc-cart-count'); if (count) count.textContent = String((Number(count.textContent) || 0) + 1);
     } catch (error) {
       feedback.textContent = error.message;
-      if (error.login || /sign in|log in|authentication|unauthorized/i.test(error.message)) { const link = create('a', '', ' Sign in'); link.href = 'frontend/modules/customer/auth/login.php'; feedback.append(link); }
+      if (error.login || /sign in|log in|authentication|unauthorized/i.test(error.message)) { const link = create('a', '', ' Sign in'); link.href = 'portals/modules/customer/auth/login.php'; feedback.append(link); }
       button.disabled = false;
     }
   }

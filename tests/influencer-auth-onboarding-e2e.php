@@ -79,12 +79,12 @@ function latest_mail(string $email, string $subjectFragment): string {
 }
 
 try {
-    check_http('registration page', 200, call_api('/frontend/modules/influencer/auth/register.php'));
-    check_http('login page', 200, call_api('/frontend/modules/influencer/auth/login.php'));
-    check_http('verification page', 200, call_api('/frontend/modules/influencer/auth/verify.php'));
-    check_http('forgot password page', 200, call_api('/frontend/modules/influencer/auth/forgot-password.php'));
-    check_http('reset password page', 200, call_api('/frontend/modules/influencer/auth/reset-password.php'));
-    check_http('dashboard redirects guests', 302, call_api('/frontend/modules/influencer/index.php'));
+    check_http('registration page', 200, call_api('/portals/modules/influencer/auth/register.php'));
+    check_http('login page', 200, call_api('/portals/modules/influencer/auth/login.php'));
+    check_http('verification page', 200, call_api('/portals/modules/influencer/auth/verify.php'));
+    check_http('forgot password page', 200, call_api('/portals/modules/influencer/auth/forgot-password.php'));
+    check_http('reset password page', 200, call_api('/portals/modules/influencer/auth/reset-password.php'));
+    check_http('dashboard redirects guests', 302, call_api('/portals/modules/influencer/index.php'));
     check_http('weak password rejected', 422, call_api('/api/influencer/auth/register.php', 'POST', [
         'full_name' => 'Creator E2E', 'email' => $email, 'phone' => $phone, 'handle' => $handle, 'password' => 'weak', 'terms' => true,
     ]));
@@ -96,7 +96,7 @@ try {
     ]));
     check_http('unverified login blocked', 403, call_api('/api/influencer/auth/login.php', 'POST', ['email' => $email, 'password' => $password]));
     check_http('resend cooldown enforced', 429, call_api('/api/influencer/auth/resend-code.php', 'POST', ['email' => $email]));
-    $mail = latest_mail($email, 'Verify your Conscious Indi creator');
+    $mail = latest_mail($email, 'Verify your Conscious India creator');
     if (!preg_match('/>\s*([0-9]{6})\s*</', $mail, $match)) throw new RuntimeException('Verification mail has no code.');
     check_http('wrong verification code rejected', 400, call_api('/api/influencer/auth/verify.php', 'POST', ['email' => $email, 'code' => '000000']));
     $verifyResponse = call_api('/api/influencer/auth/verify.php', 'POST', ['email' => $email, 'code' => $match[1]]);
@@ -106,7 +106,7 @@ try {
     if (!str_contains($verifyResponse[2], 'ci_session=')) throw new RuntimeException('Verification did not set the session cookie.');
     if (!isset($cookies['ci_session'], $cookies['ci_csrf'])) throw new RuntimeException('Verification did not provide both auth cookies.');
     check_http('creator session works', 200, call_api('/api/influencer/auth/me.php'));
-    check_http('dashboard loads', 200, call_api('/frontend/modules/influencer/index.php'));
+    check_http('dashboard loads', 200, call_api('/portals/modules/influencer/index.php'));
     check_http('CSRF is enforced', 419, call_api('/api/influencer/application.php', 'PATCH', ['bio' => 'Invalid']));
     check_http('application draft loads', 200, call_api('/api/influencer/application.php'));
     $bio = 'I tell authentic stories about sustainable Indian craft, makers and mindful living for my engaged audience.';
@@ -194,7 +194,7 @@ try {
         throw new RuntimeException('Admin feedback was not returned to the creator.');
     }
     check_http('forgot password accepted', 200, call_api('/api/auth/forgot-password.php', 'POST', ['email' => $email, 'account_type' => 'influencer']));
-    $resetMail = html_entity_decode(latest_mail($email, 'Reset your Conscious Indi password'), ENT_QUOTES, 'UTF-8');
+    $resetMail = html_entity_decode(latest_mail($email, 'Reset your Conscious India password'), ENT_QUOTES, 'UTF-8');
     if (!preg_match('~reset-password\.php\?token=([^&"<>]+)~', $resetMail, $resetMatch)) throw new RuntimeException('Password reset mail has no token.');
     $token = rawurldecode($resetMatch[1]);
     check_http('password reset works', 200, call_api('/api/auth/reset-password.php', 'POST', [

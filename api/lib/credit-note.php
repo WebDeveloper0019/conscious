@@ -75,7 +75,7 @@ function credit_note_generate_for_refund(string $refundId): array
         $seller = json_decode((string)$invoice['seller_snapshot_json'], true) ?: [];
     } else {
         $seller = [
-            'name'       => (string)invoice_setting('seller_legal_name', 'Conscious Indi'),
+            'name'       => (string)invoice_setting('seller_legal_name', 'Conscious India'),
             'gstin'      => (string)invoice_setting('seller_gstin', ''),
             'pan'        => (string)invoice_setting('seller_pan', ''),
             'address'    => (string)invoice_setting('seller_address', ''),

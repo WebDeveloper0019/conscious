@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
   <meta name="description" content="Review your selected handcrafted products and proceed to checkout. Secure payments, easy returns." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Shopping Cart | Conscious Indi" />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Shopping Cart | Conscious India" />
   <meta property="og:description" content="Review your cart and checkout securely. Handcrafted products from verified Indian artisans." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Cart — Conscious Indi | Your Shopping Cart</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Cart — Conscious India | Your Shopping Cart</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -47,9 +47,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -168,7 +168,7 @@
             <div style="display:flex;justify-content:space-between;font-size:1.125rem;font-weight:700;color:var(--text-primary);"><span>Total</span><span>₹5,937</span></div>
             <div style="font-size:0.75rem;color:var(--text-muted);">Inclusive of GST. You save ₹659 on this order.</div>
           </div>
-          <a href="frontend/modules/customer/checkout.php" class="bc-btn bc-btn-primary" style="width:100%;justify-content:center;font-size:1rem;padding:15px;">
+          <a href="portals/modules/customer/checkout.php" class="bc-btn bc-btn-primary" style="width:100%;justify-content:center;font-size:1rem;padding:15px;">
             <i class="fa-solid fa-lock"></i> Proceed to Checkout
           </a>
           <div style="text-align:center;margin-top:12px;font-size:0.75rem;color:var(--text-muted);">

@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
   <meta name="description" content="Discover India's master artisans — potters, weavers, painters, carvers and jewelers. Shop directly from the makers." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Artisans of India | Conscious Indi" />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Artisans of India | Conscious India" />
   <meta property="og:description" content="Meet the master craftspeople behind India's handcrafted treasures. Shop direct from artisans." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Artisans — Conscious Indi | Meet India's Master Craftspeople</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Artisans — Conscious India | Meet India's Master Craftspeople</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -48,9 +48,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -239,7 +239,7 @@
     <div class="bc-reveal" style="text-align:center;color:white;">
       <div class="bc-section-label" style="color:var(--saffron-light);justify-content:center;">Join Our Community</div>
       <h2 class="bc-section-title" style="color:white;">Are You an Artisan?</h2>
-      <p class="bc-section-desc" style="color:rgba(255,255,255,0.75);margin:0 auto 28px;">Join 1,200+ verified artisans already selling on Conscious Indi. No listing fees, no commissions until you sell.</p>
+      <p class="bc-section-desc" style="color:rgba(255,255,255,0.75);margin:0 auto 28px;">Join 1,200+ verified artisans already selling on Conscious India. No listing fees, no commissions until you sell.</p>
       <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
         <a href="/conscious/become-artisan-partner" class="bc-btn bc-btn-primary"><i class="fa-solid fa-hands"></i> Apply as Artisan</a>
         <a href="/conscious/seller-guidelines" class="bc-btn bc-btn-outline-white">Read Guidelines</a>

@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="News, media mentions and press resources about Conscious Indi." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Press & Media | Conscious Indi" />
-  <meta property="og:description" content="News coverage and media resources for Conscious Indi." />
+  <meta name="description" content="News, media mentions and press resources about Conscious India." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Press & Media | Conscious India" />
+  <meta property="og:description" content="News coverage and media resources for Conscious India." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Press & Media — Conscious Indi</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Press & Media — Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -26,9 +26,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -49,7 +49,7 @@
 <section class="section-py-sm" style="background:linear-gradient(135deg,var(--navy),#30391B);">
   <div class="container"><div class="bc-reveal" style="text-align:center;color:white;">
     <h1 class="bc-section-title" style="color:white;">Press &amp; Media</h1>
-    <p class="bc-section-desc" style="color:rgba(255,255,255,0.75);margin:0 auto;">News, mentions and media resources about Conscious Indi.</p>
+    <p class="bc-section-desc" style="color:rgba(255,255,255,0.75);margin:0 auto;">News, mentions and media resources about Conscious India.</p>
   </div></div>
 </section>
 <section class="section-py" style="background:var(--bg-cream);">
@@ -64,7 +64,7 @@
         </a>
         <a href="#" style="display:flex;gap:16px;align-items:center;background:white;border-radius:var(--r-lg);border:1.5px solid var(--border-warm);padding:18px 20px;text-decoration:none;color:inherit;">
           <div style="width:48px;height:48px;border-radius:var(--r-md);background:var(--saffron-pale);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--saffron-dark);flex-shrink:0;">YS</div>
-          <div style="flex:1;"><div style="font-weight:700;color:var(--text-primary);">YourStory: "How Conscious Indi Raised ₹15Cr to Empower Artisans"</div><div style="font-size:0.8125rem;color:var(--text-muted);margin-top:2px;">October 2024</div></div>
+          <div style="flex:1;"><div style="font-weight:700;color:var(--text-primary);">YourStory: "How Conscious India Raised ₹15Cr to Empower Artisans"</div><div style="font-size:0.8125rem;color:var(--text-muted);margin-top:2px;">October 2024</div></div>
           <i class="fa-solid fa-arrow-up-right-from-square" style="color:var(--text-muted);"></i>
         </a>
         <a href="#" style="display:flex;gap:16px;align-items:center;background:white;border-radius:var(--r-lg);border:1.5px solid var(--border-warm);padding:18px 20px;text-decoration:none;color:inherit;">

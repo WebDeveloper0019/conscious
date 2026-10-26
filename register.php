@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="Join Conscious Indi free. Shop handcrafted products from verified Indian artisans and sustainable brands." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Create Account — Conscious Indi" />
-  <meta property="og:description" content="Join Conscious Indi free. Shop handcrafted products from verified Indian artisans and sustainable brands." />
+  <meta name="description" content="Join Conscious India free. Shop handcrafted products from verified Indian artisans and sustainable brands." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Create Account — Conscious India" />
+  <meta property="og:description" content="Join Conscious India free. Shop handcrafted products from verified Indian artisans and sustainable brands." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Create Account — Conscious Indi</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Create Account — Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -23,9 +23,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -45,9 +45,9 @@
   <div class="container">
     <div class="bc-auth-card bc-reveal">
       <div style="text-align:center;margin-bottom:28px;">
-        <a href="/conscious/"><img src="assets/images/symbol.png" alt="Conscious Indi" width="60" height="60" style="margin-bottom:12px;" /></a>
+        <a href="/conscious/"><img src="assets/images/symbol.png" alt="Conscious India" width="60" height="60" style="margin-bottom:12px;" /></a>
         <h1 style="font-family:var(--font-display);font-size:1.625rem;font-weight:800;color:var(--text-primary);margin-bottom:6px;">Create Your Account</h1>
-        <p style="font-size:0.9375rem;color:var(--text-muted);">Join 2M+ conscious shoppers on Conscious Indi</p>
+        <p style="font-size:0.9375rem;color:var(--text-muted);">Join 2M+ conscious shoppers on Conscious India</p>
       </div>
     <form id="ci-register-form" novalidate>
   <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:20px;">
@@ -96,7 +96,7 @@
             style="accent-color:var(--saffron);margin:0;"
         />
         <span>
-            I agree to Conscious Indi's
+            I agree to Conscious India's
             <a href="/conscious/terms" style="color:var(--saffron-dark);">Terms of Use</a>
             and
             <a href="/conscious/privacy" style="color:var(--saffron-dark);">Privacy Policy</a>
@@ -108,7 +108,7 @@
 
 <div style="text-align:center;margin-top:22px;font-size:0.9375rem;color:var(--text-muted);">
     Already have an account?
-    <a href="frontend/modules/customer/auth/login.php" style="color:var(--saffron-dark);font-weight:600;">Sign in</a>
+    <a href="portals/modules/customer/auth/login.php" style="color:var(--saffron-dark);font-weight:600;">Sign in</a>
 </div>
     </div>
   </div>
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             setTimeout(function () {
                 window.location.href =
-                    'frontend/modules/customer/auth/verify-email.php';
+                    'portals/modules/customer/auth/verify-email.php';
             }, 700);
 
         } catch (err) {

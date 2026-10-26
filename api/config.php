@@ -1,19 +1,45 @@
 <?php
 declare(strict_types=1);
 
-function load_local_env(): void {
-    $envFile = __DIR__ . '/.env';
-    if (!is_file($envFile)) return;
+function load_app_env(): void
+{
+    $configured = trim((string)(getenv('APP_ENV_FILE') ?: ''));
+    $candidates = array_filter([$configured, __DIR__ . '/.env', dirname(__DIR__, 2) . '/.env']);
+    $envFile = null;
+
+    foreach ($candidates as $candidate) {
+        if (is_file($candidate)) {
+            $envFile = $candidate;
+            break;
+        }
+    }
+
+    if ($envFile === null) {
+        return;
+    }
+
     foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [] as $line) {
         $line = trim($line);
-        if ($line === '' || str_starts_with($line, '#') || !str_contains($line, '=')) continue;
+        if ($line === '' || str_starts_with($line, '#') || !str_contains($line, '=')) {
+            continue;
+        }
+
         [$key, $value] = array_map('trim', explode('=', $line, 2));
         $value = trim($value, "\"'");
-        if ($key !== '' && getenv($key) === false) putenv($key . '=' . $value);
+        if ($key !== '' && getenv($key) === false) {
+            putenv($key . '=' . $value);
+        }
     }
 }
-load_local_env();
+
+load_app_env();
 date_default_timezone_set('UTC');
+
+if ((getenv('APP_ENV') ?: 'local') === 'production') {
+    ini_set('display_errors', '0');
+    ini_set('display_startup_errors', '0');
+    ini_set('log_errors', '1');
+}
 
 define('APP_ENV', getenv('APP_ENV') ?: 'local');
 define('APP_URL', rtrim(getenv('APP_URL') ?: '', '/'));
@@ -31,7 +57,7 @@ define('DB_PASS', getenv('DB_PASS') ?: '');
 define('CORS_ORIGIN', rtrim(getenv('CORS_ORIGIN') ?: '', '/'));
 define('RESEND_API_KEY', getenv('RESEND_API_KEY') ?: '');
 define('RESEND_FROM', getenv('RESEND_FROM') ?: 'onboarding@resend.dev');
-define('RESEND_FROM_NAME', getenv('RESEND_FROM_NAME') ?: 'Conscious Indi');
+define('RESEND_FROM_NAME', getenv('RESEND_FROM_NAME') ?: 'Conscious India');
 define('MAIL_TRANSPORT', getenv('MAIL_TRANSPORT') ?: (APP_ENV === 'local' ? 'log' : 'resend'));
 define('PRIVATE_STORAGE_PATH', getenv('PRIVATE_STORAGE_PATH') ?: dirname(__DIR__) . '/storage/private');
 define('MAX_UPLOAD_BYTES', (int)(getenv('MAX_UPLOAD_BYTES') ?: 10485760));
@@ -42,6 +68,13 @@ define('RAZORPAY_KEY_ID', getenv('RAZORPAY_KEY_ID') ?: '');
 define('RAZORPAY_KEY_SECRET', getenv('RAZORPAY_KEY_SECRET') ?: '');
 define('RAZORPAY_WEBHOOK_SECRET', getenv('RAZORPAY_WEBHOOK_SECRET') ?: PAYMENT_WEBHOOK_SECRET);
 
+if (APP_ENV === 'production' && (!str_starts_with(APP_URL, 'https://') || parse_url(APP_URL, PHP_URL_HOST) === null)) {
+    http_response_code(500);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['success' => false, 'message' => 'Production application URL must use HTTPS.']);
+    exit;
+}
+
 if (APP_ENV !== 'local' && (strlen(APP_KEY) < 32 || str_contains(APP_KEY, 'replace-with'))) {
     http_response_code(500);
     header('Content-Type: application/json; charset=utf-8');
@@ -49,5 +82,8 @@ if (APP_ENV !== 'local' && (strlen(APP_KEY) < 32 || str_contains(APP_KEY, 'repla
     exit;
 }
 if (APP_ENV !== 'local' && MAIL_TRANSPORT !== 'resend') {
-    http_response_code(500);header('Content-Type: application/json; charset=utf-8');echo json_encode(['success'=>false,'message'=>'Production email transport is not configured.']);exit;
+    http_response_code(500);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['success' => false, 'message' => 'Production email transport is not configured.']);
+    exit;
 }

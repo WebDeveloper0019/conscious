@@ -1,4 +1,4 @@
-/* Conscious Indi — Back-in-stock / price-drop subscription widget. */
+/* Conscious India — Back-in-stock / price-drop subscription widget. */
 'use strict';
 
 (function () {

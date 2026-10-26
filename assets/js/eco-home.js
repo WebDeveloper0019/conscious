@@ -1,5 +1,5 @@
 /* ============================================================
-   Conscious Indi — Eco Homepage Behaviour
+   Conscious India — Eco Homepage Behaviour
    Scoped to the homepage. Reuses the site-wide toast and cart
    badge so existing shop functionality keeps working.
    ============================================================ */

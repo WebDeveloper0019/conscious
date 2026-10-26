@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="Discover certified products with Geographical Indication and sustainability credentials from verified brands on Conscious Indi." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="GI Tag Marketplace | Conscious Indi" />
+  <meta name="description" content="Discover certified products with Geographical Indication and sustainability credentials from verified brands on Conscious India." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="GI Tag Marketplace | Conscious India" />
   <meta property="og:description" content="Authentic, origin-protected products that preserve heritage, support communities and protect the planet." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>GI Tag Marketplace — Conscious Indi | Authentic, Origin-Protected &amp; Heritage Certified</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>GI Tag Marketplace — Conscious India | Authentic, Origin-Protected &amp; Heritage Certified</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -107,9 +107,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -285,7 +285,7 @@
   <div class="container">
     <div class="gi-section-head bc-reveal">
       <div class="gi-section-kicker"><i class="fa-solid fa-leaf"></i> Certified Brands <i class="fa-solid fa-leaf"></i></div>
-      <p class="gi-section-sub" id="gi-brands-heading">Discover verified brands approved by the Conscious Indi Admin under trusted certifications.</p>
+      <p class="gi-section-sub" id="gi-brands-heading">Discover verified brands approved by the Conscious India Admin under trusted certifications.</p>
     </div>
     <div class="gi-brands-track bc-reveal">
       <div class="gi-brand-card">

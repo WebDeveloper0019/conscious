@@ -9,8 +9,8 @@ function credit_note_render_pdf(array $cn): string
     require_once $autoload;
 
     $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
-    $pdf->SetCreator('Conscious Indi');
-    $pdf->SetAuthor($cn['seller']['name'] ?? 'Conscious Indi');
+    $pdf->SetCreator('Conscious India');
+    $pdf->SetAuthor($cn['seller']['name'] ?? 'Conscious India');
     $pdf->SetTitle('Credit Note ' . ($cn['number'] ?? ''));
     $pdf->setPrintHeader(false);
     $pdf->setPrintFooter(true);

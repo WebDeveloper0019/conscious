@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="The mission, vision and 2030 goals of Conscious Indi — India's conscious commerce platform." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Our Mission | Conscious Indi" />
+  <meta name="description" content="The mission, vision and 2030 goals of Conscious India — India's conscious commerce platform." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Our Mission | Conscious India" />
   <meta property="og:description" content="Our mission, vision and goals for conscious commerce in India." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Our Mission — Conscious Indi</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Our Mission — Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -26,9 +26,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -50,7 +50,7 @@
   <div class="container"><div class="bc-reveal" style="text-align:center;color:white;">
     <div class="bc-section-label" style="color:var(--saffron-light);justify-content:center;">Purpose</div>
     <h1 class="bc-section-title" style="color:white;">Our Mission & Vision</h1>
-    <p class="bc-section-desc" style="color:rgba(255,255,255,0.75);margin:0 auto;">Why Conscious Indi exists — and where we're going.</p>
+    <p class="bc-section-desc" style="color:rgba(255,255,255,0.75);margin:0 auto;">Why Conscious India exists — and where we're going.</p>
   </div></div>
 </section>
 <section class="section-py" style="background:var(--bg-cream);">
@@ -61,7 +61,7 @@
           <div style="font-size:2.5rem;flex-shrink:0;">🎯</div>
           <div>
             <h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;">Our Mission</h2>
-            <p style="color:var(--text-secondary);line-height:1.85;margin:0;">Conscious Indi exists to make ethical consumption easy, beautiful, and deeply meaningful. We believe that every purchasing decision is a vote for the world you want to live in — and we're building the platform that makes conscious votes irresistible.</p>
+            <p style="color:var(--text-secondary);line-height:1.85;margin:0;">Conscious India exists to make ethical consumption easy, beautiful, and deeply meaningful. We believe that every purchasing decision is a vote for the world you want to live in — and we're building the platform that makes conscious votes irresistible.</p>
           </div>
         </div>
       </div>

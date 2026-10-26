@@ -11,11 +11,11 @@
 
         <!-- Brand Column -->
         <div class="bc-footer-brand">
-          <a href="/conscious/" class="bc-footer-logo-link" aria-label="Conscious Indi">
+          <a href="/conscious/" class="bc-footer-logo-link" aria-label="Conscious India">
             <div class="bc-footer-logo-pill">
               <img
                 src="/conscious/assets/images/logo-horizontal.png"
-                alt="Conscious Indi"
+                alt="Conscious India"
                 class="bc-logo-img bc-logo-footer"
                 width="200"
                 height="54"
@@ -41,6 +41,7 @@
             <li><a href="/conscious/shop"><i class="fa-solid fa-chevron-right"></i> Marketplace</a></li>
             <li><a href="/conscious/brands"><i class="fa-solid fa-chevron-right"></i> Sustainable Brands</a></li>
             <li><a href="/conscious/stories"><i class="fa-solid fa-chevron-right"></i> Artisan Stories</a></li>
+            <li><a href="/conscious/blog"><i class="fa-solid fa-chevron-right"></i> The Conscious Journal</a></li>
             <li><a href="/conscious/creators"><i class="fa-solid fa-chevron-right"></i> Creator Shops</a></li>
             <li><a href="/conscious/events"><i class="fa-solid fa-chevron-right"></i> Events</a></li>
             <li><a href="/conscious/community"><i class="fa-solid fa-chevron-right"></i> Community</a></li>
@@ -64,9 +65,9 @@
         <div>
           <div class="bc-footer-col-title">Customer Care</div>
           <ul class="bc-footer-links">
-            <li><a href="/conscious/frontend/modules/customer/index.php"><i class="fa-solid fa-chevron-right"></i> My Account</a></li>
-            <li><a href="/conscious/frontend/modules/customer/tracking.php"><i class="fa-solid fa-chevron-right"></i> Track My Order</a></li>
-            <li><a href="/conscious/frontend/modules/customer/returns.php"><i class="fa-solid fa-chevron-right"></i> Returns &amp; Refunds</a></li>
+            <li><a href="/conscious/portals/modules/customer/index.php"><i class="fa-solid fa-chevron-right"></i> My Account</a></li>
+            <li><a href="/conscious/portals/modules/customer/tracking.php"><i class="fa-solid fa-chevron-right"></i> Track My Order</a></li>
+            <li><a href="/conscious/portals/modules/customer/returns.php"><i class="fa-solid fa-chevron-right"></i> Returns &amp; Refunds</a></li>
             <li><a href="/conscious/faq"><i class="fa-solid fa-chevron-right"></i> FAQs</a></li>
             <li><a href="/conscious/contact"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
             <li><a href="/conscious/help"><i class="fa-solid fa-chevron-right"></i> Help Centre</a></li>
@@ -96,7 +97,7 @@
     <div class="container">
       <div class="bc-footer-bottom-inner">
         <div class="bc-footer-copyright">
-          © 2025 Conscious Indi™. Made with ❤️ in India.
+          © 2025 Conscious India™. Made with ❤️ in India.
           Empowering <a href="/conscious/stories">artisans &amp; conscious brands</a>, one story at a time.
         </div>
 
@@ -120,3 +121,4 @@
   </div>
 
 </footer>
+<script src="/conscious/assets/js/site-motion.js?v=20261026-1" defer></script>

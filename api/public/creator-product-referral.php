@@ -20,5 +20,5 @@ if(rate_limit('referral-click|'.$ipHash.'|'.$link['link_id'],30,3600))$fraud[]='
 $db->prepare('INSERT INTO referral_clicks (id,referral_link_id,visitor_hash,ip_hash,user_agent_hash,fraud_flags_json,clicked_at) VALUES (:id,:link,:visitor,:ip,:agent,:fraud,UTC_TIMESTAMP())')->execute(['id'=>$clickId,'link'=>$link['link_id'],'visitor'=>hash_hmac('sha256',$visitor,APP_KEY),'ip'=>$ipHash,'agent'=>request_fingerprint((string)($_SERVER['HTTP_USER_AGENT']??'')),'fraud'=>$fraud?json_encode($fraud):null]);
 setcookie('ci_referral_click',$clickId,['expires'=>time()+86400*(int)$link['attribution_days'],'path'=>'/','secure'=>secure_cookie(),'httponly'=>true,'samesite'=>'Lax']);
 $script=(string)($_SERVER['SCRIPT_NAME']??'');$prefix=preg_replace('~/api/public/creator-product-referral\.php$~','',$script);
-$destination=($prefix!==$script?$prefix:'').'/frontend/modules/customer/product.php?id='.rawurlencode($product);
+$destination=($prefix!==$script?$prefix:'').'/portals/modules/customer/product.php?id='.rawurlencode($product);
 header('Location: '.$destination,true,302);exit;

@@ -5,10 +5,10 @@
   const state={products:[],category:new URLSearchParams(location.search).get('category')||'',q:new URLSearchParams(location.search).get('q')||'',vendor:new URLSearchParams(location.search).get('vendor_id')||''};
   const money=value=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(value)||0);
   const el=(tag,className,text)=>{const item=document.createElement(tag);if(className)item.className=className;if(text!==undefined)item.textContent=text;return item;};
-  const imageUrl=raw=>{if(!raw)return '';try{const url=new URL(raw,new URL('api/public/catalog.php',location.href));return url.origin===location.origin?url.href:'';}catch{return '';}};
+  const imageUrl=raw=>{if(!raw)return '';try{const url=new URL(raw,new URL('api/public/catalog.php',location.href));if(url.origin!==location.origin||!/^https?:$/.test(url.protocol))return '';if(url.pathname.endsWith('/api/files.php'))url.searchParams.set('v','20261026-images1');return url.href;}catch{return '';}};
   const toast=el('div','bc-shop-toast');toast.setAttribute('role','status');toast.hidden=true;document.body.append(toast);
   let toastTimer;
-  function notify(message,needsLogin=false){toast.replaceChildren(document.createTextNode(message));if(needsLogin){const link=el('a','',' Sign in');link.href='frontend/modules/customer/auth/login.php';toast.append(link);}toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.hidden=true,7000);}
+  function notify(message,needsLogin=false){toast.replaceChildren(document.createTextNode(message));if(needsLogin){const link=el('a','',' Sign in');link.href='portals/modules/customer/auth/login.php';toast.append(link);}toast.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.hidden=true,7000);}
   async function api(path,method='GET',body){
     const headers={Accept:'application/json'};
     if(method!=='GET'){

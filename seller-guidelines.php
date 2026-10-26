@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="Read Conscious Indi's seller guidelines before applying as a brand partner, artisan partner or exhibitor." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Seller Guidelines | Conscious Indi" />
-  <meta property="og:description" content="Official seller guidelines and policies for brands, artisans and exhibitors on Conscious Indi." />
+  <meta name="description" content="Read Conscious India's seller guidelines before applying as a brand partner, artisan partner or exhibitor." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Seller Guidelines | Conscious India" />
+  <meta property="og:description" content="Official seller guidelines and policies for brands, artisans and exhibitors on Conscious India." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Seller Guidelines — Conscious Indi | Partner Policies</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Seller Guidelines — Conscious India | Partner Policies</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -26,9 +26,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -52,17 +52,17 @@
     <div style="background:white;border-radius:var(--r-xl);border:1.5px solid var(--border-warm);padding:40px;" class="bc-reveal">
       <div style="display:flex;gap:16px;align-items:flex-start;padding:20px;background:var(--saffron-pale);border-radius:var(--r-lg);border:1px solid rgba(255,153,51,0.2);margin-bottom:32px;">
         <i class="fa-solid fa-circle-info" style="color:var(--saffron-dark);font-size:1.25rem;margin-top:2px;flex-shrink:0;"></i>
-        <p style="font-size:0.9375rem;color:var(--text-secondary);line-height:1.7;margin:0;">These guidelines apply to all brand partners, artisan partners and exhibitors on Conscious Indi. Please read carefully before applying. By submitting an application, you agree to these terms.</p>
+        <p style="font-size:0.9375rem;color:var(--text-secondary);line-height:1.7;margin:0;">These guidelines apply to all brand partners, artisan partners and exhibitors on Conscious India. Please read carefully before applying. By submitting an application, you agree to these terms.</p>
       </div>
       <h1 style="font-family:var(--font-display);font-size:1.75rem;font-weight:800;color:var(--text-primary);margin-bottom:8px;">Seller Guidelines</h1>
       <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:32px;">Last updated: 1 January 2025</p>
       <div style="display:flex;flex-direction:column;gap:32px;">
-        <section><h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--saffron);">1. Eligibility & Verification</h2><p style="color:var(--text-secondary);line-height:1.8;margin-bottom:12px;">All sellers must pass Conscious Indi's verification process before listing products. This includes: proof of business registration or artisan identity, product authenticity documentation, sustainability credentials (for brand partners), and a portfolio review by our curatorial team.</p><p style="color:var(--text-secondary);line-height:1.8;">Artisans must submit craft certificates, GI documentation (where applicable), and at least 5 product photographs. Brands must provide GST registration, product test reports and sustainability/ethical sourcing documentation.</p></section>
+        <section><h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--saffron);">1. Eligibility & Verification</h2><p style="color:var(--text-secondary);line-height:1.8;margin-bottom:12px;">All sellers must pass Conscious India's verification process before listing products. This includes: proof of business registration or artisan identity, product authenticity documentation, sustainability credentials (for brand partners), and a portfolio review by our curatorial team.</p><p style="color:var(--text-secondary);line-height:1.8;">Artisans must submit craft certificates, GI documentation (where applicable), and at least 5 product photographs. Brands must provide GST registration, product test reports and sustainability/ethical sourcing documentation.</p></section>
         <section><h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--saffron);">2. Product Standards</h2><ul style="color:var(--text-secondary);line-height:1.9;padding-left:20px;"><li>All products must be handcrafted, sustainable or ethically sourced</li><li>No mass-manufactured or imported products may be listed as handcrafted</li><li>Products must be accurately described with correct materials, dimensions and origin</li><li>Misleading GI or certification claims are grounds for immediate removal</li><li>Product images must be original and accurately represent the item</li></ul></section>
-        <section><h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--saffron);">3. Pricing & Commissions</h2><p style="color:var(--text-secondary);line-height:1.8;margin-bottom:12px;">Conscious Indi charges a commission on each sale (currently 8–12% depending on category). There are no listing fees. All prices must be inclusive of GST. Sellers set their own prices but must not undercut their Conscious Indi prices on other platforms by more than 5%.</p></section>
-        <section><h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--saffron);">4. Order Fulfilment & Shipping</h2><p style="color:var(--text-secondary);line-height:1.8;">Orders must be dispatched within 3 business days of placement. Sellers are responsible for safe packaging. Conscious Indi provides integrated logistics support through our partner network. Sellers must update tracking within 24 hours of dispatch.</p></section>
-        <section><h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--saffron);">5. Returns & Disputes</h2><p style="color:var(--text-secondary);line-height:1.8;">All products are covered by Conscious Indi's 7-day return policy. Sellers must accept returns for damaged, defective or incorrectly described items. Dispute resolution follows Conscious Indi's standard process; our decisions are final in consumer protection cases.</p></section>
-        <section><h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--saffron);">6. Code of Conduct</h2><p style="color:var(--text-secondary);line-height:1.8;">Sellers must treat all buyers and Conscious Indi staff with respect. Any attempt to circumvent the platform, solicit off-platform transactions, or misrepresent products will result in immediate account termination and legal action where applicable.</p></section>
+        <section><h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--saffron);">3. Pricing & Commissions</h2><p style="color:var(--text-secondary);line-height:1.8;margin-bottom:12px;">Conscious India charges a commission on each sale (currently 8–12% depending on category). There are no listing fees. All prices must be inclusive of GST. Sellers set their own prices but must not undercut their Conscious India prices on other platforms by more than 5%.</p></section>
+        <section><h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--saffron);">4. Order Fulfilment & Shipping</h2><p style="color:var(--text-secondary);line-height:1.8;">Orders must be dispatched within 3 business days of placement. Sellers are responsible for safe packaging. Conscious India provides integrated logistics support through our partner network. Sellers must update tracking within 24 hours of dispatch.</p></section>
+        <section><h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--saffron);">5. Returns & Disputes</h2><p style="color:var(--text-secondary);line-height:1.8;">All products are covered by Conscious India's 7-day return policy. Sellers must accept returns for damaged, defective or incorrectly described items. Dispute resolution follows Conscious India's standard process; our decisions are final in consumer protection cases.</p></section>
+        <section><h2 style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--saffron);">6. Code of Conduct</h2><p style="color:var(--text-secondary);line-height:1.8;">Sellers must treat all buyers and Conscious India staff with respect. Any attempt to circumvent the platform, solicit off-platform transactions, or misrepresent products will result in immediate account termination and legal action where applicable.</p></section>
       </div>
       <div style="margin-top:32px;padding:20px;background:var(--navy-pale);border-radius:var(--r-lg);display:flex;gap:16px;align-items:center;">
         <div style="flex:1;"><div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Ready to apply?</div><div style="font-size:0.875rem;color:var(--text-secondary);">Start your application once you've read and accepted these guidelines.</div></div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Payment Failed — Conscious Indi</title>
+  <title>Payment Failed — Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -51,11 +51,11 @@
       </div>
 
       <div class="mt-5 d-grid gap-3">
-        <a href="frontend/modules/customer/checkout.php" class="bc-btn bc-btn-primary">Try Again</a>
+        <a href="portals/modules/customer/checkout.php" class="bc-btn bc-btn-primary">Try Again</a>
         <a href="/conscious/contact" class="bc-btn bc-btn-outline">Contact Support</a>
       </div>
       <div class="mt-4">
-        <a href="frontend/modules/customer/cart.php" class="text-muted small">Return to Cart</a>
+        <a href="portals/modules/customer/cart.php" class="text-muted small">Return to Cart</a>
       </div>
     </div>
   </div>

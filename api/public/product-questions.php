@@ -51,7 +51,7 @@ foreach ($questions as $q) {
                 a.helpful_count, a.created_at,
                 CASE a.answered_by_type
                   WHEN "vendor" THEN (SELECT display_name FROM vendors WHERE id = a.answered_by_id)
-                  WHEN "admin"  THEN "Conscious Indi Support"
+                  WHEN "admin"  THEN "Conscious India Support"
                   ELSE "Unknown"
                 END AS answered_by_name
          FROM product_answers a

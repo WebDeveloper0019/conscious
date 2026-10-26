@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
   <meta name="description" content="Discover EarthWeave Co. — a verified sustainable fashion brand from Jaipur. GOTS & Fair Trade certified." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="EarthWeave Co. | Sustainable Fashion Brand | Conscious Indi" />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="EarthWeave Co. | Sustainable Fashion Brand | Conscious India" />
   <meta property="og:description" content="Sustainable fashion brand using natural dyes and supporting 340+ weavers in Rajasthan." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>EarthWeave Co. — Brand Profile | Conscious Indi</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>EarthWeave Co. — Brand Profile | Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -64,9 +64,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -93,7 +93,7 @@
         <div class="bp-cover-badges">
           <span class="bc-badge" style="background:rgba(19,136,8,0.2);color:#5EE85E;border:1px solid rgba(19,136,8,0.3);"><i class="fa-solid fa-circle-check"></i> Verified Brand</span>
           <span class="bc-badge" style="background:rgba(255,153,51,0.2);color:var(--saffron-light);border:1px solid rgba(255,153,51,0.3);">🏆 ESG Certified</span>
-          <span class="bc-badge" style="background:rgba(201,164,74,0.2);color:var(--gold-light);border:1px solid rgba(201,164,74,0.3);">Conscious Indi Partner</span>
+          <span class="bc-badge" style="background:rgba(201,164,74,0.2);color:var(--gold-light);border:1px solid rgba(201,164,74,0.3);">Conscious India Partner</span>
         </div>
         <h1 class="bp-cover-title">EarthWeave Co.</h1>
         <div class="bp-cover-meta">
@@ -205,7 +205,7 @@
 
         <!-- Partner Info -->
         <div style="background:var(--saffron-pale);border-radius:var(--r-lg);border:1.5px solid rgba(255,153,51,0.2);padding:20px;">
-          <div style="font-size:0.875rem;font-weight:700;color:var(--saffron-dark);margin-bottom:8px;"><i class="fa-solid fa-certificate"></i> Conscious Indi Verified</div>
+          <div style="font-size:0.875rem;font-weight:700;color:var(--saffron-dark);margin-bottom:8px;"><i class="fa-solid fa-certificate"></i> Conscious India Verified</div>
           <p style="font-size:0.8125rem;color:var(--text-secondary);line-height:1.6;margin:0;">This brand has passed our 12-point sustainability audit covering ethical sourcing, fair wages, environmental impact, and product authenticity.</p>
         </div>
       </div>

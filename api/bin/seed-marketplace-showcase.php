@@ -14,8 +14,8 @@ if (APP_ENV !== 'local') {
 }
 
 $rotate = in_array('--rotate', $argv, true);
-$vendorPassword = 'Vendor#'.bin2hex(random_bytes(8)).'Aa1!';
-$customerPassword = 'Buyer#'.bin2hex(random_bytes(8)).'Aa1!';
+$vendorPassword = 'DemoVendor#2026!';
+$customerPassword = 'DemoBuyer#2026!';
 $vendors = [
     ['Demo Earthloom Textiles', 'brand', 'Aarav Demo', 'Mumbai'],
     ['Demo Bamboo Everyday', 'brand', 'Diya Demo', 'Bengaluru'],
@@ -64,7 +64,7 @@ try {
             'password' => password_hash($vendorPassword, PASSWORD_DEFAULT),
         ]);
         $insertApplication->execute(['id' => uuid_string(), 'vendor' => $id, 'reference' => sprintf('DEMO-VND-%02d', $number)]);
-        $insertProfile->execute(['id' => $id, 'legal_name' => $name, 'public_name' => $name, 'story' => "Fictional {$type} vendor in {$city}, created only for a local Conscious Indi walkthrough."]);
+        $insertProfile->execute(['id' => $id, 'legal_name' => $name, 'public_name' => $name, 'story' => "Fictional {$type} vendor in {$city}, created only for a local Conscious India walkthrough."]);
         $insertVendorRole->execute(['id' => $id]);
     }
     foreach ($customers as $index => [$first, $last]) {

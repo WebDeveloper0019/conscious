@@ -1,4 +1,4 @@
-/* Conscious Indi — Customer Reviews: list, submit, edit, delete. */
+/* Conscious India — Customer Reviews: list, submit, edit, delete. */
 'use strict';
 
 (function () {

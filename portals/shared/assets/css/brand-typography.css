@@ -1,0 +1,201 @@
+/* Conscious India shared typography — aligned with the About-page brand tone. */
+:root{
+  --ci-type-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --ci-type-display:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --ci-type-ink:#3B261D;
+  --ci-type-body:#4F4841;
+  --ci-type-muted:#6F685F;
+  --ci-type-rust:#A63D24;
+  --ci-type-olive:#405331;
+  --ci-type-body-size:14px;
+  --ci-type-small:12px;
+  --ci-type-caption:11px;
+  --ci-type-page:clamp(24px,2.2vw,28px);
+  --ci-type-section:18px;
+  --ci-type-card:15px;
+}
+
+.ci-role-admin,.ci-role-vendor,.ci-role-customer,.ci-role-influencer,
+.cc-shell,.ca-auth-page,.ac-auth-page,.vv-auth-body,.va-shell,.if-auth-body{
+  color:var(--ci-type-body);
+  font-family:var(--ci-type-family);
+  font-size:var(--ci-type-body-size);
+  font-weight:400;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+.ci-role-admin :is(h1,h2,h3,h4,h5,h6),
+.ci-role-vendor :is(h1,h2,h3,h4,h5,h6),
+.ci-role-customer :is(h1,h2,h3,h4,h5,h6),
+.ci-role-influencer :is(h1,h2,h3,h4,h5,h6),
+.cc-shell :is(h1,h2,h3,h4,h5,h6),
+.ca-auth-page :is(h1,h2,h3,h4,h5,h6),
+.ac-auth-page :is(h1,h2,h3,h4,h5,h6),
+.vv-auth-body :is(h1,h2,h3,h4,h5,h6),
+.va-shell :is(h1,h2,h3,h4,h5,h6),
+.if-auth-body :is(h1,h2,h3,h4,h5,h6){
+  color:var(--ci-type-ink);
+  font-family:var(--ci-type-display);
+  font-weight:600;
+  letter-spacing:-.02em;
+}
+
+:is(.ca-story,.ac-auth-brand,.vv-auth-story,.va-brand,.if-auth-story) :is(h1,h2,h3){
+  color:#fff;
+}
+
+:is(.ca-story,.ac-auth-brand,.vv-auth-story,.va-brand,.if-auth-story)>p,
+:is(.ca-story-content,.vv-story-copy,.if-story-copy)>p{
+  color:#E5EBDF;
+}
+
+:is(.ci-dash-page-title,.cc-page-head h1,.if-top h1){
+  color:var(--ci-type-ink);
+  font-family:var(--ci-type-display);
+  font-size:var(--ci-type-page);
+  font-weight:600;
+  line-height:1.2;
+  letter-spacing:-.025em;
+}
+
+:is(.ci-dash-page-sub,.cc-page-head span,.if-top #if-identity){
+  color:var(--ci-type-muted);
+  font-size:var(--ci-type-small);
+  font-weight:400;
+  line-height:1.55;
+}
+
+:is(.vc-card-head,.ac-head,.cc-card-head,.if-card)>:is(h2,h3),
+:is(.vc-card-head,.ac-head,.cc-card-head,.if-card) :is(h2,h3){
+  color:var(--ci-type-ink);
+  font-family:var(--ci-type-display);
+  font-size:var(--ci-type-section);
+  font-weight:600;
+  line-height:1.35;
+  letter-spacing:-.015em;
+}
+
+:is(.vc-card-head,.ac-head,.cc-card-head) p,
+:is(.vc-card-body,.ac-body,.cc-card-body,.if-card) p{
+  color:var(--ci-type-muted);
+  font-size:var(--ci-type-body-size);
+  line-height:1.65;
+}
+
+:is(.vc-dashboard-hero,.ac-dashboard-intro,.if-overview-hero) h2{
+  color:#fff;
+  font-size:clamp(1.65rem,2.5vw,2.125rem);
+  font-weight:600;
+  line-height:1.18;
+  letter-spacing:-.03em;
+}
+
+:is(.vc-dashboard-hero,.ac-dashboard-intro,.if-overview-hero) p{
+  color:#E5EBDF;
+  font-size:14px;
+  line-height:1.7;
+}
+
+:is(.vc-dashboard-eyebrow,.ac-kicker,.if-kicker,.cx-kicker,.cc-page-head>div>p){
+  color:var(--ci-type-rust);
+  font-size:var(--ci-type-caption);
+  font-weight:700;
+  line-height:1.4;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+:is(.ci-sidebar-brand-name,.cc-site-brand strong,.if-brand b){
+  color:var(--ci-type-ink);
+  font-family:var(--ci-type-display);
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:-.01em;
+}
+
+:is(.ci-sidebar-brand-role,.ci-sidebar-section-label,.if-nav-label,.cc-nav-label){
+  color:#868078;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+:is(.ci-sidebar-nav-item,.if-sidebar a:not(.if-brand),.cc-nav-link,.cc-side-foot a){
+  font-size:12px;
+  font-weight:500;
+  line-height:1.45;
+  letter-spacing:0;
+}
+
+:is(.vc-btn,.ac-btn,.cc-btn,.if-button,.if-text-button){
+  font-family:var(--ci-type-family);
+  font-size:12px;
+  font-weight:600;
+  line-height:1.25;
+  letter-spacing:0;
+}
+
+:is(.ca-submit,.vv-submit,.ac-auth-submit,.if-auth-card .if-button){
+  font-size:13px;
+  font-weight:600;
+}
+
+:is(.vc-field,.ac-field,.cc-field,.if-field,.if-form label){
+  color:var(--ci-type-body);
+  font-size:12px;
+  font-weight:600;
+  line-height:1.5;
+}
+
+:is(.vc-input,.vc-select,.vc-textarea,.ac-input,.ac-select,.ac-textarea,.cc-input,.cc-select,.cc-textarea,.if-field input,.if-field select,.if-field textarea,.if-form input,.if-form select,.if-form textarea){
+  color:var(--ci-type-body);
+  font-family:var(--ci-type-family);
+  font-size:13px;
+  font-weight:400;
+  line-height:1.5;
+}
+
+:is(.vc-table,.ac-table,.cc-table,.if-table){
+  color:var(--ci-type-body);
+  font-size:12px;
+  line-height:1.55;
+}
+
+:is(.vc-table,.ac-table,.cc-table,.if-table) th{
+  color:var(--ci-type-muted);
+  font-size:10px;
+  font-weight:700;
+  line-height:1.4;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+:is(.vc-help,.cc-help,.if-muted,.vc-list-copy p,.ac-item-copy p,.cc-card small,.if-card small){
+  color:var(--ci-type-muted);
+  font-size:var(--ci-type-small);
+  font-weight:400;
+  line-height:1.6;
+}
+
+:is(.vc-status,.ac-status,.if-status,.cc-status,.vc-priority){
+  font-size:10px;
+  font-weight:700;
+  line-height:1.35;
+  letter-spacing:.025em;
+}
+
+:is(.vc-stat-value,.ac-stat strong,.if-card strong.if-value,.cc-stat strong){
+  color:var(--ci-type-olive);
+  font-family:var(--ci-type-display);
+  font-size:clamp(24px,2.2vw,28px);
+  font-weight:600;
+  line-height:1.2;
+  letter-spacing:-.025em;
+}
+
+@media(max-width:600px){
+  :root{--ci-type-page:24px;--ci-type-section:17px}
+}

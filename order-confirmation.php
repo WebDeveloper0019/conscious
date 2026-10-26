@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="Your order has been placed successfully. Track your handcrafted product delivery from Conscious Indi." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Order Confirmed | Conscious Indi" />
+  <meta name="description" content="Your order has been placed successfully. Track your handcrafted product delivery from Conscious India." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Order Confirmed | Conscious India" />
   <meta property="og:description" content="Your order is confirmed! Track delivery of your handcrafted Indian products." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Order Confirmed — Conscious Indi | Thank You!</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Order Confirmed — Conscious India | Thank You!</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -26,9 +26,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -40,8 +40,8 @@
     <nav aria-label="Breadcrumb">
       <ol class="breadcrumb mb-0" style="font-size:0.8125rem;">
         <li class="breadcrumb-item"><a href="/conscious/">Home</a></li>
-            <li class="breadcrumb-item"><a href="frontend/modules/customer/cart.php">Cart</a></li>
-            <li class="breadcrumb-item"><a href="frontend/modules/customer/checkout.php">Checkout</a></li>
+            <li class="breadcrumb-item"><a href="portals/modules/customer/cart.php">Cart</a></li>
+            <li class="breadcrumb-item"><a href="portals/modules/customer/checkout.php">Checkout</a></li>
             <li class="breadcrumb-item active" aria-current="page">Order Confirmed</li>
       </ol>
     </nav>
@@ -110,15 +110,15 @@
 
       <!-- CTAs -->
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-        <a href="frontend/modules/customer/tracking.php" class="bc-btn bc-btn-primary"><i class="fa-regular fa-clock"></i> Track Your Order</a>
+        <a href="portals/modules/customer/tracking.php" class="bc-btn bc-btn-primary"><i class="fa-regular fa-clock"></i> Track Your Order</a>
         <a href="/conscious/shop" class="bc-btn bc-btn-navy"><i class="fa-solid fa-bag-shopping"></i> Continue Shopping</a>
-        <a href="frontend/modules/customer/orders.php" class="bc-btn bc-btn-outline"><i class="fa-regular fa-file-lines"></i> View All Orders</a>
+        <a href="portals/modules/customer/orders.php" class="bc-btn bc-btn-outline"><i class="fa-regular fa-file-lines"></i> View All Orders</a>
       </div>
 
       <!-- Conscious Impact -->
       <div style="margin-top:40px;padding:24px;background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:var(--r-xl);color:white;text-align:left;">
         <div style="font-size:1rem;font-weight:700;margin-bottom:8px;"><i class="fa-solid fa-leaf" style="color:var(--saffron-light);"></i> Your Conscious Impact</div>
-        <p style="font-size:0.9375rem;color:rgba(255,255,255,0.8);line-height:1.7;margin:0;">This order has directly supported <strong style="color:var(--saffron-light);">3 artisan families</strong> and contributed ₹200 to Conscious Indi's sustainability fund. You've helped preserve traditional Indian craftsmanship. <strong style="color:var(--saffron-light);">Thank you for shopping conscious!</strong></p>
+        <p style="font-size:0.9375rem;color:rgba(255,255,255,0.8);line-height:1.7;margin:0;">This order has directly supported <strong style="color:var(--saffron-light);">3 artisan families</strong> and contributed ₹200 to Conscious India's sustainability fund. You've helped preserve traditional Indian craftsmanship. <strong style="color:var(--saffron-light);">Thank you for shopping conscious!</strong></p>
       </div>
     </div>
   </div>

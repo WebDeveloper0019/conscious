@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
   <meta name="description" content="Share your craft with the world. Sell directly to conscious buyers who value authentic handmade work." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Become an Artisan Partner | Conscious Indi" />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Become an Artisan Partner | Conscious India" />
   <meta property="og:description" content="Share your craft with the world. Sell directly to conscious buyers who value authentic handmade work." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Become an Artisan Partner — Conscious Indi</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Become an Artisan Partner — Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -26,9 +26,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -81,7 +81,7 @@
 <div><label style="font-size:0.8125rem;font-weight:600;color:var(--text-primary);margin-bottom:6px;display:block;">Years of Experience</label><input type="number" placeholder="10" style="width:100%;padding:11px 14px;border:1.5px solid var(--border-warm);border-radius:var(--r-md);font-size:0.9375rem;background:var(--bg-cream);" /></div>
             <div style="grid-column:span 2;"><label style="font-size:0.8125rem;font-weight:600;color:var(--text-primary);margin-bottom:6px;display:block;">Tell Us About Your Work *</label><textarea placeholder="Describe your craft, products or brand story…" rows="4" style="width:100%;padding:11px 14px;border:1.5px solid var(--border-warm);border-radius:var(--r-md);font-size:0.9375rem;background:var(--bg-cream);resize:vertical;"></textarea></div>
             <div style="grid-column:span 2;"><label style="font-size:0.8125rem;font-weight:600;color:var(--text-primary);margin-bottom:6px;display:block;">Upload Portfolio / Documents</label><div style="border:2px dashed var(--border-warm);border-radius:var(--r-md);padding:24px;text-align:center;background:var(--bg-cream);cursor:pointer;"><i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem;color:var(--saffron);margin-bottom:8px;display:block;"></i><div style="font-size:0.875rem;color:var(--text-muted);">Drag & drop files here, or <span style="color:var(--saffron);font-weight:600;">browse</span></div><div style="font-size:0.75rem;color:var(--text-light);margin-top:4px;">PDF, JPG, PNG up to 10MB each</div></div></div>
-            <div style="grid-column:span 2;"><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);margin-top:3px;" /><span style="font-size:0.875rem;color:var(--text-secondary);">I agree to Conscious Indi's <a href="/conscious/seller-guidelines" style="color:var(--saffron);">Seller Guidelines</a> and <a href="/conscious/terms" style="color:var(--saffron);">Terms of Service</a></span></label></div>
+            <div style="grid-column:span 2;"><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;"><input type="checkbox" style="accent-color:var(--saffron);margin-top:3px;" /><span style="font-size:0.875rem;color:var(--text-secondary);">I agree to Conscious India's <a href="/conscious/seller-guidelines" style="color:var(--saffron);">Seller Guidelines</a> and <a href="/conscious/terms" style="color:var(--saffron);">Terms of Service</a></span></label></div>
           </div>
           <div style="margin-top:24px;"><button class="bc-btn bc-btn-primary" style="width:100%;justify-content:center;background:var(--saffron);font-size:1rem;padding:15px;"><i class="fa-solid fa-paper-plane"></i> Submit Application</button></div>
           <div style="text-align:center;margin-top:12px;font-size:0.8125rem;color:var(--text-muted);">Our team reviews applications within 48 hours</div>
@@ -90,7 +90,7 @@
       <!-- Benefits Sidebar -->
       <div class="bc-reveal-right" style="position:sticky;top:80px;">
         <div style="background:linear-gradient(135deg,var(--saffron-dark),var(--saffron));border-radius:var(--r-xl);padding:28px;color:white;margin-bottom:20px;">
-          <h3 style="font-family:var(--font-display);font-size:1.125rem;font-weight:700;margin-bottom:20px;color:white;">Why Join Conscious Indi?</h3>
+          <h3 style="font-family:var(--font-display);font-size:1.125rem;font-weight:700;margin-bottom:20px;color:white;">Why Join Conscious India?</h3>
           <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px;">
             <li style="display:flex;gap:10px;align-items:flex-start;"><i class="fa-solid fa-check-circle" style="color:rgba(255,255,255,0.8);margin-top:2px;flex-shrink:0;"></i><span style="font-size:0.875rem;color:rgba(255,255,255,0.85);">Zero listing fees — pay only when you sell</span></li>
             <li style="display:flex;gap:10px;align-items:flex-start;"><i class="fa-solid fa-check-circle" style="color:rgba(255,255,255,0.8);margin-top:2px;flex-shrink:0;"></i><span style="font-size:0.875rem;color:rgba(255,255,255,0.85);">Access to 2M+ conscious consumers</span></li>

@@ -239,7 +239,7 @@ foreach ($argv as $arg) {
 }
 
 echo "\n  ╔══════════════════════════════════════════════════════════════╗\n";
-echo "  ║  Conscious Indi — Integration E2E Tests                      ║\n";
+echo "  ║  Conscious India — Integration E2E Tests                      ║\n";
 echo "  ║  APP_ENV = " . str_pad(APP_ENV, 50) . "║\n";
 echo "  ║  DB      = " . str_pad(DB_NAME, 50) . "║\n";
 echo "  ╚══════════════════════════════════════════════════════════════╝\n";

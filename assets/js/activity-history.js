@@ -94,7 +94,7 @@
         '<div class="ci-empty-state" style="padding:40px;text-align:center;color:var(--text-muted);">' +
         '<i class="fa-solid fa-clock-rotate-left" style="font-size:28px;margin-bottom:12px;"></i>' +
         '<div style="font-weight:700;">No activity found</div>' +
-        '<div style="font-size:.9rem;margin-top:5px;">Your activity will appear here when you interact with Conscious Indi.</div>' +
+        '<div style="font-size:.9rem;margin-top:5px;">Your activity will appear here when you interact with Conscious India.</div>' +
         '</div>';
 
       return;

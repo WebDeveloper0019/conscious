@@ -3,7 +3,6 @@
 .env.*
 !.env.example
 api/.env
-.claude/settings.local.json
 
 # Runtime data
 api/data/rate-limit/*.json
@@ -34,3 +33,9 @@ storage/private/return-evidence/
 .edge-product-debug/
 index.html.bak
 product-gsap-probe.js
+
+# Generated deployment packages
+build/
+
+# Local QA captures and exported client files
+outputs/

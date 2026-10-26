@@ -1,4 +1,4 @@
-/* Conscious Indi — Product Q&A (public view + ask). */
+/* Conscious India — Product Q&A (public view + ask). */
 'use strict';
 
 (function () {

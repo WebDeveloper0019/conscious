@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
-  <title>Influencer Registration — Conscious Indi</title>
+  <title>Influencer Registration — Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -30,9 +30,9 @@
 </head>
 <body>
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-header.php'; ?>
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 <main class="influencer-register-shell">
@@ -128,7 +128,7 @@
             <button class="bc-btn bc-btn-primary influencer-register-submit" type="submit"><i class="fa-solid fa-user-plus"></i> Register</button>
           </div>
         </form>
-        <div class="influencer-register-note">Already have an account? <a href="frontend/modules/influencer/auth/login.php" style="color:var(--saffron-dark);font-weight:700;">Sign In</a></div>
+        <div class="influencer-register-note">Already have an account? <a href="portals/modules/influencer/auth/login.php" style="color:var(--saffron-dark);font-weight:700;">Sign In</a></div>
       </div>
     </div>
   </div>

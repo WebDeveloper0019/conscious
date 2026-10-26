@@ -17,7 +17,18 @@ function json_response(int $statusCode, array $body): void {
     echo json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     exit;
 }
-function request_origin(): string {
+function request_origin(): string
+{
+    if (APP_URL !== '') {
+        $scheme = (string)parse_url(APP_URL, PHP_URL_SCHEME);
+        $host = (string)parse_url(APP_URL, PHP_URL_HOST);
+        $port = parse_url(APP_URL, PHP_URL_PORT);
+
+        if ($scheme !== '' && $host !== '') {
+            return $scheme . '://' . $host . ($port ? ':' . $port : '');
+        }
+    }
+
     $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
     return ($https ? 'https://' : 'http://') . (string)($_SERVER['HTTP_HOST'] ?? 'localhost');
 }

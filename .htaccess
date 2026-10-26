@@ -1,20 +1,72 @@
-Options -Indexes
+Options -Indexes -MultiViews
 DirectoryIndex index.php index.html
 
-RewriteEngine On
-RewriteBase /conscious/
+# Never expose repository, build, test, documentation, or private runtime data.
+<FilesMatch "^(?:\.env(?:\..*)?|\.gitignore|\.gitattributes|composer\.(?:json|lock)|package(?:-lock)?\.json|phpunit\.xml|.*\.(?:sql|log|ini|md))$">
+    Require all denied
+</FilesMatch>
 
-# Dashboard and API routes retain their own PHP architecture.
-RewriteRule ^(?:admin|vendor|customer|frontend|api)(?:/|$) - [L]
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(self), payment=(self)"
+    Header unset X-Powered-By
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/avif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType text/css "access plus 30 days"
+    ExpiresByType application/javascript "access plus 30 days"
+</IfModule>
+
+RewriteEngine On
+
+RewriteRule ^(?:\.git|build|config|design|docs|outputs|scripts|storage|tests)(?:/|$) - [F,L,NC]
+
+# Compatibility for releases served at the domain root while legacy links still
+# contain the local XAMPP /conscious prefix.
+RewriteCond %{DOCUMENT_ROOT}/conscious !-d
+RewriteRule ^conscious(?:/(.*))?/?$ $1 [L,QSA]
+
+# Preserve old portal bookmarks after the directory was renamed.
+RewriteCond %{REQUEST_URI} ^(/[^/]+)?/frontend/(.*)$ [NC]
+RewriteRule ^ %1/portals/%2 [R=302,L,NE]
+
+# Redirect retired static dashboards to the maintained role modules. The
+# captured prefix supports both an XAMPP subdirectory and a domain-root release.
+RewriteCond %{REQUEST_URI} ^(/[^/]+)?/admin(?:/.*)?$ [NC]
+RewriteRule ^ %1/portals/modules/admin/index.php [R=302,L,NE]
+RewriteCond %{REQUEST_URI} ^(/[^/]+)?/vendor(?:/.*)?$ [NC]
+RewriteRule ^ %1/portals/modules/vendor/index.php [R=302,L,NE]
+RewriteCond %{REQUEST_URI} ^(/[^/]+)?/customer(?:/.*)?$ [NC]
+RewriteRule ^ %1/portals/modules/customer/index.php [R=302,L,NE]
+RewriteCond %{REQUEST_URI} ^(/[^/]+)?/influencer(?:/.*)?$ [NC]
+RewriteRule ^ %1/portals/modules/influencer/index.php [R=302,L,NE]
+RewriteCond %{REQUEST_URI} ^(/[^/]+)?/account-orders(?:\.html)?$ [NC]
+RewriteRule ^ %1/portals/modules/customer/orders.php [R=302,L,NE]
+RewriteCond %{REQUEST_URI} ^(/[^/]+)?/account(?:-addresses|-settings)?(?:\.html)?$ [NC]
+RewriteRule ^ %1/portals/modules/customer/account.php [R=302,L,NE]
+
+# Role modules and API routes retain their own PHP architecture.
+RewriteRule ^(?:portals|api)(?:/|$) - [L]
+
+# A public events.php page and an events/ detail directory coexist.
+RewriteRule ^events/?$ events.php [L,QSA]
 
 # Canonical public home URL.
-RewriteCond %{THE_REQUEST} \s/+conscious/index\.(?:html|php)[\s?] [NC]
-RewriteRule ^index\.(?:html|php)$ /conscious/ [R=302,L]
+RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.(?:html|php)[\s?] [NC]
+RewriteRule ^index\.(?:html|php)$ /%1 [R=302,L,NE]
 
 # Hide extensions for generated public PHP pages only.
-RewriteCond %{THE_REQUEST} \s/+conscious/(.+?)\.(?:html|php)[\s?] [NC]
-RewriteCond %{REQUEST_FILENAME} !^.*[\\/](?:admin|vendor|customer|frontend|api)[\\/]
-RewriteRule ^(.+?)\.(?:html|php)$ $1 [R=302,L,NE]
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.(?:html|php)[\s?] [NC]
+RewriteCond %{REQUEST_FILENAME} !^.*[\\/](?:admin|vendor|customer|portals|api)[\\/]
+RewriteRule ^(.+?)\.(?:html|php)$ /%1 [R=302,L,NE]
 
 # Resolve extensionless public routes to their PHP templates.
 RewriteCond %{REQUEST_FILENAME} !-f

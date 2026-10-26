@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
   <meta name="description" content="Shop Priya's curated collection of sustainable products — handpicked and reviewed by India's top sustainable living creator." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Priya Creates | Creator Shop | Conscious Indi" />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Priya Creates | Creator Shop | Conscious India" />
   <meta property="og:description" content="Priya Creates' curated shop — 48 conscious products from India's top sustainable living influencer." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Priya Creates — Creator Shop | Conscious Indi</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Priya Creates — Creator Shop | Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -41,9 +41,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -280,6 +280,6 @@
     });
   }());
 </script>
-<script src="frontend/modules/influencer/assets/js/public-profile.js?v=20261017-3" defer></script>
+<script src="portals/modules/influencer/assets/js/public-profile.js?v=20261017-3" defer></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 
 Use PHP 8.2 or newer, MySQL/MariaDB, and the PHP cURL, mbstring, PDO MySQL and zlib extensions.
 
-1. Configure `api/.env` using `api/.env.example`. Production needs its own application key, database, mail and Razorpay credentials.
+1. Configure `api/.env` using `config/environments/local.env.example`. Production uses `config/environments/production.env.example` as a template and requires its own application key, database, mail and Razorpay credentials.
 2. From `api/`, run `composer install --no-dev --no-scripts --prefer-dist`. Upload the generated `api/dependencies/` directory when deploying without Composer on the server. Keep `composer.lock` with the release.
 3. Back up the database, then run `php api/bin/migrate.php` from the project root. Applied migrations must not be edited; add a new migration for schema changes. SQL line endings are normalized for Windows/Linux checksum compatibility.
 4. Configure the existing upload scanner and scheduled workers for the features enabled in production. Delivery remains manually managed by vendors.

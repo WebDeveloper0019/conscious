@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="Get help with orders, returns, shipping and selling on Conscious Indi." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Help Centre | Conscious Indi" />
-  <meta property="og:description" content="Find answers, track orders and contact support at Conscious Indi." />
+  <meta name="description" content="Get help with orders, returns, shipping and selling on Conscious India." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Help Centre | Conscious India" />
+  <meta property="og:description" content="Find answers, track orders and contact support at Conscious India." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Help Centre — Conscious Indi</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Help Centre — Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -26,9 +26,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -56,12 +56,12 @@
 <section class="section-py" style="background:var(--bg-cream);">
   <div class="container">
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px;">
-      <a href="frontend/modules/customer/tracking.php" style="background:white;border-radius:var(--r-xl);border:1.5px solid var(--border-warm);padding:28px;text-align:center;text-decoration:none;color:inherit;transition:all var(--t);" class="bc-reveal">
+      <a href="portals/modules/customer/tracking.php" style="background:white;border-radius:var(--r-xl);border:1.5px solid var(--border-warm);padding:28px;text-align:center;text-decoration:none;color:inherit;transition:all var(--t);" class="bc-reveal">
         <div style="width:60px;height:60px;border-radius:var(--r-lg);background:var(--saffron-pale);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.75rem;color:var(--saffron-dark);"><i class="fa-regular fa-clock"></i></div>
         <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px;">Track My Order</div>
         <div style="font-size:0.875rem;color:var(--text-muted);">Real-time delivery updates</div>
       </a>
-      <a href="frontend/modules/customer/returns.php" style="background:white;border-radius:var(--r-xl);border:1.5px solid var(--border-warm);padding:28px;text-align:center;text-decoration:none;color:inherit;" class="bc-reveal delay-1">
+      <a href="portals/modules/customer/returns.php" style="background:white;border-radius:var(--r-xl);border:1.5px solid var(--border-warm);padding:28px;text-align:center;text-decoration:none;color:inherit;" class="bc-reveal delay-1">
         <div style="width:60px;height:60px;border-radius:var(--r-lg);background:var(--green-pale);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.75rem;color:var(--green-dark);"><i class="fa-solid fa-rotate-left"></i></div>
         <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px;">Returns & Refunds</div>
         <div style="font-size:0.875rem;color:var(--text-muted);">7-day easy returns</div>

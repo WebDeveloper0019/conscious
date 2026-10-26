@@ -1,4 +1,4 @@
-/* Conscious Indi — Granular notification preferences. */
+/* Conscious India — Granular notification preferences. */
 'use strict';
 
 (function () {

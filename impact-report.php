@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
   <meta name="description" content="2024 Annual Impact Report — artisans supported, income generated, crafts preserved, trees planted." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Impact Report 2024 | Conscious Indi" />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Impact Report 2024 | Conscious India" />
   <meta property="og:description" content="Our 2024 impact — artisans supported, income generated and environment protected." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Impact Report 2024 — Conscious Indi</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Impact Report 2024 — Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -26,9 +26,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 

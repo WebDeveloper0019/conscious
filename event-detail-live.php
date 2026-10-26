@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#A63D24">
-  <meta name="description" content="Current published event details from Conscious Indi.">
-  <title>Event details | Conscious Indi</title>
+  <meta name="description" content="Current published event details from Conscious India.">
+  <title>Event details | Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
 <body>
 <?php require $_SERVER['DOCUMENT_ROOT'].'/conscious/includes/public-header.php'; ?>
 <main id="main-content" class="el-shell"><div class="container">
-  <a class="el-back" href="/conscious/"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>Back to Conscious Indi</a>
+  <a class="el-back" href="/conscious/"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>Back to Conscious India</a>
   <p id="el-status" class="el-status" role="status">Loading current event details…</p>
   <article id="el-event" class="el-card" hidden></article>
 </div></main>

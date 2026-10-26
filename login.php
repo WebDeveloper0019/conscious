@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="Sign in to your Conscious Indi account to track orders, manage wishlist and shop." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Sign In — Conscious Indi" />
-  <meta property="og:description" content="Sign in to your Conscious Indi account to track orders, manage wishlist and shop." />
+  <meta name="description" content="Sign in to your Conscious India account to track orders, manage wishlist and shop." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Sign In — Conscious India" />
+  <meta property="og:description" content="Sign in to your Conscious India account to track orders, manage wishlist and shop." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Sign In — Conscious Indi</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Sign In — Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -23,9 +23,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -45,14 +45,14 @@
   <div class="container">
     <div class="bc-auth-card bc-reveal">
       <div style="text-align:center;margin-bottom:28px;">
-        <a href="/conscious/"><img src="assets/images/symbol.png" alt="Conscious Indi" width="60" height="60" style="margin-bottom:12px;" /></a>
+        <a href="/conscious/"><img src="assets/images/symbol.png" alt="Conscious India" width="60" height="60" style="margin-bottom:12px;" /></a>
         <h1 style="font-family:var(--font-display);font-size:1.625rem;font-weight:800;color:var(--text-primary);margin-bottom:6px;">Welcome Back</h1>
-        <p style="font-size:0.9375rem;color:var(--text-muted);">Sign in to your Conscious Indi account</p>
+        <p style="font-size:0.9375rem;color:var(--text-muted);">Sign in to your Conscious India account</p>
       </div>
       <form id="ci-login-form" novalidate><div style="display:flex;flex-direction:column;gap:16px;margin-bottom:20px;">
         <div><label class="bc-auth-label" for="ci-login-identifier">Email Address or Mobile</label><input id="ci-login-identifier" name="identifier" type="text" class="bc-auth-input" placeholder="you@email.com or 9876543210" required /></div>
         <div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><label class="bc-auth-label" style="margin:0;">Password</label><a href="frontend/modules/customer/auth/forgot-password.php" style="font-size:0.8125rem;color:var(--saffron-dark);">Forgot password?</a></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><label class="bc-auth-label" style="margin:0;">Password</label><a href="portals/modules/customer/auth/forgot-password.php" style="font-size:0.8125rem;color:var(--saffron-dark);">Forgot password?</a></div>
           <input id="ci-login-password" name="password" type="password" class="bc-auth-input" placeholder="••••••••" required minlength="12" maxlength="128" />
         </div>
         <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.875rem;color:var(--text-secondary);"><input id="ci-login-remember" name="remember" type="checkbox" style="accent-color:var(--saffron);" /> Keep me signed in</label>
@@ -60,7 +60,7 @@
       <div id="ci-login-message" role="alert" aria-live="polite" style="margin-bottom:12px;"></div><button type="submit" class="bc-btn bc-btn-primary" style="width:100%;justify-content:center;font-size:1rem;padding:14px;"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In</button></form>
 
       </div>
-      <div style="text-align:center;font-size:0.9375rem;color:var(--text-muted);">Don't have an account? <a href="frontend/modules/customer/auth/register.php" style="color:var(--saffron-dark);font-weight:600;">Create one free</a></div>
+      <div style="text-align:center;font-size:0.9375rem;color:var(--text-muted);">Don't have an account? <a href="portals/modules/customer/auth/register.php" style="color:var(--saffron-dark);font-weight:600;">Create one free</a></div>
     </div>
   </div>
 </section>

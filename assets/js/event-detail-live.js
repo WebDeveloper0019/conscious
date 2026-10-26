@@ -10,7 +10,7 @@
   var id = new URLSearchParams(location.search).get('id') || '';
   if (!/^[a-f0-9-]{8,64}$/i.test(id)) { status.textContent='This event link is not valid.'; return; }
   fetch('api/public/events.php?id=' + encodeURIComponent(id), {headers:{Accept:'application/json'}}).then(function (response) { return response.json().catch(function(){ return {}; }).then(function(data){ if(!response.ok) throw new Error(data.message || 'Event details are unavailable.'); return data.event; }); }).then(function (event) {
-    document.title = event.title + ' | Conscious Indi';
+    document.title = event.title + ' | Conscious India';
     var media=el('div','el-media'); var imageId=event.cover_file_asset_id || event.primary_file_asset_id || '';
     if (imageId) { var image=el('img'); image.src='api/files.php?id='+encodeURIComponent(imageId); image.alt=event.title; image.addEventListener('error',function(){ media.replaceChildren(el('i','fa-solid fa-calendar-days')); }); media.append(image); } else media.append(el('i','fa-solid fa-calendar-days'));
     var copy=el('div','el-copy'); copy.append(el('div','el-kicker',String(event.event_type || 'Event').replaceAll('_',' ')),el('h1','',event.title));
@@ -19,7 +19,7 @@
     var tickets=el('section','el-tickets'); tickets.append(el('h2','h5','Current ticket options')); var active=Array.isArray(event.ticket_types)?event.ticket_types:[];
     if(!active.length) tickets.append(el('p','el-description','No active ticket options are listed yet.'));
     active.forEach(function(ticket){ var row=el('div','el-ticket'); var label=el('div'); label.append(el('strong','',ticket.name),el('small','',Math.max(0,Number(ticket.available_quantity))+' available')); row.append(label,el('strong','',Number(ticket.price)>0?money(ticket.price):'Free')); tickets.append(row); }); copy.append(tickets);
-    var actions=el('div','el-actions'); var book=el('a','bc-btn bc-btn-primary','Sign in to view booking'); book.href='frontend/modules/customer/events.php?event_id='+encodeURIComponent(event.id); var home=el('a','bc-btn bc-btn-outline','Back to home'); home.href='./'; actions.append(book,home); copy.append(actions);
+    var actions=el('div','el-actions'); var book=el('a','bc-btn bc-btn-primary','Sign in to view booking'); book.href='portals/modules/customer/events.php?event_id='+encodeURIComponent(event.id); var home=el('a','bc-btn bc-btn-outline','Back to home'); home.href='./'; actions.append(book,home); copy.append(actions);
     card.append(media,copy); status.hidden=true; card.hidden=false;
   }).catch(function(error){ status.textContent=error.message || 'Event details are unavailable.'; });
 }());

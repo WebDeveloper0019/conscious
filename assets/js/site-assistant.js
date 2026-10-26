@@ -62,14 +62,14 @@
   var root = node('div', 'ci-guide');
   root.setAttribute('data-ci-guide', '');
   var launcher = node('button', 'ci-guide-launcher');
-  launcher.type = 'button'; launcher.setAttribute('aria-label', 'Open Conscious Indi website guide'); launcher.setAttribute('aria-expanded', 'false'); launcher.setAttribute('aria-controls', 'ci-guide-panel');
+  launcher.type = 'button'; launcher.setAttribute('aria-label', 'Open Ask Pujii'); launcher.setAttribute('aria-expanded', 'false'); launcher.setAttribute('aria-controls', 'ci-guide-panel');
   var launcherImage = node('img'); launcherImage.src = avatarUrl.href; launcherImage.alt = '';
   var launcherBadge = node('span', 'ci-guide-launcher-badge'); launcherBadge.append(icon('fa-message'));
   launcher.append(launcherImage, launcherBadge);
   var panel = node('section', 'ci-guide-panel'); panel.id = 'ci-guide-panel'; panel.hidden = true; panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-modal', 'false'); panel.setAttribute('aria-labelledby', 'ci-guide-title');
   var head = node('header', 'ci-guide-head');
   var headAvatar = node('span', 'ci-guide-head-avatar'), headImage = node('img'); headImage.src = avatarUrl.href; headImage.alt = ''; headAvatar.append(headImage);
-  var headCopy = node('div'); var headTitle = node('strong', '', 'Conscious Indi guide'); headTitle.id = 'ci-guide-title'; headCopy.append(headTitle, node('small', '', 'Current listings and reviewed help information'));
+  var headCopy = node('div'); var headTitle = node('strong', '', 'Ask Pujii'); headTitle.id = 'ci-guide-title'; headCopy.append(headTitle, node('small', '', 'Your Conscious India website guide'));
   var headActions = node('div', 'ci-guide-head-actions');
   var restart = node('button', 'ci-guide-icon-button'); restart.type = 'button'; restart.setAttribute('aria-label', 'Start a new conversation'); restart.title = 'Start over'; restart.append(icon('fa-rotate-right'));
   var close = node('button', 'ci-guide-icon-button'); close.type = 'button'; close.setAttribute('aria-label', 'Minimise website guide'); close.title = 'Minimise'; close.append(icon('fa-minus'));
@@ -80,7 +80,7 @@
   var field = node('div', 'ci-guide-field'); var input = node('textarea', 'ci-guide-input'); input.id = 'ci-guide-input'; input.name = 'question'; input.rows = 1; input.maxLength = 160; input.placeholder = 'Ask about products, events or help…'; field.append(label, input);
   var send = node('button', 'ci-guide-send'); send.type = 'submit'; send.setAttribute('aria-label', 'Send question'); send.append(icon('fa-arrow-up'));
   form.append(field, send); compose.append(form);
-  var disclosure = node('p', 'ci-guide-disclosure'); disclosure.append(icon('fa-circle-info'), document.createTextNode('Website guide · answers from current listings and help information. No AI.'));
+  var disclosure = node('p', 'ci-guide-disclosure'); disclosure.append(icon('fa-circle-info'), document.createTextNode('Website guide · answers from current listings and reviewed help information.'));
   compose.append(disclosure); panel.append(head, body, compose); root.append(panel, launcher); document.body.append(root);
   if (/checkout(?:\.html|\/|$)/i.test(location.pathname)) document.body.classList.add('ci-guide-checkout');
 
@@ -102,16 +102,16 @@
   function setBusy(value) { busy = value; input.disabled = value; send.disabled = value; }
 
   var faq = [
-    {words:['pay','payment','razorpay','upi','card','netbanking','cash','cod'], answer:'Online payment uses the existing secure Razorpay checkout for supported methods. Cash on delivery is shown only when every vendor in the order supports it for the delivery address. The website guide never collects payment details.', links:[['Go to your cart','frontend/modules/customer/cart.php']]},
-    {words:['shipping','delivery','courier','shiprocket','india wide','pan india'], answer:'Delivery is arranged and updated manually by each vendor. Available delivery areas, charges and estimates are calculated for your address during checkout. Conscious Indi does not promise automatic courier booking or Shiprocket.', links:[['Track an existing delivery','frontend/modules/customer/tracking.php'],['Get delivery help','frontend/modules/customer/support.php']]},
-    {words:['track','tracking','where order','order status'], answer:'Sign in and open Track delivery to see updates entered by the vendor. For privacy, this public guide cannot accept an order number or reveal account-specific status.', links:[['Track delivery securely','frontend/modules/customer/tracking.php'],['Get order help','frontend/modules/customer/support.php']]},
-    {words:['return','refund','exchange','damaged'], answer:'Return eligibility depends on the product and the policy recorded with your order. Sign in to see eligible delivered items, submit the reason and add evidence where helpful. A request is reviewed; this guide cannot promise approval or a refund date.', links:[['Open returns','frontend/modules/customer/returns.php'],['Get return help','frontend/modules/customer/support.php']]},
-    {words:['event booking','booking','tickets','book workshop'], answer:'The guide can show upcoming published events. Ask “Show upcoming events” to see current listings. Open an event to review its current ticket options, then sign in to use the existing booking flow. The guide does not create bookings or take payment.', links:[['Open your event bookings','frontend/modules/customer/events.php#bookings']]},
-    {words:['order','checkout','buy','purchase'], answer:'Choose a currently published product, select an available variant, add it to your cart, sign in and use the secure checkout. Stock, delivery options and final charges are confirmed by the live checkout flow.', links:[['Browse current products','shop.html'],['Open your cart','frontend/modules/customer/cart.php']]},
+    {words:['pay','payment','razorpay','upi','card','netbanking','cash','cod'], answer:'Online payment uses the existing secure Razorpay checkout for supported methods. Cash on delivery is shown only when every vendor in the order supports it for the delivery address. The website guide never collects payment details.', links:[['Go to your cart','portals/modules/customer/cart.php']]},
+    {words:['shipping','delivery','courier','shiprocket','india wide','pan india'], answer:'Delivery is arranged and updated manually by each vendor. Available delivery areas, charges and estimates are calculated for your address during checkout. Conscious India does not promise automatic courier booking or Shiprocket.', links:[['Track an existing delivery','portals/modules/customer/tracking.php'],['Get delivery help','portals/modules/customer/support.php']]},
+    {words:['track','tracking','where order','order status'], answer:'Sign in and open Track delivery to see updates entered by the vendor. For privacy, this public guide cannot accept an order number or reveal account-specific status.', links:[['Track delivery securely','portals/modules/customer/tracking.php'],['Get order help','portals/modules/customer/support.php']]},
+    {words:['return','refund','exchange','damaged'], answer:'Return eligibility depends on the product and the policy recorded with your order. Sign in to see eligible delivered items, submit the reason and add evidence where helpful. A request is reviewed; this guide cannot promise approval or a refund date.', links:[['Open returns','portals/modules/customer/returns.php'],['Get return help','portals/modules/customer/support.php']]},
+    {words:['event booking','booking','tickets','book workshop'], answer:'The guide can show upcoming published events. Ask “Show upcoming events” to see current listings. Open an event to review its current ticket options, then sign in to use the existing booking flow. The guide does not create bookings or take payment.', links:[['Open your event bookings','portals/modules/customer/events.php#bookings']]},
+    {words:['order','checkout','buy','purchase'], answer:'Choose a currently published product, select an available variant, add it to your cart, sign in and use the secure checkout. Stock, delivery options and final charges are confirmed by the live checkout flow.', links:[['Browse current products','shop.html'],['Open your cart','portals/modules/customer/cart.php']]},
     {words:['sell','seller','brand partner','brand onboarding'], answer:'Conscious brands can apply through the Brand Partner route. The application and product review steps must be completed before products can be published.', links:[['Apply as a brand','become-brand-partner.html']]},
     {words:['artisan','maker partner','craftsperson'], answer:'Artisans and collectives can apply through the Artisan Partner route. Identity, craft and store information are reviewed before selling access is approved.', links:[['Apply as an artisan','become-artisan-partner.html']]},
-    {words:['influencer','creator','collaboration','affiliate'], answer:'Creators can review the participation information and register for Creator Studio. Verification is required before approved packages or campaign activity can become active.', links:[['Explore the creator programme','creators.html'],['Register as a creator','frontend/modules/influencer/auth/register.php']]},
-    {words:['contact','support','help','complaint'], answer:'For a personal order, payment, return or account issue, please use the authenticated support area. General website questions can use the public contact page.', links:[['Open account support','frontend/modules/customer/support.php'],['Contact Conscious Indi','contact.html']]}
+    {words:['influencer','creator','collaboration','affiliate'], answer:'Creators can review the participation information and register for Creator Studio. Verification is required before approved packages or campaign activity can become active.', links:[['Explore the creator programme','creators.html'],['Register as a creator','portals/modules/influencer/auth/register.php']]},
+    {words:['contact','support','help','complaint'], answer:'For a personal order, payment, return or account issue, please use the authenticated support area. General website questions can use the public contact page.', links:[['Open account support','portals/modules/customer/support.php'],['Contact Conscious India','contact.html']]}
   ];
 
   var categoryRules = [
@@ -244,7 +244,7 @@
   }
   function welcome() {
     log.replaceChildren(); context = {intent:'',products:{},events:{},lastQuestion:''};
-    assistantMessage(['Namaste. I’m the Conscious Indi website guide.', 'I use current approved listings and reviewed help information—not AI. What would you like to explore?'], [
+    assistantMessage(['Namaste. I’m Pujii, your Conscious India guide.', 'I use current approved listings and reviewed help information. What would you like to explore?'], [
       {label:'Find products',value:'Show available products'}, {label:'Upcoming events',value:'Show upcoming events'},
       {label:'Track an order',value:'How do I track my order?'}, {label:'Selling and partnerships',value:'How can I sell as a brand or artisan?'}
     ]);

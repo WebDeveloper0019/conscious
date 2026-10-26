@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#A63D24" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="Get in touch with Conscious Indi for orders, returns, partner enquiries and more." />
-  <meta name="author" content="Conscious Indi" />
-  <meta property="og:title" content="Contact Us | Conscious Indi" />
-  <meta property="og:description" content="Reach Conscious Indi via WhatsApp, email or live chat." />
+  <meta name="description" content="Get in touch with Conscious India for orders, returns, partner enquiries and more." />
+  <meta name="author" content="Conscious India" />
+  <meta property="og:title" content="Contact Us | Conscious India" />
+  <meta property="og:description" content="Reach Conscious India via WhatsApp, email or live chat." />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Conscious Indi" />
-  <title>Contact Us — Conscious Indi</title>
+  <meta property="og:site_name" content="Conscious India" />
+  <title>Contact Us — Conscious India</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -38,9 +38,9 @@
 <body>
 
 <!-- PRELOADER -->
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
-  <img src="assets/images/symbol.png" alt="Conscious Indi" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -97,14 +97,14 @@
           </div>
           <div style="background:white;border-radius:var(--r-xl);border:1.5px solid var(--border-warm);padding:24px;">
             <h3 style="font-family:var(--font-display);font-size:1.0625rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;">Office Address</h3>
-            <p style="font-size:0.9375rem;color:var(--text-secondary);line-height:1.7;margin:0 0 12px;">Conscious Indi Pvt. Ltd.<br/>3rd Floor, IndiQube Sigma<br/>HSR Layout, Bengaluru — 560 102<br/>Karnataka, India</p>
+            <p style="font-size:0.9375rem;color:var(--text-secondary);line-height:1.7;margin:0 0 12px;">Conscious India Pvt. Ltd.<br/>3rd Floor, IndiQube Sigma<br/>HSR Layout, Bengaluru — 560 102<br/>Karnataka, India</p>
             <a href="#" class="bc-btn bc-btn-outline bc-btn-sm"><i class="fa-brands fa-google"></i> View on Maps</a>
           </div>
           <div style="background:var(--saffron-pale);border-radius:var(--r-lg);border:1px solid rgba(255,153,51,0.2);padding:18px;">
             <div style="font-weight:700;color:var(--saffron-dark);margin-bottom:6px;">Quick Links</div>
             <div style="display:flex;flex-direction:column;gap:6px;">
-              <a href="frontend/modules/customer/tracking.php" style="font-size:0.875rem;color:var(--text-secondary);text-decoration:none;"><i class="fa-regular fa-clock"></i> Track My Order</a>
-              <a href="frontend/modules/customer/returns.php" style="font-size:0.875rem;color:var(--text-secondary);text-decoration:none;"><i class="fa-solid fa-rotate-left"></i> Returns &amp; Refunds Policy</a>
+              <a href="portals/modules/customer/tracking.php" style="font-size:0.875rem;color:var(--text-secondary);text-decoration:none;"><i class="fa-regular fa-clock"></i> Track My Order</a>
+              <a href="portals/modules/customer/returns.php" style="font-size:0.875rem;color:var(--text-secondary);text-decoration:none;"><i class="fa-solid fa-rotate-left"></i> Returns &amp; Refunds Policy</a>
               <a href="/conscious/faq" style="font-size:0.875rem;color:var(--text-secondary);text-decoration:none;"><i class="fa-regular fa-circle-question"></i> FAQs</a>
             </div>
           </div>

@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Brand Products | Conscious Indi</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="stylesheet" href="assets/css/bharatcraft.css"><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Brand Products | Conscious India</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="stylesheet" href="assets/css/bharatcraft.css"><style>
   .bp{background:var(--bg-cream)}
   .bp-hero{position:relative;overflow:hidden;padding:var(--section-py-lg) 0;background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 65%,#0A2E08 100%);color:#fff}
   .bp-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 30%,rgba(255,153,51,.16) 0%,transparent 55%),radial-gradient(circle at 85% 75%,rgba(201,164,74,.14) 0%,transparent 55%);pointer-events:none}
@@ -25,16 +25,16 @@
   @media(max-width:700px){.bp-hero{padding:3rem 0}.bp-hero-grid,.bp-products{grid-template-columns:1fr}.bp-mark{height:100px;width:100px;font-size:2.5rem}.bp-section{padding:3rem 0}}
 </style></head><body class="bp">
 
-<div id="bc-preloader" role="status" aria-label="Loading Conscious Indi">
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
   <img
     src="assets/images/symbol.png"
-    alt="Conscious Indi"
+    alt="Conscious India"
     class="bc-preloader-symbol"
     width="90"
     height="90"
     aria-hidden="true"
   />
-  <div class="bc-preloader-brand">Conscious Indi</div>
+  <div class="bc-preloader-brand">Conscious India</div>
   <div class="bc-preloader-chakra"></div>
 </div>
 
@@ -53,4 +53,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/bharatcraft.js?v=20261017-1"></script>
 
-<script>const data={kantha:['Kantha Collective','GI Tag certified','Hand-stitched Bengal textiles',[['Kantha Cushion','assets/images/products/kantha-cushion.svg','₹1,850'],['Kantha Throw','assets/images/products/pashmina-shawl.svg','₹3,200']]],'blue-pottery':['Blue Pottery House','GI Tag certified','Jaipur blue pottery in its place of origin',[['Blue Pottery Vase','assets/images/products/blue-pottery-vase.svg','₹2,200']]],muga:['Muga Loom Studio','GOTS certified','Golden Assam Muga silk',[['Muga Silk Shawl','assets/images/products/pashmina-shawl.svg','₹5,500']]],'forest-form':['Forest Form','Vegan certified','Botanical body care',[['Botanical Cleansing Bar','assets/images/categories/eco.svg','₹295']]],'valley-saffron':['Valley Saffron Co.','India Organic certified','Pampore saffron grown with care',[['Saffron Gift Box','assets/images/products/sandalwood-box.svg','₹1,490']]],'earthy-home':['Earthy Home','Zero Waste certified','Low-waste everyday essentials',[['Terracotta Tea Set','assets/images/products/blue-pottery-vase.svg','₹1,490']]]};let d=data[new URLSearchParams(location.search).get('brand')]||data.kantha;name.textContent=d[0];cert.textContent=d[1];about.textContent=d[2];mark.textContent=d[0][0];products.innerHTML=d[3].map(p=>`<article class="bp-product"><img src="${p[1]}" alt="${p[0]}"><h2>${p[0]}</h2><strong>${p[2]}</strong><p><a href="/conscious/product-detail">View Product</a> · <a href="frontend/modules/customer/cart.php">Shop Now</a></p></article>`).join('')</script></body></html>
+<script>const data={kantha:['Kantha Collective','GI Tag certified','Hand-stitched Bengal textiles',[['Kantha Cushion','assets/images/products/kantha-cushion.svg','₹1,850'],['Kantha Throw','assets/images/products/pashmina-shawl.svg','₹3,200']]],'blue-pottery':['Blue Pottery House','GI Tag certified','Jaipur blue pottery in its place of origin',[['Blue Pottery Vase','assets/images/products/blue-pottery-vase.svg','₹2,200']]],muga:['Muga Loom Studio','GOTS certified','Golden Assam Muga silk',[['Muga Silk Shawl','assets/images/products/pashmina-shawl.svg','₹5,500']]],'forest-form':['Forest Form','Vegan certified','Botanical body care',[['Botanical Cleansing Bar','assets/images/categories/eco.svg','₹295']]],'valley-saffron':['Valley Saffron Co.','India Organic certified','Pampore saffron grown with care',[['Saffron Gift Box','assets/images/products/sandalwood-box.svg','₹1,490']]],'earthy-home':['Earthy Home','Zero Waste certified','Low-waste everyday essentials',[['Terracotta Tea Set','assets/images/products/blue-pottery-vase.svg','₹1,490']]]};let d=data[new URLSearchParams(location.search).get('brand')]||data.kantha;name.textContent=d[0];cert.textContent=d[1];about.textContent=d[2];mark.textContent=d[0][0];products.innerHTML=d[3].map(p=>`<article class="bp-product"><img src="${p[1]}" alt="${p[0]}"><h2>${p[0]}</h2><strong>${p[2]}</strong><p><a href="/conscious/product-detail">View Product</a> · <a href="portals/modules/customer/cart.php">Shop Now</a></p></article>`).join('')</script></body></html>

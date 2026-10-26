@@ -13,8 +13,8 @@ function invoice_render_pdf(array $inv): string
     require_once $autoload;
 
     $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
-    $pdf->SetCreator('Conscious Indi');
-    $pdf->SetAuthor($inv['seller']['name'] ?? 'Conscious Indi');
+    $pdf->SetCreator('Conscious India');
+    $pdf->SetAuthor($inv['seller']['name'] ?? 'Conscious India');
     $pdf->SetTitle('Invoice ' . ($inv['number'] ?? ''));
     $pdf->SetSubject('Tax Invoice');
     $pdf->setPrintHeader(false);

@@ -186,7 +186,7 @@ try {
             'data_export_ready',
             'Your data export is ready',
             'Download link expires in 7 days.',
-            '/customer/settings.html',
+            '/portals/modules/customer/account.php',
             ['job_id' => $jobId, 'size_bytes' => $size]
         );
     } catch (Throwable $ignore) {}

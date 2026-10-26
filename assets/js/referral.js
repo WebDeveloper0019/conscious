@@ -1,4 +1,4 @@
-/* Conscious Indi — Referral Program hydration */
+/* Conscious India — Referral Program hydration */
 'use strict';
 
 (function () {
@@ -72,10 +72,10 @@
   }
 
   function bindShares(link, code) {
-    const msg   = 'Join Conscious Indi with my link and we both earn ₹500 on your first purchase!';
+    const msg   = 'Join Conscious India with my link and we both earn ₹500 on your first purchase!';
     const enc   = encodeURIComponent;
     const waUrl = 'https://wa.me/?text=' + enc(msg + ' ' + link);
-    const emUrl = 'mailto:?subject=' + enc('You’re invited to Conscious Indi') + '&body=' + enc(msg + '\n\n' + link);
+    const emUrl = 'mailto:?subject=' + enc('You’re invited to Conscious India') + '&body=' + enc(msg + '\n\n' + link);
     const igUrl = 'https://www.instagram.com/'; // IG has no direct share link
 
     document.querySelectorAll('[data-ref-share="whatsapp"]').forEach(b => b.addEventListener('click', () => window.open(waUrl, '_blank')));

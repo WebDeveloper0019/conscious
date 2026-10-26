@@ -1,4 +1,4 @@
-/* Conscious Indi — immersive sustainable commerce homepage */
+/* Conscious India — immersive sustainable commerce homepage */
 .ci-old-home{display:none!important}
 .ci-home{--ink:#4A210D;--green:#4B572C;--moss:#697746;--lime:#F3D39A;--cream:#FFF8E9;--paper:#FFFDF8;--clay:#A63D24;--line:rgba(74,33,13,.16);background:var(--paper);color:var(--ink);overflow:clip;font-family:'Poppins',sans-serif}
 .ci-home *{box-sizing:border-box}.ci-home a{text-decoration:none}.ci-home img{display:block;width:100%;height:100%;object-fit:cover}.ci-shell{width:min(1240px,calc(100% - 64px));margin:auto}
