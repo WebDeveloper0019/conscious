@@ -2,7 +2,7 @@
   'use strict';
   const grid=document.querySelector('.bc-shop-product-grid');if(!grid)return;
   const sidebar=document.querySelector('.bc-shop-sidebar'),summary=document.querySelector('.bc-shop-sortbar strong'),sort=document.querySelector('.bc-shop-sortbar select'),tabs=document.getElementById('bc-live-tabs');
-  const state={products:[],category:'',q:new URLSearchParams(location.search).get('q')||'',vendor:new URLSearchParams(location.search).get('vendor_id')||''};
+  const state={products:[],category:new URLSearchParams(location.search).get('category')||'',q:new URLSearchParams(location.search).get('q')||'',vendor:new URLSearchParams(location.search).get('vendor_id')||''};
   const money=value=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(value)||0);
   const el=(tag,className,text)=>{const item=document.createElement(tag);if(className)item.className=className;if(text!==undefined)item.textContent=text;return item;};
   const imageUrl=raw=>{if(!raw)return '';try{const url=new URL(raw,new URL('api/public/catalog.php',location.href));return url.origin===location.origin?url.href:'';}catch{return '';}};

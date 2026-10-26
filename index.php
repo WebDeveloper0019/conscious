@@ -29,6 +29,7 @@
   <link rel="stylesheet" href="assets/css/bharatcraft.css" />
   <link rel="stylesheet" href="assets/css/home-sustainable.css?v=5" />
   <link rel="stylesheet" href="assets/css/home-hero.css?v=20261025-1" />
+  <link rel="stylesheet" href="assets/css/home-maker.css?v=20261026-1" />
   <style>
     /* Homepage preview intentionally mirrors the first three live-experience cards on events.html. */
     #bc-events-grid > .bc-event-card:nth-child(n+4){display:none}
@@ -212,6 +213,20 @@
       <button type="button" id="ci-hero-next" aria-label="Next banner"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
     </div>
   </section>
+
+  <section class="ci-maker-edit" id="meet-the-makers" aria-labelledby="ci-maker-heading">
+    <div class="ci-maker-shell">
+      <div class="ci-maker-intro">
+        <figure class="ci-maker-portrait"><img src="assets/images/portfolio-artisan-stories.png" alt="An Indian artisan at work" loading="lazy"></figure>
+        <div class="ci-maker-story"><p class="ci-maker-eyebrow">Meet the makers</p><h2 id="ci-maker-heading">Living craft traditions.</h2><p>Explore thoughtful work from makers across India. Every piece has a person, a place, and a process behind it.</p><a href="/conscious/artisans">Meet our makers <span aria-hidden="true">→</span></a></div>
+      </div>
+      <div class="ci-maker-products"><p class="ci-maker-eyebrow">The maker edit</p><div class="ci-maker-product-grid" id="ci-maker-products" aria-live="polite"><p class="ci-maker-loading">Loading current products…</p></div></div>
+    </div>
+  </section>
+
+  <section class="ci-craft-explore" id="explore-by-craft" aria-labelledby="ci-craft-heading"><div class="ci-maker-shell"><div class="ci-craft-heading"><div><p class="ci-maker-eyebrow">Explore by craft</p><h2 id="ci-craft-heading">Different crafts. A more conscious tomorrow.</h2></div><a href="/conscious/shop">View all products <span aria-hidden="true">→</span></a></div><div class="ci-craft-grid" id="ci-craft-grid" aria-live="polite"><p class="ci-maker-loading">Loading crafts…</p></div></div></section>
+
+  <section class="ci-maker-values" aria-label="Why shop Conscious India"><div class="ci-maker-shell"><div><i class="fa-solid fa-hands-holding-circle" aria-hidden="true"></i><h3>Meet Indian makers</h3><p>Discover the people and communities behind the work.</p></div><div><i class="fa-solid fa-leaf" aria-hidden="true"></i><h3>Choose thoughtfully</h3><p>Explore materials, processes, and product details.</p></div><div><i class="fa-solid fa-hand-sparkles" aria-hidden="true"></i><h3>Find handcrafted work</h3><p>Shop objects shaped by skill and tradition.</p></div><div><i class="fa-solid fa-location-dot" aria-hidden="true"></i><h3>Explore across India</h3><p>Find craft stories from many places and traditions.</p></div></div></section>
 
   <section class="ci-manifesto">
     <div class="ci-shell">
@@ -2059,6 +2074,7 @@
 <script src="assets/js/ScrollTrigger.min.js?v=2"></script>
 <script src="assets/js/home-sustainable.js?v=5"></script>
 <script src="assets/js/home-hero.js?v=20261025-1"></script>
+<script src="assets/js/home-maker.js?v=20261026-1"></script>
 
 </body>
 </html>
