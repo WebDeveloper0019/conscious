@@ -147,6 +147,32 @@
     } catch (e) { show(e.message || 'Packages could not be loaded.', true); }
   }
 
+  async function loadServiceOrders() {
+    var box = document.getElementById('if-service-orders');
+    if (!box) return;
+    try {
+      var data = await request('service-orders.php', 'GET');
+      box.replaceChildren();
+      if (!data.orders || !data.orders.length) {
+        box.append(node('p', 'if-empty', 'No paid creator-package orders yet.'));
+        return;
+      }
+      data.orders.forEach(function(order) {
+        var card = node('article', 'if-card');
+        card.append(
+          node('strong', '', order.package_title + ' · ' + order.vendor_name),
+          node('p', 'if-muted', order.order_number + ' · ' + String(order.status).replaceAll('_', ' ')),
+          node('p', '', 'Deliverables: ' + (order.deliverables_json || []).join(', ')),
+          node('p', '', 'Brief: ' + order.brief),
+          node('p', 'if-muted', 'Creator earning on completion: ' + money.format(Number(order.influencer_earning_amount)))
+        );
+        box.append(card);
+      });
+    } catch (error) {
+      box.replaceChildren(node('p', 'if-empty', error.message || 'Paid collaborations could not be loaded.'));
+    }
+  }
+
   bindForm('if-package-form', async function(form) {
     var d = formData(form);
     var payload = {
@@ -171,6 +197,6 @@
   });
 
 
-  async function boot(){try{await loadIdentity();await loadApplication();await Promise.all([loadDashboard(),loadAnalytics(),loadWithdrawals(),loadNotifications(),loadInquiries(),loadCurations(),loadPackages()]);document.getElementById('if-eligible').textContent=money.format(Number(state.dashboard.available_to_withdraw)||0);document.getElementById('if-eligible').previousElementSibling.textContent='Available to withdraw';}catch(error){if(/session|sign in|permission|expired/i.test(error.message))location.replace('auth/login.php');else show(error.message,true);}}
+  async function boot(){try{await loadIdentity();await loadApplication();await Promise.all([loadDashboard(),loadAnalytics(),loadWithdrawals(),loadNotifications(),loadInquiries(),loadCurations(),loadPackages(),loadServiceOrders()]);document.getElementById('if-eligible').textContent=money.format(Number(state.dashboard.available_to_withdraw)||0);document.getElementById('if-eligible').previousElementSibling.textContent='Available to withdraw';}catch(error){if(/session|sign in|permission|expired/i.test(error.message))location.replace('auth/login.php');else show(error.message,true);}}
   boot();
 })();

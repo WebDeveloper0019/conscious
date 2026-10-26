@@ -15,10 +15,16 @@ if(in_array($check->fetchColumn(),[false,'suspended','blocked','inactive'],true)
     <div class="if-stack">
         <div class="if-card">
             <h2>Your Service Packages</h2>
-            <p class="if-muted">Create clear service packages for approved brands to discover and inquire about. Packages must pass admin review before they become active; online package purchase is not currently available.</p>
+            <p class="if-muted">Create clear service packages for approved brands to discover and purchase. Packages must pass admin review before they become active.</p>
             <div id="if-package-list" class="if-stack" style="margin-top: 16px;">
                 <!-- Packages will load here -->
             </div>
+        </div>
+
+        <div class="if-card">
+            <h2>Paid Collaborations</h2>
+            <p class="if-muted">Only verified paid orders appear here. The Conscious India team coordinates contact, schedules, cancellations and disputes.</p>
+            <div id="if-service-orders" class="if-stack" style="margin-top: 16px;">Loading paid collaborations.</div>
         </div>
 
         <div class="if-card" id="if-create-package-card">
