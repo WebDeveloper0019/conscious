@@ -16,11 +16,11 @@ if($account&&$account['verified']){
     $raw=rtrim(strtr(base64_encode(random_bytes(48)),'+/','-_'),'=');$id=uuid_string();
     get_db()->prepare('UPDATE password_reset_tokens SET used_at=UTC_TIMESTAMP() WHERE principal_type=:type AND principal_id=:owner AND used_at IS NULL')->execute(['type'=>$type,'owner'=>$account['id']]);
     get_db()->prepare('INSERT INTO password_reset_tokens (id,principal_type,principal_id,token_hash,created_at,expires_at) VALUES (:id,:type,:owner,:hash,UTC_TIMESTAMP(),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 30 MINUTE))')->execute(['id'=>$id,'type'=>$type,'owner'=>$account['id'],'hash'=>hash_hmac('sha256',$raw,APP_KEY)]);
-    $resetPage='/frontend/modules/'.$type.'/auth/reset-password.php';
+    $resetPage='/portals/modules/'.$type.'/auth/reset-password.php';
     $scriptPath=(string)($_SERVER['SCRIPT_NAME']??'');
     $installationPath=preg_replace('~/api/auth/forgot-password\.php$~','',$scriptPath);
     $siteBase=APP_URL!==''?APP_URL:request_origin().($installationPath!==$scriptPath?$installationPath:'');
     $url=$siteBase.$resetPage.'?token='.rawurlencode($raw).'&type='.rawurlencode($type);
-    resend_send_email($email,'Reset your Conscious Indi password','<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:32px"><h2>Reset your password</h2><p>This secure link expires in 30 minutes and can be used once.</p><p><a href="'.htmlspecialchars($url,ENT_QUOTES,'UTF-8').'">Reset password</a></p><p>If you did not request this, ignore this email.</p></div>');
+    resend_send_email($email,'Reset your Conscious India password','<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:32px"><h2>Reset your password</h2><p>This secure link expires in 30 minutes and can be used once.</p><p><a href="'.htmlspecialchars($url,ENT_QUOTES,'UTF-8').'">Reset password</a></p><p>If you did not request this, ignore this email.</p></div>');
 }
 json_response(200,['success'=>true,'message'=>'If the account exists, a password reset link has been sent.']);

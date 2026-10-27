@@ -1,4 +1,4 @@
-/* Conscious Indi — Customer support tickets: list, create, thread, reply, attachments. */
+/* Conscious India — Customer support tickets: list, create, thread, reply, attachments. */
 'use strict';
 
 (function () {

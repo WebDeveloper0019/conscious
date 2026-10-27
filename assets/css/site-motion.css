@@ -1,0 +1,34 @@
+/* Conscious India — shared public-site motion language */
+html{scroll-behavior:smooth;scroll-padding-top:150px}
+body.ci-motion-site{--ci-motion-ease:cubic-bezier(.22,1,.36,1);--ci-motion-fast:360ms;--ci-motion-slow:820ms}
+.ci-motion-site .bc-header,.ci-motion-site .bc-announce-bar{transition:box-shadow .45s ease,background-color .45s ease,transform .45s var(--ci-motion-ease)}
+.ci-motion-site.ci-page-scrolled .bc-header{box-shadow:0 12px 36px rgba(74,33,13,.09)}
+.ci-motion-site .bc-nav-item>a,.ci-motion-site .bc-utility-links>a,.ci-motion-site .bc-utility-menu>summary{position:relative;transition:color var(--ci-motion-fast) ease,background-color var(--ci-motion-fast) ease}
+.ci-motion-site .bc-nav-item>a:after,.ci-motion-site .bc-utility-links>a:after{content:"";position:absolute;left:50%;right:50%;bottom:2px;height:1px;background:currentColor;opacity:.7;transition:left .35s var(--ci-motion-ease),right .35s var(--ci-motion-ease)}
+.ci-motion-site .bc-nav-item>a:hover:after,.ci-motion-site .bc-nav-item>a:focus-visible:after,.ci-motion-site .bc-utility-links>a:hover:after,.ci-motion-site .bc-utility-links>a:focus-visible:after{left:12%;right:12%}
+.ci-motion-site .bc-mega-menu,.ci-motion-site .bc-utility-menu-panel{transform-origin:top center;transition:opacity .3s ease,transform .38s var(--ci-motion-ease),visibility .3s ease}
+.ci-motion-site .bc-header-action-link i,.ci-motion-site .bc-social-btn,.ci-motion-site button,.ci-motion-site .bc-btn{transition:transform .3s var(--ci-motion-ease),box-shadow .3s ease,background-color .3s ease,color .3s ease,border-color .3s ease}
+.ci-motion-site .bc-header-action-link:hover i{transform:translateY(-3px) scale(1.06)}
+.ci-motion-site .bc-btn:hover,.ci-motion-site button:not(:disabled):hover{transform:translateY(-2px)}
+.ci-motion-site .bc-btn i:last-child,.ci-motion-site a i.fa-arrow-right,.ci-motion-site a i.fa-chevron-right{transition:transform .3s var(--ci-motion-ease)}
+.ci-motion-site .bc-btn:hover i:last-child,.ci-motion-site a:hover i.fa-arrow-right,.ci-motion-site a:hover i.fa-chevron-right{transform:translateX(4px)}
+
+.ci-motion-reveal{opacity:0;transform:translate3d(0,38px,0);transition:opacity var(--ci-motion-slow) ease,transform var(--ci-motion-slow) var(--ci-motion-ease);will-change:opacity,transform}
+.ci-motion-reveal.ci-motion-left{transform:translate3d(-42px,0,0)}
+.ci-motion-reveal.ci-motion-right{transform:translate3d(42px,0,0)}
+.ci-motion-reveal.ci-motion-scale{transform:translate3d(0,24px,0) scale(.975)}
+.ci-motion-reveal.ci-motion-in{opacity:1;transform:translate3d(0,0,0) scale(1);will-change:auto}
+.ci-motion-image{position:relative;overflow:hidden;clip-path:inset(0 0 12% 0);transition:clip-path 1.05s var(--ci-motion-ease)}
+.ci-motion-image>img{transform:scale(1.045);transition:transform 1.15s var(--ci-motion-ease)}
+.ci-motion-image.ci-motion-in{clip-path:inset(0)}
+.ci-motion-image.ci-motion-in>img{transform:scale(1)}
+.ci-motion-hover{transition:transform .42s var(--ci-motion-ease),box-shadow .42s ease,border-color .35s ease}
+.ci-motion-hover:hover,.ci-motion-hover:focus-within{transform:translateY(-6px);box-shadow:0 18px 44px rgba(74,33,13,.11)}
+.ci-motion-hover img{transition:transform .65s var(--ci-motion-ease)}
+.ci-motion-hover:hover img{transform:scale(1.035)}
+
+.ci-motion-site .bc-footer-logo-link,.ci-motion-site .bc-footer-links li,.ci-motion-site .bc-footer-social a{transition:transform .3s var(--ci-motion-ease),opacity .3s ease,color .3s ease}
+.ci-motion-site .bc-footer-links li:hover{transform:translateX(4px)}
+.ci-motion-site .bc-footer-social a:hover{transform:translateY(-4px) rotate(-3deg)}
+@media(max-width:767px){html{scroll-padding-top:105px}.ci-motion-reveal,.ci-motion-reveal.ci-motion-left,.ci-motion-reveal.ci-motion-right{transform:translate3d(0,25px,0)}.ci-motion-hover:hover,.ci-motion-hover:focus-within{transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.ci-motion-site *,.ci-motion-site *:before,.ci-motion-site *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.ci-motion-reveal{opacity:1!important;transform:none!important}.ci-motion-image{clip-path:none!important}.ci-motion-image>img{transform:none!important}}

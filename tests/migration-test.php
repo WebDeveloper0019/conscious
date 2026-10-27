@@ -171,6 +171,8 @@ $expectedTables = [
     'reason_master','return_requests','return_evidence',
     'admin_tasks','admin_alerts','user_data_export_jobs',
     'refund_jobs','inventory_anomaly_log','reward_expiry_notifications',
+    'influencer_service_orders','influencer_service_order_snapshots','influencer_service_payments',
+    'influencer_service_order_history','influencer_service_refunds','influencer_service_disputes','influencer_service_earnings',
 ];
 
 $allTables = [];
@@ -231,6 +233,9 @@ $expectedIndexes = [
     ['refund_jobs', 'uniq_refund_job'],
     ['reason_master', 'uniq_scope_code'],
     ['return_evidence', 'uniq_return_file'],
+    ['influencer_service_orders', 'uniq_influencer_service_order_number'],
+    ['influencer_service_payments', 'uniq_service_payment_order'],
+    ['influencer_service_refunds', 'uniq_service_refund_request'],
 ];
 
 foreach ($expectedIndexes as [$table, $idx]) {
@@ -306,7 +311,7 @@ try {
         }
         $s->closeCursor();
 
-        foreach (['users','orders','refunds','invoices','credit_notes','reason_master'] as $t) {
+        foreach (['users','orders','refunds','invoices','credit_notes','reason_master','influencer_service_orders','influencer_service_refunds'] as $t) {
             MT::assert(isset($freshTables[$t]), "Fresh DB has: {$t}");
         }
     }

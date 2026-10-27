@@ -1,0 +1,45 @@
+.cp-checkout-layout .cp-checkout-main{min-width:0}
+.cp-checkout-layout .cp-check-section{padding:clamp(18px,2.4vw,28px)}
+.cp-checkout-layout .cp-check-section>h2{margin:0 0 16px;font-size:clamp(18px,2vw,24px)}
+.cp-checkout-layout .cp-check-section>p,.cp-checkout-layout .cp-check-section>div>p{font-size:14px;line-height:1.55;color:var(--cx-sub)}
+.cp-checkout-layout .cp-address-grid{gap:12px;margin:0 0 22px}
+.cp-checkout-layout .cp-address-grid label{cursor:pointer;min-height:90px;padding:15px 42px 15px 16px}
+.cp-checkout-layout .cp-address-grid label strong{margin:0;font-size:14px}
+.cp-checkout-layout .cp-address-grid label p{margin:6px 0 0;font-size:12px;line-height:1.55}
+.cp-checkout-layout form.cc-card-body{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px;padding:0}
+.cp-checkout-layout form.cc-card-body h3{grid-column:1/-1;margin:0 0 2px;font-size:18px}
+.cp-checkout-layout form.cc-card-body .cc-field{display:grid;gap:7px;margin:0;font-size:13px;font-weight:600}
+.cp-checkout-layout form.cc-card-body .cc-field:has([name="addressLine1"]),
+.cp-checkout-layout form.cc-card-body .cc-field:has([name="addressLine2"]){grid-column:1/-1}
+.cp-checkout-layout form.cc-card-body .cc-input{width:100%;min-height:44px;font-size:14px}
+.cp-checkout-layout form.cc-card-body button{justify-self:start;grid-column:1/-1;margin-top:4px}
+.cp-checkout-layout .cp-payment-method{display:flex;align-items:center;gap:12px;min-height:56px;margin:10px 0 0;padding:14px 16px;border:1px solid var(--cx-line);border-radius:12px;font-size:14px;line-height:1.45;cursor:pointer}
+.cp-checkout-layout .cp-payment-method:has(input:checked){border-color:#6f9b7f;background:#f2f7f3}
+.cp-checkout-layout .cp-payment-method:has(input:disabled){opacity:.56;cursor:not-allowed}
+.cp-checkout-layout .cp-payment-method input,.cp-checkout-layout .cp-terms-accept input{width:17px;height:17px;flex:none;accent-color:var(--cx-green)}
+.cp-checkout-layout .cp-terms-accept{align-items:flex-start;margin-top:18px;font-size:13px;line-height:1.5}
+.cp-checkout-layout .cp-checkout-summary>div{display:block;font-size:13px}
+.cp-checkout-layout .cp-checkout-summary>strong{display:block;margin-top:16px;padding-top:14px;border-top:1px solid var(--cx-line);font-size:16px}
+.cp-checkout-layout .cp-checkout-summary>p[role="status"]{display:block;font-size:12px;line-height:1.5}
+.cp-checkout-layout .cp-checkout-summary>p[role="status"] .cc-btn{width:auto;margin:10px 0 0}
+@media(max-width:650px){.cp-checkout-layout form.cc-card-body{grid-template-columns:1fr}.cp-checkout-layout form.cc-card-body .cc-field:has([name="addressLine1"]),.cp-checkout-layout form.cc-card-body .cc-field:has([name="addressLine2"]){grid-column:auto}.cp-checkout-layout .cp-check-section{padding:18px}.cp-checkout-layout .cp-payment-method{font-size:13px}}
+.cp-checkout-feedback:not(:empty){margin-top:15px;padding:12px 14px;border:1px solid #dfb698;border-radius:10px;background:#fff4ea;color:#743e20;font-weight:600;line-height:1.55}
+body.cp-demo-payment-open{overflow:hidden}
+.cp-demo-payment-backdrop{position:fixed;inset:0;z-index:2000;display:grid;place-items:center;padding:18px;background:rgba(20,31,25,.65)}
+.cp-demo-payment{width:min(100%,470px);max-height:min(90vh,760px);overflow:auto;border-radius:20px;background:#fffdf8;box-shadow:0 28px 80px rgba(0,0,0,.28);color:#22362b}
+.cp-demo-payment-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding:24px 24px 18px;border-bottom:1px solid #e5e8de}
+.cp-demo-payment-kicker{display:block;margin-bottom:6px;color:#a44926;font-size:11px;font-weight:800;letter-spacing:.12em}
+.cp-demo-payment-head h2{margin:0;font-size:23px;line-height:1.2}
+.cp-demo-payment-close{border:0;background:transparent;color:#4c574d;font-size:28px;line-height:1;cursor:pointer}
+.cp-demo-payment-summary{display:flex;justify-content:space-between;gap:16px;align-items:center;margin:22px 24px 14px;padding:15px 16px;border-radius:12px;background:#eff4ed;font-size:13px}
+.cp-demo-payment-summary strong{font-size:22px;white-space:nowrap}
+.cp-demo-payment-notice{margin:0 24px 18px;padding:10px 12px;border:1px solid #e8c7a6;border-radius:10px;background:#fff4e8;color:#723e23;font-size:12px;line-height:1.5}
+.cp-demo-payment-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 24px}
+.cp-demo-method{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:75px;padding:10px 6px;border:1px solid #dce4da;border-radius:11px;background:white;color:#31483a;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.cp-demo-method i{font-size:20px;color:#57785d}.cp-demo-method.active{border-color:#3c7047;background:#f1f8f0;box-shadow:0 0 0 2px rgba(60,112,71,.12)}
+.cp-demo-payment-detail{margin:14px 24px 0;color:#5d6c60;font-size:12px;line-height:1.5}
+.cp-demo-payment-state{min-height:20px;margin:12px 24px 0;color:#235d35;font-size:13px;font-weight:700}.cp-demo-payment-state.error{color:#9b2d23}
+.cp-demo-payment-actions{display:flex;gap:10px;padding:18px 24px 24px}.cp-demo-payment-actions .cc-btn{flex:1;justify-content:center;text-align:center}
+.cp-demo-payment button:focus-visible{outline:3px solid #c88422;outline-offset:2px}
+@media(max-width:480px){.cp-demo-payment-head{padding:20px 18px 16px}.cp-demo-payment-summary,.cp-demo-payment-notice,.cp-demo-payment-detail,.cp-demo-payment-state{margin-left:18px;margin-right:18px}.cp-demo-payment-methods{margin:0 18px}.cp-demo-payment-actions{flex-direction:column;padding:18px}.cp-demo-payment-head h2{font-size:20px}}
+.cc-commerce-page .cp-order-summary .cc-btn.primary{min-height:46px}

@@ -6,19 +6,6 @@
   const q=gsap.utils.selector(home);
   gsap.defaults({ease:'power3.out'});
 
-  const intro=gsap.timeline({defaults:{duration:1.05}});
-  intro.from(q('.ci-hero .ci-overline'),{y:24,opacity:0})
-    .from(q('.ci-hero h1 span'),{yPercent:115,opacity:0,stagger:.13},'-=.72')
-    .from(q('.ci-hero-lead'),{y:30,opacity:0},'-=.62')
-    .from(q('.ci-hero-actions > *'),{y:25,opacity:0,stagger:.1},'-=.72')
-    .from(q('.ci-hero-notes span'),{y:16,opacity:0,stagger:.08},'-=.55')
-    .from(q('.ci-scroll-cue'),{opacity:0,y:-15},'-=.5');
-
-  gsap.to('.ci-hero',{backgroundPosition:'54% 70%',ease:'none',scrollTrigger:{trigger:'.ci-hero',start:'top top',end:'bottom top',scrub:1}});
-  gsap.to('.orb-one',{x:-130,y:100,rotation:45,ease:'none',scrollTrigger:{trigger:'.ci-hero',start:'top top',end:'bottom top',scrub:1}});
-  gsap.to('.orb-two',{x:90,y:-70,rotation:-30,ease:'none',scrollTrigger:{trigger:'.ci-hero',start:'top top',end:'bottom top',scrub:1}});
-  gsap.to('.ci-hero-copy',{y:-90,opacity:.12,ease:'none',scrollTrigger:{trigger:'.ci-hero',start:'45% top',end:'bottom top',scrub:1}});
-
   q('[data-ci-reveal]').forEach(function(el){
     gsap.from(el,{y:70,opacity:0,duration:1.1,scrollTrigger:{trigger:el,start:'top 86%',once:true}});
   });

@@ -15,8 +15,15 @@ $items=[
     ['pashmina-shawl','Embroidered Pashmina Shawl','pashmina-shawl.jpg',7,'Kashmir','Wool',8999,12000,500,'Handloom & Textiles','handloom-textiles'],
     ['sandalwood-box','Carved Sandalwood Box','sandalwood-box.jpg',10,'Uttar Pradesh','Wood',1799,2499,650,'Wood Crafts','wood-crafts'],
     ['warli-wall-art','Warli Wall Art','warli-wall-art.jpg',8,'Maharashtra','Canvas and paint',2499,3299,600,'Traditional Art','traditional-art'],
+    ['kantha-table-runner','Kantha Table Runner','kantha-cushion.jpg',8,'West Bengal','Upcycled cotton',1899,2499,380,'Handloom & Textiles','handloom-textiles'],
+    ['handloom-cotton-stole','Handloom Cotton Stole','pashmina-shawl.jpg',7,'Uttar Pradesh','Handwoven cotton',2299,2999,290,'Handloom & Textiles','handloom-textiles'],
+    ['blue-pottery-planter','Blue Pottery Table Planter','blue-pottery-vase.jpg',6,'Rajasthan','Glazed ceramic',999,1399,620,'Pottery & Ceramics','pottery-ceramics'],
+    ['wooden-keepsake-box','Wooden Keepsake Box','sandalwood-box.jpg',10,'Uttar Pradesh','Carved wood',1499,1999,540,'Wood Crafts','wood-crafts'],
+    ['warli-art-journal','Warli Art Journal','warli-wall-art.jpg',8,'Maharashtra','Recycled paper and cloth',799,1099,260,'Traditional Art','traditional-art'],
+    ['dhokra-candle-holder','Dhokra Candle Holder','dhokra-musician.jpg',9,'Chhattisgarh','Brass',1999,2599,720,'Traditional Art','traditional-art'],
+    ['madhubani-art-print','Madhubani Art Print','madhubani-painting.jpg',6,'Bihar','Paper and natural pigment',1299,1699,220,'Paintings','paintings'],
 ];
-$sourceRoot=dirname(__DIR__,2).'/frontend/modules/customer/assets/images/products';
+$sourceRoot=dirname(__DIR__,2).'/portals/modules/customer/assets/images/products';
 $storageRoot=rtrim(PRIVATE_STORAGE_PATH,'/\\');
 $targetFolder=$storageRoot.'/demo/catalog';
 foreach($items as $item){if(!is_file($sourceRoot.'/'.$item[2])){fwrite(STDERR,"Missing photo: {$item[2]}\n");exit(1);}}
@@ -43,7 +50,7 @@ foreach($items as $item){
     if(!$categoryId){$insertCategory->execute(['name'=>$categoryName,'slug'=>$categorySlug]);$categoryId=(int)$db->lastInsertId();}
     $slug='local-demo-'.$key;$productQuery->execute(['slug'=>$slug]);$existingProduct=$productQuery->fetch();
     if($existingProduct){$db->prepare('UPDATE products SET category_id=:category WHERE id=:id AND vendor_id=:vendor')->execute(['category'=>$categoryId,'id'=>$existingProduct['id'],'vendor'=>$vendor['id']]);$skipped++;continue;}
-    $source=$sourceRoot.'/'.$filename;$hash=hash_file('sha256',$source);$storage='demo/catalog/'.$hash.'.jpg';$target=$storageRoot.'/'.$storage;
+    $source=$sourceRoot.'/'.$filename;$hash=hash_file('sha256',$source);$storage='demo/catalog/'.$key.'-'.$hash.'.jpg';$target=$storageRoot.'/'.$storage;
     if(!is_file($target)&&!copy($source,$target))throw new RuntimeException("Could not store {$filename}.");
     $productId=uuid_string();$assetId=uuid_string();$variantId=uuid_string();$sku='LOCAL-DEMO-'.strtoupper(str_replace('-','',$key));
     $description=$name.' — local demo catalogue item with a real project photograph. Vendor manually fulfils delivery across India.';

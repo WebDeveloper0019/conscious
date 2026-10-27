@@ -14,7 +14,7 @@ if (APP_ENV !== 'local') {
 }
 
 $rotate = in_array('--rotate', $argv, true);
-$password = 'Demo#'.bin2hex(random_bytes(8)).'Aa1!';
+$password = 'DemoCreator#2026!';
 $creators = [
     ['Aanya Green Living', 'demo-aanya-green', 'Mumbai', 'Low-waste routines and practical swaps for Indian homes.'],
     ['Kabir Earth Notes', 'demo-kabir-earth', 'Delhi', 'Thoughtful everyday choices, repair culture and mindful shopping.'],
@@ -55,7 +55,7 @@ try {
             continue;
         }
         $id = uuid_string();
-        $bio = $topic.' This is a fictional local demo creator for a Conscious Indi product walkthrough. No real partnership, audience or earnings are claimed.';
+        $bio = $topic.' This is a fictional local demo creator for a Conscious India product walkthrough. No real partnership, audience or earnings are claimed.';
         $insert->execute([
             'id' => $id,
             'name' => $name,

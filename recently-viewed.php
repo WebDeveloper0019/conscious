@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recently Viewed — Conscious India</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/bharatcraft.css" />
+</head>
+<body>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-header.php'; ?>
+
+<main class="section-py">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-5">
+      <div>
+        <span class="bc-section-label">Your History</span>
+        <h1 class="bc-section-title">Recently Viewed</h1>
+      </div>
+      <button class="bc-btn bc-btn-outline bc-btn-sm text-danger border-danger">Clear All History</button>
+    </div>
+
+    <div class="row g-4">
+      <!-- Product Card 1 -->
+      <div class="col-6 col-lg-3">
+        <div class="bc-product-card">
+          <div class="bc-product-img-wrap">
+            <img src="assets/images/products/blue-pottery-vase.svg" alt="Blue Pottery Vase" class="bc-product-img">
+            <div class="bc-product-actions">
+              <button class="bc-product-action-btn"><i class="fa-regular fa-heart"></i></button>
+              <button class="bc-product-action-btn"><i class="fa-solid fa-cart-plus"></i></button>
+            </div>
+          </div>
+          <div class="bc-product-content">
+            <div class="bc-product-cat">Pottery</div>
+            <h3 class="bc-product-title"><a href="/conscious/product-detail">Blue Pottery Vase</a></h3>
+            <div class="bc-product-price">₹1,250</div>
+          </div>
+        </div>
+      </div>
+      <!-- Product Card 2 -->
+      <div class="col-6 col-lg-3">
+        <div class="bc-product-card">
+          <div class="bc-product-img-wrap">
+            <img src="assets/images/products/kantha-cushion.svg" alt="Kantha Cushion" class="bc-product-img">
+            <div class="bc-product-actions">
+              <button class="bc-product-action-btn"><i class="fa-regular fa-heart"></i></button>
+              <button class="bc-product-action-btn"><i class="fa-solid fa-cart-plus"></i></button>
+            </div>
+          </div>
+          <div class="bc-product-content">
+            <div class="bc-product-cat">Textiles</div>
+            <h3 class="bc-product-title"><a href="/conscious/product-detail">Kantha Cushion Cover</a></h3>
+            <div class="bc-product-price">₹850</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-footer.php'; ?>
+
+<script src="assets/js/bharatcraft.js?v=20261017-1"></script>
+</body>
+</html>

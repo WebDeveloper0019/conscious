@@ -1,4 +1,4 @@
-/* Conscious Indi — Vendor delivery OTP: generate, verify, status. */
+/* Conscious India — Vendor delivery OTP: generate, verify, status. */
 'use strict';
 
 (function () {

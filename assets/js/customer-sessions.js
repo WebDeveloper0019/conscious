@@ -1,4 +1,4 @@
-/* Conscious Indi — Active sessions: list, current-device badge, logout. */
+/* Conscious India — Active sessions: list, current-device badge, logout. */
 'use strict';
 
 (function () {

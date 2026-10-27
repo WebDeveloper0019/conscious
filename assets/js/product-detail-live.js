@@ -21,13 +21,13 @@
     if(!response.ok||!data.success)throw Error(data.message||'Request failed.');
     return data;
   }
-  const feedback=(message,needsLogin=false)=>{status.hidden=false;status.replaceChildren(document.createTextNode(message));if(needsLogin){const link=node('a','',' Sign in');link.href='frontend/modules/customer/auth/login.php';status.append(link);}status.scrollIntoView({behavior:'smooth',block:'center'});};
+  const feedback=(message,needsLogin=false)=>{status.hidden=false;status.replaceChildren(document.createTextNode(message));if(needsLogin){const link=node('a','',' Sign in');link.href='portals/modules/customer/auth/login.php';status.append(link);}status.scrollIntoView({behavior:'smooth',block:'center'});};
   function action(label,icon,className,handler){const button=node('button',className);button.type='button';button.innerHTML='<i class="fa-solid '+icon+'" aria-hidden="true"></i> ';button.append(document.createTextNode(label));button.addEventListener('click',async()=>{button.disabled=true;try{await handler();}catch(error){feedback(error.message,Boolean(error.login));button.disabled=false;}});return button;}
   function render(data){
     const product=data.product,images=(data.images||[]).map(item=>({...item,src:imageUrl(item.url)})).filter(item=>item.src);
     const variants=(data.variants||[]).filter(item=>Number(item.available_quantity)>0);
     root.replaceChildren();status.hidden=true;
-    document.title=product.name+' — Conscious Indi';
+    document.title=product.name+' — Conscious India';
     const back=node('a','pd-back','← Back to marketplace');back.href='shop.html';root.append(back);
     if(product.vendor_verification_status==='demo_fixture')root.append(node('p','pd-demo-notice','Local demo listing: product, vendor, price, image, and stock are stored in MySQL. This is not a real seller offer.'));
     const layout=node('div','pd-live-layout');root.append(layout);
@@ -45,8 +45,8 @@
     const quantityLabel=node('label','','Quantity');const quantity=node('input');quantity.type='number';quantity.min='1';quantity.max='20';quantity.value='1';quantityLabel.append(quantity);controls.append(quantityLabel);
     const selected=()=>{const variant=variants.find(item=>item.id===variantSelect.value);const amount=Number(quantity.value);if(!variant)throw Error('This product is out of stock.');const maximum=Math.min(20,Number(variant.available_quantity));if(!Number.isInteger(amount)||amount<1||amount>maximum)throw Error('Enter a whole-number quantity from 1 to '+maximum+' for this option.');return {variant_id:variant.id,quantity:amount};};
     const buttons=node('div','pd-live-actions');info.append(buttons);
-    const add=action('Add to cart','fa-bag-shopping','bc-btn bc-btn-primary',async()=>{await api('api/user/cart.php','POST',selected());location.href='frontend/modules/customer/cart.php';});
-    const buy=action('Buy now','fa-bolt','bc-btn bc-btn-navy',async()=>{await api('api/user/cart.php','POST',selected());location.href='frontend/modules/customer/checkout.php';});
+    const add=action('Add to cart','fa-bag-shopping','bc-btn bc-btn-primary',async()=>{await api('api/user/cart.php','POST',selected());location.href='portals/modules/customer/cart.php';});
+    const buy=action('Buy now','fa-bolt','bc-btn bc-btn-navy',async()=>{await api('api/user/cart.php','POST',selected());location.href='portals/modules/customer/checkout.php';});
     const save=action('Save','fa-heart','bc-btn bc-btn-outline',async()=>{await api('api/user/wishlist.php','POST',{productId:product.id});feedback('Saved to your wishlist.');save.disabled=false;});
     buttons.append(add,buy,save);info.append(status);if(!variants.length){add.disabled=true;buy.disabled=true;}
     info.append(node('p','pd-live-delivery','Delivery coverage, vendor charges, COD availability and eligible returns are checked against your address at checkout.'));

@@ -3,6 +3,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/resend.php';
+require_once __DIR__ . '/../lib/customer-otp.php';
 send_cors_headers();
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') json_response(405, ['success'=>false,'message'=>'Method not allowed.']);
 if (rate_limit('register|' . request_ip(), 8, 3600)) json_response(429, ['success'=>false,'message'=>'Too many registration attempts. Try again later.']);
@@ -33,7 +34,7 @@ $mobileCheck=$db->prepare('SELECT id FROM users WHERE mobile=:mobile AND email<>
 if($mobileCheck->fetch()) json_response(409,['success'=>false,'message'=>'An account already uses this mobile number.','errors'=>['phone'=>'Try signing in or use another mobile number.']]);
 if ($existing && !empty($existing['email_verified'])) json_response(409, ['success'=>false,'message'=>'An account already uses these details.','errors'=>['email'=>'Try signing in or recovering your password.']]);
 
-$otp=(string)random_int(100000,999999); $otpHash=password_hash($otp,PASSWORD_DEFAULT); $now=date('Y-m-d H:i:s'); $expires=date('Y-m-d H:i:s',time()+600);
+$otp=customer_verification_code(); $otpHash=password_hash($otp,PASSWORD_DEFAULT); $now=date('Y-m-d H:i:s'); $expires=date('Y-m-d H:i:s',time()+600);
 $db->beginTransaction();
 try {
     if ($existing) {
@@ -52,4 +53,13 @@ try {
     if ($db->inTransaction()) $db->rollBack();
     json_response(502, ['success'=>false,'message'=>'We could not send the verification email. Please try again.']);
 }
-json_response(201, ['success'=>true,'message'=>'We sent a 6-digit verification code to your email.','requiresVerification'=>true,'email'=>$email,'redirect'=>'verify-email.php']);
+$localOutbox = APP_ENV === 'local' && MAIL_TRANSPORT === 'log';
+json_response(201, [
+    'success'=>true,
+    'message'=>$localOutbox
+        ? 'Local test mode: your code was saved in api/data/mail-outbox, not sent to email.'
+        : 'We sent a 6-digit verification code to your email.',
+    'requiresVerification'=>true,
+    'email'=>$email,
+    'redirect'=>'verify-email.php'
+]);

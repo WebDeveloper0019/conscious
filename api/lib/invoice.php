@@ -137,7 +137,7 @@ function invoice_generate_for_order(int $orderId): array
 
     // Seller details
     $seller = [
-        'name'       => (string)invoice_setting('seller_legal_name', 'Conscious Indi'),
+        'name'       => (string)invoice_setting('seller_legal_name', 'Conscious India'),
         'gstin'      => (string)invoice_setting('seller_gstin', ''),
         'pan'        => (string)invoice_setting('seller_pan', ''),
         'address'    => (string)invoice_setting('seller_address', ''),

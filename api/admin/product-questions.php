@@ -169,7 +169,7 @@ if ($action === 'answer') {
         (string)$q['user_id'],
         'product_answer',
         'Your question was answered',
-        'Conscious Indi Support answered your product question.',
+        'Conscious India Support answered your product question.',
         '/product-detail.html?id=' . urlencode((string)$q['product_id']),
         ['question_id' => $questionId]
     );

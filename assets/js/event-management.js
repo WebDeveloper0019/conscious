@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var key = new URLSearchParams(window.location.search).get('event'), data = events[key];
   var attendeeRegistrations = { bazaar: { enabled: true, type: 'paid', fee: '₹299' }, festival: { enabled: true, type: 'free', fee: 'FREE' }, earth: { enabled: false, type: 'free', fee: 'FREE' } };
   if (!data || !document.getElementById('event-title')) return;
-  document.title = data.title + ' — Conscious Indi Events';
+  document.title = data.title + ' — Conscious India Events';
   document.getElementById('event-title').textContent = data.title;
   document.querySelectorAll('[data-event-date]').forEach(function (item) { item.textContent = data.date; });
   document.querySelectorAll('[data-event-time]').forEach(function (item) { item.textContent = data.time; });

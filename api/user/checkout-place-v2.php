@@ -17,8 +17,8 @@ function checkout_place_v2(): void
     $body = get_json_body();
     $quoteId = trim((string)($body['quote_id'] ?? ''));
     $paymentMethod = trim((string)($body['payment_method'] ?? ''));
-    if ($quoteId === '' || !in_array($paymentMethod, ['cod', 'online'], true)) {
-        json_response(422, ['success' => false, 'message' => 'A valid quote and payment method are required.']);
+    if ($quoteId === '' || $paymentMethod !== 'online') {
+        json_response(422, ['success' => false, 'message' => 'Choose online payment and calculate a valid checkout quote. Cash on delivery is currently unavailable.']);
     }
     if ($paymentMethod === 'online' && APP_ENV !== 'local' && !razorpay_is_configured()) {
         json_response(503, ['success' => false, 'message' => 'Online payment is temporarily unavailable.']);
@@ -26,11 +26,13 @@ function checkout_place_v2(): void
 
     $userId = auth_user_id($auth);
     $principal = ['type' => 'customer', 'id' => $userId];
-    $idempotency = begin_idempotent_request('checkout.place', $principal, $body);
     $db = get_db();
     $db->beginTransaction();
 
     try {
+        // Keep the retry key in the same transaction as the order. A failed
+        // checkout must not leave behind a permanently "processing" key.
+        $idempotency = begin_idempotent_request('checkout.place', $principal, $body);
         $owner=$db->prepare('SELECT id FROM users WHERE id=:id FOR UPDATE');$owner->execute(['id'=>$userId]);$owner->fetch();
         $quoteStmt = $db->prepare(
             'SELECT q.*,a.full_name,a.phone,a.pincode,a.address_line1,a.address_line2,a.city,a.state,a.landmark

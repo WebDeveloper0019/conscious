@@ -41,26 +41,26 @@ function resend_send_email(string $to, string $subject, string $html): array {
 function send_otp_email(string $to, string $firstName, string $otp): array {
     $safeName = htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8');
     $html = '<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:32px">'
-        . '<h2 style="margin-bottom:8px">Verify your Conscious Indi account</h2>'
+        . '<h2 style="margin-bottom:8px">Verify your Conscious India account</h2>'
         . '<p>Hello ' . $safeName . ',</p>'
         . '<p>Your email verification OTP is:</p>'
         . '<div style="font-size:32px;font-weight:700;letter-spacing:8px;padding:18px 0">' . $otp . '</div>'
         . '<p>This OTP expires in 10 minutes. If you did not create this account, you can ignore this email.</p>'
         . '</div>';
-    return resend_send_email($to, 'Your Conscious Indi verification OTP', $html);
+    return resend_send_email($to, 'Your Conscious India verification OTP', $html);
 }
 
 function send_vendor_otp_email(string $to,string $name,string $otp): array {
     $safeName=htmlspecialchars($name,ENT_QUOTES,'UTF-8');
     $html='<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:32px">'
-        .'<h2>Verify your Conscious Indi vendor account</h2><p>Hello '.$safeName.',</p>'
+        .'<h2>Verify your Conscious India vendor account</h2><p>Hello '.$safeName.',</p>'
         .'<p>Your six-digit verification code is:</p><div style="font-size:32px;font-weight:700;letter-spacing:8px;padding:18px 0">'.$otp.'</div>'
-        .'<p>This code expires in 10 minutes. Conscious Indi will never ask for your password or banking PIN.</p></div>';
-    return resend_send_email($to,'Verify your Conscious Indi vendor account',$html);
+        .'<p>This code expires in 10 minutes. Conscious India will never ask for your password or banking PIN.</p></div>';
+    return resend_send_email($to,'Verify your Conscious India vendor account',$html);
 }
 
 function send_influencer_otp_email(string $to,string $name,string $otp): array {
     $safeName=htmlspecialchars($name,ENT_QUOTES,'UTF-8');
-    $html='<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:32px"><h2>Verify your Conscious Indi creator account</h2><p>Hello '.$safeName.',</p><p>Your six-digit verification code is:</p><div style="font-size:32px;font-weight:700;letter-spacing:8px;padding:18px 0">'.$otp.'</div><p>This code expires in 10 minutes. Never share your password or banking PIN.</p></div>';
-    return resend_send_email($to,'Verify your Conscious Indi creator account',$html);
+    $html='<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:32px"><h2>Verify your Conscious India creator account</h2><p>Hello '.$safeName.',</p><p>Your six-digit verification code is:</p><div style="font-size:32px;font-weight:700;letter-spacing:8px;padding:18px 0">'.$otp.'</div><p>This code expires in 10 minutes. Never share your password or banking PIN.</p></div>';
+    return resend_send_email($to,'Verify your Conscious India creator account',$html);
 }

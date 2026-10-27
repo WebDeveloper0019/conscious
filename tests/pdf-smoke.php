@@ -6,7 +6,7 @@ require_once __DIR__.'/../api/lib/credit-note-pdf.php';
 if(APP_ENV!=='local'){fwrite(STDERR,"Local test only.\n");exit(1);}
 try{
     $invoice=['number'=>'QA-INVOICE','orderNumber'=>'QA-ORDER','issuedAt'=>'2026-10-20 10:00:00',
-        'seller'=>['name'=>'Conscious Indi QA'],
+        'seller'=>['name'=>'Conscious India QA'],
         'buyer'=>['name'=>'Purchase test','address'=>'Test address, Delhi'],
         'items'=>[], 'totals'=>['grandTotal'=>100,'taxableValue'=>100,'amountInWords'=>'One hundred rupees only']];
     $documents=['invoice'=>invoice_render_pdf($invoice),'credit-note'=>credit_note_render_pdf($invoice)];

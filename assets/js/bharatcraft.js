@@ -1,5 +1,5 @@
 /* ============================================================
-   Conscious Indi — Premium Indian Handcrafted Marketplace
+   Conscious India — Premium Indian Handcrafted Marketplace
    Main JavaScript — All Interactions & Animations
    Version: 1.0.0
    ============================================================ */
@@ -12,6 +12,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   initPreloader();
   initAnnouncementBar();
+  initUtilityMenus();
   initHeader();
   initMobileDrawer();
   initHeroParticles();
@@ -34,6 +35,13 @@ document.addEventListener('DOMContentLoaded', function () {
 function initPreloader() {
   const preloader = document.getElementById('bc-preloader');
   if (!preloader) return;
+
+  const logo = preloader.querySelector('.bc-preloader-symbol');
+  if (logo) {
+    logo.src = logo.src.replace(/symbol\.png(?:\?.*)?$/i, 'logo-square.png?v=20261026-preloader1');
+    logo.width = 220;
+    logo.height = 170;
+  }
 
   window.addEventListener('load', function () {
     setTimeout(function () {
@@ -83,6 +91,39 @@ function initAnnouncementBar() {
       }
     });
   }
+}
+
+function initUtilityMenus() {
+  document.querySelectorAll('.bc-utility-links').forEach(function (nav) {
+    const menus = Array.from(nav.querySelectorAll('.bc-utility-menu'));
+    if (!menus.length) return;
+    function closeOthers(active) {
+      menus.forEach(function (menu) { if (menu !== active) menu.open = false; });
+    }
+    menus.forEach(function (menu) {
+      menu.addEventListener('toggle', function () { if (menu.open) closeOthers(menu); });
+      menu.addEventListener('mouseenter', function () {
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          closeOthers(menu);
+          menu.open = true;
+        }
+      });
+      menu.addEventListener('mouseleave', function () { menu.open = false; });
+    });
+    nav.querySelectorAll(':scope > a').forEach(function (link) {
+      link.addEventListener('mouseenter', function () { closeOthers(null); });
+    });
+    document.addEventListener('pointerdown', function (event) {
+      if (!nav.contains(event.target)) closeOthers(null);
+    });
+    nav.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        closeOthers(null);
+        const summary = event.target.closest('.bc-utility-menu')?.querySelector('summary');
+        if (summary) summary.focus();
+      }
+    });
+  });
 }
 
 /* ──────────────────────────────────────────────
@@ -671,7 +712,7 @@ function initNewsletterForm() {
         btn.style.background = 'var(--green)';
       }
       if (input) input.value = '';
-      showToast('🎉 Welcome to Conscious Indi family!', 'green');
+      showToast('🎉 Welcome to Conscious India family!', 'green');
 
       setTimeout(function () {
         if (btn) {
@@ -824,14 +865,14 @@ function initMegaMenu() {
       clearTimeout(timer);
       menu.style.opacity    = '1';
       menu.style.visibility = 'visible';
-      menu.style.transform  = 'translateY(0)';
+      menu.style.transform  = 'translate(-50%, 0)';
     });
 
     item.addEventListener('mouseleave', function () {
       timer = setTimeout(function () {
         menu.style.opacity    = '0';
         menu.style.visibility = 'hidden';
-        menu.style.transform  = 'translateY(8px)';
+        menu.style.transform  = 'translate(-50%, 8px)';
       }, 120);
     });
   });
@@ -868,6 +909,19 @@ function initMegaMenu() {
   });
 
   observer.observe(grid);
+})();
+
+/* --------------------------------------------------------------------------
+   Public website guide — curated discovery and reviewed help.
+   -------------------------------------------------------------------------- */
+(function loadConsciousIndiGuide() {
+  var current = document.currentScript;
+  if (!current || document.querySelector('[data-ci-guide-loader]')) return;
+  var path = location.pathname.toLowerCase();
+  if (/\/(?:admin|customer|vendor)\//.test(path) || path.includes('/portals/modules/')) return;
+  var marker = document.createElement('meta'); marker.setAttribute('data-ci-guide-loader', ''); document.head.appendChild(marker);
+  var stylesheet = document.createElement('link'); stylesheet.rel = 'stylesheet'; stylesheet.href = new URL('../css/site-assistant.css?v=20261024-2', current.src).href; document.head.appendChild(stylesheet);
+  var assistant = document.createElement('script'); assistant.src = new URL('site-assistant.js?v=20261026-pujii1', current.src).href; assistant.async = false; document.head.appendChild(assistant);
 })();
 
 /* ──────────────────────────────────────────────
@@ -1255,7 +1309,7 @@ function toggleLoading(selector, show) {
     if (!triggers.length) return;
 
     triggers.forEach(function (trigger) {
-      trigger.setAttribute('href', 'frontend/modules/influencer/auth/register.php');
+      trigger.setAttribute('href', 'portals/modules/influencer/auth/register.php');
       trigger.setAttribute('aria-haspopup', 'false');
       trigger.innerHTML = '<i class="fa-solid fa-star" aria-hidden="true"></i> Register as an Influencer';
     });

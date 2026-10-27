@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>No Results Found — Conscious India</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/bharatcraft.css" />
+  <style>
+    .empty-state-wrap {
+      text-align: center;
+      padding: 100px 0;
+    }
+    .empty-state-icon {
+      font-size: 5rem;
+      color: var(--border-warm);
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-header.php'; ?>
+
+<main class="section-py">
+  <div class="container">
+    <div class="empty-state-wrap">
+      <div class="empty-state-icon">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+      <h1 class="bc-section-title">No Results Found</h1>
+      <p class="bc-section-desc mx-auto">We couldn't find anything matching your search. Try different keywords or browse our categories.</p>
+      
+      <div class="mt-5 d-flex justify-content-center gap-3">
+        <a href="/conscious/shop" class="bc-btn bc-btn-primary">Browse Marketplace</a>
+        <a href="/conscious/" class="bc-btn bc-btn-outline">Back to Home</a>
+      </div>
+    </div>
+
+    <!-- Suggested Categories -->
+    <div class="mt-5 pt-5 border-top">
+      <h3 class="text-center mb-4 fw-bold">Try Browsing Categories</h3>
+      <div class="row g-3 justify-content-center">
+        <div class="col-auto"><a href="/conscious/pottery" class="bc-badge bc-badge-saffron p-3 px-4">Pottery</a></div>
+        <div class="col-auto"><a href="/conscious/jewelry" class="bc-badge bc-badge-saffron p-3 px-4">Jewelry</a></div>
+        <div class="col-auto"><a href="/conscious/handloom" class="bc-badge bc-badge-saffron p-3 px-4">Handloom</a></div>
+        <div class="col-auto"><a href="/conscious/paintings" class="bc-badge bc-badge-saffron p-3 px-4">Paintings</a></div>
+      </div>
+    </div>
+  </div>
+</main>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-footer.php'; ?>
+
+<script src="assets/js/bharatcraft.js?v=20261017-1"></script>
+</body>
+</html>

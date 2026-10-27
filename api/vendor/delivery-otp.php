@@ -104,7 +104,7 @@ try {
         'delivery_otp',
         'Delivery OTP: ' . $otp,
         'Share this OTP with the delivery agent to receive order ' . $g['order_number'] . '. Do NOT share with anyone else.',
-        '/customer/orders.html',
+        '/portals/modules/customer/orders.php',
         ['group_id' => $groupId, 'expires_in_hours' => (int)delivery_otp_config('delivery_otp_ttl_hours', 24)]
     );
 

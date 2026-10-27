@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#A63D24" />
+  <title>Influencer Login — Conscious India</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/bharatcraft.css" />
+  <style>
+    .influencer-login-shell { min-height: 100vh; display: grid; place-items: center; background: linear-gradient(180deg, #fffdf8 0%, #f8f2e6 100%); padding: 40px 16px; }
+    .influencer-login-card { max-width: 520px; width: 100%; background: #fff; border-radius: 24px; box-shadow: 0 20px 60px rgba(10,0,64,0.12); border: 1px solid rgba(66,37,5,0.08); overflow: hidden; }
+    .influencer-login-header { background: linear-gradient(135deg, var(--navy), #31106d); color: white; padding: 28px; }
+    .influencer-login-body { padding: 28px; }
+    .influencer-login-field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+    .influencer-login-field label { font-weight: 700; color: var(--text-primary); }
+    .influencer-login-field input { border: 1px solid rgba(10,0,64,0.14); border-radius: 14px; padding: 12px 14px; }
+    .influencer-login-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .influencer-login-note { text-align: center; margin-top: 18px; color: var(--text-muted); font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-header.php'; ?>
+<div id="bc-preloader" role="status" aria-label="Loading Conscious India">
+  <img src="assets/images/symbol.png" alt="Conscious India" class="bc-preloader-symbol" width="90" height="90" aria-hidden="true" />
+  <div class="bc-preloader-brand">Conscious India</div>
+  <div class="bc-preloader-chakra"></div>
+</div>
+<main class="influencer-login-shell">
+  <div class="influencer-login-card">
+    <div class="influencer-login-header">
+      <div class="bc-section-label" style="color:var(--saffron-light);">Influencer access</div>
+      <h1 style="font-family:var(--font-display);font-size:1.9rem;margin:0;">Sign In</h1>
+      <p style="margin:10px 0 0;color:rgba(255,255,255,0.82);">Only approved influencers can access their private dashboard.</p>
+    </div>
+    <div class="influencer-login-body">
+      <form id="influencer-login-form" class="needs-validation" novalidate>
+        <div class="influencer-login-field">
+          <label for="influencer-login-email">Email / Username <span aria-hidden="true">*</span></label>
+          <input id="influencer-login-email" name="email" type="email" required />
+        </div>
+        <div class="influencer-login-field">
+          <label for="influencer-login-password">Password <span aria-hidden="true">*</span></label>
+          <input id="influencer-login-password" name="password" type="password" required />
+        </div>
+        <div class="influencer-login-actions">
+          <a href="portals/modules/customer/auth/forgot-password.php" style="color:var(--saffron-dark);font-weight:700;">Forgot Password</a>
+          <button class="bc-btn bc-btn-primary" type="submit"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</button>
+        </div>
+      </form>
+      <div class="influencer-login-note">New Influencer? <a href="portals/modules/influencer/auth/register.php" style="color:var(--saffron-dark);font-weight:700;">Register Now</a></div>
+    </div>
+  </div>
+</main>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-footer.php'; ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/bharatcraft.js"></script>
+<script src="assets/js/influencer-session.js"></script>
+<script src="assets/js/influencer-admin-demo.js?v=3"></script>
+</body>
+</html>

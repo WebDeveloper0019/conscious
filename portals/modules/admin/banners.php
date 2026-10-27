@@ -1,0 +1,1 @@
+<?php $pageTitle='Home hero banners';$pageSubtitle='Manage the rotating storefront hero';$activePage='banners';$adminPageScript='assets/js/banners-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/banners-live.php';require __DIR__.'/layouts/foot.php';

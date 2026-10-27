@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aravalli Studio — Event Brand Page | Conscious India</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/bharatcraft.css" />
+  <link rel="stylesheet" href="../assets/css/event-management.css" />
+</head>
+<body style="background:var(--bg-cream);">
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-header.php'; ?>
+  <main>
+    <section style="padding:32px 0 0;">
+      <div class="container">
+        <a href="/conscious/events/event-detail" class="bc-btn bc-btn-outline bc-btn-sm mb-4"><i class="fa-solid fa-arrow-left"></i> Back to event</a>
+        <div class="card border-0 shadow-sm" style="border-radius:24px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#183d3d,#67b45b);padding:40px 32px;color:#fff;">
+            <div class="d-flex justify-content-between flex-wrap gap-3 align-items-start">
+              <div>
+                <div class="bc-section-label" style="color:rgba(255,255,255,.8);">Approved event partner</div>
+                <div aria-label="Aravalli Studio logo" style="width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#183d3d;font-family:var(--font-display);font-weight:800;font-size:1.2rem;margin:10px 0;">AS</div>
+                <h1 style="font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.25rem);margin:0 0 10px;">Aravalli Studio</h1>
+                <p style="max-width:650px;margin:0;color:rgba(255,255,255,.86);">Handcrafted pottery, ceramic tableware and earthy home décor shaped in small-batch collections from Rajasthan.</p>
+              </div>
+              <span class="badge bg-light text-success" style="font-size:.9rem;padding:10px 12px;">Live at this event</span>
+            </div>
+          </div>
+          <div class="card-body p-4 p-lg-5">
+            <div class="row g-4 align-items-stretch">
+              <div class="col-lg-7">
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <div class="card h-100 border-0" style="background:#fffaf1;border-radius:18px;">
+                      <div class="card-body">
+                        <div class="small text-uppercase fw-bold" style="color:var(--saffron);letter-spacing:.08em;">Story</div>
+                        <h3 class="h6 mt-2">Crafted with clay, patience and tradition</h3>
+                        <p class="small text-muted mb-0">Each piece is hand-thrown and finished in a low-waste studio that supports local artisans and shared knowledge.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card h-100 border-0" style="background:#f7f6f2;border-radius:18px;">
+                      <div class="card-body">
+                        <div class="small text-uppercase fw-bold" style="color:var(--navy);letter-spacing:.08em;">Highlights</div>
+                        <ul class="small text-muted mb-0 mt-2 ps-3">
+                          <li>Small-batch pottery</li>
+                          <li>Natural glaze finishes</li>
+                          <li>Pan-India delivery</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div class="card h-100 border-0" style="background:#fff;border-radius:18px;box-shadow:inset 0 0 0 1px var(--border-warm);">
+                  <div class="card-body">
+                    <h3 class="h6">Featured products</h3>
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                      <span>Hand-thrown planter set</span>
+                      <strong>₹1,890</strong>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                      <span>Glaze dining bowl</span>
+                      <strong>₹1,240</strong>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center py-2">
+                      <span>Stoneware serving tray</span>
+                      <strong>₹2,150</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <section class="mt-5" aria-labelledby="brand-products-heading" data-brand-products="aravalli">
+            <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-3"><div><div class="small text-uppercase fw-bold" style="color:var(--saffron);letter-spacing:.08em;">Shop Aravalli Studio</div><h2 class="h3 mb-0" id="brand-products-heading">Product listing</h2></div><span class="small text-muted">Only products from this brand</span></div>
+            <div class="row g-4">
+              <div class="col-md-4"><article class="card h-100 border-0 shadow-sm" style="border-radius:16px;overflow:hidden;"><div style="height:180px;background:linear-gradient(135deg,#e8d0ad,#9b6b43);"></div><div class="card-body"><h3 class="h6">Hand-thrown planter set</h3><p class="small text-muted">Set of two stoneware planters.</p><div class="d-flex justify-content-between align-items-center"><strong>₹1,890</strong><a href="/conscious/product-detail" class="bc-btn bc-btn-primary bc-btn-sm">Buy now</a></div></div></article></div>
+              <div class="col-md-4"><article class="card h-100 border-0 shadow-sm" style="border-radius:16px;overflow:hidden;"><div style="height:180px;background:linear-gradient(135deg,#dce4dc,#657b65);"></div><div class="card-body"><h3 class="h6">Glaze dining bowl</h3><p class="small text-muted">Hand-finished everyday serveware.</p><div class="d-flex justify-content-between align-items-center"><strong>₹1,240</strong><a href="/conscious/product-detail" class="bc-btn bc-btn-primary bc-btn-sm">Buy now</a></div></div></article></div>
+              <div class="col-md-4"><article class="card h-100 border-0 shadow-sm" style="border-radius:16px;overflow:hidden;"><div style="height:180px;background:linear-gradient(135deg,#e4d6bd,#a47b58);"></div><div class="card-body"><h3 class="h6">Stoneware serving tray</h3><p class="small text-muted">A low-waste, small-batch table essential.</p><div class="d-flex justify-content-between align-items-center"><strong>₹2,150</strong><a href="/conscious/product-detail" class="bc-btn bc-btn-primary bc-btn-sm">Buy now</a></div></div></article></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+<?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-footer.php'; ?>
+</body>
+</html>
