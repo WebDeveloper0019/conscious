@@ -132,10 +132,44 @@
       </div>
     </div>
   </div>
+</main><!-- OTP Verification Modal -->
+<div class="modal fade" id="otpVerifyModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:20px;overflow:hidden;border:0;">
+      <div class="modal-header" style="background:linear-gradient(135deg,var(--navy),#31106d);color:#fff;border:0;">
+        <h5 class="modal-title" id="otpModalLabel"><i class="fa-solid fa-shield-halved"></i> Verify your email</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <p class="mb-3">We sent a 6-digit code to <strong id="otp-email-display"></strong>.</p>
+        <div class="alert alert-warning small mb-3">
+          <strong><i class="fa-solid fa-triangle-exclamation"></i> DEMO MODE —</strong>
+          In production this code is emailed. For the demo, your code is:
+          <div class="mt-1"><code id="otp-demo-code" style="font-size:1.35rem;letter-spacing:.25em;font-weight:800;"></code></div>
+        </div>
+        <label for="otp-input" class="form-label fw-bold">Enter 6-digit code</label>
+        <input type="text" id="otp-input" class="form-control form-control-lg text-center"
+               maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="● ● ● ● ● ●"
+               autocomplete="one-time-code" style="letter-spacing:.4em;font-size:1.3rem;font-weight:700;" />
+        <div id="otp-error" class="text-danger small mt-2" role="alert"></div>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <button type="button" id="otp-resend" class="btn btn-link p-0 btn-sm">Resend code</button>
+          <small class="text-muted">Expires in <span id="otp-timer">05:00</span></small>
+        </div>
+      </div>
+      <div class="modal-footer" style="border:0;">
+        <button type="button" class="bc-btn bc-btn-primary w-100" id="otp-verify-btn">
+          <i class="fa-solid fa-check"></i> Verify &amp; Create Account
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 </main>
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-footer.php'; ?>
+>>>>>>> main:influencer-register.php
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/bharatcraft.js?v=20261017-1"></script>
-<script src="assets/js/influencer-admin-demo.js"></script>
-</body>
+<script src="assets/js/bharatcraft.js"></script>
+<script src="assets/js/influencer-session.js"></script>
+<script src="assets/js/influencer-admin-demo.js?v=3"></script></body>
 </html>

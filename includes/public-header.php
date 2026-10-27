@@ -478,9 +478,7 @@
 </header>
 
 
-<!-- ════════════════════════════════════════════
-     MOBILE HEADER
-     ════════════════════════════════════════════ -->
+
 <header class="bc-header-mobile" role="banner">
   <div class="bc-mobile-top">
 

@@ -1,143 +1,105 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__.'/db.php';
+require_once __DIR__ . '/db.php';
 
-function session_token(): ?string {
-    $token=(string)($_COOKIE[AUTH_COOKIE]??'');
-    return preg_match('/^[A-Za-z0-9_-]{40,100}$/',$token)?$token:null;
-}
-function session_hash(string $value): string { return hash_hmac('sha256',$value,APP_KEY); }
-function request_fingerprint(string $value): ?string { return $value===''?null:hash_hmac('sha256',$value,APP_KEY); }
-function set_session_cookies(string $token,string $csrf,bool $remember): void {
-    $expires=$remember?time()+SESSION_TTL_REMEMBER:0; $common=['expires'=>$expires,'path'=>'/','secure'=>secure_cookie(),'samesite'=>'Lax'];
-    setcookie(AUTH_COOKIE,$token,$common+['httponly'=>true]);
-    setcookie(CSRF_COOKIE,$csrf,$common+['httponly'=>false]);
-}
-function create_auth_session(string $principalType,string $principalId,bool $remember=false): array {
-    if(!in_array($principalType,['customer','vendor','admin','influencer'],true))throw new InvalidArgumentException('Unsupported principal type.');
-    $token=rtrim(strtr(base64_encode(random_bytes(48)),'+/','-_'),'='); $csrf=bin2hex(random_bytes(24));
-    $ttl=$remember?SESSION_TTL_REMEMBER:SESSION_TTL; $id=uuid_string(); $expires=gmdate('Y-m-d H:i:s',time()+$ttl);
-$uaText = mb_substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 500);
-$ipText = (string)($_SERVER['REMOTE_ADDR'] ?? '');
-$deviceLabel = detect_device_label($uaText);
-
-$stmt=get_db()->prepare(
-    'INSERT INTO auth_sessions
-       (id,principal_type,principal_id,token_hash,csrf_hash,ip_hash,user_agent_hash,
-        user_agent_text,ip_address,device_label,created_at,last_seen_at,expires_at)
-     VALUES (:id,:type,:principal,:token,:csrf,:ip,:agent,
-             :ua_text,:ip_text,:device,UTC_TIMESTAMP(),UTC_TIMESTAMP(),:expires)'
-);
-$stmt->execute([
-    'id'=>$id,
-    'type'=>$principalType,
-    'principal'=>$principalId,
-    'token'=>session_hash($token),
-    'csrf'=>session_hash($csrf),
-    'ip'=>request_fingerprint($ipText),
-    'agent'=>request_fingerprint($uaText),
-    'ua_text'=>$uaText,
-    'ip_text'=>$ipText,
-    'device'=>$deviceLabel,
-    'expires'=>$expires,
-]);
-    set_session_cookies($token,$csrf,$remember);
-    return ['session_id'=>$id,'csrf_token'=>$csrf,'expires_in'=>$ttl];
-}
-function current_auth_session(bool $required=true): ?array {
-    // CLI mode: there is never an HTTP session to inspect. Never kill
-    // the process with a JSON 401 — just return null so callers that
-    // pass $required=false (audit_event, record_status_change) work.
-    if (PHP_SAPI === 'cli') return null;
-
-    static $loaded=false,$session=null; if($loaded){if(!$session&&$required)json_response(401,['success'=>false,'message'=>'Please sign in again.']);return $session;} $loaded=true;
-    $token=session_token(); if(!$token){if($required)json_response(401,['success'=>false,'message'=>'Your session has expired. Please sign in again.']);return null;}
-    $stmt=get_db()->prepare('SELECT * FROM auth_sessions WHERE token_hash=:hash AND revoked_at IS NULL AND expires_at>UTC_TIMESTAMP() LIMIT 1');
-    $stmt->execute(['hash'=>session_hash($token)]); $session=$stmt->fetch()?:null;
-    if(!$session){clear_auth_cookie();if($required)json_response(401,['success'=>false,'message'=>'Your session has expired. Please sign in again.']);return null;}
-    if(strtotime((string)$session['last_seen_at'])<time()-300)get_db()->prepare('UPDATE auth_sessions SET last_seen_at=UTC_TIMESTAMP() WHERE id=:id')->execute(['id'=>$session['id']]);
-    return $session;
-}
-function require_principal(array $allowedTypes=[]): array {
-    $session=current_auth_session(true);
-    if($allowedTypes&&!in_array($session['principal_type'],$allowedTypes,true))json_response(403,['success'=>false,'message'=>'You do not have permission to access this resource.']);
-    $tables=['customer'=>'users','vendor'=>'vendors','admin'=>'admin_users','influencer'=>'influencers'];
-    $table=$tables[$session['principal_type']]??null;
-    if(!$table)json_response(401,['success'=>false,'message'=>'Please sign in again.']);
-    $check=get_db()->prepare("SELECT status FROM {$table} WHERE id=:id");$check->execute(['id'=>$session['principal_id']]);$status=$check->fetchColumn();
-    if($status===false||in_array($status,['restricted','suspended','blocked','inactive'],true))json_response(403,['success'=>false,'message'=>'This account is not permitted to access the service.']);
-    // For customers, also reject deactivated / deletion-pending accounts
-// For customers, reject deactivated / deletion-pending accounts.
-// BUT: allow requests to auth endpoints (login, logout, me, register)
-//      so the user can reactivate by logging in again.
-if ($session['principal_type'] === 'customer') {
-    $script = $_SERVER['SCRIPT_NAME'] ?? '';
-    $isAuthPath = (
-        str_contains($script, '/api/auth/')
-        || str_contains($script, '/api/user/account-deactivate.php')
-    );
-
-    if (!$isAuthPath) {
-        $acc = get_db()->prepare('SELECT account_status FROM users WHERE id = :id');
-        $acc->execute(['id' => $session['principal_id']]);
-        $accStatus = (string)($acc->fetchColumn() ?: 'active');
-
-        if (in_array($accStatus, ['deactivated', 'pending_deletion','deleted'], true)) {
-            // Do NOT revoke — the user might want to log back in to reactivate
-            json_response(403, [
-                'success' => false,
-                'message' => 'This account is not active. Please log in again to reactivate.',
-                'code'    => 'ACCOUNT_INACTIVE',
-                'account_status' => $accStatus,
-            ]);
-        }
+if (!function_exists('session_token')) {
+    function session_token(): ?string {
+        $token=(string)($_COOKIE[AUTH_COOKIE]??'');
+        return preg_match('/^[A-Za-z0-9_-]{40,100}$/',$token)?$token:null;
     }
 }
-    require_csrf();
-    return ['session_id'=>$session['id'],'type'=>$session['principal_type'],'id'=>$session['principal_id']];
-}
-function current_csrf_token(): string {
-    $session=current_auth_session(true); $csrf=(string)($_COOKIE[CSRF_COOKIE]??'');
-    if($csrf===''||!hash_equals((string)$session['csrf_hash'],session_hash($csrf)))json_response(419,['success'=>false,'message'=>'Your security token expired. Sign in again.']);
-    return $csrf;
-}
-function verify_session_csrf(): void {
-    if(in_array($_SERVER['REQUEST_METHOD']??'GET',['GET','HEAD','OPTIONS'],true))return;
-    $session=current_auth_session(true); $cookie=(string)($_COOKIE[CSRF_COOKIE]??''); $header=(string)($_SERVER['HTTP_X_CSRF_TOKEN']??'');
-    if($cookie===''||$header===''||!hash_equals($cookie,$header)||!hash_equals((string)$session['csrf_hash'],session_hash($cookie)))json_response(419,['success'=>false,'message'=>'Your security token expired. Refresh and try again.']);
-}
-function revoke_current_session(string $reason='logout'): void {
-    $token=session_token(); if($token)get_db()->prepare('UPDATE auth_sessions SET revoked_at=UTC_TIMESTAMP(),revoke_reason=:reason WHERE token_hash=:hash AND revoked_at IS NULL')->execute(['reason'=>$reason,'hash'=>session_hash($token)]);
-    clear_auth_cookie(); setcookie(CSRF_COOKIE,'',['expires'=>time()-3600,'path'=>'/','secure'=>secure_cookie(),'httponly'=>false,'samesite'=>'Lax']);
-}
-function revoke_principal_sessions(string $type,string $id,string $reason='security_change',?string $exceptSessionId=null): void {
-    $sql='UPDATE auth_sessions SET revoked_at=UTC_TIMESTAMP(),revoke_reason=:reason WHERE principal_type=:type AND principal_id=:id AND revoked_at IS NULL';$params=['reason'=>$reason,'type'=>$type,'id'=>$id];
-    if($exceptSessionId!==null){$sql.=' AND id<>:except';$params['except']=$exceptSessionId;} get_db()->prepare($sql)->execute($params);
-}
-/**
- * Human-friendly device label from a User-Agent string.
- * "Chrome on Windows", "Safari on iPhone", etc.
- */
-function detect_device_label(string $ua): string
-{
-    if ($ua === '') return 'Unknown device';
 
-    $browser = 'Unknown browser';
-    if (stripos($ua, 'Edg/') !== false)          $browser = 'Edge';
-    elseif (stripos($ua, 'OPR/') !== false || stripos($ua, 'Opera') !== false) $browser = 'Opera';
-    elseif (stripos($ua, 'Chrome') !== false)    $browser = 'Chrome';
-    elseif (stripos($ua, 'Firefox') !== false)   $browser = 'Firefox';
-    elseif (stripos($ua, 'Safari') !== false)    $browser = 'Safari';
-    elseif (stripos($ua, 'curl') !== false)      $browser = 'CLI';
-    elseif (stripos($ua, 'PostmanRuntime') !== false) $browser = 'Postman';
+if (!function_exists('session_hash')) {
+    function session_hash(string $value): string { return hash('sha256', $value); }
+}
 
-    $os = 'Unknown OS';
-    if (stripos($ua, 'Windows NT') !== false)      $os = 'Windows';
-    elseif (stripos($ua, 'iPhone') !== false)      $os = 'iPhone';
-    elseif (stripos($ua, 'iPad') !== false)        $os = 'iPad';
-    elseif (stripos($ua, 'Android') !== false)     $os = 'Android';
-    elseif (stripos($ua, 'Mac OS X') !== false)    $os = 'macOS';
-    elseif (stripos($ua, 'Linux') !== false)       $os = 'Linux';
+if (!function_exists('request_fingerprint')) {
+    function request_fingerprint(string $value): ?string { return $value===''?null:hash('sha256', $value); }
+}
 
-    return $browser . ' on ' . $os;
+if (!function_exists('set_session_cookies')) {
+    function set_session_cookies(string $token, string $csrf, bool $remember): void {
+        $expires=$remember?time()+SESSION_TTL_REMEMBER:0;
+        $common=['expires'=>$expires,'path'=>'/','secure'=>false,'samesite'=>'Lax'];
+        setcookie(AUTH_COOKIE,$token,$common+['httponly'=>true]);
+        setcookie(CSRF_COOKIE,$csrf,$common+['httponly'=>false]);
+    }
+}
+
+if (!function_exists('create_auth_session')) {
+    function create_auth_session(string $principalType,string $principalId,bool $remember=false): array {
+        $token=bin2hex(random_bytes(32)); $csrf=bin2hex(random_bytes(24));
+        $ttl=$remember?SESSION_TTL_REMEMBER:SESSION_TTL; $id=uuid_string();
+        $expires=gmdate('Y-m-d H:i:s',time()+$ttl);
+        
+        $stmt=get_db()->prepare(
+            'INSERT INTO auth_sessions
+               (id,token_hash,principal_type,principal_id,csrf_token,remember,ip,user_agent,expires_at,created_at)
+             VALUES (:id,:token,:type,:principal,:csrf,:rem,:ip,:ua,:expires,UTC_TIMESTAMP())'
+        );
+        $stmt->execute([
+            'id'=>$id,
+            'token'=>hash('sha256', $token),
+            'type'=>$principalType,
+            'principal'=>$principalId,
+            'csrf'=>$csrf,
+            'rem'=>$remember?1:0,
+            'ip'=>$_SERVER['REMOTE_ADDR'] ?? null,
+            'ua'=>$_SERVER['HTTP_USER_AGENT'] ?? null,
+            'expires'=>$expires,
+        ]);
+        set_session_cookies($token,$csrf,$remember);
+        return ['session_id'=>$id,'csrf_token'=>$csrf,'expires_in'=>$ttl];
+    }
+}
+
+if (!function_exists('current_auth_session')) {
+    function current_auth_session(bool $required=true): ?array {
+        if (PHP_SAPI === 'cli') return null;
+        
+        $token=session_token(); 
+        if(!$token){
+            if($required) json_response(401,['success'=>false,'message'=>'Your session has expired. Please sign in again.']);
+            return null;
+        }
+        
+        $stmt=get_db()->prepare('SELECT * FROM auth_sessions WHERE token_hash=:hash AND expires_at>UTC_TIMESTAMP() LIMIT 1');
+        $stmt->execute(['hash'=>hash('sha256', $token)]); 
+        $session=$stmt->fetch()?:null;
+        
+        if(!$session){
+            if($required) json_response(401,['success'=>false,'message'=>'Your session has expired. Please sign in again.']);
+            return null;
+        }
+        return $session;
+    }
+}
+
+if (!function_exists('require_principal')) {
+    function require_principal(array $allowedTypes=[]): array {
+        $session=current_auth_session(true);
+        if($allowedTypes && !in_array($session['principal_type'],$allowedTypes,true)) {
+            json_response(403,['success'=>false,'message'=>'You do not have permission to access this resource.']);
+        }
+        
+        if (!in_array($_SERVER['REQUEST_METHOD']??'GET', ['GET','HEAD','OPTIONS'], true)) {
+            $sent = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+            if (!hash_equals((string)$session['csrf_token'], $sent)) {
+                json_response(403, ['success'=>false, 'message'=>'Invalid CSRF token.']);
+            }
+        }
+        
+        return ['session_id'=>$session['id'],'type'=>$session['principal_type'],'id'=>$session['principal_id']];
+    }
+}
+
+if (!function_exists('current_csrf_token')) {
+    function current_csrf_token(): string {
+        $session=current_auth_session(true); 
+        $csrf=(string)($_COOKIE[CSRF_COOKIE]??'');
+        if($csrf==='' || !hash_equals((string)$session['csrf_token'], $csrf)) {
+            json_response(419,['success'=>false,'message'=>'Your security token expired. Sign in again.']);
+        }
+        return $csrf;
+    }
 }

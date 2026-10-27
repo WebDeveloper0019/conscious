@@ -10,8 +10,16 @@
     const article=el('article','creator-card');
     article.append(el('div','creator-card__accent'));
     const body=el('div','creator-card__body');
-    const photo=el('div','creator-photo');photo.append(el('span','creator-photo__empty'));body.append(photo);
-    const title=el('h2','',creator.full_name+' '),badge=el('span',creator.is_demo?'creator-demo':'creator-verified');badge.title=creator.is_demo?'Fictional demo profile':'Verified creator';if(creator.is_demo)badge.textContent='DEMO';else badge.append(icon('fa-check'));title.append(badge);body.append(title);
+const photo=el('div','creator-photo');
+if (creator.profile_image) {
+    const img = el('img');
+    img.src = new URL('api/public/' + creator.profile_image, location.href).href;
+    img.alt = creator.full_name;
+    photo.append(img);
+} else {
+    photo.append(el('span','creator-photo__empty'));
+}
+body.append(photo);    const title=el('h2','',creator.full_name+' '),badge=el('span',creator.is_demo?'creator-demo':'creator-verified');badge.title=creator.is_demo?'Fictional demo profile':'Verified creator';if(creator.is_demo)badge.textContent='DEMO';else badge.append(icon('fa-check'));title.append(badge);body.append(title);
     body.append(el('div','creator-brand','@'+creator.handle));
     body.append(el('div','creator-niche',creator.region||'India-wide'));
     const tags=el('div','creator-tags');

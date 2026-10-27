@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../lib/helpers.php';
 send_cors_headers();
+
 $principal = require_principal(['influencer']);
 $db = get_db();
 $ownerId = $principal['id'];
@@ -88,6 +89,7 @@ if ($method === 'PATCH') {
     $body = get_json_body();
     $id = trim((string)($body['id'] ?? ''));
     $action = trim((string)($body['action'] ?? ''));
+    
     if ($action === 'edit') {
         if (!preg_match('/^[a-f0-9-]{36}$/i', $id)) json_response(422, ['success' => false, 'message' => 'Choose a valid package.']);
         $clean = validated_package_fields($body);
@@ -100,6 +102,7 @@ if ($method === 'PATCH') {
             json_response(409, ['success' => false, 'message' => 'This package cannot be edited while it is under review or archived.']);
         }
         $next = in_array($package['status'], ['active', 'paused'], true) ? 'pending_approval' : 'draft';
+        
         $db->prepare('UPDATE influencer_packages SET title=:title,description=:description,price_inr=:price,deliverables_json=:deliverables,platforms_json=:platforms,turnaround_days=:turnaround,revisions=:revisions,usage_rights=:rights,vendor_requirements=:requirements,capacity=:capacity,tax_treatment=:tax,cancellation_terms=:cancellation,status=:status,review_note=NULL,reviewed_by=NULL,reviewed_at=NULL,updated_at=UTC_TIMESTAMP() WHERE id=:id AND influencer_id=:owner')
             ->execute([
                 'title' => $clean['title'], 'description' => $clean['description'], 'price' => $clean['price_inr'],
@@ -114,25 +117,31 @@ if ($method === 'PATCH') {
         audit_event('influencer.package_edited', 'influencer_package', $id, ['previous_status' => $package['status'], 'status' => $next]);
         json_response(200, ['success' => true, 'status' => $next, 'message' => $next === 'pending_approval' ? 'Changes saved. The package is hidden until admin approves the revised terms.' : 'Package draft updated.']);
     }
+    
     $transitions = [
         'submit' => ['draft' => 'pending_approval', 'changes_requested' => 'pending_approval'],
         'pause' => ['active' => 'paused'],
         'resume' => ['paused' => 'active'],
         'archive' => ['draft' => 'archived', 'changes_requested' => 'archived', 'active' => 'archived', 'paused' => 'archived'],
     ];
+    
     if (!isset($transitions[$action]) || !preg_match('/^[a-f0-9-]{36}$/i', $id)) {
         json_response(422, ['success' => false, 'message' => 'Choose a valid package and action.']);
     }
+    
     $db->beginTransaction();
     $query = $db->prepare('SELECT p.status,i.status AS creator_status,i.verification_status FROM influencer_packages p JOIN influencers i ON i.id=p.influencer_id WHERE p.id=:id AND p.influencer_id=:owner FOR UPDATE');
     $query->execute(['id' => $id, 'owner' => $ownerId]);
     $package = $query->fetch();
     if (!$package) json_response(404, ['success' => false, 'message' => 'Package not found.']);
+    
     $next = $transitions[$action][$package['status']] ?? null;
     if ($next === null) json_response(409, ['success' => false, 'message' => 'This package cannot be changed from its current status.']);
+    
     if (in_array($action, ['submit', 'resume'], true) && ($package['creator_status'] !== 'active' || $package['verification_status'] !== 'approved')) {
         json_response(409, ['success' => false, 'message' => 'Your creator account must be approved before this package can be published.']);
     }
+    
     $db->prepare('UPDATE influencer_packages SET status=:status,review_note=NULL,updated_at=UTC_TIMESTAMP() WHERE id=:id')->execute(['status' => $next, 'id' => $id]);
     $db->commit();
     audit_event('influencer.package_' . $action, 'influencer_package', $id);

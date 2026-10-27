@@ -1,4 +1,4 @@
-<?php
+<?php 
 $pageTitle='Creator Packages';
 $pageSubtitle='Discover and book influencers for your brand';
 $activePage='packages';

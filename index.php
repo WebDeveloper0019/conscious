@@ -176,9 +176,6 @@
 
 <body>
 
-<!-- ════════════════════════════════════════════
-     PRELOADER
-     ════════════════════════════════════════════ -->
 <div id="bc-preloader" role="status" aria-label="Loading Conscious India">
   <img
     src="assets/images/symbol.png"
@@ -192,18 +189,97 @@
   <div class="bc-preloader-chakra"></div>
 </div>
 
-<!-- ════════════════════════════════════════════
-     SECTION 1 — TOP ANNOUNCEMENT BAR
-     ════════════════════════════════════════════ -->
-<!-- ════════════════════════════════════════════
-     SECTION 2 — DESKTOP HEADER
-     ════════════════════════════════════════════ -->
-<?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-header.php'; ?>
 
 
-<!-- ════════════════════════════════════════════
-     MAIN CONTENT
-     ════════════════════════════════════════════ -->
+
+<header class="bc-header-mobile" role="banner">
+  <div class="bc-mobile-top">
+
+    <!-- Hamburger -->
+    <button class="bc-hamburger" id="bc-hamburger" aria-label="Open navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Mobile Logo -->
+    <a href="index.html" class="bc-logo bc-logo-real" aria-label="Conscious Indi">
+      <img
+        src="assets/images/logo-horizontal.png"
+        alt="Conscious Indi"
+        class="bc-logo-img bc-logo-horizontal bc-logo-mobile"
+        width="160"
+        height="44"
+        loading="eager"
+      />
+    </a>
+
+    <!-- Mobile Actions -->
+    <div class="bc-mobile-actions">
+      <a href="frontend/modules/customer/wishlist.php" class="bc-mobile-action-btn" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></a>
+      <a href="frontend/modules/customer/cart.php" class="bc-mobile-action-btn" aria-label="Cart" style="position:relative;">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="bc-action-badge" style="top:2px;right:2px;">0</span>
+      </a>
+      <a href="frontend/modules/customer/index.php" class="bc-mobile-action-btn" aria-label="Account"><i class="fa-regular fa-circle-user"></i></a>
+    </div>
+
+  </div>
+
+  <!-- Mobile Search -->
+  <div class="bc-mobile-search-wrap">
+    <div class="bc-mobile-search" role="search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="search" placeholder="Search brands, artisans, events…" aria-label="Search" />
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Drawer -->
+<nav class="bc-mobile-drawer" id="bc-mobile-drawer" aria-label="Mobile Navigation" aria-hidden="true">
+  <div class="bc-drawer-head">
+    <a href="index.html" class="bc-logo bc-logo-real" aria-label="Conscious Indi Home">
+      <img
+        src="assets/images/logo-square.png"
+        alt="Conscious Indi"
+        class="bc-logo-img bc-logo-square-img"
+        width="130"
+        height="130"
+        loading="lazy"
+      />
+    </a>
+    <button class="bc-drawer-close" id="bc-drawer-close" aria-label="Close menu">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div class="bc-drawer-nav">
+    <div class="bc-drawer-section-title">Explore</div>
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="shop.html"><i class="fa-solid fa-store"></i> Marketplace</a>
+    <a href="brands.html"><i class="fa-solid fa-leaf"></i> Sustainable Brands</a>
+    <a href="stories.html"><i class="fa-solid fa-hands"></i> Artisans &amp; Stories</a>
+    <a href="events.html"><i class="fa-regular fa-calendar"></i> Events</a>
+    <a href="community.html"><i class="fa-solid fa-people-group"></i> Community</a>
+
+    <div class="bc-drawer-divider"></div>
+    <div class="bc-drawer-section-title">Discover</div>
+    <a href="creators.html"><i class="fa-solid fa-star"></i> Creator Shops</a>
+    <a href="corporate-gifting.html"><i class="fa-solid fa-gift"></i> Corporate Gifting</a>
+
+    <div class="bc-drawer-divider"></div>
+    <div class="bc-drawer-section-title">Partners</div>
+    <a href="become-brand-partner.html"><i class="fa-solid fa-store"></i> Sell With Us</a>
+    <a href="#exhibit"><i class="fa-solid fa-people-roof"></i> Exhibit With Us</a>
+    <a href="creators.html"><i class="fa-solid fa-star"></i> Become a Creator</a>
+
+    <div class="bc-drawer-divider"></div>
+    <a href="frontend/modules/customer/tracking.php"><i class="fa-regular fa-clock"></i> Track Order</a>
+    <a href="frontend/modules/customer/index.php"><i class="fa-regular fa-circle-user"></i> My Account</a>
+    <a href="help.html"><i class="fa-regular fa-circle-question"></i> Help &amp; Support</a>
+  </div>
+</nav>
+<div class="bc-overlay" id="bc-overlay"></div>
+<?php require __DIR__ . '/includes/public-header.php'; ?>
+
 <main class="ci-home" id="main-content">
   <section class="ci-hero ci-hero-slider" id="home-hero" aria-label="Featured collections">
     <div class="ci-hero-slides" id="ci-hero-slides" aria-live="off"></div>
@@ -668,9 +744,6 @@
 
 
 
-<!-- ════════════════════════════════════════════
-     OUR TRENDING PRODUCTS
-     ════════════════════════════════════════════ -->
 <section class="section-py bc-trending-section" id="trending-products" aria-labelledby="trending-heading">
   <div class="container">
 
@@ -2101,17 +2174,13 @@
 </main>
 
 
-<?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-footer.php'; ?>
-
+<?php require __DIR__ . '/includes/public-footer.php'; ?>
 <!-- Back to Top Button -->
 <button class="bc-back-top" id="bc-back-top" aria-label="Scroll back to top" title="Back to Top">
   <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
 </button>
 
 
-<!-- ════════════════════════════════════════════
-     SCRIPTS
-     ════════════════════════════════════════════ -->
 <!-- Bootstrap 5 JS Bundle (includes Popper) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
