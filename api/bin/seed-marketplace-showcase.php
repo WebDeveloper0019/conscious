@@ -14,8 +14,9 @@ if (APP_ENV !== 'local') {
 }
 
 $rotate = in_array('--rotate', $argv, true);
-$vendorPassword = 'DemoVendor#2026!';
-$customerPassword = 'DemoBuyer#2026!';
+// Generate passwords dynamically so they aren't hardcoded in git
+$vendorPassword = getenv('SEED_VENDOR_PASS') ?: 'Vndr#' . bin2hex(random_bytes(4));
+$customerPassword = getenv('SEED_CUSTOMER_PASS') ?: 'Cstm#' . bin2hex(random_bytes(4));
 $vendors = [
     ['Demo Earthloom Textiles', 'brand', 'Aarav Demo', 'Mumbai'],
     ['Demo Bamboo Everyday', 'brand', 'Diya Demo', 'Bengaluru'],
