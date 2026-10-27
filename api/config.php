@@ -68,6 +68,14 @@ define('RAZORPAY_KEY_ID', getenv('RAZORPAY_KEY_ID') ?: '');
 define('RAZORPAY_KEY_SECRET', getenv('RAZORPAY_KEY_SECRET') ?: '');
 define('RAZORPAY_WEBHOOK_SECRET', getenv('RAZORPAY_WEBHOOK_SECRET') ?: PAYMENT_WEBHOOK_SECRET);
 
+// ── AI feature constants ──────────────────────────────────────────────────────
+define('CF_ACCOUNT_ID',      getenv('CF_ACCOUNT_ID')      ?: '');
+define('CF_AI_TOKEN',        getenv('CF_AI_TOKEN')         ?: '');
+define('AI_PROVIDER',        getenv('AI_PROVIDER')         ?: 'cloudflare');
+define('OLLAMA_BASE_URL',    getenv('OLLAMA_BASE_URL')     ?: '');
+define('AI_RATE_LIMIT_SALT', getenv('AI_RATE_LIMIT_SALT') ?: APP_KEY);
+// ─────────────────────────────────────────────────────────────────────────────
+
 if (APP_ENV === 'production' && (!str_starts_with(APP_URL, 'https://') || parse_url(APP_URL, PHP_URL_HOST) === null)) {
     http_response_code(500);
     header('Content-Type: application/json; charset=utf-8');
