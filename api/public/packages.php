@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-<<<<<<< HEAD
 require_once __DIR__.'/../lib/helpers.php';
 send_cors_headers();
 
@@ -35,7 +34,6 @@ try {
 } catch (Throwable $e) {
     json_response(500, ['success' => false, 'message' => 'DEBUG ERROR: ' . $e->getMessage()]);
 }
-=======
 
 require_once __DIR__ . '/../lib/helpers.php';
 send_cors_headers();
@@ -53,4 +51,3 @@ foreach ($packages as &$package) {
 }
 unset($package);
 json_response(200, ['success' => true, 'packages' => $packages]);
->>>>>>> main

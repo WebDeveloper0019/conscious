@@ -132,7 +132,6 @@
       </div>
     </div>
   </div>
-<<<<<<< HEAD:influencer-register.html
 </main><!-- OTP Verification Modal -->
 <div class="modal fade" id="otpVerifyModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -166,7 +165,6 @@
     </div>
   </div>
 </div>
-=======
 </main>
 <?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-footer.php'; ?>
 >>>>>>> main:influencer-register.php

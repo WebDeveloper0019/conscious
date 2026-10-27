@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
-if (!defined('APP_ENV')) define('APP_ENV', getenv('APP_ENV') ?: 'local');// Define the secure upload path (points to the storage folder in your project root)
+
+if (!defined('APP_ENV')) define('APP_ENV', getenv('APP_ENV') ?: 'local');
+
+// Define the secure upload path (points to the storage folder in your project root)
 if (!defined('PRIVATE_STORAGE_PATH')) {
     define('PRIVATE_STORAGE_PATH', realpath(__DIR__ . '/../../storage') . DIRECTORY_SEPARATOR . 'private_uploads');
 }
@@ -10,23 +13,9 @@ if (!defined('MAX_UPLOAD_BYTES')) {
     define('MAX_UPLOAD_BYTES', 5 * 1024 * 1024);
 }
 
-if (!defined('APP_ENV')) define('APP_ENV', getenv('APP_ENV') ?: 'local');
 if (!defined('APP_URL')) define('APP_URL', getenv('APP_URL') ?: '');
 if (!defined('CSRF_COOKIE')) define('CSRF_COOKIE', 'ci_csrf');
 if (!defined('SESSION_COOKIE')) define('SESSION_COOKIE', 'ci_session');
-
-/* ── CORS (only enable if frontend is on a different origin) ── */
-function send_cors_headers(): void {
-    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-    $allowed = array_filter(array_map('trim', explode(',', (string)getenv('CORS_ORIGINS'))));
-    if ($origin && in_array($origin, $allowed, true)) {
-        header("Access-Control-Allow-Origin: $origin");
-        header('Access-Control-Allow-Credentials: true');
-        header('Access-Control-Allow-Headers: Content-Type, X-CSRF-Token');
-        header('Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS');
-    }
-    if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') { http_response_code(204); exit; }
-}
 
 /* ── DB ── */
 function get_db(): PDO {
@@ -52,9 +41,7 @@ function json_response(int $code, array $payload): void {
     echo json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     exit;
 }
-<<<<<<< HEAD
 
-=======
 function request_origin(): string
 {
     if (APP_URL !== '') {
@@ -70,23 +57,32 @@ function request_origin(): string
     $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
     return ($https ? 'https://' : 'http://') . (string)($_SERVER['HTTP_HOST'] ?? 'localhost');
 }
+
 function send_cors_headers(): void {
     header('Content-Type: application/json; charset=utf-8');
     header('Cache-Control: no-store');
     header('X-Content-Type-Options: nosniff');
     $origin = rtrim((string)($_SERVER['HTTP_ORIGIN'] ?? ''), '/');
+    
     if ($origin !== '') {
-        $allowed = CORS_ORIGIN !== '' ? CORS_ORIGIN : request_origin();
-        if (!hash_equals($allowed, $origin)) json_response(403, ['success' => false, 'message' => 'Origin is not allowed.']);
+        $allowed = defined('CORS_ORIGIN') && CORS_ORIGIN !== '' ? CORS_ORIGIN : request_origin();
+        if (!hash_equals($allowed, $origin)) {
+            json_response(403, ['success' => false, 'message' => 'Origin is not allowed.']);
+        }
         header('Access-Control-Allow-Origin: ' . $origin);
         header('Access-Control-Allow-Credentials: true');
         header('Vary: Origin');
     }
+    
     header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
     header('Access-Control-Allow-Headers: Content-Type, Authorization, X-CSRF-Token, Idempotency-Key');
-    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') { http_response_code(204); exit; }
+    
+    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
+        http_response_code(204);
+        exit;
+    }
 }
->>>>>>> main
+
 function get_json_body(): array {
     $raw = file_get_contents('php://input') ?: '';
     if ($raw === '') return $_POST;
@@ -227,9 +223,11 @@ function require_influencer_session(): array {
     if (!$creator) json_response(401, ['success' => false, 'message' => 'Session invalid.']);
     return ['creator' => $creator, 'session' => $s];
 }
+
 function current_auth_session(): ?array {
     return current_session();
 }
+
 // Alias for application.php
 function require_principal(array $types): array {
     $s = current_session();

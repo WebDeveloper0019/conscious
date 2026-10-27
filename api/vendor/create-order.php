@@ -94,6 +94,20 @@ try {
 
     $db->commit();
 
+
+    $idempotencyKey = trim($body['idempotency_key'] ?? '');
+if (empty($idempotencyKey)) {
+    json_response(422, ['success' => false, 'message' => 'Idempotency key required.']);
+}
+
+// Check if this key already exists before doing anything else
+$checkStmt = $db->prepare('SELECT id FROM service_payments WHERE idempotency_key = :key');
+$checkStmt->execute(['key' => $idempotencyKey]);
+if ($existing = $checkStmt->fetch()) {
+    // Return the existing order instead of creating a new one
+    json_response(200, ['success' => true, 'message' => 'Order already exists.']);
+}
+
     json_response(200, [
         'success' => true,
         'is_mock_payment' => $isMock,

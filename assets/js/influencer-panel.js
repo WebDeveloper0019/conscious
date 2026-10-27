@@ -1,21 +1,4 @@
-/* ============================================================
-   Conscious Indi — Influencer Panel Interactions
-   ------------------------------------------------------------
-   Scoped to /influencer/*.html. Load AFTER bharatcraft.js.
 
-   Replaces the small inline <script> block that was previously
-   copy-pasted at the bottom of every influencer page (sidebar
-   sub-menu toggle + FAQ toggle only — everything else below was
-   simply missing) with one shared file, mirroring vendor-panel.js,
-   customer-panel.js and admin-panel.js so every panel behaves
-   identically: mobile sidebar drawer, desktop sidebar collapse,
-   topbar notification/profile dropdowns, and chart period-button
-   active state.
-
-   Every init function guards on the elements it needs, so this
-   file is safe to load on any influencer page even before every
-   page has been rebuilt with the matching markup.
-   ============================================================ */
 'use strict';
 
 (function () {
@@ -65,9 +48,7 @@
     });
   }
 
-  /* ----------------------------------------------------------
-     Desktop sidebar collapse (shrinks to icon rail)
-     ---------------------------------------------------------- */
+
   function initSidebarCollapse() {
     var sidebar = document.getElementById('ci-sidebar');
     var btn = document.getElementById('ci-sidebar-collapse-btn');
@@ -163,16 +144,7 @@
     });
   }
 
-  /* ----------------------------------------------------------
-     Primary action buttons (Save / Update / Submit / Request /
-     Reorder / Reply / Apply / Redeem / Upload / Discard, etc.)
-     This is a frontend-only mock with no backend, so these
-     buttons never had anything to call and clicking them did
-     nothing at all — the single biggest "this feels broken"
-     complaint in a mocked-up dashboard. Scoped to the main
-     content area only, so topbar/sidebar/chart/FAQ controls
-     that already have their own behaviour are left alone.
-     ---------------------------------------------------------- */
+
   function initActionFeedback() {
     var main = document.querySelector('.ci-dash-main');
     if (!main) return;
@@ -202,13 +174,6 @@
     });
   }
 
-  /* ----------------------------------------------------------
-     Destructive actions (anything with a "danger" class) ask
-     for confirmation first, then fade the row out and confirm
-     with a toast — instead of silently doing nothing, or worse,
-     silently "succeeding" with no way back if it were wired to
-     a real backend later.
-     ---------------------------------------------------------- */
   function initDestructiveConfirm() {
     document.querySelectorAll('.danger').forEach(function (btn) {
       if (btn.tagName !== 'BUTTON' && btn.tagName !== 'A') return;

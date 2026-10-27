@@ -176,9 +176,6 @@
 
 <body>
 
-<!-- ════════════════════════════════════════════
-     PRELOADER
-     ════════════════════════════════════════════ -->
 <div id="bc-preloader" role="status" aria-label="Loading Conscious India">
   <img
     src="assets/images/symbol.png"
@@ -192,201 +189,9 @@
   <div class="bc-preloader-chakra"></div>
 </div>
 
-<!-- ════════════════════════════════════════════
-     SECTION 1 — TOP ANNOUNCEMENT BAR
-     ════════════════════════════════════════════ -->
-<!-- ════════════════════════════════════════════
-     SECTION 2 — DESKTOP HEADER
-     ════════════════════════════════════════════ -->
-<<<<<<< HEAD:index.html
-<header class="bc-header" id="bc-header" role="banner">
-
-  <!-- Top Row: Logo + Search + Actions -->
-  <div class="bc-header-top">
-    <div class="container">
-      <div class="bc-header-top-inner">
-
-        <!-- Logo -->
-        <a href="index.html" class="bc-logo bc-logo-real" aria-label="Conscious Indi — Story-Led Commerce, Conscious Living Marketplace & Events Platform">
-          <img
-            src="assets/images/logo-horizontal.png"
-            alt="Conscious Indi"
-            class="bc-logo-img bc-logo-horizontal"
-            width="220"
-            height="60"
-            loading="eager"
-            fetchpriority="high"
-          />
-        </a>
-
-        <!-- Search Bar -->
-        <div class="bc-search-wrap">
-          <div class="bc-search-box" role="search">
-            <select class="bc-search-cat" aria-label="Search category">
-              <option value="all">All Categories</option>
-              <option value="brands">Sustainable Brands</option>
-              <option value="pottery">Pottery &amp; Ceramics</option>
-              <option value="jewelry">Handmade Jewelry</option>
-              <option value="wood">Wood Crafts</option>
-              <option value="home">Home Decor</option>
-              <option value="handloom">Handloom &amp; Textiles</option>
-              <option value="paintings">Paintings</option>
-              <option value="art">Traditional Art</option>
-              <option value="fashion">Fashion Accessories</option>
-              <option value="gifts">Gift Items</option>
-              <option value="eco">Eco Friendly</option>
-            </select>
-            <input class="bc-search-input" type="search" id="bc-search-input"
-              placeholder="Search brands, artisans, events…"
-              aria-label="Search products" autocomplete="off" />
-            <button class="bc-search-btn" aria-label="Search">
-              <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Header Actions -->
-        <div class="bc-header-actions">
-          <a href="frontend/modules/vendor/auth/register.php" class="bc-btn-seller">
-            <i class="fa-solid fa-user-plus"></i> Join as Partner
-          </a>
-          <a href="frontend/modules/influencer/auth/login.php" class="bc-btn-influencer">
-            <i class="fa-solid fa-star"></i> Become a Creator
-          </a>
-          <a href="frontend/modules/customer/wishlist.php" class="bc-header-action-link" aria-label="Wishlist">
-            <i class="fa-regular fa-heart"></i>
-            <span>Wishlist</span>
-          </a>
-          <a href="frontend/modules/customer/cart.php" class="bc-header-action-link" aria-label="Cart (0 items)">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <span class="bc-action-badge" aria-label="0 items in cart">0</span>
-            <span>Cart</span>
-          </a>
-          <a href="frontend/modules/customer/index.php" class="bc-header-action-link" aria-label="My Account">
-            <i class="fa-regular fa-circle-user"></i>
-            <span>Account</span>
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- Navigation Row -->
-  <div class="bc-header-nav">
-    <div class="container">
-      <div class="bc-nav-inner">
-
-        <nav aria-label="Main Navigation">
-          <ul class="bc-nav-list">
-
-            <!-- Marketplace (Mega Menu) -->
-            <li class="bc-nav-item has-mega">
-              <a href="shop.html">
-                <i class="fa-solid fa-grid-2" style="font-size:0.875rem;color:var(--saffron)"></i>
-                Marketplace
-                <i class="fa-solid fa-chevron-down" style="font-size:0.625rem;margin-left:2px;"></i>
-              </a>
-              <div class="bc-mega-menu" role="region" aria-label="Marketplace mega menu">
-                <div class="bc-mega-grid">
-                  <div class="bc-mega-col">
-                    <h5>Crafts &amp; Art</h5>
-                    <ul>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Pottery &amp; Ceramics</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Madhubani Paintings</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Warli Art</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Pattachitra</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Tanjore Paintings</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Wood Carving</a></li>
-                    </ul>
-                  </div>
-                  <div class="bc-mega-col">
-                    <h5>Jewelry &amp; Fashion</h5>
-                    <ul>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Kundan Jewelry</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Meenakari Work</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Beaded Jewelry</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Silver Filigree</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Lac Bangles</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Jute Accessories</a></li>
-                    </ul>
-                  </div>
-                  <div class="bc-mega-col">
-                    <h5>Textiles &amp; Decor</h5>
-                    <ul>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Kantha Embroidery</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Block Print Fabric</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Handloom Sarees</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Dhurrie Rugs</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Kashmiri Carpets</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Pashmina Shawls</a></li>
-                    </ul>
-                  </div>
-                  <div class="bc-mega-col">
-                    <h5>Gifting &amp; More</h5>
-                    <ul>
-                      <li><a href="corporate-gifting.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Corporate Gifts</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Wedding Gifts</a></li>
-                      <li><a href="brands.html"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Sustainable Brands</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Eco Products</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Home Decor</a></li>
-                      <li><a href="#"><i class="fa-solid fa-circle-dot" style="font-size:0.5rem"></i> Kitchen &amp; Dining</a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="bc-mega-banner">
-                  <div>
-                    <div class="bc-mega-banner-text">
-                      🌱 New: Verified Sustainable Brands Directory
-                      <span>Discover ESG, zero-waste &amp; circular economy brands</span>
-                    </div>
-                  </div>
-                  <a href="brands.html" class="bc-btn bc-btn-primary bc-btn-sm">Explore Brands</a>
-                </div>
-              </div>
-            </li>
-
-            <li class="bc-nav-item"><a href="brands.html">Brands</a></li>
-            <li class="bc-nav-item"><a href="stories.html">Artisans</a></li>
-            <li class="bc-nav-item highlight">
-              <a href="events.html"><i class="fa-regular fa-calendar" style="font-size:0.75rem"></i> Events</a>
-            </li>
-            <li class="bc-nav-item"><a href="vegan.html">Vegan</a></li>
-            <li class="bc-nav-item"><a href="gi-tag.html">GI Tag</a></li>
-            <li class="bc-nav-item"><a href="creators.html">Creators</a></li>
-            <li class="bc-nav-item highlight-green">
-              <a href="become-brand-partner.html"><i class="fa-solid fa-store" style="font-size:0.75rem"></i> Become an Exhibitor</a>
-            </li>
-
-          </ul>
-        </nav>
-
-        <div class="bc-nav-extras">
-          <label class="d-flex align-items-center gap-2 mb-0" style="font-size:0.9rem;color:var(--text-secondary);">
-            <i class="fa-solid fa-language"></i>
-            <select class="form-select form-select-sm" style="min-width:120px;">
-              <option>English</option>
-              <option>Hindi</option>
-              <option>Gujarati</option>
-              <option>Bengali</option>
-              <option>Tamil</option>
-              <option>Telugu</option>
-              <option>Marathi</option>
-              <option>Punjabi</option>
-            </select>
-          </label>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-</header>
 
 
-<!-- ════════════════════════════════════════════
-     MOBILE HEADER
-     ════════════════════════════════════════════ -->
+
 <header class="bc-header-mobile" role="banner">
   <div class="bc-mobile-top">
 
@@ -473,14 +278,8 @@
   </div>
 </nav>
 <div class="bc-overlay" id="bc-overlay"></div>
-=======
-<?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-header.php'; ?>
->>>>>>> main:index.php
+<?php require __DIR__ . '/includes/public-header.php'; ?>
 
-
-<!-- ════════════════════════════════════════════
-     MAIN CONTENT
-     ════════════════════════════════════════════ -->
 <main class="ci-home" id="main-content">
   <section class="ci-hero ci-hero-slider" id="home-hero" aria-label="Featured collections">
     <div class="ci-hero-slides" id="ci-hero-slides" aria-live="off"></div>
@@ -945,9 +744,6 @@
 
 
 
-<!-- ════════════════════════════════════════════
-     OUR TRENDING PRODUCTS
-     ════════════════════════════════════════════ -->
 <section class="section-py bc-trending-section" id="trending-products" aria-labelledby="trending-heading">
   <div class="container">
 
@@ -2378,17 +2174,13 @@
 </main>
 
 
-<?php require $_SERVER['DOCUMENT_ROOT'] . '/conscious/includes/public-footer.php'; ?>
-
+<?php require __DIR__ . '/includes/public-footer.php'; ?>
 <!-- Back to Top Button -->
 <button class="bc-back-top" id="bc-back-top" aria-label="Scroll back to top" title="Back to Top">
   <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
 </button>
 
 
-<!-- ════════════════════════════════════════════
-     SCRIPTS
-     ════════════════════════════════════════════ -->
 <!-- Bootstrap 5 JS Bundle (includes Popper) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-<<<<<<< HEAD
+ 
 require_once __DIR__.'/../lib/helpers.php';
 send_cors_headers();
 
@@ -29,7 +29,6 @@ foreach ($orders as &$order) {
     $order['history'] = $hist->fetchAll();
 }
 json_response(200, ['success' => true, 'orders' => $orders]);
-=======
 
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/idempotency.php';
@@ -223,4 +222,3 @@ try {
     if ($e instanceof DomainException) json_response(409, ['success' => false, 'message' => $e->getMessage()]);
     throw $e;
 }
->>>>>>> main

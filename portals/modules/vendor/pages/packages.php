@@ -1,4 +1,3 @@
-<<<<<<< HEAD:frontend/modules/vendor/pages/packages.php
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="h4 mb-0">Discover Creator Packages</h2>
@@ -60,7 +59,7 @@
     </div>
   </div>
 </div>
-=======
+
 <section class="vc-card">
   <div class="vc-card-head"><div><h2>Creator packages</h2><p>Book a reviewed service from an approved creator. The price, GST, deliverables and cancellation terms are confirmed before secure payment.</p></div></div>
   <div class="vc-card-body">
@@ -115,4 +114,3 @@
     </div>
   </form>
 </dialog>
->>>>>>> main:portals/modules/vendor/pages/packages.php

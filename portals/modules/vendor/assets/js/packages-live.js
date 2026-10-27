@@ -1,4 +1,3 @@
-<<<<<<< HEAD:frontend/modules/vendor/assets/js/packages-live.js
 (function() {
     'use strict';
     
@@ -133,7 +132,7 @@
     // Initialize
     loadPackages();
 })();
-=======
+
 (function () {
   'use strict';
   const grid = document.getElementById('vendor-package-grid');
@@ -365,4 +364,3 @@
     }
   })();
 })();
->>>>>>> main:portals/modules/vendor/assets/js/packages-live.js
