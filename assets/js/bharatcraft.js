@@ -1,14 +1,6 @@
-/* ============================================================
-   Conscious India — Premium Indian Handcrafted Marketplace
-   Main JavaScript — All Interactions & Animations
-   Version: 1.0.0
-   ============================================================ */
 
 'use strict';
 
-/* ──────────────────────────────────────────────
-   1. DOM READY
-   ────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', function () {
   initPreloader();
   initAnnouncementBar();
@@ -29,9 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
   initMegaMenu();
 });
 
-/* ──────────────────────────────────────────────
-   2. PRELOADER
-   ────────────────────────────────────────────── */
+
+
 function initPreloader() {
   const preloader = document.getElementById('bc-preloader');
   if (!preloader) return;
