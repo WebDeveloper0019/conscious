@@ -58,6 +58,7 @@ foreach ($forbiddenPublicPaths as $relative) {
 
 $sensitiveFiles = [];
 $localPrefixFiles = [];
+$developmentUrlFiles = [];
 $iterator = new RecursiveIteratorIterator(
     new RecursiveDirectoryIterator($publicRoot, FilesystemIterator::SKIP_DOTS)
 );
@@ -74,10 +75,29 @@ foreach ($iterator as $item) {
         if ($contents !== false && str_contains($contents, '/conscious')) {
             $localPrefixFiles[] = $relative;
         }
+        if ($contents !== false && preg_match('~(?:https?://(?:localhost|127\.0\.0\.1)|/conscious-main-new(?:/|\b))~i', $contents)) {
+            $developmentUrlFiles[] = $relative;
+        }
     }
 }
 $check($sensitiveFiles === [], 'No sensitive source or metadata files exist in public_html');
 $check($localPrefixFiles === [], 'No local /conscious URL prefix remains in public files');
+$check($developmentUrlFiles === [], 'No development host or legacy project URL remains in public files');
+$productionHtaccess = file_get_contents($publicRoot . '/.htaccess') ?: '';
+$check(!str_contains($productionHtaccess, 'XAMPP') && !str_contains($productionHtaccess, '^conscious'), 'Production rewrite rules contain no local-install compatibility route');
+
+$privatePrefixFiles = [];
+$privateIterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($privateRoot . '/backend', FilesystemIterator::SKIP_DOTS));
+foreach ($privateIterator as $item) {
+    if (!$item->isFile() || !in_array(strtolower($item->getExtension()), ['css', 'html', 'js', 'json', 'php', 'sql', 'svg', 'xml'], true)) {
+        continue;
+    }
+    $contents = file_get_contents($item->getPathname());
+    if ($contents !== false && str_contains($contents, '/conscious')) {
+        $privatePrefixFiles[] = str_replace('\\', '/', substr($item->getPathname(), strlen($privateRoot) + 1));
+    }
+}
+$check($privatePrefixFiles === [], 'No local /conscious URL prefix remains in private backend or migrations');
 
 $bridgeFiles = glob($publicRoot . '/api/lib/*.php') ?: [];
 $bridgesAreThin = $bridgeFiles !== [];

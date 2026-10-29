@@ -135,7 +135,7 @@ try {
             'product_question',
             'New question on your product',
             'Someone asked about "' . $product['name'] . '". Answer to help buyers.',
-            '../products.html',
+            '../shop',
             ['question_id' => $id, 'product_id' => $productId]
         );
     }

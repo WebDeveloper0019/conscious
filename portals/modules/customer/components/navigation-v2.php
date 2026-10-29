@@ -33,11 +33,11 @@ function customerNavLinks(array $items, string $activePage): void {
         <p class="cc-nav-label">Conscious journey</p><?php customerNavLinks($consciousItems,$activePage); ?>
         <p class="cc-nav-label">Support & settings</p><?php customerNavLinks($supportItems,$activePage); ?>
     </nav>
-    <div class="cc-side-foot"><a href="../../../index.html"><i class="fa-solid fa-arrow-left"></i> Back to storefront</a><a href="auth/login.php"><i class="fa-solid fa-right-from-bracket"></i> Sign out</a></div>
+    <div class="cc-side-foot"><a href="../../../"><i class="fa-solid fa-arrow-left"></i> Back to storefront</a><a href="auth/login.php"><i class="fa-solid fa-right-from-bracket"></i> Sign out</a></div>
 </aside>
 <nav class="cc-mobile-bottom" aria-label="Mobile customer navigation">
     <a class="<?=$activePage==='dashboard'?'active':''?>" href="index.php"<?=$activePage==='dashboard'?' aria-current="page"':''?>><i class="fa-solid fa-house"></i><span>Home</span></a>
-    <a class="<?=$activePage==='shop'?'active':''?>" href="../../../shop.html"<?=$activePage==='shop'?' aria-current="page"':''?>><i class="fa-solid fa-store"></i><span>Shop</span></a>
+    <a class="<?=$activePage==='shop'?'active':''?>" href="../../../shop"<?=$activePage==='shop'?' aria-current="page"':''?>><i class="fa-solid fa-store"></i><span>Shop</span></a>
     <a class="<?=$activePage==='events'?'active':''?>" href="events.php"<?=$activePage==='events'?' aria-current="page"':''?>><i class="fa-solid fa-calendar-days"></i><span>Events</span></a>
     <a class="<?=in_array($activePage,['orders','tracking','returns'],true)?'active':''?>" href="orders.php"<?=in_array($activePage,['orders','tracking','returns'],true)?' aria-current="page"':''?>><i class="fa-solid fa-box"></i><span>Orders</span></a>
     <a class="<?=$activePage==='account'?'active':''?>" href="account.php"<?=$activePage==='account'?' aria-current="page"':''?>><i class="fa-solid fa-user"></i><span>Account</span></a>

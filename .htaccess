@@ -39,7 +39,7 @@ RewriteCond %{REQUEST_URI} ^(/[^/]+)?/frontend/(.*)$ [NC]
 RewriteRule ^ %1/portals/%2 [R=302,L,NE]
 
 # Redirect retired static dashboards to the maintained role modules. The
-# captured prefix supports both an XAMPP subdirectory and a domain-root release.
+# captured prefix supports both a local subdirectory and a domain-root release.
 RewriteCond %{REQUEST_URI} ^(/[^/]+)?/admin(?:/.*)?$ [NC]
 RewriteRule ^ %1/portals/modules/admin/index.php [R=302,L,NE]
 RewriteCond %{REQUEST_URI} ^(/[^/]+)?/vendor(?:/.*)?$ [NC]

@@ -1,10 +1,13 @@
 
+const ciWishlistScriptUrl = document.currentScript && document.currentScript.src;
 document.addEventListener('DOMContentLoaded', () => {
     const wishlistBody = document.getElementById('ci-wishlist-body');
 
     if (!wishlistBody) return;
 
-    const apiUrl = '/conscious-main-new/api/user/wishlist.php';
+    const apiUrl = ciWishlistScriptUrl
+        ? new URL('../../api/user/wishlist.php', ciWishlistScriptUrl).href
+        : new URL('api/user/wishlist.php', document.baseURI).href;
 
     async function loadWishlist() {
         wishlistBody.innerHTML = `

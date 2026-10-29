@@ -30,7 +30,7 @@
       const slide=element('div','ci-hero-slide');
       const content=element('div','ci-hero-content');const copy=element('div','ci-hero-copy');
       copy.append(element('p','ci-overline','CONSCIOUS INDIA'),element('h1','', 'Discover thoughtful things.'));
-      const link=element('a','ci-btn ci-btn-primary','Explore the marketplace →');link.href='/conscious/shop';copy.append(link);content.append(copy);slide.append(content);slides.append(slide);show(0);controls.hidden=true;return;
+      const link=element('a','ci-btn ci-btn-primary','Explore the marketplace');link.href=new URL('../../shop',document.currentScript ? document.currentScript.src : document.baseURI).href;copy.append(link);content.append(copy);slide.append(content);slides.append(slide);show(0);controls.hidden=true;return;
     }
     data.forEach((banner,i)=>{
       const slide=element('article','ci-hero-slide');

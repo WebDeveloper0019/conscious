@@ -68,12 +68,12 @@ function copyTree(string $source, string $destination, ?callable $include = null
     }
 }
 
-function normalizePublicBasePath(string $publicRoot): int
+function normalizeProductionBasePath(string $root): int
 {
     $updated = 0;
-    $textExtensions = ['css', 'html', 'js', 'json', 'php', 'svg', 'xml'];
+    $textExtensions = ['css', 'html', 'js', 'json', 'php', 'sql', 'svg', 'xml'];
     $iterator = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator($publicRoot, FilesystemIterator::SKIP_DOTS)
+        new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS)
     );
 
     foreach ($iterator as $item) {
@@ -104,6 +104,19 @@ foreach (['private', 'logs', 'cache', 'mail-outbox', 'rate-limit'] as $directory
 }
 
 copyFile($projectRoot . DIRECTORY_SEPARATOR . '.htaccess', $publicRoot . DIRECTORY_SEPARATOR . '.htaccess');
+$productionHtaccess = $publicRoot . DIRECTORY_SEPARATOR . '.htaccess';
+$htaccessContents = file_get_contents($productionHtaccess);
+if ($htaccessContents === false) {
+    throw new RuntimeException('Unable to read production .htaccess.');
+}
+$htaccessContents = preg_replace(
+    '~\R# Compatibility for releases served at the domain root while legacy links still\R# contain the local XAMPP /conscious prefix\.\RRewriteCond .*?\RRewriteRule .*?\R~s',
+    PHP_EOL,
+    $htaccessContents
+);
+if ($htaccessContents === null || file_put_contents($productionHtaccess, $htaccessContents) === false) {
+    throw new RuntimeException('Unable to prepare production .htaccess.');
+}
 
 foreach (glob($projectRoot . DIRECTORY_SEPARATOR . '*.php') ?: [] as $file) {
     copyFile($file, $publicRoot . DIRECTORY_SEPARATOR . basename($file));
@@ -165,7 +178,7 @@ copyTree(
         if ($item->isDir()) {
             return true;
         }
-        return !preg_match('~(?:^|/)\.env(?:\..*)?$~i', $relative);
+        return !preg_match('~(?:^|/)(?:\.env(?:\..*)?|README\.md|schema\.sql|bin/seed-.*\.php|dependencies/.*/examples(?:/|$))~i', $relative);
     }
 );
 ensureDirectory($backendRoot . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'rate-limit');
@@ -194,7 +207,7 @@ foreach (glob($apiSource . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . '
 }
 
 copyFile($projectRoot . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'environments' . DIRECTORY_SEPARATOR . 'production.env.example', $releaseRoot . DIRECTORY_SEPARATOR . '.env.example');
-$normalizedFiles = normalizePublicBasePath($publicRoot);
+$normalizedFiles = normalizeProductionBasePath($publicRoot) + normalizeProductionBasePath($backendRoot);
 
 file_put_contents(
     $releaseRoot . DIRECTORY_SEPARATOR . 'RELEASE.txt',

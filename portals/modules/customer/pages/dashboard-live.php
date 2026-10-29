@@ -5,7 +5,7 @@
       <h2 data-dashboard-greeting>Welcome back.</h2>
       <p data-dashboard-intro>Loading your orders, bookings and rewards…</p>
       <div class="cx-welcome-actions">
-        <a class="cc-btn primary" href="../../../shop.html"><i class="fa-solid fa-store"></i> Continue shopping</a>
+        <a class="cc-btn primary" href="../../../shop"><i class="fa-solid fa-store"></i> Continue shopping</a>
         <a class="cc-btn" href="events.php"><i class="fa-regular fa-calendar"></i> Explore events</a>
       </div>
     </div>
@@ -31,7 +31,7 @@
   </div>
 
   <div class="cx-dashboard-grid secondary mt-3">
-    <section class="cc-card cx-impact" data-reveal><div class="cx-section-head"><div><span class="cx-kicker">Conscious journey</span><h2>Explore verified makers</h2></div><a href="vendors.php">Saved makers</a></div><p>Discover craft-led products and save the makers you want to follow. Impact figures appear only when supported by reviewed evidence.</p><a class="cc-btn" href="../../../shop.html">Explore products</a></section>
+    <section class="cc-card cx-impact" data-reveal><div class="cx-section-head"><div><span class="cx-kicker">Conscious journey</span><h2>Explore verified makers</h2></div><a href="vendors.php">Saved makers</a></div><p>Discover craft-led products and save the makers you want to follow. Impact figures appear only when supported by reviewed evidence.</p><a class="cc-btn" href="../../../shop">Explore products</a></section>
     <section class="cc-card cx-actions-list" data-reveal><div class="cx-section-head"><div><span class="cx-kicker">Needs your attention</span><h2>Next steps</h2></div></div><div data-dashboard-actions><p>Loading your next steps…</p></div></section>
   </div>
 </div>

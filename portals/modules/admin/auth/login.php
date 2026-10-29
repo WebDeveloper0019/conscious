@@ -22,6 +22,6 @@ require __DIR__ . '/../layouts/auth-head.php';
     <label class="ac-check"><input type="checkbox" name="remember_device" value="yes"> Trust this device only after secure device verification</label>
     <button class="ac-btn primary ac-auth-submit" type="submit">Continue securely <i class="fa-solid fa-arrow-right"></i></button>
 </form>
-<div class="ac-auth-links"><a href="forgot-password.php">Forgot password?</a><a href="../../../../index.html">Return to website</a></div>
+<div class="ac-auth-links"><a href="forgot-password.php">Forgot password?</a><a href="../../../../">Return to website</a></div>
 <div class="ac-callout warning mt-3"><strong>Security:</strong> repeated failed attempts should be rate-limited and reviewed by the backend security service.</div>
 <?php require __DIR__ . '/../layouts/auth-foot.php'; ?>

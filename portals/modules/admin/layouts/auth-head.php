@@ -24,7 +24,7 @@ $authStep = $authStep ?? 'Secure administrator access';
 <a class="ac-skip" href="#auth-main">Skip to access form</a>
 <main class="ac-auth-shell" id="auth-main">
     <section class="ac-auth-brand" aria-label="Conscious India administration">
-        <a class="ac-auth-logo" href="../../../../index.html" aria-label="Conscious India home">
+        <a class="ac-auth-logo" href="../../../../" aria-label="Conscious India home">
             <span>CI</span><strong>Conscious India</strong>
         </a>
         <p class="ac-auth-kicker">Protected operations workspace</p>

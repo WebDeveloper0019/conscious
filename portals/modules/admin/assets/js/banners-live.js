@@ -37,7 +37,7 @@
     formMessage.hidden=true;
     form.elements.id.value=banner?.id||'';
     for(const key of ['eyebrow','title','description','button_label','button_url','image_url','image_alt','sort_order'])if(banner&&form.elements[key])form.elements[key].value=banner[key]??'';
-    if(!banner){form.elements.button_url.value='/conscious/shop';form.elements.sort_order.value=100;}
+    if(!banner){form.elements.button_url.value='/shop';form.elements.sort_order.value=100;}
     form.elements.is_active.checked=!banner||Number(banner.is_active)===1;
     form.elements.image.value='';
     preview.hidden=!banner?.image_url;

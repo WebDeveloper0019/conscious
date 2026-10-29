@@ -14,7 +14,7 @@
       <div class="ac-field"><label for="ah-title">Title *</label><input class="ac-input" id="ah-title" name="title" required maxlength="150" placeholder="Crafted with care. Chosen to last."></div>
       <div class="ac-field full"><label for="ah-description">Paragraph *</label><textarea class="ac-textarea" id="ah-description" name="description" required maxlength="360" rows="3" placeholder="A short message about this collection or campaign"></textarea></div>
       <div class="ac-field"><label for="ah-button-label">Button text *</label><input class="ac-input" id="ah-button-label" name="button_label" required maxlength="45" placeholder="Shop the collection"></div>
-      <div class="ac-field"><label for="ah-button-url">Button link *</label><input class="ac-input" id="ah-button-url" name="button_url" required maxlength="500" placeholder="/conscious/shop"></div>
+      <div class="ac-field"><label for="ah-button-url">Button link *</label><input class="ac-input" id="ah-button-url" name="button_url" required maxlength="500" placeholder="/shop"></div>
       <div class="ac-field"><label for="ah-order">Display order</label><input class="ac-input" id="ah-order" name="sort_order" type="number" min="0" max="999" value="100" required></div>
       <div class="ac-field ah-check"><label><input name="is_active" type="checkbox" checked> Show this banner on the home page</label></div>
     </div>
