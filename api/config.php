@@ -67,6 +67,10 @@ define('PAYMENT_GATEWAY', strtolower(getenv('PAYMENT_GATEWAY') ?: 'razorpay'));
 define('RAZORPAY_KEY_ID', getenv('RAZORPAY_KEY_ID') ?: '');
 define('RAZORPAY_KEY_SECRET', getenv('RAZORPAY_KEY_SECRET') ?: '');
 define('RAZORPAY_WEBHOOK_SECRET', getenv('RAZORPAY_WEBHOOK_SECRET') ?: PAYMENT_WEBHOOK_SECRET);
+define('AI_PROVIDER', strtolower(trim((string)(getenv('AI_PROVIDER') ?: 'disabled'))));
+define('CF_ACCOUNT_ID', trim((string)(getenv('CF_ACCOUNT_ID') ?: '')));
+define('CF_AI_TOKEN', trim((string)(getenv('CF_AI_TOKEN') ?: '')));
+define('OLLAMA_BASE_URL', rtrim(trim((string)(getenv('OLLAMA_BASE_URL') ?: '')), '/'));
 
 if (APP_ENV === 'production' && (!str_starts_with(APP_URL, 'https://') || parse_url(APP_URL, PHP_URL_HOST) === null)) {
     http_response_code(500);

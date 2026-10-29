@@ -911,19 +911,6 @@ function initMegaMenu() {
   observer.observe(grid);
 })();
 
-/* --------------------------------------------------------------------------
-   Public website guide — curated discovery and reviewed help.
-   -------------------------------------------------------------------------- */
-(function loadConsciousIndiGuide() {
-  var current = document.currentScript;
-  if (!current || document.querySelector('[data-ci-guide-loader]')) return;
-  var path = location.pathname.toLowerCase();
-  if (/\/(?:admin|customer|vendor)\//.test(path) || path.includes('/portals/modules/')) return;
-  var marker = document.createElement('meta'); marker.setAttribute('data-ci-guide-loader', ''); document.head.appendChild(marker);
-  var stylesheet = document.createElement('link'); stylesheet.rel = 'stylesheet'; stylesheet.href = new URL('../css/site-assistant.css?v=20261024-2', current.src).href; document.head.appendChild(stylesheet);
-  var assistant = document.createElement('script'); assistant.src = new URL('site-assistant.js?v=20261026-pujii1', current.src).href; assistant.async = false; document.head.appendChild(assistant);
-})();
-
 /* ──────────────────────────────────────────────
    18. VENDOR CARD HOVER TILT
    ────────────────────────────────────────────── */
@@ -1317,4 +1304,16 @@ function toggleLoading(selector, show) {
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupInfluencerRegistration);
   else setupInfluencerRegistration();
+})();
+
+/* Public AI shopping help. Dashboard portals intentionally keep this out. */
+(function loadConsciousIndiaAssistant() {
+  if (/\/portals\//i.test(window.location.pathname) || document.querySelector('[data-disable-ai-assistant]')) return;
+  const source = document.currentScript && document.currentScript.src;
+  if (!source || document.querySelector('script[data-ci-ai-assistant]')) return;
+  const script = document.createElement('script');
+  script.src = new URL('ai-assistant.js', source).href;
+  script.defer = true;
+  script.dataset.ciAiAssistant = 'true';
+  document.head.appendChild(script);
 })();
