@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
 send_cors_headers();
-$payload=require_auth(); $userId=auth_user_id($payload); $db=get_db();
+$principal = require_principal(['customer']); $userId = $principal['id']; $db=get_db();
 
 if($_SERVER['REQUEST_METHOD']==='GET'){
   $stmt=$db->prepare('SELECT * FROM user_preferences WHERE user_id=:user LIMIT 1'); $stmt->execute(['user'=>$userId]);

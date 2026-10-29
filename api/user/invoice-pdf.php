@@ -8,9 +8,7 @@ require_once __DIR__ . '/../lib/invoice-pdf.php';
 
 // Prevent any accidental HTML output from including the renderer
 if (ob_get_level()) ob_end_clean();
-
-$payload = require_auth();
-$userId  = auth_user_id($payload);
+$principal = require_principal(['customer']); $userId = $principal['id'];
 $db      = get_db();
 
 $invoiceNumber = trim((string)($_GET['invoice_number'] ?? ''));

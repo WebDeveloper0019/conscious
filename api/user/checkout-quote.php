@@ -7,7 +7,7 @@ require_once __DIR__ . '/../lib/coupon.php';
 require_once __DIR__ . '/../lib/rewards.php';
 
 send_cors_headers();
-$auth = require_auth();
+$principal = require_principal(['customer']); $userId = $principal['id'];
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
 
 $body = get_json_body();

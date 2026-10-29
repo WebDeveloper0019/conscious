@@ -5,18 +5,157 @@
 
 <section class="ce-type-strip" aria-label="Event types" data-reveal><button class="active" type="button" data-event-type="all"><i class="fa-solid fa-shapes"></i><span>All events</span></button><button type="button" data-event-type="workshop"><i class="fa-solid fa-hands"></i><span>Workshops</span></button><button type="button" data-event-type="exhibition"><i class="fa-regular fa-images"></i><span>Exhibitions</span></button><button type="button" data-event-type="walk"><i class="fa-solid fa-person-walking"></i><span>Craft walks</span></button><button type="button" data-event-type="online"><i class="fa-solid fa-laptop"></i><span>Online</span></button></section>
 
-<section class="cx-section mt-3" data-reveal><div class="cx-section-head"><div><span class="cx-kicker">Featured this month</span><h2>Learn directly from master makers</h2></div><span class="ce-result-count" data-event-count>6 experiences</span></div>
-<div class="ce-event-grid" data-event-grid>
-    <article class="ce-event-card featured" data-event-card data-type="workshop" data-city="Jaipur"><div class="ce-event-image pottery"><span class="ce-badge">Bestseller</span><button type="button" aria-label="Save Blue Pottery Workshop"><i class="fa-regular fa-heart"></i></button><div class="ce-date"><b>28</b><small>SEP</small></div></div><div class="ce-event-info"><p><span>Workshop</span><span><i class="fa-solid fa-location-dot"></i> Jaipur</span></p><h3>Blue Pottery: Shape, Paint & Glaze</h3><small>With Meera Devi · National Award artisan</small><div class="ce-event-meta"><span><i class="fa-regular fa-clock"></i> 2.5 hours</span><span><i class="fa-solid fa-users"></i> 6 seats left</span></div><footer><div><strong>₹699</strong><small>per person</small></div><button class="cc-btn primary" type="button" data-book-event="Blue Pottery: Shape, Paint & Glaze" data-event-price="699" data-event-date="28 Sep 2026 · 11:00 AM" data-event-city="Jaipur">View & book</button></footer></div></article>
-    <article class="ce-event-card" data-event-card data-type="exhibition" data-city="Delhi"><div class="ce-event-image textile"><span class="ce-badge free">Free entry</span><button type="button" aria-label="Save Looms of India"><i class="fa-regular fa-heart"></i></button><div class="ce-date"><b>02</b><small>OCT</small></div></div><div class="ce-event-info"><p><span>Exhibition</span><span><i class="fa-solid fa-location-dot"></i> Delhi</span></p><h3>Looms of India: Living Textiles</h3><small>Curated by Handloom Futures Collective</small><div class="ce-event-meta"><span><i class="fa-regular fa-clock"></i> 10 AM–7 PM</span><span><i class="fa-solid fa-wheelchair-move"></i> Accessible</span></div><footer><div><strong>Free</strong><small>registration required</small></div><button class="cc-btn" type="button" data-book-event="Looms of India: Living Textiles" data-event-price="0" data-event-date="02 Oct 2026 · 10:00 AM" data-event-city="Delhi">Register</button></footer></div></article>
-    <article class="ce-event-card" data-event-card data-type="online" data-city="Online"><div class="ce-event-image madhubani"><span class="ce-badge online">Live online</span><button type="button" aria-label="Save Madhubani Masterclass"><i class="fa-regular fa-heart"></i></button><div class="ce-date"><b>05</b><small>OCT</small></div></div><div class="ce-event-info"><p><span>Online workshop</span><span><i class="fa-solid fa-wifi"></i> Live</span></p><h3>Madhubani Stories for Beginners</h3><small>With Sita Jha · Madhubani artist</small><div class="ce-event-meta"><span><i class="fa-regular fa-clock"></i> 90 minutes</span><span><i class="fa-solid fa-box"></i> Kit optional</span></div><footer><div><strong>₹399</strong><small>per screen</small></div><button class="cc-btn" type="button" data-book-event="Madhubani Stories for Beginners" data-event-price="399" data-event-date="05 Oct 2026 · 5:00 PM" data-event-city="Online">View & book</button></footer></div></article>
-    <article class="ce-event-card" data-event-card data-type="walk" data-city="Kolkata"><div class="ce-event-image walk"><button type="button" aria-label="Save Kumartuli Craft Walk"><i class="fa-regular fa-heart"></i></button><div class="ce-date"><b>11</b><small>OCT</small></div></div><div class="ce-event-info"><p><span>Craft walk</span><span><i class="fa-solid fa-location-dot"></i> Kolkata</span></p><h3>Kumartuli: Clay, Community & Durga</h3><small>Hosted by Heritage Steps</small><div class="ce-event-meta"><span><i class="fa-regular fa-clock"></i> 3 hours</span><span><i class="fa-solid fa-person-walking"></i> Moderate walk</span></div><footer><div><strong>₹899</strong><small>per person</small></div><button class="cc-btn" type="button" data-book-event="Kumartuli: Clay, Community & Durga" data-event-price="899" data-event-date="11 Oct 2026 · 8:00 AM" data-event-city="Kolkata">View & book</button></footer></div></article>
-    <article class="ce-event-card" data-event-card data-type="workshop" data-city="Mumbai"><div class="ce-event-image blockprint"><span class="ce-badge">Family friendly</span><button type="button" aria-label="Save Block Printing Workshop"><i class="fa-regular fa-heart"></i></button><div class="ce-date"><b>18</b><small>OCT</small></div></div><div class="ce-event-info"><p><span>Workshop</span><span><i class="fa-solid fa-location-dot"></i> Mumbai</span></p><h3>Block Print Your Own Table Runner</h3><small>With Bagru Studio Collective</small><div class="ce-event-meta"><span><i class="fa-regular fa-clock"></i> 2 hours</span><span><i class="fa-solid fa-child-reaching"></i> Age 10+</span></div><footer><div><strong>₹1,199</strong><small>materials included</small></div><button class="cc-btn" type="button" data-book-event="Block Print Your Own Table Runner" data-event-price="1199" data-event-date="18 Oct 2026 · 2:30 PM" data-event-city="Mumbai">View & book</button></footer></div></article>
-    <article class="ce-event-card" data-event-card data-type="exhibition" data-city="Bengaluru"><div class="ce-event-image metal"><button type="button" aria-label="Save Dhokra Exhibition"><i class="fa-regular fa-heart"></i></button><div class="ce-date"><b>24</b><small>OCT</small></div></div><div class="ce-event-info"><p><span>Talk & exhibition</span><span><i class="fa-solid fa-location-dot"></i> Bengaluru</span></p><h3>Dhokra: Metal Stories of Bastar</h3><small>Artist talk with Somaru Ram</small><div class="ce-event-meta"><span><i class="fa-regular fa-clock"></i> 2 hours</span><span><i class="fa-solid fa-language"></i> Hindi + English</span></div><footer><div><strong>₹299</strong><small>includes refreshments</small></div><button class="cc-btn" type="button" data-book-event="Dhokra: Metal Stories of Bastar" data-event-price="299" data-event-date="24 Oct 2026 · 4:00 PM" data-event-city="Bengaluru">View & book</button></footer></div></article>
-</div><div class="ce-empty" hidden data-event-empty><i class="fa-regular fa-calendar-xmark"></i><h3>No matching experiences</h3><p>Try a different city, date or event type.</p></div></section>
+<section class="cx-section mt-3" data-reveal>
+    <div class="cx-section-head">
+        <div><span class="cx-kicker">Featured this month</span><h2>Learn directly from master makers</h2></div>
+        <span class="ce-result-count" data-event-count>0 experiences</span>
+    </div>
+    
+    <!-- REAL EVENTS WILL BE INJECTED HERE -->
+    <div class="ce-event-grid" data-event-grid id="real-events-grid">
+        <p style="padding: 20px; text-align: center; color: #666; grid-column: 1 / -1;">Loading experiences...</p>
+    </div>
+    <div class="ce-empty" hidden data-event-empty><i class="fa-regular fa-calendar-xmark"></i><h3>No matching experiences</h3><p>Try a different city, date or event type.</p></div>
+</section>
 
-<section class="ce-bookings mt-3" id="bookings" data-reveal><div class="cx-section-head"><div><span class="cx-kicker">Your bookings</span><h2>Upcoming experiences</h2></div><a href="#past-events">Past events</a></div><article><div class="ce-booking-date"><b>28</b><span>SEP<br>2026</span></div><div class="ce-booking-main"><span class="cc-status success">Confirmed</span><h3>Blue Pottery: Shape, Paint & Glaze</h3><p>Jaipur · 11:00 AM · 2 attendees</p><small>Booking EV-29018 · Ticket QR available</small></div><div class="ce-booking-actions"><button class="cc-btn" type="button" data-demo-action="Download event ticket">Ticket</button><button class="cc-btn" type="button" data-demo-action="Add event to calendar">Add to calendar</button><button class="ce-more" type="button" data-demo-action="Open event booking options" aria-label="More booking options"><i class="fa-solid fa-ellipsis-vertical"></i></button></div></article></section>
+<section class="ce-bookings mt-3" id="bookings" data-reveal>
+    <div class="cx-section-head">
+        <div><span class="cx-kicker">Your bookings</span><h2>Upcoming experiences</h2></div>
+        <a href="#past-events">Past events</a>
+    </div>
+    
+    <!-- REAL BOOKINGS WILL BE INJECTED HERE -->
+    <div id="real-bookings-list">
+        <p style="padding: 20px; color: #666;">Loading your bookings...</p>
+    </div>
+</section>
 
-<dialog class="cc-dialog ce-book-dialog" id="event-booking-dialog"><div class="cc-dialog-head"><div><span class="cx-kicker">Complete your booking</span><h2 data-booking-title>Event booking</h2></div><button type="button" class="cc-btn small" data-close-dialog aria-label="Close booking"><i class="fa-solid fa-xmark"></i></button></div>
-<form data-event-booking-form><div class="ce-book-layout"><section><div class="ce-book-summary"><div class="ce-summary-art"><i class="fa-solid fa-palette"></i></div><div><h3 data-summary-title>Selected event</h3><p><i class="fa-regular fa-calendar"></i> <span data-summary-date></span></p><p><i class="fa-solid fa-location-dot"></i> <span data-summary-city></span></p><button type="button" data-demo-action="Open full event details">View inclusions, host and policy</button></div></div><div class="cc-form-grid"><div class="cc-field"><label for="booking-name">Lead attendee *</label><input class="cc-input" id="booking-name" name="attendee_name" value="Rahul Sharma" required maxlength="100" autocomplete="name"></div><div class="cc-field"><label for="booking-phone">Mobile number *</label><input class="cc-input" id="booking-phone" name="phone" value="9876543210" required maxlength="10" inputmode="numeric" data-indian-phone></div><div class="cc-field"><label for="ticket-type">Ticket type *</label><select class="cc-select" id="ticket-type" name="ticket_type" required><option value="standard">Standard admission</option><option value="kit">Admission + material kit</option></select></div><div class="cc-field"><label for="ticket-quantity">Attendees *</label><select class="cc-select" id="ticket-quantity" name="quantity" required data-ticket-quantity><option value="1">1 attendee</option><option value="2" selected>2 attendees</option><option value="3">3 attendees</option><option value="4">4 attendees</option></select></div><div class="cc-field full"><label for="booking-accessibility">Accessibility, dietary or other request</label><textarea class="cc-textarea" id="booking-accessibility" name="accessibility_request" maxlength="500" placeholder="Optional—tell the host how they can support you"></textarea></div></div><label class="cc-check ce-policy"><input type="checkbox" name="booking_policy" required> I agree to the event cancellation, conduct and photography policy.</label></section><aside class="ce-price-box"><h3>Price details</h3><p><span>Tickets × <b data-price-quantity>2</b></span><strong data-ticket-subtotal>₹1,398</strong></p><p><span>Booking fee</span><strong>₹0</strong></p><p><span>Taxes</span><strong>Included</strong></p><div><span>Total</span><strong data-booking-total>₹1,398</strong></div><small><i class="fa-solid fa-shield-halved"></i> Demo checkout—no payment is processed.</small><button class="cc-btn primary" type="submit" data-booking-submit><span>Confirm demo booking</span><i class="fa-solid fa-arrow-right"></i></button></aside></div></form>
-<section class="ce-confirmation" hidden data-booking-confirmation tabindex="-1"><span><i class="fa-solid fa-check"></i></span><h2>Booking confirmed</h2><p>Your ticket is ready. Demo mode does not process payment.</p><div><small>Booking reference</small><strong data-booking-reference>EV-DEMO-2026</strong></div><div class="cc-actions"><button class="cc-btn" type="button" data-demo-action="Download event ticket">Download ticket</button><button class="cc-btn primary" type="button" data-close-dialog>Done</button></div></section></dialog>
+<dialog class="cc-dialog ce-book-dialog" id="event-booking-dialog">
+    <div class="cc-dialog-head"><div><span class="cx-kicker">Complete your booking</span><h2 data-booking-title>Event booking</h2></div><button type="button" class="cc-btn small" data-close-dialog aria-label="Close booking"><i class="fa-solid fa-xmark"></i></button></div>
+    <form data-event-booking-form>
+        <div class="ce-book-layout">
+            <section>
+                <div class="ce-book-summary">
+                    <div class="ce-summary-art"><i class="fa-solid fa-palette"></i></div>
+                    <div><h3 data-summary-title>Selected event</h3><p><i class="fa-regular fa-calendar"></i> <span data-summary-date></span></p><p><i class="fa-solid fa-location-dot"></i> <span data-summary-city></span></p><button type="button" data-demo-action="Open full event details">View inclusions, host and policy</button></div>
+                </div>
+                <div class="cc-form-grid">
+                    <div class="cc-field"><label for="booking-name">Lead attendee *</label><input class="cc-input" id="booking-name" name="attendee_name" required maxlength="100" autocomplete="name"></div>
+                    <div class="cc-field"><label for="booking-phone">Mobile number *</label><input class="cc-input" id="booking-phone" name="phone" required maxlength="10" inputmode="numeric" data-indian-phone></div>
+                    <div class="cc-field"><label for="ticket-type">Ticket type *</label><select class="cc-select" id="ticket-type" name="ticket_type" required><option value="standard">Standard admission</option><option value="kit">Admission + material kit</option></select></div>
+                    <div class="cc-field"><label for="ticket-quantity">Attendees *</label><select class="cc-select" id="ticket-quantity" name="quantity" required data-ticket-quantity><option value="1">1 attendee</option><option value="2" selected>2 attendees</option><option value="3">3 attendees</option><option value="4">4 attendees</option></select></div>
+                    <div class="cc-field full"><label for="booking-accessibility">Accessibility, dietary or other request</label><textarea class="cc-textarea" id="booking-accessibility" name="accessibility_request" maxlength="500" placeholder="Optional—tell the host how they can support you"></textarea></div>
+                </div>
+                <label class="cc-check ce-policy"><input type="checkbox" name="booking_policy" required> I agree to the event cancellation, conduct and photography policy.</label>
+            </section>
+            <aside class="ce-price-box">
+                <h3>Price details</h3>
+                <p><span>Tickets × <b data-price-quantity>2</b></span><strong data-ticket-subtotal>₹0</strong></p>
+                <p><span>Booking fee</span><strong>₹0</strong></p>
+                <p><span>Taxes</span><strong>Included</strong></p>
+                <div><span>Total</span><strong data-booking-total>₹0</strong></div>
+                <small><i class="fa-solid fa-shield-halved"></i> Secure checkout.</small>
+                <button class="cc-btn primary" type="submit" data-booking-submit><span>Confirm booking</span><i class="fa-solid fa-arrow-right"></i></button>
+            </aside>
+        </div>
+    </form>
+    <section class="ce-confirmation" hidden data-booking-confirmation tabindex="-1">
+        <span><i class="fa-solid fa-check"></i></span><h2>Booking confirmed</h2><p>Your ticket is ready.</p>
+        <div><small>Booking reference</small><strong data-booking-reference>EV-XXXX-2026</strong></div>
+        <div class="cc-actions"><button class="cc-btn" type="button" data-demo-action="Download event ticket">Download ticket</button><button class="cc-btn primary" type="button" data-close-dialog>Done</button></div>
+    </section>
+</dialog>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Fetch and render REAL EVENTS
+    fetch('/conscious/api/user/events.php')
+        .then(res => res.json())
+        .then(data => {
+            const grid = document.getElementById('real-events-grid');
+            const countBadge = document.querySelector('[data-event-count]');
+            const events = data.events || [];
+
+            countBadge.textContent = `${events.length} experiences`;
+
+            if (events.length > 0) {
+                let html = '';
+                events.forEach(event => {
+                    const date = new Date(event.starts_at);
+                    const day = date.getDate().toString().padStart(2, '0');
+                    const month = date.toLocaleString('en-IN', { month: 'short' }).toUpperCase();
+                    
+                    const isFree = event.ticket_price == 0 || event.price == 0;
+                    const priceDisplay = isFree ? 'Free' : `₹${event.ticket_price || event.price}`;
+                    const btnText = isFree ? 'Register' : 'View & book';
+
+                    html += `
+                        <article class="ce-event-card" data-event-card data-type="${event.event_type || 'workshop'}" data-city="${event.venue_name || 'Online'}">
+                            <div class="ce-event-image pottery">
+                                ${isFree ? '<span class="ce-badge free">Free entry</span>' : '<span class="ce-badge">Bestseller</span>'}
+                                <button type="button" aria-label="Save Event"><i class="fa-regular fa-heart"></i></button>
+                                <div class="ce-date"><b>${day}</b><small>${month}</small></div>
+                            </div>
+                            <div class="ce-event-info">
+                                <p><span>${event.event_type || 'Event'}</span><span><i class="fa-solid fa-location-dot"></i> ${event.venue_name || 'Online'}</span></p>
+                                <h3>${event.title}</h3>
+                                <small>${event.short_description || 'Join this amazing experience.'}</small>
+                                <div class="ce-event-meta">
+                                    <span><i class="fa-regular fa-clock"></i> 2 hours</span>
+                                    <span><i class="fa-solid fa-users"></i> Limited seats</span>
+                                </div>
+                                <footer>
+                                    <div><strong>${priceDisplay}</strong><small>per person</small></div>
+                                    <button class="cc-btn primary" type="button" data-book-event="${event.title}" data-event-price="${event.ticket_price || event.price || 0}" data-event-date="${day} ${month} · 11:00 AM" data-event-city="${event.venue_name || 'Online'}">${btnText}</button>
+                                </footer>
+                            </div>
+                        </article>
+                    `;
+                });
+                grid.innerHTML = html;
+            } else {
+                grid.innerHTML = '<p style="padding: 20px; text-align: center; color: #666; grid-column: 1 / -1;">No upcoming experiences found.</p>';
+            }
+        })
+        .catch(err => console.error('Error loading events:', err));
+
+    // 2. Fetch and render REAL BOOKINGS
+    fetch('/conscious/api/user/dashboard.php') // Using dashboard API which returns upcomingBookings
+        .then(res => res.json())
+        .then(data => {
+            const list = document.getElementById('real-bookings-list');
+            const bookings = data.upcomingBookings || [];
+
+            if (bookings.length > 0) {
+                let html = '';
+                bookings.forEach(b => {
+                    const date = new Date(b.starts_at);
+                    const day = date.getDate().toString().padStart(2, '0');
+                    const month = date.toLocaleString('en-IN', { month: 'short' }).toUpperCase();
+                    const year = date.getFullYear();
+                    
+                    html += `
+                        <article style="margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; padding: 15px; display: flex; gap: 15px; align-items: center;">
+                            <div class="ce-booking-date" style="text-align: center; background: #f8f9fa; padding: 10px 15px; border-radius: 8px;">
+                                <b style="font-size: 1.5rem; display: block; color: #A63D24;">${day}</b>
+                                <span style="font-size: 0.8rem; color: #666;">${month}<br>${year}</span>
+                            </div>
+                            <div class="ce-booking-main" style="flex: 1;">
+                                <span class="cc-status success" style="background: #e8f5e9; color: #2e7d32; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">${b.status}</span>
+                                <h3 style="margin: 5px 0; font-size: 1.1rem;">${b.title}</h3>
+                                <p style="margin: 0; color: #555; font-size: 0.9rem;">${b.venue_name || 'Online'} · ${b.quantity} attendees</p>
+                                <small style="color: #888;">Booking ID: ${b.booking_number}</small>
+                            </div>
+                            <div class="ce-booking-actions">
+                                <button class="cc-btn" type="button" data-demo-action="Download event ticket">Ticket</button>
+                            </div>
+                        </article>
+                    `;
+                });
+                list.innerHTML = html;
+            } else {
+                list.innerHTML = '<p style="padding: 20px; color: #666;">You have no upcoming bookings.</p>';
+            }
+        })
+        .catch(err => console.error('Error loading bookings:', err));
+});
+</script>

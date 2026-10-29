@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../lib/helpers.php'; require_once __DIR__ . '/../lib/db.php'; send_cors_headers();
-$userId=auth_user_id(require_auth()); if(($_SERVER['REQUEST_METHOD']??'')!=='POST') json_response(405,['success'=>false,'message'=>'Method not allowed.']);
+$principal = require_principal(['customer']); $userId = $principal['id']; if(($_SERVER['REQUEST_METHOD']??'')!=='POST') json_response(405,['success'=>false,'message'=>'Method not allowed.']);
 $body=get_json_body(); $current=(string)($body['currentPassword']??''); $new=(string)($body['newPassword']??''); $confirm=(string)($body['confirmPassword']??'');
 if($current===''||$new===''||$confirm==='') json_response(422,['success'=>false,'message'=>'All password fields are required.']);
 if(!is_strong_enough_password($new)) json_response(422,['success'=>false,'message'=>'Use 12+ characters with upper, lower, number and symbol.']);

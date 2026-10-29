@@ -2,11 +2,32 @@
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/india.php';
+require_once __DIR__ . '/../lib/authorization.php'; // <-- ADD THIS LINE
 
 send_cors_headers();
-$payload=require_auth();
-$userId=auth_user_id($payload);
-$db=get_db();
+
+$principal = require_principal(['customer']);
+$userId = $principal['id'];
+$db = get_db();
+// ... your require_once lines ...
+
+// Add this missing function to validate the mobile number
+if (!function_exists('is_valid_indian_mobile')) {
+    function is_valid_indian_mobile(string $phone): bool {
+        // Remove any spaces, dashes, or +91
+        $cleanPhone = preg_replace('/\D+/', '', $phone);
+        
+        // Check if it's exactly 10 digits and starts with 6, 7, 8, or 9
+        return preg_match('/^[6-9][0-9]{9}$/', $cleanPhone) === 1;
+    }
+}
+
+send_cors_headers();
+$principal = require_principal(['customer']);
+$userId = $principal['id'];
+$db = get_db();
+
+// ... the rest of your file ...
 
 function address_public(array $a): array {
     return [

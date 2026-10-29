@@ -3,7 +3,10 @@ declare(strict_types=1);
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
 send_cors_headers();
-$userId=auth_user_id(require_auth()); $db=get_db();
+
+$principal = require_principal(['customer']);
+$userId = $principal['id'];
+ $db=get_db();
 if(($_SERVER['REQUEST_METHOD']??'GET')==='GET'){
     $stmt=$db->prepare('SELECT * FROM users WHERE id=:id LIMIT 1'); $stmt->execute(['id'=>$userId]); $user=$stmt->fetch();
     if(!$user) json_response(404,['success'=>false,'message'=>'User not found.']);

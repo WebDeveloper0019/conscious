@@ -12,8 +12,7 @@ require_once __DIR__ . '/../lib/inventory-anomaly.php';
 
 send_cors_headers();
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
-$auth = require_auth();
-$userId = auth_user_id($auth);
+$principal = require_principal(['customer']); $userId = $principal['id'];
 require_csrf();
 if (rate_limit('cancel-order:' . $userId, 5, 300)) json_response(429, ['success' => false, 'message' => 'Too many cancellation requests.']);
 

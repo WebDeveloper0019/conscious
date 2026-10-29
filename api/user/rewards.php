@@ -5,8 +5,9 @@ require_once __DIR__ . '/../lib/helpers.php';
 
 send_cors_headers();
 $principal = require_principal(['customer']);
+$userId = $principal['id']; 
 $db = get_db();
-$userId = $principal['id'];
+
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'GET') {
     header('Allow: GET');

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
+require_once __DIR__ . '/../lib/authorization.php';
 send_cors_headers();
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') json_response(405, ['success'=>false,'message'=>'Method not allowed.']);
 
@@ -36,4 +37,5 @@ $session=create_auth_session('customer',$user['id'],$remember);
 get_db()->prepare('UPDATE users SET last_login_at=UTC_TIMESTAMP() WHERE id=:id')->execute(['id'=>$user['id']]);
 audit_event('customer.login','customer',$user['id']);
 $csrf=$session['csrf_token'];
-json_response(200, ['success'=>true,'message'=>'Signed in successfully.','user'=>public_user($user),'csrf_token'=>$csrf,'redirect'=>'../index.php']);
+json_response(200, ['success'=>true,'message'=>'Signed in successfully.','user'=>public_user($user),'csrf_token'=>$csrf,
+'redirect'=>'http://localhost/conscious/customer/dashboard.html']);

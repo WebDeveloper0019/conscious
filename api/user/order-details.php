@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
 send_cors_headers();
-$payload=require_auth(); $userId=auth_user_id($payload); $db=get_db();
+$principal = require_principal(['customer']); $userId = $principal['id']; $db=get_db();
 if($_SERVER['REQUEST_METHOD']!=='GET') json_response(405,['success'=>false,'message'=>'Method not allowed.']);
 $orderNumber=trim((string)($_GET['orderNumber']??'')); $id=(int)($_GET['id']??0);
 if($orderNumber==='' && !$id) json_response(422,['success'=>false,'message'=>'Order number or id is required.']);

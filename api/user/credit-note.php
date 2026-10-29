@@ -5,8 +5,7 @@ require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/credit-note.php';
 
 send_cors_headers();
-$payload = require_auth();
-$userId  = auth_user_id($payload);
+$principal = require_principal(['customer']); $userId = $principal['id'];
 $db      = get_db();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') json_response(405, ['success' => false, 'message' => 'Method not allowed.']);

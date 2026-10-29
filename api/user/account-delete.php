@@ -9,8 +9,7 @@ require_once __DIR__ . '/../lib/session.php';
 send_cors_headers();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $payload = require_auth();
-    $userId  = auth_user_id($payload);
+$principal = require_principal(['customer']); $userId = $principal['id'];
     require_csrf();
 
     $body    = get_json_body();
@@ -79,8 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    $payload = require_auth();
-    $userId  = auth_user_id($payload);
+$principal = require_principal(['customer']); $userId = $principal['id'];
     require_csrf();
 
     $db = get_db();

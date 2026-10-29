@@ -9,7 +9,7 @@ require_once __DIR__ . '/../lib/razorpay.php';
 function checkout_place_v2(): void
 {
     send_cors_headers();
-    $auth = require_auth();
+    $principal = require_principal(['customer']); $userId = $principal['id'];
     if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
         json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
     }

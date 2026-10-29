@@ -10,8 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
 }
 
-$payload = require_auth();
-$userId  = auth_user_id($payload);
+$principal = require_principal(['customer']); $userId = $principal['id'];
 $db      = get_db();
 
 $orderId = (int)($_GET['order_id'] ?? 0);

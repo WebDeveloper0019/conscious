@@ -11,8 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['REQUEST_METHOD'] !== 'GET
     json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
 }
 
-$payload = require_auth();
-$userId  = auth_user_id($payload);
+$principal = require_principal(['customer']); $userId = $principal['id'];
 $db      = get_db();
 
 // ─── GET: check status of latest export job ───

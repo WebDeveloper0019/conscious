@@ -9,8 +9,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'GET') {
     json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
 }
 
-$auth   = require_auth();
-$userId = auth_user_id($auth);
+$principal = require_principal(['customer']); $userId = $principal['id'];
 $db     = get_db();
 
 try {

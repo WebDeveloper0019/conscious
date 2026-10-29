@@ -1,8 +1,13 @@
 <?php
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
+require_once __DIR__ . '/../lib/authorization.php'; // <-- Add this
 send_cors_headers();
-$payload=require_auth(); $userId=auth_user_id($payload); $db=get_db();
+
+// Use the correct function here!
+$principal = require_principal(['customer']); 
+$userId = $principal['id']; 
+$db = get_db();
 
 if($_SERVER['REQUEST_METHOD']!=='GET') json_response(405,['success'=>false,'message'=>'Method not allowed.']);
 

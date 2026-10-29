@@ -10,9 +10,7 @@ send_cors_headers();
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
 }
-
-$payload = require_auth();
-$userId  = auth_user_id($payload);
+$principal = require_principal(['customer']); $userId = $principal['id'];
 require_csrf();
 
 $body   = get_json_body();

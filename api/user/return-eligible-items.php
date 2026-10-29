@@ -2,7 +2,7 @@
 declare(strict_types=1);
 require_once __DIR__.'/../lib/helpers.php';
 send_cors_headers();
-$auth=require_auth();
+$principal = require_principal(['customer']); $userId = $principal['id'];
 if(($_SERVER['REQUEST_METHOD']??'')!=='GET')json_response(405,['success'=>false,'message'=>'Method not allowed.']);
 $stmt=get_db()->prepare(
     'SELECT oi.id AS order_item_id,oi.product_name,oi.quantity,oi.cancelled_quantity,oi.returned_quantity,

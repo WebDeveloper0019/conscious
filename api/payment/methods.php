@@ -4,7 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/razorpay.php';
 send_cors_headers();
-require_auth();
+$principal = require_principal(['customer']); $userId = $principal['id'];
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'GET') {
     json_response(405, ['success' => false, 'message' => 'Method not allowed.']);
 }

@@ -7,8 +7,7 @@ require_once __DIR__ . '/../lib/audit.php';
 
 send_cors_headers();
 
-$payload = require_auth();
-$userId  = auth_user_id($payload);
+$principal = require_principal(['customer']); $userId = $principal['id'];
 $db      = get_db();
 $method  = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 

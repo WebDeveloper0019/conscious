@@ -7,8 +7,7 @@ require_once __DIR__ . '/../lib/credit-note.php';
 
 if (ob_get_level()) ob_end_clean();
 
-$payload = require_auth();
-$userId  = auth_user_id($payload);
+$principal = require_principal(['customer']); $userId = $principal['id'];
 $db      = get_db();
 
 $number = trim((string)($_GET['credit_note_number'] ?? ''));

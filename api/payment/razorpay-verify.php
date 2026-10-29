@@ -4,7 +4,7 @@ require_once __DIR__.'/../lib/helpers.php';
 require_once __DIR__.'/../lib/payment.php';
 require_once __DIR__.'/../lib/razorpay.php';
 send_cors_headers();
-$auth = require_auth();
+$principal = require_principal(['customer']); $userId = $principal['id'];
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') json_response(405,['success'=>false,'message'=>'Method not allowed.']);
 if (!razorpay_is_configured()) json_response(503,['success'=>false,'message'=>'Razorpay is not configured.']);
 $body = get_json_body();

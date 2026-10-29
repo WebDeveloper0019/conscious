@@ -6,8 +6,7 @@ require_once __DIR__ . '/../lib/db.php';
 
 if (ob_get_level()) ob_end_clean();
 
-$payload = require_auth();
-$userId  = auth_user_id($payload);
+$principal = require_principal(['customer']); $userId = $principal['id'];
 $db      = get_db();
 
 $jobId = trim((string)($_GET['id'] ?? ''));

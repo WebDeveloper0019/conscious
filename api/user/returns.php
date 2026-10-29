@@ -5,10 +5,11 @@ require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/notifications.php';
 require_once __DIR__ . '/../lib/idempotency.php';
 require_once __DIR__ . '/../lib/return-risk.php';
+require_once __DIR__ . '/../lib/authorization.php';
 
 send_cors_headers();
-$auth   = require_auth();
-$userId = auth_user_id($auth);
+$principal = require_principal(['customer']);
+$userId = $principal['id'];
 $db     = get_db();
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 

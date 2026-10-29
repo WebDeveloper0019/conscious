@@ -1,8 +1,12 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/../lib/authorization.php';
 require_once __DIR__.'/../lib/helpers.php';
 send_cors_headers();
-$principal=require_principal(['customer']);$userId=$principal['id'];$db=get_db();$method=$_SERVER['REQUEST_METHOD']??'GET';
+$principal=require_principal(['customer']);
+$userId=$principal['id']
+;$db=get_db();
+$method=$_SERVER['REQUEST_METHOD']??'GET';
 $vendorApproval=APP_ENV==='local'?'v.verification_status IN ("approved","demo_fixture")':'v.verification_status="approved"';
 function wishlist_public(array $row):array{return ['id'=>(int)$row['id'],'productId'=>$row['product_id'],'productName'=>$row['live_name']?:$row['product_name'],'productPrice'=>$row['live_price']!==null?(float)$row['live_price']:($row['product_price']!==null?(float)$row['product_price']:null),'productImage'=>$row['live_image']?:$row['product_image'],'vendorName'=>$row['live_vendor']?:$row['vendor_name'],'available'=>!empty($row['live_vendor']),'createdAt'=>$row['created_at']];}
 if($method==='GET'){
