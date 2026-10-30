@@ -294,3 +294,8 @@ if (!function_exists('public_user')) {
         return $user; // Just return the array without forcing types!
     }
 }
+if (!function_exists('is_valid_indian_mobile')) {
+    function is_valid_indian_mobile($mobile) {
+        return preg_match('/^[6-9]\d{9}$/', $mobile) === 1;
+    }
+}

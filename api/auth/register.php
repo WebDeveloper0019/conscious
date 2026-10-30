@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/resend.php';
@@ -47,13 +48,19 @@ try {
         $stmt->execute(['id'=>$id,'first'=>$first,'last'=>$last,'email'=>$email,'mobile'=>$mobile,'hash'=>password_hash($password,PASSWORD_DEFAULT),'marketing'=>$marketing?1:0,'otp'=>$otpHash,'expires'=>$expires,'sent'=>$now,'created'=>$now]);
     }
     if ($refCode !== '') { require_once __DIR__ . '/../lib/referral.php'; referral_attach_on_signup($id, $refCode); }
-    [$sent,$mailError]=send_otp_email($email,$first,$otp);    if (!$sent) { error_log('OTP email failed: '.$mailError); throw new RuntimeException('mail'); }
+    
+    [$sent,$mailError]=send_otp_email($email,$first,$otp);    
+    if (!$sent) { 
+        error_log('OTP email failed: '.$mailError); 
+        throw new RuntimeException($mailError); // Pass the actual error
+    }
     $db->commit();
 } catch (Throwable $e) {
     if ($db->inTransaction()) $db->rollBack();
-    json_response(502, ['success'=>false,'message'=>'We could not send the verification email. Please try again.']);
+    // --- TEMPORARY DEBUGGING LINE ---
+    json_response(502, ['success'=>false,'message'=>'MAIL ERROR: ' . $e->getMessage()]);
 }
-$localOutbox = APP_ENV === 'local' && MAIL_TRANSPORT === 'log';
+$localOutbox = false;
 json_response(201, [
     'success'=>true,
     'message'=>$localOutbox
