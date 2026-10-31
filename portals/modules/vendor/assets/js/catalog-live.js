@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const api = '../../../api/vendor/';
+  const api = '/conscious/api/vendor/';
   const state = {csrf:'', products:[], current:null, variants:[], images:[]};
   const form = document.getElementById('catalog-form');
   const editor = document.getElementById('catalog-editor');

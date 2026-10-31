@@ -1,64 +1,68 @@
-(() => {
-  'use strict';
-  const api = '../../../api/vendor/';
-  const byId = id => document.getElementById(id);
-  const money = value => new Intl.NumberFormat('en-IN', {style:'currency', currency:'INR', maximumFractionDigits:2}).format(Number(value) || 0);
-  const count = (items, statuses) => items.filter(item => statuses.includes(item.status)).length;
-  async function get(path) {
-    const response = await fetch(api + path, {credentials:'same-origin', cache:'no-store', headers:{Accept:'application/json'}});
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok || !data.success) throw new Error(data.message || 'Your store activity could not be loaded.');
-    return data;
-  }
-  function task(title, detail, href) {
-    const link = document.createElement('a');
-    link.className = 'vc-list-item'; link.href = href;
-    const copy = document.createElement('div'); copy.className = 'vc-list-copy';
-    const heading = document.createElement('strong'); heading.textContent = title;
-    const note = document.createElement('p'); note.textContent = detail;
-    copy.append(heading, note); link.append(copy);
-    return link;
-  }
-  async function load() {
+document.addEventListener('DOMContentLoaded', async () => {
+    const messageEl = document.getElementById('vd-message');
+    
     try {
-      const [identity, productsData, ordersData, stockData, payoutsData, returnsData, codData] = await Promise.all([
-        get('auth/me.php'), get('products.php'), get('orders.php'), get('inventory.php'),
-        get('payouts.php'), get('returns.php'), get('cod-collections.php')
-      ]);
-      const vendor = identity.vendor || {};
-      const products = productsData.products || [];
-      const orders = ordersData.orders || [];
-      const stock = stockData.inventory || [];
-      const returns = returnsData.returns || [];
-      const cod = codData.collections || [];
-      byId('vd-store-status').textContent = vendor.status ? 'Store ' + vendor.status.replaceAll('_', ' ') : 'Vendor account';
-      byId('vd-verification-status').textContent = vendor.verification_status ? 'Verification: ' + vendor.verification_status.replaceAll('_', ' ') : '';
-      byId('vd-new-orders').textContent = count(orders, ['placed','pending','awaiting_acceptance']);
-      byId('vd-products').textContent = count(products, ['approved','active']);
-      byId('vd-products-note').textContent = products.length + ' total products including drafts';
-      byId('vd-payout').textContent = money(payoutsData.available);
-      byId('vd-delivered').textContent = count(orders, ['delivered']);
-      byId('vd-preparing').textContent = count(orders, ['accepted','processing','quality_check','packing']);
-      byId('vd-ready').textContent = count(orders, ['ready_to_dispatch']);
-      byId('vd-shipping').textContent = count(orders, ['dispatched','in_transit','out_for_delivery']);
-      const pendingReturns = returns.filter(item => ['requested','evidence_requested','received'].includes(item.status));
-      const lowStock = stock.filter(item => Number(item.available_quantity) <= Number(item.low_stock_threshold));
-      byId('vd-returns').textContent = pendingReturns.length;
-      byId('vd-low-stock').textContent = lowStock.length;
-      byId('vd-cod').textContent = cod.filter(item => item.status !== 'collected' && item.group_status === 'delivered').length;
-      const tasks = byId('vd-tasks'); tasks.replaceChildren();
-      orders.filter(item => ['placed','pending','awaiting_acceptance'].includes(item.status)).slice(0,3).forEach(item => tasks.append(task('Review order ' + item.group_number, 'Accept or reject this order after confirming stock.', 'orders.php')));
-      orders.filter(item => item.status === 'ready_to_dispatch').slice(0,3).forEach(item => tasks.append(task('Dispatch order ' + item.group_number, 'Arrange your courier and enter package details.', 'delivery.php')));
-      pendingReturns.slice(0,3).forEach(item => tasks.append(task('Review return for ' + item.product_name, 'Customer request needs a vendor decision.', 'returns.php')));
-      lowStock.slice(0,3).forEach(item => tasks.append(task('Check stock: ' + item.name, item.available_quantity + ' available for ' + item.sku + '.', 'inventory.php')));
-      if (!tasks.childElementCount) {
-        const empty = document.createElement('div'); empty.className = 'vc-empty'; empty.textContent = 'No urgent tasks from your live store records.'; tasks.append(empty);
-      }
-      byId('vd-message').textContent = 'Showing live data for ' + (vendor.display_name || 'your store') + '. No preview orders or balances are included.';
+        // Fetching ONLY the new dashboard API we created
+        const response = await fetch('/conscious/api/vendor/dashboard.php');
+        const result = await response.json();
+
+        if (result.success && result.data) {
+            const data = result.data;
+
+            // Update Top Numbers
+            document.getElementById('vd-new-orders').textContent = data.newOrders;
+            document.getElementById('vd-products').textContent = data.activeProducts;
+            document.getElementById('vd-payout').textContent = '₹' + data.payout;
+            document.getElementById('vd-delivered').textContent = data.deliveredOrders;
+
+            // Update Operational Overview
+            document.getElementById('vd-preparing').textContent = data.operational.preparing;
+            document.getElementById('vd-ready').textContent = data.operational.ready;
+            document.getElementById('vd-shipping').textContent = data.operational.shipping;
+            
+            // These are 0 for now until we build the features
+            document.getElementById('vd-returns').textContent = data.operational.returns;
+            document.getElementById('vd-low-stock').textContent = data.operational.lowStock;
+            document.getElementById('vd-cod').textContent = data.operational.cod;
+
+            // Update Status Badges
+            const statusBadge = document.getElementById('vd-store-status');
+            if (statusBadge) {
+                statusBadge.textContent = 'Store is Live';
+                statusBadge.className = 'vc-status success';
+            }
+            
+            const verifyBadge = document.getElementById('vd-verification-status');
+            if (verifyBadge) {
+                verifyBadge.textContent = 'Verified Vendor';
+                verifyBadge.className = 'vc-status success';
+            }
+
+            // Hide the yellow warning box
+            if (messageEl) {
+                messageEl.style.display = 'none'; 
+            }
+
+            // Update Tasks List (No tasks for now)
+            const tasksContainer = document.getElementById('vd-tasks');
+            if (tasksContainer) {
+                tasksContainer.innerHTML = `<div class="vc-empty" style="text-align:center; padding:20px; color:#666;">No pending tasks! You are all caught up.</div>`;
+            }
+
+        } else {
+            console.error("API Error:", result.message);
+            if (messageEl) {
+                messageEl.textContent = 'Failed to load data: ' + (result.message || 'Unknown error');
+                messageEl.className = 'vc-callout amber';
+                messageEl.style.display = 'block';
+            }
+        }
     } catch (error) {
-      byId('vd-message').textContent = error.message;
-      byId('vd-message').classList.add('warning');
+        console.error("Network Error:", error);
+        if (messageEl) {
+            messageEl.textContent = 'Network error. Please refresh the page.';
+            messageEl.className = 'vc-callout amber';
+            messageEl.style.display = 'block';
+        }
     }
-  }
-  load();
-})();
+});
