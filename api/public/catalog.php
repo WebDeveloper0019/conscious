@@ -22,8 +22,8 @@ $q=trim((string)($_GET['q']??''));$category=(int)($_GET['category_id']??0);$vend
 $limit=max(1,min(60,(int)($_GET['limit']??24)));$offset=max(0,(int)($_GET['offset']??0));
 $sql='SELECT p.id,p.name,p.slug,p.short_description,p.mrp,p.selling_price,p.status,p.category_id,c.name AS category_name,p.material,p.origin_state,p.published_at,p.created_at,p.published_snapshot_json,v.id AS vendor_id,v.display_name AS vendor_name,v.vendor_type,v.verification_status AS vendor_verification_status,(SELECT CONCAT("../files.php?id=",f.id) FROM product_images pi JOIN file_assets f ON f.id=pi.file_asset_id WHERE pi.product_id=p.id AND f.visibility="public" AND f.scan_status="clean" AND f.deleted_at IS NULL ORDER BY pi.is_primary DESC,pi.sort_order LIMIT 1) AS image_url FROM products p JOIN vendors v ON v.id=p.vendor_id LEFT JOIN categories c ON c.id=p.category_id WHERE p.published_snapshot_json IS NOT NULL AND p.status NOT IN ("suspended","archived") AND v.status="active" AND '.$vendorApproval;
 $params=[];
-if($q!==''){$sql.=' AND (p.name LIKE :q OR p.description LIKE :q OR p.tags_json LIKE :q)';$params['q']='%'.$q.'%';}
-if($category>0){$sql.=' AND (p.category_id=:category OR p.subcategory_id=:category)';$params['category']=$category;}
+if($q!==''){$sql.=' AND (p.name LIKE :name_q OR p.description LIKE :description_q OR p.tags_json LIKE :tags_q)';$params['name_q']=$params['description_q']=$params['tags_q']='%'.$q.'%';}
+if($category>0){$sql.=' AND (p.category_id=:parent_category OR p.subcategory_id=:sub_category)';$params['parent_category']=$params['sub_category']=$category;}
 if($vendor!==''){$sql.=' AND p.vendor_id=:vendor';$params['vendor']=$vendor;}
 $sql.=" ORDER BY p.published_at DESC,p.created_at DESC LIMIT {$limit} OFFSET {$offset}";
 $stmt=$db->prepare($sql);$stmt->execute($params);$products=$stmt->fetchAll();

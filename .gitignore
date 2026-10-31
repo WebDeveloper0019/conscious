@@ -3,6 +3,7 @@
 .env.*
 !.env.example
 api/.env
+.claude/
 
 # Runtime data
 api/data/rate-limit/*.json
