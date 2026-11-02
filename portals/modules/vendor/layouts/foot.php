@@ -1,6 +1,7 @@
   </main>
 </div>
 </div>
+
 <dialog class="vc-dialog" id="vc-demo-dialog" aria-labelledby="vc-demo-title">
   <div class="vc-dialog-head"><h2 id="vc-demo-title">Vendor preview action</h2><button type="button" class="vc-btn small" data-close-demo-dialog>Close</button></div>
   <div class="vc-dialog-body">
@@ -13,5 +14,6 @@
 <script src="assets/js/app.js?v=20261024" defer></script>
 <?php if (!empty($vendorPageScript)): ?><script src="<?= htmlspecialchars($vendorPageScript, ENT_QUOTES, 'UTF-8') ?>" defer></script><?php endif; ?>
 <?php if (!empty($vendorOnboardingMode)): ?><script src="assets/js/vendor-onboarding-live.js?v=20261026-2" defer></script><?php endif; ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

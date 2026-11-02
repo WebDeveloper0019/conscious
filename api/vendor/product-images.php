@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__.'/../lib/helpers.php';require_once __DIR__.'/../lib/catalog.php';require_once __DIR__.'/../lib/upload.php';
+require_once __DIR__.'/../lib/helpers.php';
+require_once __DIR__.'/../lib/vendor.php'; require_once __DIR__.'/../lib/catalog.php';require_once __DIR__.'/../lib/upload.php';
 send_cors_headers();$context=require_vendor(true);$vendorId=$context['vendor']['id'];$db=get_db();$method=$_SERVER['REQUEST_METHOD']??'GET';$productId=trim((string)($_GET['product_id']??''));$product=vendor_product($productId,$vendorId);
 if($method!=='GET'&&!in_array($product['status'],['draft','changes_requested','rejected'],true))json_response(409,['success'=>false,'message'=>'Images can be changed only on a product draft.']);
 if($method==='POST'){$preAlt=trim((string)($_POST['alt_text']??$product['name']));if(mb_strlen($preAlt)<3||mb_strlen($preAlt)>220)json_response(422,['success'=>false,'message'=>'Image alt text must be between 3 and 220 characters.']);}

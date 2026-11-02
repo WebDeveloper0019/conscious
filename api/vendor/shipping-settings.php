@@ -2,6 +2,8 @@
 declare(strict_types=1);
 require_once __DIR__.'/../lib/helpers.php';
 require_once __DIR__.'/../lib/india.php';
+require_once __DIR__.'/../lib/db.php';
+require_once __DIR__.'/../lib/vendor.php';
 send_cors_headers();
 $vendorId = require_vendor(true)['vendor']['id'];
 $db = get_db();

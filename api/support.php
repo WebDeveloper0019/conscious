@@ -222,9 +222,10 @@ if ($method === 'POST') {
         if (!in_array($category, $ALLOWED_CATEGORIES, true)) {
             json_response(422, ['success' => false, 'message' => 'Invalid category.']);
         }
-
-        $priority = in_array($body['priority'] ?? 'normal', $ALLOWED_PRIORITIES, true)
-            ? $body['priority'] : 'normal';
+        $priority = $body['priority'] ?? 'normal';
+        if (!in_array($priority, $ALLOWED_PRIORITIES, true)) {
+            $priority = 'normal';
+        }
 
         $orderId = isset($body['order_id']) && (int)$body['order_id'] > 0 ? (int)$body['order_id'] : null;
         $vendorId = !empty($body['vendor_id']) ? (string)$body['vendor_id'] : null;

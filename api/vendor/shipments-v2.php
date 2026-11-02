@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../lib/fulfilment-safe.php';
+require_once __DIR__.'/../lib/vendor.php'; 
 
 function vendor_shipments_v2(): void
 {

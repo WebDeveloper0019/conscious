@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__.'/../lib/helpers.php';
 require_once __DIR__.'/../lib/commerce.php';
+require_once __DIR__.'/../lib/vendor.php'; 
 require_once __DIR__.'/../lib/india.php';
 send_cors_headers();
 

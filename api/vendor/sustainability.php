@@ -2,6 +2,8 @@
 declare(strict_types=1);
 require_once __DIR__.'/../lib/helpers.php';
 require_once __DIR__.'/../lib/upload.php';
+require_once __DIR__.'/../lib/vendor.php'; // <-- ADD THIS
+require_once __DIR__.'/../lib/db.php'; 
 send_cors_headers();
 $context=require_vendor(true);$vendorId=$context['vendor']['id'];$db=get_db();$method=$_SERVER['REQUEST_METHOD']??'GET';
 if($method==='GET'){
