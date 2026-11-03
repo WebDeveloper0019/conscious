@@ -23,7 +23,7 @@ $activePage = $activePage ?? 'dashboard';
   <link rel="stylesheet" href="assets/css/vendor-experience.css?v=20261024">
   <?php if (!empty($vendorPageCss)): ?><link rel="stylesheet" href="<?= htmlspecialchars($vendorPageCss, ENT_QUOTES, 'UTF-8') ?>"><?php endif; ?>
   <?php if (!empty($vendorOnboardingMode)): ?><link rel="stylesheet" href="assets/css/onboarding-v2.css"><?php endif; ?>
-  <link rel="stylesheet" href="../../shared/assets/css/customer-inspired-workspace.css?v=20261025-1">
+  <link rel="stylesheet" href="../../shared/assets/css/customer-inspired-workspace.css?v=20261031-1">
   <link rel="stylesheet" href="../../shared/assets/css/brand-typography.css?v=20261026">
 </head>
 <body class="ci-role-vendor">

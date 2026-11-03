@@ -11,4 +11,4 @@
 <?php elseif($mode==='reset'): ?>
 <p class="if-auth-intro">Choose a strong new password. This reset link can only be used once.</p><form id="if-reset" class="if-form"><label>New password<input name="password" type="password" autocomplete="new-password" placeholder="Create a strong password" minlength="12" maxlength="128" required></label><small>Use 12+ characters with uppercase, lowercase, number and symbol.</small><label>Confirm new password<input name="password_confirmation" type="password" autocomplete="new-password" placeholder="Re-enter your password" required></label><button class="if-button" type="submit">Reset password <i class="fa-solid fa-arrow-right"></i></button></form><p><a href="login.php">Back to sign in</a></p>
 <?php endif; ?>
-</div></section></main><script src="../assets/js/auth.js?v=20261017" defer></script></body></html>
+</div></section></main><script src="../../../../assets/js/inline-form-feedback.js?v=20261031" defer></script><script src="../assets/js/auth.js?v=20261017" defer></script></body></html>

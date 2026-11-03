@@ -1,0 +1,31 @@
+/* Keep account information legible across overview, orders, returns and support. */
+.ci-role-customer .cc-page-head > div > span { font-size: 13px; line-height: 1.5; }
+.ci-role-customer .cc-sidebar .cc-nav-link,
+.ci-role-customer .cc-sidebar .cc-side-foot a { font-size: 13px; }
+.ci-role-customer .cc-sidebar .cc-nav-label { font-size: 11px; }
+
+.ci-role-customer .cc-content { font-size: 14px; line-height: 1.55; }
+.ci-role-customer .cc-content p { font-size: 13px !important; line-height: 1.6; }
+.ci-role-customer .cc-content small { font-size: 12px !important; line-height: 1.5; }
+.ci-role-customer .cc-content label,
+.ci-role-customer .cc-content th,
+.ci-role-customer .cc-content td { font-size: 13px; line-height: 1.5; }
+.ci-role-customer .cc-content input,
+.ci-role-customer .cc-content select,
+.ci-role-customer .cc-content textarea { font-size: 14px; }
+.ci-role-customer .cc-content .cc-btn { font-size: 13px; }
+
+.ci-role-customer .cx-quick-grid strong { font-size: 14px; }
+.ci-role-customer .cx-section-head > a { font-size: 13px; }
+.ci-role-customer .cx-welcome h2,
+.ci-role-customer .cx-membership strong { color: #fff; }
+.ci-role-customer .cx-welcome .cx-kicker { color: #f8cb98; }
+.ci-role-customer .cx-welcome > div > p,
+.ci-role-customer .cx-membership small,
+.ci-role-customer .cx-membership p { color: #f2f6f1 !important; }
+
+@media (max-width: 600px) {
+  .ci-role-customer .cc-content p,
+  .ci-role-customer .cc-content label { font-size: 13px !important; }
+  .ci-role-customer .cc-content small { font-size: 12px !important; }
+}

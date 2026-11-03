@@ -35,13 +35,27 @@ function load_app_env(): void
 load_app_env();
 date_default_timezone_set('UTC');
 
-if ((getenv('APP_ENV') ?: 'local') === 'production') {
+function app_is_local_request(): bool
+{
+    if (PHP_SAPI === 'cli') return true;
+    $host = strtolower((string)parse_url('http://' . (string)($_SERVER['HTTP_HOST'] ?? ''), PHP_URL_HOST));
+    $remote = (string)($_SERVER['REMOTE_ADDR'] ?? '');
+    return in_array($host, ['localhost', '127.0.0.1', '::1'], true)
+        && in_array($remote, ['127.0.0.1', '::1'], true);
+}
+
+$configuredEnvironment = strtolower(trim((string)(getenv('APP_ENV') ?: '')));
+$effectiveEnvironment = $configuredEnvironment !== '' ? $configuredEnvironment : (app_is_local_request() ? 'local' : 'production');
+if ($effectiveEnvironment === 'local' && !app_is_local_request()) $effectiveEnvironment = 'production';
+if (!in_array($effectiveEnvironment, ['local', 'production'], true)) $effectiveEnvironment = 'production';
+
+if ($effectiveEnvironment === 'production') {
     ini_set('display_errors', '0');
     ini_set('display_startup_errors', '0');
     ini_set('log_errors', '1');
 }
 
-define('APP_ENV', getenv('APP_ENV') ?: 'local');
+define('APP_ENV', $effectiveEnvironment);
 define('APP_URL', rtrim(getenv('APP_URL') ?: '', '/'));
 define('APP_KEY', getenv('APP_KEY') ?: getenv('JWT_SECRET') ?: (APP_ENV === 'local' ? 'local-only-change-before-deployment-32-chars' : ''));
 define('SESSION_TTL', 60 * 60 * 8);
@@ -71,6 +85,13 @@ define('AI_PROVIDER', strtolower(trim((string)(getenv('AI_PROVIDER') ?: 'disable
 define('CF_ACCOUNT_ID', trim((string)(getenv('CF_ACCOUNT_ID') ?: '')));
 define('CF_AI_TOKEN', trim((string)(getenv('CF_AI_TOKEN') ?: '')));
 define('OLLAMA_BASE_URL', rtrim(trim((string)(getenv('OLLAMA_BASE_URL') ?: '')), '/'));
+
+if (APP_ENV === 'production' && (DB_USER === 'root' || DB_PASS === '')) {
+    http_response_code(500);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['success' => false, 'message' => 'Production database credentials are not configured.']);
+    exit;
+}
 
 if (APP_ENV === 'production' && (!str_starts_with(APP_URL, 'https://') || parse_url(APP_URL, PHP_URL_HOST) === null)) {
     http_response_code(500);

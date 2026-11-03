@@ -15,11 +15,14 @@ $limit  = min(100, max(1, (int)($_GET['limit'] ?? 20)));
 $offset = ($page - 1) * $limit;
 
 $search = trim((string)($_GET['search'] ?? ''));
+if (mb_strlen($search) > 100) json_response(422, ['success' => false, 'message' => 'Search is too long.']);
 $where = '1=1';
 $params = [];
 if ($search !== '') {
-    $where .= ' AND (cn.credit_note_number LIKE :s OR o.order_number LIKE :s OR cn.reason LIKE :s)';
-    $params['s'] = '%' . $search . '%';
+    $where .= ' AND (cn.credit_note_number LIKE :credit_search OR o.order_number LIKE :order_search OR cn.reason LIKE :reason_search)';
+    $params['credit_search'] = '%' . $search . '%';
+    $params['order_search'] = '%' . $search . '%';
+    $params['reason_search'] = '%' . $search . '%';
 }
 
 $countStmt = $db->prepare("SELECT COUNT(*) FROM credit_notes cn JOIN orders o ON o.id = cn.order_id WHERE $where");

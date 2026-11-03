@@ -1,7 +1,7 @@
 <section class="vc-card">
   <div class="vc-card-head"><div><h2>Creator packages</h2><p>Book a reviewed service from an approved creator. The price, GST, deliverables and cancellation terms are confirmed before secure payment.</p></div></div>
   <div class="vc-card-body">
-    <label class="vc-field" for="vendor-package-search">Search by creator, platform or service
+    <label class="vc-field" for="vendor-package-search">Search by Creator, Platform or Service
       <input class="vc-input" id="vendor-package-search" type="search" placeholder="For example: Instagram, reel, sustainable living">
     </label>
     <p id="vendor-package-message" role="status" aria-live="polite">Loading approved packages…</p>
@@ -25,22 +25,22 @@
     </div>
     <div class="vc-callout" id="vendor-package-quote"></div>
     <div class="vc-form-grid mt-3">
-      <label class="vc-field">Campaign brief
+      <label class="vc-field">Campaign Brief
         <textarea class="vc-input" name="brief" rows="5" minlength="20" maxlength="5000" required placeholder="Explain the campaign goal, audience, key message and expected content."></textarea>
       </label>
-      <label class="vc-field">Campaign contact name
+      <label class="vc-field">Campaign Contact Name
         <input class="vc-input" name="contact_name" minlength="2" maxlength="140" required>
       </label>
-      <label class="vc-field">Contact email
+      <label class="vc-field">Contact Email
         <input class="vc-input" name="contact_email" type="email" required>
       </label>
-      <label class="vc-field">Contact mobile
+      <label class="vc-field">Contact Mobile
         <input class="vc-input" name="contact_mobile" inputmode="numeric" pattern="[0-9 ]{10,15}">
       </label>
-      <label class="vc-field">Products to feature (one per line)
+      <label class="vc-field">Products to Feature (One Per Line)
         <textarea class="vc-input" name="target_products" rows="3" maxlength="1000"></textarea>
       </label>
-      <label class="vc-field">Preferred dates (one per line)
+      <label class="vc-field">Preferred Dates (One Per Line)
         <textarea class="vc-input" name="requested_dates" rows="3" maxlength="500" placeholder="For example: 15 November 2026"></textarea>
       </label>
     </div>

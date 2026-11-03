@@ -1,16 +1,11 @@
 <?php /* Shared public storefront header. Dashboard layouts do not include this file. */ ?>
 <link rel="stylesheet" href="/conscious/assets/css/site-motion.css?v=20261026-1">
+<script src="/conscious/assets/js/inline-form-feedback.js?v=20261031" defer></script>
 <div class="bc-announce-bar" aria-label="Conscious India partner links">
   <div class="bc-announce-track container">
     <div class="bc-utility-inner">
       <span class="bc-utility-trust"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Conscious commerce · Verified brands &amp; artisans</span>
       <nav class="bc-utility-links" aria-label="Partner and experience links">
-        <a href="/conscious/become-brand-partner">Sell With Us</a>
-        <details class="bc-utility-menu"><summary>Join Us <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary><div class="bc-utility-menu-panel">
-          <a href="/conscious/become-brand-partner">Conscious Brand</a>
-          <a href="/conscious/become-artisan-partner">Artisan/SHG</a>
-          <a href="/conscious/creators">Conscious Creator / Influencer</a>
-        </div></details>
         <details class="bc-utility-menu"><summary>Register As <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary><div class="bc-utility-menu-panel">
           <a href="/conscious/portals/modules/vendor/auth/register.php?type=brand">Conscious Brand</a>
           <a href="/conscious/portals/modules/vendor/auth/register.php?type=artisan">Artisan</a>

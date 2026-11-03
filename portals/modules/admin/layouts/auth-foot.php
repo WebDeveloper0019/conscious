@@ -4,5 +4,5 @@
 </main>
 <div class="ac-toast-wrap" id="ac-toast-wrap" aria-live="polite"></div>
 <script src="../assets/js/auth.js" defer></script>
-</body>
+<script src="../../../../assets/js/inline-form-feedback.js?v=20261031" defer></script></body>
 </html>

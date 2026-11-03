@@ -28,6 +28,8 @@ DirectoryIndex index.php index.html
 RewriteEngine On
 
 RewriteRule ^(?:\.git|build|config|design|docs|outputs|scripts|storage|tests)(?:/|$) - [F,L,NC]
+RewriteRule ^api/(?:bin|data|lib|migrations)(?:/|$) - [F,L,NC]
+RewriteRule ^api/config\.php$ - [F,L,NC]
 
 # Compatibility for releases served at the domain root while legacy links still
 # contain the local XAMPP /conscious prefix.

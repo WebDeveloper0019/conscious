@@ -41,16 +41,18 @@ if ($job['expires_at'] && strtotime((string)$job['expires_at']) < time()) {
     echo json_encode(['success' => false, 'message' => 'Export has expired.']); exit;
 }
 
-$storageDir = __DIR__ . '/../../storage/private';
-$path = $storageDir . '/' . ltrim((string)$job['storage_key'], '/');
+$storageDir = realpath(PRIVATE_STORAGE_PATH);
+$path = $storageDir === false ? false : realpath($storageDir . '/' . ltrim((string)$job['storage_key'], '/'));
 
-if (!is_file($path)) {
+if ($storageDir === false || $path === false
+    || !str_starts_with($path, $storageDir . DIRECTORY_SEPARATOR)
+    || !is_file($path)) {
     header('Content-Type: application/json'); http_response_code(404);
     echo json_encode(['success' => false, 'message' => 'File no longer available.']); exit;
 }
 
 header('Content-Type: application/json');
-header('Content-Disposition: attachment; filename="' . basename((string)$job['original_name']) . '"');
+header('Content-Disposition: attachment; filename="' . (preg_replace('/[^A-Za-z0-9._-]/', '_', basename((string)$job['original_name'])) ?: 'export.json') . '"');
 header('Content-Length: ' . filesize($path));
 header('Cache-Control: private, max-age=0, no-store');
 header('X-Content-Type-Options: nosniff');

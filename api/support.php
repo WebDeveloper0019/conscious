@@ -151,8 +151,9 @@ if ($method === 'GET') {
 
     if ($search !== '') {
         if (strlen($search) > 100) json_response(422, ['success' => false, 'message' => 'Search too long.']);
-        $where .= ' AND (subject LIKE :s OR ticket_number LIKE :s)';
-        $params['s'] = '%' . $search . '%';
+        $where .= ' AND (subject LIKE :subject_search OR ticket_number LIKE :ticket_search)';
+        $params['subject_search'] = '%' . $search . '%';
+        $params['ticket_search'] = '%' . $search . '%';
     }
 
     $cnt = $db->prepare("SELECT COUNT(*) FROM support_tickets WHERE $where");
