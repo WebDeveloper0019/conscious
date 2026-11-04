@@ -12,6 +12,7 @@ $releaseRoot = $buildRoot . DIRECTORY_SEPARATOR . 'release';
 $publicRoot = $releaseRoot . DIRECTORY_SEPARATOR . 'public_html';
 $privateRoot = $releaseRoot . DIRECTORY_SEPARATOR . 'private';
 $backendRoot = $privateRoot . DIRECTORY_SEPARATOR . 'backend';
+$hostingerFixedRoot = in_array('--hostinger-fixed-root', $argv, true);
 
 function ensureDirectory(string $path): void
 {
@@ -119,6 +120,9 @@ if ($htaccessContents === null || file_put_contents($productionHtaccess, $htacce
 }
 
 foreach (glob($projectRoot . DIRECTORY_SEPARATOR . '*.php') ?: [] as $file) {
+    if (basename($file) === 'dev-router.php') {
+        continue;
+    }
     copyFile($file, $publicRoot . DIRECTORY_SEPARATOR . basename($file));
 }
 
@@ -185,7 +189,20 @@ ensureDirectory($backendRoot . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATO
 ensureDirectory($backendRoot . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'mail-outbox');
 
 // Compatibility bridges preserve existing endpoint includes without exposing backend source.
-$configBridge = <<<'PHP'
+$configBridge = $hostingerFixedRoot ? <<<'PHP'
+<?php
+declare(strict_types=1);
+
+// The domain document root is public_html/conscious. Private files live in
+// a sibling of public_html, outside all browser-accessible directories.
+$backendConfig = dirname(__DIR__, 3) . '/private/ci-backend/backend/config.php';
+if (!is_file($backendConfig)) {
+    http_response_code(503);
+    exit('Application backend is unavailable.');
+}
+require_once $backendConfig;
+PHP
+    : <<<'PHP'
 <?php
 declare(strict_types=1);
 
@@ -202,7 +219,10 @@ $publicLibRoot = $publicRoot . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR
 ensureDirectory($publicLibRoot);
 foreach (glob($apiSource . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . '*.php') ?: [] as $library) {
     $filename = basename($library);
-    $bridge = "<?php\ndeclare(strict_types=1);\nrequire_once dirname(__DIR__, 3) . '/private/backend/lib/{$filename}';\n";
+    $backendPath = $hostingerFixedRoot
+        ? "dirname(__DIR__, 4) . '/private/ci-backend/backend/lib/{$filename}'"
+        : "dirname(__DIR__, 3) . '/private/backend/lib/{$filename}'";
+    $bridge = "<?php\ndeclare(strict_types=1);\nrequire_once {$backendPath};\n";
     file_put_contents($publicLibRoot . DIRECTORY_SEPARATOR . $filename, $bridge);
 }
 
@@ -211,7 +231,7 @@ $normalizedFiles = normalizeProductionBasePath($publicRoot) + normalizeProductio
 
 file_put_contents(
     $releaseRoot . DIRECTORY_SEPARATOR . 'RELEASE.txt',
-    "Conscious India production release\nBuilt: " . gmdate('c') . "\nPHP: " . PHP_VERSION . "\n"
+    "Conscious India production release\nBuilt: " . gmdate('c') . "\nPHP: " . PHP_VERSION . "\nLayout: " . ($hostingerFixedRoot ? 'Hostinger fixed public_html/conscious' : 'sibling public_html/private') . "\n"
 );
 
 echo "Production release created successfully.\n";

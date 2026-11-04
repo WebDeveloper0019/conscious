@@ -1,5 +1,45 @@
 <?php
 declare(strict_types=1);
-if(PHP_SAPI!=='cli'){http_response_code(404);exit;}require_once __DIR__.'/../lib/helpers.php';
-[$script,$email,$password,$name]=array_pad($argv,4,'');$email=strtolower(trim($email));$name=trim($name);if(!is_valid_email($email)||!is_strong_enough_password($password)||mb_strlen($name)<2){fwrite(STDERR,"Usage: php api/bin/create-admin.php admin@example.com 'StrongPassword@123' 'Full Name'\n");exit(1);}
-$db=get_db();$id=uuid_string();$db->beginTransaction();try{$db->prepare('INSERT INTO admin_users (id,full_name,email,password_hash,status,created_at) VALUES (:id,:name,:email,:password,"active",UTC_TIMESTAMP())')->execute(['id'=>$id,'name'=>$name,'email'=>$email,'password'=>password_hash($password,PASSWORD_DEFAULT)]);$db->prepare('INSERT INTO principal_roles (principal_type,principal_id,role_id,granted_at) SELECT "admin",:id,id,UTC_TIMESTAMP() FROM roles WHERE code="admin_super"')->execute(['id'=>$id]);$db->commit();}catch(Throwable $e){if($db->inTransaction())$db->rollBack();fwrite(STDERR,"Admin could not be created.\n");exit(1);}fwrite(STDOUT,"Administrator created: {$email}\n");
+
+if (PHP_SAPI !== 'cli') {
+    http_response_code(404);
+    exit;
+}
+
+require_once __DIR__ . '/../lib/helpers.php';
+
+$arguments = array_slice($argv, 1);
+$passwordFromStdin = ($arguments[0] ?? '') === '--password-stdin';
+if ($passwordFromStdin) {
+    array_shift($arguments);
+    [$email, $name] = array_pad($arguments, 2, '');
+    $password = rtrim((string)fgets(STDIN), "\r\n");
+} else {
+    [$email, $password, $name] = array_pad($arguments, 3, '');
+}
+
+$email = strtolower(trim($email));
+$name = trim($name);
+if (!is_valid_email($email) || !is_strong_enough_password($password) || mb_strlen($name) < 2) {
+    fwrite(STDERR, "Usage: php create-admin.php --password-stdin admin@example.com 'Full Name'\n");
+    exit(1);
+}
+
+$db = get_db();
+$id = uuid_string();
+$db->beginTransaction();
+try {
+    $db->prepare('INSERT INTO admin_users (id,full_name,email,password_hash,status,created_at) VALUES (:id,:name,:email,:password,"active",UTC_TIMESTAMP())')
+        ->execute(['id' => $id, 'name' => $name, 'email' => $email, 'password' => password_hash($password, PASSWORD_DEFAULT)]);
+    $db->prepare('INSERT INTO principal_roles (principal_type,principal_id,role_id,granted_at) SELECT "admin",:id,id,UTC_TIMESTAMP() FROM roles WHERE code="admin_super"')
+        ->execute(['id' => $id]);
+    $db->commit();
+} catch (Throwable $e) {
+    if ($db->inTransaction()) {
+        $db->rollBack();
+    }
+    fwrite(STDERR, "Admin could not be created.\n");
+    exit(1);
+}
+
+fwrite(STDOUT, "Administrator created: {$email}\n");

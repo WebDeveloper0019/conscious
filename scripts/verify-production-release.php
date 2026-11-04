@@ -49,7 +49,7 @@ foreach ($requiredFiles as $file) {
 }
 
 $forbiddenPublicPaths = [
-    '.git', 'build', 'config', 'docs', 'outputs', 'scripts', 'storage', 'tests',
+    '.git', 'build', 'config', 'docs', 'outputs', 'scripts', 'storage', 'tests', 'dev-router.php',
     'api/bin', 'api/data', 'api/database', 'api/dependencies',
 ];
 foreach ($forbiddenPublicPaths as $relative) {
@@ -101,14 +101,19 @@ $check($privatePrefixFiles === [], 'No local /conscious URL prefix remains in pr
 
 $bridgeFiles = glob($publicRoot . '/api/lib/*.php') ?: [];
 $bridgesAreThin = $bridgeFiles !== [];
+$hostingerFixedRoot = str_contains((string)file_get_contents($releaseRoot . '/RELEASE.txt'), 'Hostinger fixed public_html/conscious');
+$expectedBridgePath = $hostingerFixedRoot ? '/private/ci-backend/backend/lib/' : '/private/backend/lib/';
 foreach ($bridgeFiles as $bridge) {
     $contents = file_get_contents($bridge) ?: '';
-    if (!str_contains($contents, '/private/backend/lib/') || substr_count($contents, PHP_EOL) > 4) {
+    if (!str_contains($contents, $expectedBridgePath) || substr_count($contents, PHP_EOL) > 4) {
         $bridgesAreThin = false;
         break;
     }
 }
 $check($bridgesAreThin, 'Public API library bridges contain no backend implementation');
+$configBridge = file_get_contents($publicRoot . '/api/config.php') ?: '';
+$expectedConfigPath = $hostingerFixedRoot ? '/private/ci-backend/backend/config.php' : '/private/backend/config.php';
+$check(str_contains($configBridge, $expectedConfigPath), 'Public configuration bridge resolves to the private backend');
 
 echo PHP_EOL;
 if ($failures !== []) {

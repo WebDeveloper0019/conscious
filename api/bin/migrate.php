@@ -18,6 +18,13 @@ foreach($files as $file){
         // Older Windows installations stored CRLF hashes. Accept only newline
         // equivalents; any actual SQL change must still stop the upgrade.
         $knownHashes=[$checksum,hash('sha256',(string)$sql),hash('sha256',str_replace("\n","\r\n",$normalizedSql))];
+        // This migration was corrected for MariaDB's CHAR padding rules after
+        // some installations had already applied the original equivalent SQL.
+        if ($version === '0036_cart_active_only_unique'
+            && $checksum === '7fb485d02668c67631cbc588f04636e7bd83d5a778871cb6cc3736b88a2c4f32') {
+            $knownHashes[] = '1c5262e729dfaf111e498818346afd5644d4b92090b6b5e7d5427849b83611ae';
+            $knownHashes[] = '165fca27057563880542a768ee54d6f9a7b0345da493b3665f19a83024860984';
+        }
         if(!in_array((string)$applied[$version],$knownHashes,true)){fwrite(STDERR,"Migration checksum changed: {$version}\n");exit(1);} continue;
     }
     try{

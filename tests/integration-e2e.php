@@ -129,8 +129,9 @@ function journey_rewards_lifecycle(): void
 
     // Top up so we can redeem (min 100)
     if ($earned < 150) {
-        get_db()->prepare('UPDATE customer_rewards SET balance_points = 200, lifetime_earned = 200 WHERE user_id = ?')
-            ->execute([$user['id']]);
+        get_db()->prepare('INSERT INTO customer_reward_ledger (id,user_id,points,entry_type,reference_type,reference_id,description,status,created_at) VALUES (:id,:user,:points,"earned","test",:reference,"Isolated integration test top-up","active",UTC_TIMESTAMP())')
+            ->execute(['id'=>uuid_string(),'user'=>$user['id'],'points'=>200-$earned,'reference'=>uuid_string()]);
+        reward_balance($user['id']);
         $earned = 200;
     }
 

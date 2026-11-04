@@ -17,4 +17,4 @@ Local fixture seeders refuse production. Database-backed demo listings are visib
 - `php tests/pdf-smoke.php` checks both PDF renderers.
 - `tests/backend-e2e.php` uses real HTTP endpoints and requires an isolated `conscious_backend_test` or `conscious_backend_merge_<digits>` database. Set `DB_NAME` and `BACKEND_TEST_URL` for both the PHP test server and runner.
 
-Example isolated test server: `php -S 127.0.0.1:8112 -t .` with `DB_NAME` set to the dedicated test database. Set `BACKEND_TEST_URL=http://127.0.0.1:8112/api` for the runner. Do not run the fixture tests against the development or production database.
+Example isolated test server: `php -S 127.0.0.1:8112 -t . dev-router.php` with `DB_NAME` set to the dedicated test database. The router blocks sensitive files because PHP's built-in server ignores `.htaccess`. Set `BACKEND_TEST_URL=http://127.0.0.1:8112/api` for the runner. Keep the server bound to loopback and do not run the fixture tests against the development or production database.
