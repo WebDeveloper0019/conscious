@@ -6,7 +6,7 @@
   const endpoint = new URL('../../api/ai/chat.php', ownScript.src).href;
   const avatarUrl = new URL('../images/assistant/website-guide.png?v=20261114-puji1', ownScript.src).href;
   const css = document.createElement('link');
-  css.rel = 'stylesheet'; css.href = new URL('../css/ai-assistant.css?v=20261114-puji2', ownScript.src).href;
+  css.rel = 'stylesheet'; css.href = new URL('../css/ai-assistant.css?v=20261114-puji4', ownScript.src).href;
   document.head.appendChild(css);
 
   function node(tag, className, text) {
@@ -91,6 +91,55 @@
     return bubble;
   }
 
+  function sameSiteUrl(value) {
+    if (typeof value !== 'string' || value === '') return '';
+    try {
+      const url = new URL(value, location.origin);
+      return url.origin === location.origin && /^https?:$/.test(url.protocol) ? url.href : '';
+    } catch (_) { return ''; }
+  }
+
+  function addResults(bubble, results) {
+    if (!Array.isArray(results) || !results.length) return;
+    const list = node('div', 'ci-guide-results');
+    results.slice(0, 5).forEach(function (result) {
+      if (!result || typeof result !== 'object') return;
+      const href = sameSiteUrl(result.url);
+      if (!href) return;
+      if (result.type === 'link') {
+        const link = node('a', 'ci-guide-card-link', String(result.title || 'Open page'));
+        link.href = href;
+        list.append(link);
+        return;
+      }
+      const card = node('div', 'ci-guide-card');
+      const media = node('span', 'ci-guide-card-media');
+      const imageUrl = sameSiteUrl(result.image);
+      if (imageUrl) {
+        const image = node('img'); image.src = imageUrl; image.alt = '';
+        media.append(image);
+      } else {
+        media.append(icon(result.type === 'event' ? 'fa-calendar-days' : result.type === 'order' ? 'fa-box' : 'fa-leaf'));
+      }
+      const copy = node('span', 'ci-guide-card-copy');
+      if (result.subtitle) copy.append(node('small', '', String(result.subtitle)));
+      copy.append(node('strong', '', String(result.title || 'View details')));
+      if (result.meta) copy.append(node('span', 'ci-guide-card-meta', String(result.meta)));
+      const link = node('a', 'ci-guide-card-link', result.type === 'event' ? 'View event' : result.type === 'order' ? 'View order' : 'View product');
+      link.href = href;
+      link.setAttribute('aria-label', 'View ' + String(result.title || 'details'));
+      copy.append(link); card.append(media, copy); list.append(card);
+    });
+    if (list.childElementCount) bubble.append(list);
+    scrollEnd();
+  }
+
+  function csrfToken() {
+    const cookie = document.cookie.match(/(?:^|;\s*)ci_csrf=([^;]+)/);
+    try { return cookie ? decodeURIComponent(cookie[1]) : (sessionStorage.getItem('ci_csrf_token') || ''); }
+    catch (_) { return ''; }
+  }
+
   function welcome() {
     log.replaceChildren();
     const bubble = add('Namaste. I’m Puji, your CI Assistant. What would you like to explore?', 'assistant');
@@ -132,11 +181,14 @@
     const pending = add('Puji is thinking…', 'assistant');
     pending.classList.add('ci-guide-loading');
     try {
-      const response = await fetch(endpoint, {method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({message})});
+      const headers = {'Content-Type':'application/json'};
+      const csrf = csrfToken();
+      if (csrf) headers['X-CSRF-Token'] = csrf;
+      const response = await fetch(endpoint, {method:'POST',credentials:'same-origin',headers,body:JSON.stringify({message})});
       const data = await response.json();
       if (activeConversation === conversation) {
         pending.parentElement.remove();
-        add(data.reply || data.message || 'Help is unavailable right now.', 'assistant');
+        addResults(add(data.reply || data.message || 'Help is unavailable right now.', 'assistant'), data.results);
       }
     } catch (_) {
       if (activeConversation === conversation) {
@@ -158,7 +210,11 @@
     const button = event.target.closest('[data-question]');
     if (button) sendMessage(button.dataset.question);
   });
-  form.addEventListener('submit', function (event) { event.preventDefault(); sendMessage(input.value); });
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    sendMessage(input.value);
+  });
   input.addEventListener('keydown', function (event) {
     if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); form.requestSubmit(); }
   });
