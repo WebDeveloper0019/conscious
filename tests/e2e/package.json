@@ -1,0 +1,21 @@
+{
+  "name": "conscious-india-e2e",
+  "version": "1.0.0",
+  "description": "Playwright end-to-end tests for conscious.drowdigital.in",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:auth": "playwright test tests/e2e/auth/",
+    "test:public": "playwright test tests/e2e/public/",
+    "test:shop": "playwright test tests/e2e/shop/",
+    "test:portals": "playwright test tests/e2e/portals/"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.0.0"
+  }
+}
