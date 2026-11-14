@@ -6,17 +6,14 @@
     <div class="bc-utility-inner">
       <span class="bc-utility-trust"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Conscious commerce · Verified brands &amp; artisans</span>
       <nav class="bc-utility-links" aria-label="Partner and experience links">
-        <details class="bc-utility-menu"><summary>Register As <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary><div class="bc-utility-menu-panel">
-          <a href="/conscious/portals/modules/vendor/auth/register.php?type=brand">Conscious Brand</a>
-          <a href="/conscious/portals/modules/vendor/auth/register.php?type=artisan">Artisan</a>
-          <a href="/conscious/portals/modules/influencer/auth/register.php">Conscious Creator</a>
-        </div></details>
-        <details class="bc-utility-menu"><summary>Book/Collab For <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary><div class="bc-utility-menu-panel">
+        <a href="/conscious/portals/modules/vendor/auth/register.php">Register As Partner</a>
+        <details class="bc-utility-menu"><summary>Book &amp; Collab For <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary><div class="bc-utility-menu-panel">
           <a href="/conscious/events#event-stall-booking">Event Stall</a>
           <a href="/conscious/events#event-workshop-booking">Workshops</a>
           <a href="/conscious/creators">Conscious Creator / Influencer</a>
         </div></details>
         <a href="/conscious/corporate-gifting">Conscious Gifting</a>
+        <a href="/conscious/about">About CI</a>
       </nav>
     </div>
   </div>

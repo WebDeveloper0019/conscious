@@ -10,7 +10,7 @@
   let timer=null;
   let pointerPaused=false;
   let focusPaused=false;
-  const autoplayDelay=5000;
+  const autoplayDelay=3500;
   function element(tag,className,content){const node=document.createElement(tag);if(className)node.className=className;if(content)node.textContent=content;return node;}
   function show(position){
     const all=Array.from(slides.children);if(!all.length)return;

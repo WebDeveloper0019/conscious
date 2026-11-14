@@ -76,9 +76,9 @@
 
         <!-- About -->
         <div>
-          <div class="bc-footer-col-title">About Us</div>
+          <div class="bc-footer-col-title">About CI</div>
           <ul class="bc-footer-links">
-            <li><a href="/conscious/about"><i class="fa-solid fa-chevron-right"></i> Our Story</a></li>
+            <li><a href="/conscious/about"><i class="fa-solid fa-chevron-right"></i> About CI</a></li>
             <li><a href="/conscious/mission"><i class="fa-solid fa-chevron-right"></i> Our Mission</a></li>
             <li><a href="/conscious/impact-report"><i class="fa-solid fa-chevron-right"></i> Impact Report</a></li>
             <li><a href="/conscious/impact-report"><i class="fa-solid fa-chevron-right"></i> Impact</a></li>

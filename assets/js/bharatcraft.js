@@ -1312,7 +1312,7 @@ function toggleLoading(selector, show) {
   const source = document.currentScript && document.currentScript.src;
   if (!source || document.querySelector('script[data-ci-ai-assistant]')) return;
   const script = document.createElement('script');
-  script.src = new URL('ai-assistant.js', source).href;
+  script.src = new URL('ai-assistant.js?v=20261114-puji1', source).href;
   script.defer = true;
   script.dataset.ciAiAssistant = 'true';
   document.head.appendChild(script);

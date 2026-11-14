@@ -13,7 +13,8 @@ function ai_provider_ready(): bool {
 function ai_complete(string $system, string $prompt, int $maxTokens = 512): ?string {
     if (!ai_provider_ready() || !function_exists('curl_init')) return null;
     if (AI_PROVIDER === 'cloudflare') {
-        $url = 'https://api.cloudflare.com/client/v4/accounts/' . rawurlencode(CF_ACCOUNT_ID) . '/ai/run/@cf/meta/llama-3.1-8b-instruct';
+        $modelPath = implode('/', array_map('rawurlencode', explode('/', CF_AI_MODEL)));
+        $url = 'https://api.cloudflare.com/client/v4/accounts/' . rawurlencode(CF_ACCOUNT_ID) . '/ai/run/' . $modelPath;
         $payload = ['messages'=>[['role'=>'system','content'=>$system],['role'=>'user','content'=>$prompt]],'max_tokens'=>$maxTokens,'temperature'=>0.5];
         $headers = ['Authorization: Bearer ' . CF_AI_TOKEN, 'Content-Type: application/json'];
     } else {

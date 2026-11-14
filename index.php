@@ -2116,11 +2116,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Conscious India Main JS -->
-<script src="assets/js/bharatcraft.js?v=20261017-1"></script>
+<script src="assets/js/bharatcraft.js?v=20261114-puji1"></script>
 <script src="assets/js/gsap.min.js?v=2"></script>
 <script src="assets/js/ScrollTrigger.min.js?v=2"></script>
 <script src="assets/js/home-editorial-sections.js?v=20261026-1"></script>
-<script src="assets/js/home-hero.js?v=20261026-autoplay2"></script>
+<script src="assets/js/home-hero.js?v=20261114-timing1"></script>
 <script src="assets/js/home-maker.js?v=20261026-images1"></script>
 
 </body>
