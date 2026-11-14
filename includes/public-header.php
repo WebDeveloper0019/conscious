@@ -6,7 +6,7 @@
     <div class="bc-utility-inner">
       <span class="bc-utility-trust"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Conscious commerce · Verified brands &amp; artisans</span>
       <nav class="bc-utility-links" aria-label="Partner and experience links">
-        <a href="/conscious/join">Become a Partner</a>
+        <a href="/conscious/join">Register As Partner</a>
         <details class="bc-utility-menu"><summary>Book &amp; Collab For <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary><div class="bc-utility-menu-panel">
           <a href="/conscious/events#event-stall-booking">Event Stall</a>
           <a href="/conscious/events#event-workshop-booking">Workshops</a>
