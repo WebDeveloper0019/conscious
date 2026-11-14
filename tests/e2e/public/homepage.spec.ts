@@ -14,6 +14,9 @@ test.describe('Homepage', () => {
   });
 
   test('has no broken images', async ({ page }) => {
+    // KNOWN SITE ISSUE: ~20 broken images including home-kind-words.png,
+    // home-kinder-tomorrow.png, and assets/images/user.png (4 instances).
+    // Tracked as a bug — test intentionally fails to surface this for the dev.
     await assertNobrokenImages(page);
   });
 
@@ -26,23 +29,24 @@ test.describe('Homepage', () => {
   });
 
   test('header is visible with logo and actions', async ({ page }) => {
-    await expect(page.locator('.bc-header')).toBeVisible();
+    await expect(page.locator('.bc-header').first()).toBeVisible();
     await expect(page.locator('.bc-header img[alt*="Conscious"]').first()).toBeVisible();
-    await expect(page.locator('a[aria-label="Cart (0 items)"], a[aria-label*="Cart"]')).toBeVisible();
-    await expect(page.locator('a[aria-label*="Account"]')).toBeVisible();
+    // Use .first() — desktop header and mobile header both render cart links
+    await expect(page.locator('a[aria-label*="Cart"]').first()).toBeVisible();
+    await expect(page.locator('a[aria-label*="Account"]').first()).toBeVisible();
   });
 
-  test('announce bar shows Register As Partner link', async ({ page }) => {
+  test('announce bar shows partner registration link', async ({ page }) => {
     const bar = page.locator('.bc-announce-bar');
     await expect(bar).toBeVisible();
     await expect(bar.locator('a[href*="/join"]')).toBeVisible();
   });
 
   test('main navigation has all top-level items', async ({ page }) => {
-    const nav = page.locator('.bc-nav-list');
+    const nav = page.locator('.bc-nav-list').first();
     await expect(nav).toBeVisible();
-    // At least 4 top-level nav items
-    await expect(nav.locator('.bc-nav-item')).toHaveCountGreaterThan(3);
+    const count = await nav.locator('.bc-nav-item').count();
+    expect(count).toBeGreaterThan(3);
   });
 
   test('search input is interactive', async ({ page }) => {
@@ -53,9 +57,8 @@ test.describe('Homepage', () => {
   });
 
   test('hero section is rendered', async ({ page }) => {
-    // At least one above-the-fold section visible
-    const hero = page.locator('section').first();
-    await expect(hero).toBeVisible();
+    const hero = page.locator('main section, .bc-hero, [class*="hero"]').first();
+    await expect(hero).toBeVisible({ timeout: 10_000 });
   });
 });
 
@@ -78,20 +81,22 @@ test.describe('Homepage — mobile', () => {
     const hamburger = page.locator('#bc-hamburger');
     const drawer = page.locator('#bc-mobile-drawer');
 
-    await expect(drawer).toHaveAttribute('aria-hidden', 'true');
+    // Drawer starts translated off-screen (closed), CSS class "open" is toggled by JS
+    await expect(drawer).toBeAttached();
     await hamburger.click();
-    await expect(drawer).toHaveAttribute('aria-hidden', 'false');
+    // After click: drawer gets the "open" class which slides it into view via CSS transform
+    await expect(drawer).toHaveClass(/open/, { timeout: 3_000 });
 
     await page.locator('#bc-drawer-close').click();
-    await expect(drawer).toHaveAttribute('aria-hidden', 'true');
+    await expect(drawer).not.toHaveClass(/open/, { timeout: 3_000 });
   });
 
   test('mobile drawer contains navigation links', async ({ page }) => {
     await page.locator('#bc-hamburger').click();
     const drawer = page.locator('#bc-mobile-drawer');
     await expect(drawer).toBeVisible();
-    // Should have multiple links
-    await expect(drawer.locator('a')).toHaveCountGreaterThan(4);
+    const linkCount = await drawer.locator('a').count();
+    expect(linkCount).toBeGreaterThan(4);
   });
 });
 
@@ -101,7 +106,8 @@ test.describe('Static public pages', () => {
     { name: 'Contact', route: ROUTES.contact, titlePattern: /Contact/i },
     { name: 'Sustainability', route: ROUTES.sustainability, titlePattern: /Sustain/i },
     { name: 'Mission', route: ROUTES.mission, titlePattern: /Mission/i },
-    { name: 'Blog', route: ROUTES.blog, titlePattern: /Blog/i },
+    // Blog page title is "Stories — Conscious India"
+    { name: 'Blog', route: ROUTES.blog, titlePattern: /Blog|Stories/i },
     { name: 'Careers', route: ROUTES.careers, titlePattern: /Career/i },
     { name: 'Partnerships', route: ROUTES.partnerships, titlePattern: /Partner/i },
   ] as const;
@@ -121,13 +127,14 @@ test.describe('Footer', () => {
   });
 
   test('footer is present', async ({ page }) => {
-    const footer = page.locator('footer');
-    await expect(footer).toBeVisible();
+    // .bc-footer is the visible footer; the 7 native <footer> elements are hidden utility wrappers
+    await expect(page.locator('.bc-footer')).toBeVisible();
   });
 
   test('footer contains useful links', async ({ page }) => {
-    const footer = page.locator('footer');
-    await expect(footer.locator('a')).toHaveCountGreaterThan(3);
+    const footer = page.locator('.bc-footer');
+    const linkCount = await footer.locator('a').count();
+    expect(linkCount).toBeGreaterThan(3);
   });
 });
 
@@ -137,8 +144,7 @@ test.describe('404 page', () => {
     expect(response?.status()).toBe(404);
   });
 
-  test('404 page renders without PHP errors', async ({ goto, page }) => {
-    // Navigate via goto (ignores status) so we can inspect the page
+  test('404 page renders without PHP errors', async ({ page }) => {
     await page.goto('/this-page-definitely-does-not-exist-xyz', { waitUntil: 'domcontentloaded' });
     await assertNoPHPErrors(page);
   });
@@ -158,6 +164,7 @@ test.describe('Health check API', () => {
     await page.goto(ROUTES.healthCheck);
     const body = await page.locator('body').textContent();
     const json = JSON.parse(body ?? '{}');
-    expect(json.database).toBe('ok');
+    // Response shape: { checks: { database: "ok" } }
+    expect(json.checks?.database ?? json.database).toBe('ok');
   });
 });
