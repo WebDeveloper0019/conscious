@@ -48,7 +48,8 @@ try {
     } else {
         [$status, $domains] = mailtm('GET', '/domains');
         if ($status !== 200 || !is_array($domains)) throw new RuntimeException('Temporary-mail domains are unavailable.');
-        $list = $domains['hydra:member'] ?? $domains['member'] ?? [];
+        // Mail.tm currently returns a plain JSON array; older API responses use Hydra members.
+        $list = array_is_list($domains) ? $domains : ($domains['hydra:member'] ?? $domains['member'] ?? []);
         $domain = null;
         foreach ($list as $candidate) {
             if (!empty($candidate['isActive']) && empty($candidate['isPrivate'])) { $domain = (string)$candidate['domain']; break; }
