@@ -15,7 +15,7 @@ $pageTitle='Verify customer email'; $authPage='verify'; require __DIR__.'/../lay
 <button class="cc-btn primary ca-submit" type="submit" data-submit-button><span>Verify and continue</span><i class="fa-solid fa-arrow-right"></i><i class="fa-solid fa-circle-notch fa-spin ca-spinner"></i></button>
 </form>
 <p class="ca-switch">Code not received? <button class="ca-text-btn" type="button" data-resend-otp>Send a new code</button></p>
-<p class="ca-switch"><a href="login.php"><i class="fa-solid fa-arrow-left"></i> Back to sign in</a></p>
+<p class="ca-switch"><a href="/conscious/account/login"><i class="fa-solid fa-arrow-left"></i> Back to sign in</a></p>
 </article>
 <script src="../assets/js/verify-email.js" defer></script>
 <?php require __DIR__.'/../layouts/auth-foot-v2.php'; ?>

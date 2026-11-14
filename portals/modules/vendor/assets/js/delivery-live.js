@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const base = '../../../api/vendor/';
+  const base = '/conscious/api/vendor/';
   const state = {csrf: '', group: null, packages: [], settings: null};
   const message = document.getElementById('dl-message');
   const rupees = new Intl.NumberFormat('en-IN', {style:'currency', currency:'INR'});

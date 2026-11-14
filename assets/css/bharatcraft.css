@@ -13,14 +13,14 @@
   /* Conscious India palette: named values are intentionally available to page-level compositions. */
   --forest: #4B572C;
   --terracotta: #A63D24;
-  --ochre: #C88422;
+  --ochre: #A63D24;
   --earth-brown: #4A210D;
   --sand-beige: #FFF8E9;
   --olive: #4B572C;
   --charcoal: #2D2926;
   /* ── Brand Colors ── */
   --saffron:          #A63D24;
-  --saffron-light:    #C88422;
+  --saffron-light:    #A63D24;
   --saffron-dark:     #7E2F1C;
   --saffron-pale:     #FFF1E8;
   --saffron-50:       #FFF8E9;
@@ -35,10 +35,10 @@
   --navy-dark:        #30391B;
   --navy-pale:        #EEF1E5;
 
-  --gold:             #C88422;
-  --gold-light:       #DCA44D;
-  --gold-dark:        #966018;
-  --gold-pale:        #FFF4DD;
+  --gold:             #A63D24;
+  --gold-light:       #A63D24;
+  --gold-dark:        #7E2F1C;
+  --gold-pale:        #FFF1E8;
 
   /* ── Neutrals ── */
   --cream:            #FFF8E9;

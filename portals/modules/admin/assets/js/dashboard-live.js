@@ -3,7 +3,7 @@
   const byId=id=>document.getElementById(id);
   const count=value=>new Intl.NumberFormat('en-IN').format(Number(value)||0);
   const money=value=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(value)||0);
-  async function read(path){const response=await fetch('../../../api/admin/'+path,{credentials:'same-origin',cache:'no-store',headers:{Accept:'application/json'}});const data=await response.json().catch(()=>({}));if(!response.ok||!data.success)throw Error(data.message||'Unable to load live platform data.');return data;}
+  async function read(path){const response=await fetch('/conscious/api/admin/'+path,{credentials:'same-origin',cache:'no-store',headers:{Accept:'application/json'}});const data=await response.json().catch(()=>({}));if(!response.ok||!data.success)throw Error(data.message||'Unable to load live platform data.');return data;}
   async function load(){try{
     const [dashboard,work]=await Promise.all([read('dashboard.php'),read('work-queue.php')]);const m=dashboard.metrics||{};
     const values={customers:m.customers,vendors:m.active_vendors,orders:m.orders_today,applications:m.pending_vendor_applications,products:m.pending_products,refunds:m.pending_refunds,payouts:m.pending_payouts,delivery:m.delivery_exceptions,support:m.open_support,influencers:m.active_influencers,events:m.upcoming_events};

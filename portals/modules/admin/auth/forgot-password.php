@@ -12,6 +12,6 @@ require __DIR__ . '/../layouts/auth-head.php';
     </div>
     <button class="ac-btn primary ac-auth-submit" type="submit">Request secure recovery link</button>
 </form>
-<div class="ac-auth-links"><a href="login.php">Return to sign in</a></div>
+<div class="ac-auth-links"><a href="/conscious/admin/login">Return to sign in</a></div>
 <div class="ac-callout warning mt-3">Recovery links should be single-use, time-limited and followed by MFA. Privileged-account recovery must generate an audit alert.</div>
 <?php require __DIR__ . '/../layouts/auth-foot.php'; ?>

@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const api = '../../../api/vendor/';
+  const api = '/conscious/api/vendor/';
   const state = {csrf:'', products:[], current:null, variants:[], images:[]};
   const form = document.getElementById('catalog-form');
   const editor = document.getElementById('catalog-editor');
@@ -63,7 +63,7 @@
     if(!state.images.length){target.append(item('p','vc-help','No images uploaded.'));return;}
     state.images.forEach(image=>{
       const row=item('div','cat-image');
-      if(image.scan_status==='clean'){const photo=item('img','cat-thumb');photo.src='../../../api/files.php?id='+encodeURIComponent(image.file_id);photo.alt=image.alt_text;photo.loading='lazy';row.append(photo);}
+      if(image.scan_status==='clean'){const photo=item('img','cat-thumb');photo.src='/conscious/api/files.php?id='+encodeURIComponent(image.file_id);photo.alt=image.alt_text;photo.loading='lazy';row.append(photo);}
       row.append(item('span','',image.alt_text+(Number(image.is_primary)?' · primary':'')),item('small','',friendly(image.scan_status)));
       target.append(row);
     });

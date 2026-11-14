@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const api = '../../../api/vendor/';
+  const api = '/conscious/api/vendor/';
   const el = id => document.getElementById(id);
   const state = {items:[], movements:[], csrf:''};
   async function call(path, method='GET', body) {

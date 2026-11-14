@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const api='../../../api/admin/';
+  const api='/conscious/api/admin/';
   const list=document.getElementById('ah-list');
   const message=document.getElementById('ah-message');
   const dialog=document.getElementById('ah-dialog');

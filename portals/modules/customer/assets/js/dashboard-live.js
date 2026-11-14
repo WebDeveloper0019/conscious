@@ -65,7 +65,7 @@
   }
   function load() {
     loading();
-    fetch('../../../api/user/dashboard.php',{credentials:'same-origin',headers:{Accept:'application/json'},cache:'no-store'}).then(function(response){return response.json().then(function(data){if(!response.ok)throw Error(data.message || 'Dashboard is unavailable.');return data;});}).then(render).catch(function(error){
+    fetch('/conscious/api/user/dashboard.php',{credentials:'same-origin',headers:{Accept:'application/json'},cache:'no-store'}).then(function(response){return response.json().then(function(data){if(!response.ok)throw Error(data.message || 'Dashboard is unavailable.');return data;});}).then(render).catch(function(error){
       put('intro','Your account summary is temporarily unavailable.');
       ['orders','bookings','actions'].forEach(function(name){put(name,'Unable to load right now.');});
       if (errorBox) {

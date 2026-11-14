@@ -3,7 +3,7 @@
   var root = document.querySelector('[data-cart-items]');
   if (!root) return;
 
-  var endpoint = '../../../api/user/cart.php';
+  var endpoint = '/conscious/api/user/cart.php';
   var note = root.querySelector('.cp-delivery-note');
   var checkout = document.querySelector('[data-cart-checkout]');
   var formatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 });
@@ -47,7 +47,7 @@
     }
     items.forEach(function (item) {
       var article = node('article', 'cp-cart-item');
-      var link = node('a'); link.href = 'product.php?id=' + encodeURIComponent(item.product_id || '');
+      var link = node('a'); link.href = '/conscious/product-detail?id=' + encodeURIComponent(item.product_id || '');
       if (item.image_url) {
         var image = node('img'); image.src = new URL(item.image_url, new URL(endpoint, location.href)).href;
         image.alt = item.name || 'Product'; link.append(image);

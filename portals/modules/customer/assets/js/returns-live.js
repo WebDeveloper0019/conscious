@@ -7,7 +7,7 @@
   var returnForm=root.querySelector('[data-return-form]');
   var evidenceForm=root.querySelector('[data-evidence-form]');
   var eligible=[], evidenceReturnId='';
-  var apiBase='../../../api/user/';
+  var apiBase='/conscious/api/user/';
   var money=new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR'});
   function make(tag,className,value){var item=document.createElement(tag);if(className)item.className=className;if(value!==undefined)item.textContent=value;return item;}
   function label(value){return String(value||'pending').replace(/_/g,' ').replace(/\b\w/g,function(m){return m.toUpperCase();});}

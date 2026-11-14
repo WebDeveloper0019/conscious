@@ -15,7 +15,7 @@
     });
   });
   async function post(path, payload) {
-    var response = await fetch('../../../../api/admin/auth/' + path, {
+    var response = await fetch('/conscious/api/admin/auth/' + path, {
       method: 'POST', credentials: 'same-origin', cache: 'no-store',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -38,18 +38,18 @@
           var login = await post('login.php', { email: form.elements.email.value.trim(), password: form.elements.password.value });
           if (login.mfa_required) {
             sessionStorage.setItem('ci_admin_mfa_challenge', login.challenge_token);
-            location.assign('verify.php'); return;
+            location.assign('/conscious/admin/verify'); return;
           }
           sessionStorage.removeItem('ci_admin_mfa_challenge');
           if (login.csrf_token) sessionStorage.setItem('ci_admin_csrf_token', login.csrf_token);
-          location.assign('../index.php');
+          location.assign('/conscious/admin');
         } else {
           var challenge = sessionStorage.getItem('ci_admin_mfa_challenge');
           if (!challenge) throw new Error('This verification session has expired. Sign in again.');
           var verified = await post('verify-mfa.php', { challenge_token: challenge, code: form.elements.code.value.trim() });
           sessionStorage.removeItem('ci_admin_mfa_challenge');
           if (verified.csrf_token) sessionStorage.setItem('ci_admin_csrf_token', verified.csrf_token);
-          location.assign('../index.php');
+          location.assign('/conscious/admin');
         }
       } catch (error) { toast(error.message, 'error'); }
       finally { button.disabled = false; }

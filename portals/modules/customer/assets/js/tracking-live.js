@@ -7,7 +7,7 @@
   function clean(value){return String(value||'').replace(/_/g,' ').replace(/\b\w/g,function(m){return m.toUpperCase();});}
   function date(value){if(!value)return 'Not yet recorded';var raw=String(value);var d=new Date(raw.includes('T')?raw:raw.replace(' ','T')+'Z');return Number.isNaN(d.getTime())?raw:new Intl.DateTimeFormat('en-IN',{dateStyle:'medium',timeStyle:raw.length>10?'short':undefined,timeZone:'Asia/Kolkata'}).format(d);}
   function safeTrackingUrl(value){try{var url=new URL(String(value));return url.protocol==='https:'?url.href:null;}catch(_){return null;}}
-  async function get(path){var response=await fetch('../../../api/user/'+path,{credentials:'same-origin',headers:{Accept:'application/json'},cache:'no-store'});var result=await response.json().catch(function(){return{};});if(!response.ok)throw Error(result.message||'Delivery information is unavailable.');return result;}
+  async function get(path){var response=await fetch('/conscious/api/user/'+path,{credentials:'same-origin',headers:{Accept:'application/json'},cache:'no-store'});var result=await response.json().catch(function(){return{};});if(!response.ok)throw Error(result.message||'Delivery information is unavailable.');return result;}
   function render(data){
     content.replaceChildren();var order=data.order||{},groups=Array.isArray(data.vendor_groups)?data.vendor_groups:[];
     var heading=el('section','cc-card cp-live-track-heading');heading.append(el('span','cx-kicker','Order '+(order.order_number||'')),el('h2','',clean(order.status)));heading.append(el('p','','Payment: '+clean(order.payment_status)+' · '+groups.length+' vendor group(s). Updates below are entered manually by vendors.'));content.append(heading);

@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const api='../../../api/vendor/';
+  const api='/conscious/api/vendor/';
   const el=id=>document.getElementById(id);
   const actions={requested:[['approve','Approve return'],['request_evidence','Request more evidence'],['reject','Reject return']],evidence_requested:[['approve','Approve return'],['reject','Reject return']],approved:[['mark_received','Mark item received']],received:[['recommend_refund','Recommend refund'],['approve_replacement','Approve replacement']]};
   const state={returns:[],flags:[],csrf:'',selected:null};

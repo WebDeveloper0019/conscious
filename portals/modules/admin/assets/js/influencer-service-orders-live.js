@@ -30,7 +30,7 @@
     const headers = { Accept: 'application/json' };
     if (method !== 'GET') headers['X-CSRF-Token'] = csrf();
     if (body) headers['Content-Type'] = 'application/json';
-    const response = await fetch('../../../api/admin/influencer-service-orders.php', {
+    const response = await fetch('/conscious/api/admin/influencer-service-orders.php', {
       method, credentials: 'same-origin', cache: 'no-store', headers,
       body: body ? JSON.stringify(body) : undefined
     });

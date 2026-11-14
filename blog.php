@@ -14,7 +14,7 @@ function blog_e(string $value):string{return htmlspecialchars($value,ENT_QUOTES|
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="/conscious/assets/css/bharatcraft.css"><link rel="stylesheet" href="/conscious/assets/css/blog-editorial.css?v=20261026-1">
+  <link rel="stylesheet" href="/conscious/assets/css/bharatcraft.css?v=20261114"><link rel="stylesheet" href="/conscious/assets/css/blog-editorial.css?v=20261026-1">
 </head>
 <body>
 <div id="bc-preloader" role="status" aria-label="Loading Conscious India"><img src="/conscious/assets/images/symbol.png" alt="" class="bc-preloader-symbol" width="90" height="90"><div class="bc-preloader-brand">Conscious India</div><div class="bc-preloader-chakra"></div></div>

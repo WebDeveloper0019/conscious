@@ -7,10 +7,10 @@
     var demoNotice=document.createElement('section');demoNotice.className='cp-check-section';
     var title=document.createElement('h2');title.textContent='Preview account cannot place orders';
     var copy=document.createElement('p');copy.textContent='Sign in with a real customer account to check delivery prices and use the local demo payment. The preview account cannot place orders.';
-    var link=document.createElement('a');link.className='cc-btn primary';link.href='auth/login.php';link.textContent='Sign in to continue';
+    var link=document.createElement('a');link.className='cc-btn primary';link.href='/conscious/account/login';link.textContent='Sign in to continue';
     demoNotice.append(title,copy,link);host.append(demoNotice);return;
   }
-  var base = '../../../api/user/';
+  var base = '/conscious/api/user/';
   var money = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
   var quote = null;
   var selectedAddress = '';

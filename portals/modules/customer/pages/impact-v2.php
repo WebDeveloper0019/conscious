@@ -9,13 +9,13 @@
   <article><span class="orange"><i class="fa-solid fa-location-dot"></i></span><div><strong>7</strong><p>Indian craft regions reached</p><small>From Kutch to Madhubani</small></div></article>
 </section>
 <div class="cp-two-column">
-  <section class="cp-panel"><header class="cp-panel-head"><div><span class="cx-kicker">Impact by craft</span><h2>Where your support travelled</h2></div><a href="shop.php">Explore crafts</a></header><div class="cp-impact-bars">
+  <section class="cp-panel"><header class="cp-panel-head"><div><span class="cx-kicker">Impact by craft</span><h2>Where your support travelled</h2></div><a href="/conscious/account/shop">Explore crafts</a></header><div class="cp-impact-bars">
     <div><p><span>Handloom & textiles</span><b>38%</b></p><i><em style="width:38%"></em></i></div>
     <div><p><span>Pottery & ceramics</span><b>27%</b></p><i><em style="width:27%"></em></i></div>
     <div><p><span>Jewellery & metal craft</span><b>21%</b></p><i><em style="width:21%"></em></i></div>
     <div><p><span>Folk art & decor</span><b>14%</b></p><i><em style="width:14%"></em></i></div>
   </div></section>
-  <aside class="cp-panel cp-impact-region"><span class="cp-round-icon"><i class="fa-solid fa-map-location-dot"></i></span><h2>7 regions, one story</h2><p>Your orders have supported makers in Rajasthan, Gujarat, Bihar, West Bengal, Odisha, Karnataka and Kashmir.</p><a class="cc-btn" href="vendors.php">Meet your makers</a></aside>
+  <aside class="cp-panel cp-impact-region"><span class="cp-round-icon"><i class="fa-solid fa-map-location-dot"></i></span><h2>7 regions, one story</h2><p>Your orders have supported makers in Rajasthan, Gujarat, Bihar, West Bengal, Odisha, Karnataka and Kashmir.</p><a class="cc-btn" href="/conscious/account/vendors">Meet your makers</a></aside>
 </div>
 <section class="cp-panel"><header class="cp-panel-head"><div><span class="cx-kicker">Order-level detail</span><h2>How each order made a difference</h2></div><button class="cc-btn" type="button" data-demo-action="Impact methodology"><i class="fa-solid fa-circle-info"></i> Methodology</button></header><div class="cp-impact-orders">
   <article><img src="assets/images/products/blue-pottery-vase.jpg" alt="Blue Pottery Floral Vase"><div><small>ORDER CI-83401</small><h3>Blue Pottery Floral Vase</h3><p>Jaipur Pottery House · Rajasthan</p></div><ul><li><i class="fa-solid fa-user-group"></i><span><b>3 makers</b> supported</span></li><li><i class="fa-solid fa-sun"></i><span><b>Low-energy</b> workshop</span></li><li><i class="fa-solid fa-box"></i><span><b>Plastic-light</b> packing</span></li></ul></article>

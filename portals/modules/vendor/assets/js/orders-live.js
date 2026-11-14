@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const api='../../../api/vendor/';
+  const api='/conscious/api/vendor/';
   const state={csrf:'',orders:[],current:null};
   const money=new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR'});
   const steps={awaiting_acceptance:['accepted','Accept order'],accepted:['processing','Start processing'],processing:['quality_check','Quality check complete'],quality_check:['packing','Start packing'],packing:['ready_to_dispatch','Ready to dispatch']};

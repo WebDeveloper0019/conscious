@@ -16,7 +16,7 @@ if($account&&$account['verified']){
     $raw=rtrim(strtr(base64_encode(random_bytes(48)),'+/','-_'),'=');$id=uuid_string();
     get_db()->prepare('UPDATE password_reset_tokens SET used_at=UTC_TIMESTAMP() WHERE principal_type=:type AND principal_id=:owner AND used_at IS NULL')->execute(['type'=>$type,'owner'=>$account['id']]);
     get_db()->prepare('INSERT INTO password_reset_tokens (id,principal_type,principal_id,token_hash,created_at,expires_at) VALUES (:id,:type,:owner,:hash,UTC_TIMESTAMP(),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 30 MINUTE))')->execute(['id'=>$id,'type'=>$type,'owner'=>$account['id'],'hash'=>hash_hmac('sha256',$raw,APP_KEY)]);
-    $resetPage='/portals/modules/'.$type.'/auth/reset-password.php';
+    $resetPage=['customer'=>'/account/reset-password','vendor'=>'/partner/reset-password','influencer'=>'/creator/reset-password'][$type];
     $scriptPath=(string)($_SERVER['SCRIPT_NAME']??'');
     $installationPath=preg_replace('~/api/auth/forgot-password\.php$~','',$scriptPath);
     $siteBase=APP_URL!==''?APP_URL:request_origin().($installationPath!==$scriptPath?$installationPath:'');

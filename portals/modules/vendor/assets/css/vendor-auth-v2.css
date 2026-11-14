@@ -3,3 +3,11 @@
 @media(max-width:600px){.vv-auth-story{padding:18px}.vv-auth-safe,.vv-auth-logo small{display:none}.vv-auth-panel{padding:13px}.vv-auth-panel-inner{padding:19px;border-radius:18px}.vv-auth-heading h2,.vv-status-card h2{font-size:25px}.vv-demo-switch,.vv-type-picker,.vv-register-fields,.vv-status-details{grid-template-columns:1fr}.vv-type-picker legend{grid-column:auto}.vv-status-actions{align-items:stretch;flex-direction:column}.vv-review-flow>i{width:28px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 .vv-input-wrap .vc-input{border:1px solid var(--vv-line);background:#fff}
+.vv-type-picker{grid-template-columns:repeat(3,minmax(0,1fr))}
+.vv-type-picker label{min-width:0;align-items:flex-start}
+.vv-type-picker label>span:nth-of-type(2){min-width:0}
+.vv-type-picker label:has(input:focus-visible){outline:3px solid #cf7036;outline-offset:2px}
+.vv-field-hint{display:block;margin-top:5px;color:var(--vv-muted);font-size:8px;line-height:1.5}
+[data-vendor-only][hidden],[data-creator-only][hidden]{display:none!important}
+@media(max-width:760px){.vv-type-picker{grid-template-columns:1fr 1fr}.vv-type-picker label:last-child{grid-column:1/-1}}
+@media(max-width:600px){.vv-type-picker{grid-template-columns:1fr}.vv-type-picker label:last-child{grid-column:auto}}

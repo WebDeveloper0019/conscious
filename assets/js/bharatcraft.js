@@ -1296,7 +1296,7 @@ function toggleLoading(selector, show) {
     if (!triggers.length) return;
 
     triggers.forEach(function (trigger) {
-      trigger.setAttribute('href', 'portals/modules/influencer/auth/register.php');
+      trigger.setAttribute('href', 'portals/modules/vendor/auth/register.php?type=influencer');
       trigger.setAttribute('aria-haspopup', 'false');
       trigger.innerHTML = '<i class="fa-solid fa-star" aria-hidden="true"></i> Register as an Influencer';
     });

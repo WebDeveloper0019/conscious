@@ -3,6 +3,6 @@
     </section>
 </main>
 <div class="ac-toast-wrap" id="ac-toast-wrap" aria-live="polite"></div>
-<script src="../assets/js/auth.js" defer></script>
-<script src="../../../../assets/js/inline-form-feedback.js?v=20261031" defer></script></body>
+<script src="/conscious/portals/modules/admin/assets/js/auth.js" defer></script>
+<script src="/conscious/assets/js/inline-form-feedback.js?v=20261031" defer></script></body>
 </html>

@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <!-- Conscious India Design System -->
-  <link rel="stylesheet" href="assets/css/bharatcraft.css" />
+  <link rel="stylesheet" href="assets/css/bharatcraft.css?v=20261114" />
   <link rel="stylesheet" href="assets/css/home-sustainable.css?v=5" />
   <link rel="stylesheet" href="assets/css/home-hero.css?v=20261025-1" />
   <link rel="stylesheet" href="assets/css/home-maker.css?v=20261026-1" />
@@ -1730,7 +1730,7 @@
           </div>
         </div>
 
-        <a href="/conscious/creators" class="bc-btn bc-btn-primary bc-btn-lg">
+        <a href="/conscious/join?type=influencer" class="bc-btn bc-btn-primary bc-btn-lg">
           <i class="fa-solid fa-star"></i> Become a Creator
         </a>
         <p style="font-size:0.8rem;color:var(--text-muted);margin-top:10px;">Free to join · No minimum followers required</p>

@@ -4,8 +4,8 @@
   var grid = document.querySelector('.cp-shop-results .cp-product-grid');
   var detail = document.querySelector('.cp-product-detail');
   if (!grid && !detail) return;
-  var catalogUrl = '../../../api/public/catalog.php';
-  var cartUrl = '../../../api/user/cart.php';
+  var catalogUrl = '/conscious/api/public/catalog.php';
+  var cartUrl = '/conscious/api/user/cart.php';
   var currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
   function el(tag, className, content) {
     var result = document.createElement(tag);
@@ -51,7 +51,7 @@
     try {
       var cookie = document.cookie.match(/(?:^|;\s*)ci_csrf=([^;]+)/);
       var token = sessionStorage.getItem('ci_csrf_token') || (cookie ? decodeURIComponent(cookie[1]) : '');
-      var response = await fetch('../../../api/user/wishlist.php', {
+      var response = await fetch('/conscious/api/user/wishlist.php', {
         method: 'POST', credentials: 'same-origin',
         headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'X-CSRF-Token': token },
         body: JSON.stringify({ productId: productId })
@@ -66,7 +66,7 @@
     try {
       var cookie = document.cookie.match(/(?:^|;\s*)ci_csrf=([^;]+)/);
       var token = sessionStorage.getItem('ci_csrf_token') || (cookie ? decodeURIComponent(cookie[1]) : '');
-      var response = await fetch('../../../api/user/saved-vendors.php', {
+      var response = await fetch('/conscious/api/user/saved-vendors.php', {
         method: 'POST', credentials: 'same-origin',
         headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'X-CSRF-Token': token },
         body: JSON.stringify({ vendor_id: vendorId })
@@ -90,7 +90,7 @@
       if (!products.length && !append) grid.append(el('p', '', 'No published products found yet.'));
       products.forEach(function (product) {
         var card = el('article', 'cp-product-card');
-        var link = el('a'); link.href = 'product.php?id=' + encodeURIComponent(product.id);
+        var link = el('a'); link.href = '/conscious/product-detail?id=' + encodeURIComponent(product.id);
         var image = imageUrl(product.image_url);
         if (image) { var photo = el('img'); photo.src = image; photo.alt = product.name || 'Product'; link.append(photo); }
         var body = el('div', 'cp-product-copy');

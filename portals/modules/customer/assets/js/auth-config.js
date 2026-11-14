@@ -2,8 +2,8 @@ window.ConsciousIndiAuthConfig = window.ConsciousIndiAuthConfig || {
     mode: 'api',
     apiBaseUrl: '',
     endpoints: {
-        login: '../../../../api/auth/login.php',
-        register: '../../../../api/auth/register.php'
+        login: '/conscious/api/auth/login.php',
+        register: '/conscious/api/auth/register.php'
     },
-    redirects: { afterLogin: '../index.php', afterRegister: 'verify-email.php' }
+    redirects: { afterLogin: '/conscious/account', afterRegister: '/conscious/account/verify-email' }
 };

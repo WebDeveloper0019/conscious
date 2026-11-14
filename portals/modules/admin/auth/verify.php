@@ -13,6 +13,6 @@ require __DIR__ . '/../layouts/auth-head.php';
     </div>
     <button class="ac-btn primary ac-auth-submit" type="submit">Verify and open dashboard</button>
 </form>
-<div class="ac-auth-links"><button type="button" class="ac-link-button" data-demo-action="Request a new one-time code">Use another verification method</button><a href="login.php">Back to sign in</a></div>
+<div class="ac-auth-links"><button type="button" class="ac-link-button" data-demo-action="Request a new one-time code">Use another verification method</button><a href="/conscious/admin/login">Back to sign in</a></div>
 <div class="ac-callout mt-3"><strong>Lost your authenticator?</strong> Use an unused recovery code or contact the security administrator for identity-checked recovery.</div>
 <?php require __DIR__ . '/../layouts/auth-foot.php'; ?>

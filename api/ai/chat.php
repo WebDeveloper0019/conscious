@@ -24,7 +24,7 @@ if ($intent==='order') {
     $session=current_auth_session(false);
     if (!$session || $session['principal_type']!=='customer') {
         json_response(200,['success'=>true,'reply'=>'Please sign in to see your own order status.','results'=>[
-            ['type'=>'link','title'=>'Customer sign in','url'=>puji_base_path().'/portals/modules/customer/auth/login.php']
+            ['type'=>'link','title'=>'Customer sign in','url'=>puji_base_path().'/account/login']
         ]]);
     }
     $auth=require_auth();

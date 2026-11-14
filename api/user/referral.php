@@ -20,7 +20,7 @@ try {
     if (!$user) json_response(404, ['success' => false, 'message' => 'Account not found.']);
 
     $code = referral_code_for($userId);
-    $link = rtrim(APP_URL, '/') . '/portals/modules/customer/auth/register.php?ref=' . urlencode($code);
+    $link = rtrim(APP_URL, '/') . '/account/register?ref=' . urlencode($code);
 
     // ── Stats ──────────────────────────────────────────────
     $stmt = $db->prepare(

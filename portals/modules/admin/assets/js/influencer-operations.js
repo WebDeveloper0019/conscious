@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  const root='../../../api/admin/';
+  const root='/conscious/api/admin/';
   const campaignForm=document.getElementById('if-admin-campaign-form');
   if(!campaignForm)return;
   const installPath=location.pathname.replace(/\/portals\/modules\/admin\/[^/]+$/,'');

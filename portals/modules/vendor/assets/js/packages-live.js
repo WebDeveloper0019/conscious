@@ -13,7 +13,7 @@
   const title = document.getElementById('vendor-package-dialog-title');
   const money = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
   const state = { csrf: '', packages: [], quote: null, busy: false };
-  const apiBase = '../../../api/';
+  const apiBase = '/conscious/api/';
 
   function element(tag, className, content) {
     const item = document.createElement(tag);

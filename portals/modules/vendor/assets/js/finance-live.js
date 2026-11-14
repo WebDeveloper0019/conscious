@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const api='../../../api/vendor/';
+  const api='/conscious/api/vendor/';
   const el=id=>document.getElementById(id);
   const money=value=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:2}).format(Number(value)||0);
   const state={csrf:'',available:0,banks:[]};

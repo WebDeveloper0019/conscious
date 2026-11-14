@@ -65,9 +65,9 @@
         <div>
           <div class="bc-footer-col-title">Customer Care</div>
           <ul class="bc-footer-links">
-            <li><a href="/conscious/portals/modules/customer/index.php"><i class="fa-solid fa-chevron-right"></i> My Account</a></li>
-            <li><a href="/conscious/portals/modules/customer/tracking.php"><i class="fa-solid fa-chevron-right"></i> Track My Order</a></li>
-            <li><a href="/conscious/portals/modules/customer/returns.php"><i class="fa-solid fa-chevron-right"></i> Returns &amp; Refunds</a></li>
+            <li><a href="/conscious/account"><i class="fa-solid fa-chevron-right"></i> My Account</a></li>
+            <li><a href="/conscious/account/tracking"><i class="fa-solid fa-chevron-right"></i> Track My Order</a></li>
+            <li><a href="/conscious/account/returns"><i class="fa-solid fa-chevron-right"></i> Returns &amp; Refunds</a></li>
             <li><a href="/conscious/faq"><i class="fa-solid fa-chevron-right"></i> FAQs</a></li>
             <li><a href="/conscious/contact"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
             <li><a href="/conscious/help"><i class="fa-solid fa-chevron-right"></i> Help Centre</a></li>

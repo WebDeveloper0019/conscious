@@ -4,7 +4,7 @@ declare(strict_types=1);
 require_once __DIR__.'/../../../../api/lib/helpers.php';
 $vendorSession = current_auth_session(false);
 if (!$vendorSession || $vendorSession['principal_type'] !== 'vendor') {
-    header('Location: auth/login.php');
+    header('Location: /conscious/partner/login');
     exit;
 }
 
@@ -13,7 +13,7 @@ $vendorStatement->execute(['id' => $vendorSession['principal_id']]);
 $vendorView = $vendorStatement->fetch();
 if (!$vendorView || in_array($vendorView['status'], ['suspended','blocked','inactive'], true)
     || (APP_ENV !== 'local' && $vendorView['verification_status'] === 'demo_fixture')) {
-    header('Location: auth/login.php');
+    header('Location: /conscious/partner/login');
     exit;
 }
 

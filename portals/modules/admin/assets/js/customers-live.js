@@ -3,7 +3,7 @@
   const rows=document.getElementById('ac-customer-rows'),status=document.getElementById('ac-customer-status'),search=document.getElementById('ac-customer-search'),filter=document.getElementById('ac-customer-filter'),detail=document.getElementById('ac-customer-detail');
   if(!rows||!status||!search||!filter||!detail)return;
   let customers=[],selected=null;
-  const endpoint='../../../api/admin/customers.php';
+  const endpoint='/conscious/api/admin/customers.php';
   const mask=email=>{const [local,domain]=String(email||'').split('@');return domain?(local.slice(0,1)||'•')+'•••@'+domain:'—';};
   const money=value=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(value)||0);
   const cell=(row,text)=>{const item=document.createElement('td');item.textContent=text;row.append(item);return item;};

@@ -52,16 +52,16 @@ function puji_site(string $message): array
     $base = puji_base_path();
     if (preg_match('/\b(influencer|creator)\b/u', $text)) {
         return ['reply'=>'You can apply as a Conscious India creator here. The registration page explains the next steps.','results'=>[
-            ['type'=>'link','title'=>'Creator registration','url'=>$base.'/portals/modules/influencer/auth/register.php']]];
+            ['type'=>'link','title'=>'Creator registration','url'=>$base.'/join?type=influencer']]];
     }
     if (preg_match('/\b(sell|vendor|artisan|brand|partner|register|sign ?up|become|join)\b/u', $text)) {
         return ['reply'=>'Brands and artisans can start a vendor application here and choose the correct account type.','results'=>[
-            ['type'=>'link','title'=>'Register as a partner','url'=>$base.'/portals/modules/vendor/auth/register.php']]];
+            ['type'=>'link','title'=>'Register as a partner','url'=>$base.'/join']]];
     }
     if (preg_match('/\b(return|refund)\b/u', $text)) {
         return ['reply'=>'Please read the current return terms before making a request. Signed-in customers can open their returns dashboard.','results'=>[
             ['type'=>'link','title'=>'Returns information','url'=>$base.'/returns'],
-            ['type'=>'link','title'=>'My returns','url'=>$base.'/portals/modules/customer/returns.php']]];
+            ['type'=>'link','title'=>'My returns','url'=>$base.'/account/returns']]];
     }
     if (preg_match('/\b(shipping|delivery)\b/u', $text)) {
         return ['reply'=>'Shipping options and charges depend on the seller and delivery address. Check the policy and your checkout quote for the current amount.','results'=>[
@@ -237,11 +237,11 @@ function puji_orders(PDO $db, string $userId, string $message): array
             'type'=>'order', 'title'=>(string)$row['order_number'],
             'subtitle'=>puji_event_date((string)$row['created_at']),
             'meta'=>$status . ($packageLines ? ' · ' . implode(' / ', $packageLines) : ''),
-            'url'=>$base . '/portals/modules/customer/orders.php?orderNumber=' . rawurlencode((string)$row['order_number']),
+            'url'=>$base . '/account/orders?orderNumber=' . rawurlencode((string)$row['order_number']),
             'image'=>'',
         ];
     }
     return $results === []
-        ? ['reply'=>'I could not find that order in your account. You can check your full order history in your dashboard.','results'=>[['type'=>'link','title'=>'Open my orders','url'=>$base.'/portals/modules/customer/orders.php']]]
+        ? ['reply'=>'I could not find that order in your account. You can check your full order history in your dashboard.','results'=>[['type'=>'link','title'=>'Open my orders','url'=>$base.'/account/orders']]]
         : ['reply'=>'Here is the latest status recorded for your order' . (count($results) > 1 ? 's' : '') . '. Open the order for full details.','results'=>$results];
 }

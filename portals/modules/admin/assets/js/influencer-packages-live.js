@@ -13,7 +13,7 @@
     return sessionStorage.getItem('ci_admin_csrf_token') || (match ? decodeURIComponent(match[1]) : '');
   }
   async function request(method, body) {
-    const response = await fetch('../../../api/admin/influencer-packages.php', {
+    const response = await fetch('/conscious/api/admin/influencer-packages.php', {
       method, credentials: 'same-origin', cache: 'no-store',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'X-CSRF-Token': csrf() },
       body: body ? JSON.stringify(body) : undefined

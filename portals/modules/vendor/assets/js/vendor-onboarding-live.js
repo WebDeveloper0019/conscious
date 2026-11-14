@@ -42,7 +42,7 @@
     const headers={Accept:'application/json'};
     if(method!=='GET')headers['X-CSRF-Token']=state.csrf;
     if(body!==undefined&&!multipart)headers['Content-Type']='application/json';
-    const response=await fetch('../../../api/vendor/'+path,{method,credentials:'same-origin',cache:'no-store',headers,body:body===undefined?undefined:multipart?body:JSON.stringify(body)});
+    const response=await fetch('/conscious/api/vendor/'+path,{method,credentials:'same-origin',cache:'no-store',headers,body:body===undefined?undefined:multipart?body:JSON.stringify(body)});
     const data=await response.json().catch(()=>({}));
     if(!response.ok||!data.success){const missing=[...(data.missing_sections||[]),...(data.missing_documents||[])];const error=Error((data.message||'Unable to save this section.')+(missing.length?' Missing: '+missing.join(', '):''));error.fieldErrors=data.errors&&typeof data.errors==='object'?data.errors:null;error.status=response.status;throw error;}
     return data;

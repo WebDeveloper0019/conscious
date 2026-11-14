@@ -207,7 +207,7 @@ function reward_expiry_send_warnings(int $minDays, int $maxDays, string $stage):
                 'reward_expiring',
                 $title,
                 $message,
-                '/portals/modules/customer/rewards.php',
+                '/account/rewards',
                 [
                     'points'      => $points,
                     'expiry_date' => $expiryDate,
@@ -255,7 +255,7 @@ function reward_expiry_send_expired_notifications(): int
                     number_format($points),
                     date('d M Y', strtotime($expiryDate))
                 ),
-                '/portals/modules/customer/rewards.php',
+                '/account/rewards',
                 ['points' => $points, 'expiry_date' => $expiryDate]
             );
 

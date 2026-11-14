@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="assets/css/bharatcraft.css" />
+  <link rel="stylesheet" href="assets/css/bharatcraft.css?v=20261114" />
   <style>
     .influencer-login-shell { min-height: 100vh; display: grid; place-items: center; background: linear-gradient(180deg, #fffdf8 0%, #f8f2e6 100%); padding: 40px 16px; }
     .influencer-login-card { max-width: 520px; width: 100%; background: #fff; border-radius: 24px; box-shadow: 0 20px 60px rgba(10,0,64,0.12); border: 1px solid rgba(66,37,5,0.08); overflow: hidden; }
@@ -53,7 +53,7 @@
           <button class="bc-btn bc-btn-primary" type="submit"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</button>
         </div>
       </form>
-      <div class="influencer-login-note">New Influencer? <a href="portals/modules/influencer/auth/register.php" style="color:var(--saffron-dark);font-weight:700;">Register Now</a></div>
+      <div class="influencer-login-note">New Influencer? <a href="portals/modules/vendor/auth/register.php?type=influencer" style="color:var(--saffron-dark);font-weight:700;">Register Now</a></div>
     </div>
   </div>
 </main>

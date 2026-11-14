@@ -17,7 +17,7 @@
   function csrf() { var match=document.cookie.match(/(?:^|;\s*)ci_csrf=([^;]+)/); return sessionStorage.getItem('ci_csrf_token')||(match?decodeURIComponent(match[1]):''); }
   async function api(path, method, body, key) {
     var headers={Accept:'application/json'}; if(body)headers['Content-Type']='application/json';if(method!=='GET')headers['X-CSRF-Token']=csrf();if(key)headers['Idempotency-Key']=key;
-    var response=await fetch('../../../api/user/'+path,{method:method,credentials:'same-origin',cache:'no-store',headers:headers,body:body?JSON.stringify(body):undefined});
+    var response=await fetch('/conscious/api/user/'+path,{method:method,credentials:'same-origin',cache:'no-store',headers:headers,body:body?JSON.stringify(body):undefined});
     var result=await response.json().catch(function(){return {};}); if(!response.ok)throw Error(result.message||'Request failed.'); return result;
   }
   function action(label, fn, className) { var button=node('button',className||'cc-btn',label);button.type='button';button.addEventListener('click',fn);return button; }

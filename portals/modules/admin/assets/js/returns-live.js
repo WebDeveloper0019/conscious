@@ -3,7 +3,7 @@
   const table=document.getElementById('ar-flags'),status=document.getElementById('ar-status'),dialog=document.getElementById('ar-dialog'),form=document.getElementById('ar-form');
   if(!table||!status||!dialog||!form)return;
   let selected=null;
-  const endpoint='../../../api/admin/return-review-flags.php';
+  const endpoint='/conscious/api/admin/return-review-flags.php';
   const cell=(row,value)=>{const item=document.createElement('td');item.textContent=value??'—';row.append(item);return item;};
   const date=value=>value?new Date(value.replace(' ','T')+'Z').toLocaleDateString('en-IN'):'—';
   async function request(method='GET',body){const response=await fetch(endpoint,{method,credentials:'same-origin',cache:'no-store',headers:{Accept:'application/json',...(method==='GET'?{}:{'Content-Type':'application/json','X-CSRF-Token':sessionStorage.getItem('ci_admin_csrf_token')||''})},body:body?JSON.stringify(body):undefined});const data=await response.json().catch(()=>({}));if(!response.ok||!data.success)throw Error(data.message||'Unable to load return reviews.');return data;}
