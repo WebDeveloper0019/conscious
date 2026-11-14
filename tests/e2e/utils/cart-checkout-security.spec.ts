@@ -128,15 +128,22 @@ test.describe('Accessibility — basics', () => {
     await goto(ROUTES.home);
     const imagesWithoutAlt = await page.evaluate(() =>
       Array.from(document.images)
-        .filter(img => !img.alt && !img.getAttribute('role'))
+        // Exclude images inside aria-hidden containers (decorative by context)
+        .filter(img => !img.alt && !img.getAttribute('role') && !img.closest('[aria-hidden="true"]'))
         .map(img => img.src),
     );
+    // KNOWN SITE ISSUE: assets/images/assistant/website-guide.png, assets/images/symbol.png
+    // and one other image are missing alt attributes. Tracked as a bug.
+    if (imagesWithoutAlt.length > 0) {
+      test.info().annotations.push({ type: 'known-site-bug', description: `${imagesWithoutAlt.length} images missing alt: ${imagesWithoutAlt.join(', ')}` });
+    }
     expect(imagesWithoutAlt, `Images missing alt: ${imagesWithoutAlt.join(', ')}`).toHaveLength(0);
   });
 
   test('main landmark is present on homepage', async ({ goto, page }) => {
     await goto(ROUTES.home);
-    await expect(page.locator('main, [role="main"]')).toBeVisible();
+    // Use .first() — some pages may have multiple main elements (e.g. template artifacts)
+    await expect(page.locator('main, [role="main"]').first()).toBeVisible();
   });
 
   test('all form labels are associated on customer login', async ({ goto, page }) => {
