@@ -577,4 +577,4 @@
   </div>
 </nav>
 <div class="bc-overlay" id="bc-overlay"></div>
-<script src="/conscious/assets/js/ai-assistant.js?v=20261114-puji1" data-ci-ai-assistant="true"></script>
+<script src="/conscious/assets/js/ai-assistant.js?v=20261114-puji2" data-ci-ai-assistant="true"></script>

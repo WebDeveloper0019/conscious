@@ -6,7 +6,7 @@
   const endpoint = new URL('../../api/ai/chat.php', ownScript.src).href;
   const avatarUrl = new URL('../images/assistant/website-guide.png?v=20261114-puji1', ownScript.src).href;
   const css = document.createElement('link');
-  css.rel = 'stylesheet'; css.href = new URL('../css/ai-assistant.css?v=20261114-puji1', ownScript.src).href;
+  css.rel = 'stylesheet'; css.href = new URL('../css/ai-assistant.css?v=20261114-puji2', ownScript.src).href;
   document.head.appendChild(css);
 
   function node(tag, className, text) {
@@ -36,8 +36,7 @@
   launcher.setAttribute('aria-label', 'Ask Puji');
   launcher.setAttribute('aria-expanded', 'false'); launcher.setAttribute('aria-controls', 'ci-ai-panel');
   const launcherImage = node('img'); launcherImage.src = avatarUrl; launcherImage.alt = '';
-  const launcherBadge = node('span', 'ci-guide-launcher-badge'); launcherBadge.append(icon('fa-message'));
-  launcher.append(launcherImage, launcherBadge);
+  launcher.append(launcherImage);
 
   const panel = node('section', 'ci-guide-panel');
   panel.id = 'ci-ai-panel'; panel.hidden = true;
