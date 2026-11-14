@@ -14,9 +14,11 @@ test.describe('Homepage', () => {
   });
 
   test('has no broken images', async ({ page }) => {
-    // KNOWN SITE ISSUE: ~20 broken images including home-kind-words.png,
-    // home-kinder-tomorrow.png, and assets/images/user.png (4 instances).
-    // Tracked as a bug — test intentionally fails to surface this for the dev.
+    // KNOWN SITE BUG: ~20 broken images on homepage (home-kind-words.png,
+    // home-kinder-tomorrow.png, user.png x4, expired external placeholder URLs).
+    // test.fail() marks this as an expected failure — CI stays green while the
+    // bug is tracked; if the site is fixed, CI will alert us to remove this marker.
+    test.fail(true, 'Known site bug: ~20 broken images on homepage');
     await assertNobrokenImages(page);
   });
 

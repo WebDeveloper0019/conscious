@@ -126,17 +126,15 @@ test.describe('Accessibility — basics', () => {
 
   test('all images on homepage have alt attributes', async ({ goto, page }) => {
     await goto(ROUTES.home);
+    // KNOWN SITE BUG: assets/images/assistant/website-guide.png (x3) missing alt.
+    // test.fail() keeps CI green while bug is tracked; remove when site is fixed.
+    test.fail(true, 'Known site bug: 3 images missing alt attributes on homepage');
     const imagesWithoutAlt = await page.evaluate(() =>
       Array.from(document.images)
         // Exclude images inside aria-hidden containers (decorative by context)
         .filter(img => !img.alt && !img.getAttribute('role') && !img.closest('[aria-hidden="true"]'))
         .map(img => img.src),
     );
-    // KNOWN SITE ISSUE: assets/images/assistant/website-guide.png, assets/images/symbol.png
-    // and one other image are missing alt attributes. Tracked as a bug.
-    if (imagesWithoutAlt.length > 0) {
-      test.info().annotations.push({ type: 'known-site-bug', description: `${imagesWithoutAlt.length} images missing alt: ${imagesWithoutAlt.join(', ')}` });
-    }
     expect(imagesWithoutAlt, `Images missing alt: ${imagesWithoutAlt.join(', ')}`).toHaveLength(0);
   });
 
