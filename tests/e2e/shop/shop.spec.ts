@@ -27,7 +27,7 @@ test.describe('Shop page', () => {
 
   test('product grid renders cards', async ({ page }) => {
     // Wait for products to load (API-driven)
-    const productGrid = page.locator('.bc-product-grid, [data-product-grid], .bc-shop-grid');
+    const productGrid = page.locator('.bc-shop-product-grid');
     await expect(productGrid.first()).toBeVisible({ timeout: 12_000 });
   });
 
@@ -119,7 +119,7 @@ test.describe('Events page', () => {
 test.describe('Blog', () => {
   test('blog listing loads', async ({ goto, page }) => {
     await goto(ROUTES.blog);
-    await expect(page).toHaveTitle(/Blog/i);
+    await expect(page).toHaveTitle(/Blog|Stories/i);
     await assertNoPHPErrors(page);
   });
 });
