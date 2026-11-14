@@ -23,7 +23,7 @@ Keep the token out of chat, Git, JavaScript, screenshots, and the public documen
 
 The old `@cf/meta/llama-3.1-8b-instruct` model was retired. `CF_AI_MODEL` now selects the model through private configuration, defaulting to the available Llama 3.3 fast model. The system prompt, message validation, 20-messages/hour/IP limiter, response format, and local Ollama path are preserved. The same adapter also serves vendor writing assistance.
 
-Deploy the updated private `backend/config.php` and `backend/lib/ai-client.php` before using the new setting. Public UI files are `assets/js/ai-assistant.js`, `assets/css/ai-assistant.css`, and `assets/images/assistant/website-guide.png`; the public loader in `assets/js/bharatcraft.js` must use the new asset version. Build production files with `php scripts/build-production.php --hostinger-fixed-root`, then run `php scripts/verify-production-release.php`. Do not upload the repository's local-path templates directly.
+Deploy the updated private `backend/config.php` and `backend/lib/ai-client.php` before using the new setting. Public UI files are `assets/js/ai-assistant.js`, `assets/css/ai-assistant.css`, and `assets/images/assistant/website-guide.png`; the shared public header loads the versioned widget, while the existing `assets/js/bharatcraft.js` loader skips a duplicate. Build production files with `php scripts/build-production.php --hostinger-fixed-root`, then run `php scripts/verify-production-release.php`. Do not upload the repository's local-path templates directly.
 
 ## Verify after configuration
 
