@@ -14,7 +14,7 @@
   document.head.appendChild(style);
 
   function eligible(control) {
-    return control && control.matches && control.matches(selector) && !excludedTypes.test(control.type || '') && control.willValidate && !control.disabled;
+    return control && control.matches && control.matches(selector) && !control.closest('[data-inline-managed]') && !excludedTypes.test(control.type || '') && control.willValidate && !control.disabled;
   }
 
   function labelFor(control) {
@@ -147,6 +147,7 @@
     document.addEventListener('submit', function (event) {
       var form = event.target;
       if (!(form instanceof HTMLFormElement)) return;
+      if (form.hasAttribute('data-inline-managed')) return;
       var controls = Array.from(form.elements).filter(eligible);
       var first = null;
       controls.forEach(function (control) { if (!control.validity.valid && !show(control) && !first) first = control; });

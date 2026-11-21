@@ -1,52 +1,489 @@
-/* Shared vendor presentation: moss, terracotta, warm ivory. */
-.ci-role-vendor,.vv-auth-body{--brand:#A63D24;--brand-dark:#87311D;--brand-soft:#FFF0E8;--navy:#4B572C;--green:#4B572C;--green-soft:#EEF1E5;--gold:#A63D24;--gold-soft:#FFF0E8;--blue:#4B572C;--blue-soft:#EEF1E5;--red:#A63D24;--red-soft:#FFF0E8;--ink:#30261E;--text:#39332D;--muted:#5F5850;--line:#D9CDBB;--line-soft:#EAE0D2;--canvas:#FFF8E9;--sidebar:#30391B;font-family:Poppins,Arial,sans-serif;color:var(--text)}
-.ci-role-vendor{background:var(--canvas)}
-.ci-role-vendor .ci-dash-sidebar{background:#30391B;box-shadow:8px 0 26px rgba(48,57,27,.12)}
-.ci-role-vendor .ci-sidebar-nav-item{color:#F9F4E8;font-size:13px}
-.ci-role-vendor .ci-sidebar-nav-item:hover,.ci-role-vendor .ci-sidebar-nav-item.active{background:rgba(255,248,233,.15);color:#fff}
-.ci-role-vendor .ci-sidebar-section-label,.ci-role-vendor .ci-sidebar-brand-role,.ci-role-vendor .ci-sidebar-user-email{color:#F0E8D9;opacity:1}
-.ci-role-vendor .ci-dash-page-title,.ci-role-vendor .vc-card-head h2,.ci-role-vendor .vc-card-head h3,.ci-role-vendor .vc-workflow-intro h2,.ci-role-vendor .vc-dashboard-hero h2{text-transform:uppercase;letter-spacing:.035em}
-.ci-role-vendor .ci-dash-page-title{font-size:clamp(19px,2vw,25px);line-height:1.25}
-.ci-role-vendor .ci-dash-page-sub,.ci-role-vendor .vc-workflow-intro p{font-size:13px;line-height:1.5;color:var(--muted);max-width:70ch}
-.ci-role-vendor .vc-card,.ci-role-vendor .vc-workflow-intro,.ci-role-vendor .vc-dashboard-hero{border-color:var(--line);box-shadow:0 3px 18px rgba(48,57,27,.055)}
-.ci-role-vendor .vc-card-head,.ci-role-vendor .vc-table th{background:#FFF8E9}
-.ci-role-vendor .vc-btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
-.ci-role-vendor .vc-btn.primary:hover{background:var(--brand-dark);border-color:var(--brand-dark);color:#fff}
-.ci-role-vendor .vc-field label,.ci-role-vendor .vc-stat-label,.ci-role-vendor .vc-list-copy strong,.ci-role-vendor .vc-timeline-copy strong{font-size:13px;color:var(--ink)}
-.ci-role-vendor .vc-help,.ci-role-vendor .vc-list-copy p,.ci-role-vendor .vc-timeline-copy p,.ci-role-vendor .vc-timeline-copy span,.ci-role-vendor .vc-journey small,.ci-role-vendor .vc-demo-activity-item,.ci-role-vendor .vc-stat-note{font-size:12px;color:var(--muted);line-height:1.5}
-.ci-role-vendor .vc-table td,.ci-role-vendor .vc-info-row,.ci-role-vendor .vc-callout,.ci-role-vendor .vc-status,.ci-role-vendor .vc-tab{font-size:12px;color:var(--text)}
-.ci-role-vendor .vc-input,.ci-role-vendor .vc-select,.ci-role-vendor .vc-textarea{color:var(--ink);border-color:var(--line)}
-.ci-role-vendor .vc-input::placeholder,.ci-role-vendor .vc-textarea::placeholder{color:#675F54;opacity:1}
-.ci-role-vendor .vc-stat-icon,.ci-role-vendor .vc-list-icon,.ci-role-vendor .vc-workflow-icon{background:var(--green-soft);color:var(--green)}
-.ci-role-vendor .vc-callout{background:var(--green-soft);border-color:var(--line);color:var(--ink)}
-.ci-role-vendor .vc-status.warning,.ci-role-vendor .vc-status.info{background:var(--gold-soft);color:var(--brand-dark)}
-.ci-role-vendor .vc-empty i{color:var(--green)}
-.ci-role-vendor .vc-dashboard-hero{background:#FFF8E9}
-.vv-auth-body{--vv-green:#4B572C;--vv-green-2:#4B572C;--vv-orange:#A63D24;--vv-ink:#30261E;--vv-muted:#5F5850;--vv-line:#D9CDBB;--vv-bg:#FFF8E9;--vv-shadow:0 18px 44px rgba(48,57,27,.09)}
-.vv-auth-body .vv-auth-story{background:#30391B}
-.vv-auth-body .vv-auth-panel-inner{border-color:var(--vv-line)}
-.vv-auth-body .vv-eyebrow{color:var(--brand-dark);font-size:11px}
-.vv-auth-body .vv-auth-story .vv-eyebrow,.vv-auth-body .vv-story-points article>i{color:#FFE0CD}
-.vv-auth-body .vv-story-copy h1{font-size:clamp(34px,3.5vw,50px);line-height:1.12}
-.vv-auth-body .vv-type-picker label{display:grid;grid-template-columns:36px minmax(0,1fr);gap:9px;align-content:start;min-height:118px;padding:12px}
-.vv-auth-body .vv-type-picker label>span:nth-of-type(2){align-content:start}
-.vv-auth-body .vv-type-picker em{margin-top:4px}
-.vv-auth-body .vv-story-copy>p,.vv-auth-body .vv-story-points small,.vv-auth-body .vv-auth-safe{color:#F3EDE0;font-size:13px}
-.vv-auth-body .vv-story-points b{font-size:13px}
-.vv-auth-body .vv-story-points article{border-color:rgba(255,255,255,.28)}
-.vv-auth-body .vv-auth-logo small{color:#F3EDE0;font-size:11px}
-.vv-auth-body .vv-auth-heading p,.vv-auth-body .vv-status-card>p{font-size:13px;line-height:1.5}
-.vv-auth-body .vv-type-picker legend,.vv-auth-body .vv-type-picker b,.vv-auth-body .vc-field label{font-size:13px;color:var(--vv-ink)}
-.vv-auth-body .vv-type-picker small,.vv-auth-body .vv-type-picker em,.vv-auth-body .vv-field-hint{font-size:11px;line-height:1.45;color:var(--vv-muted)}
-.vv-auth-body .vv-type-picker label:has(input:checked){border-color:var(--vv-green);background:#EEF1E5;box-shadow:0 0 0 2px #EEF1E5}
-.vv-auth-body .vv-type-picker label:has(input:checked) .vv-type-icon{background:#DDE5D2;color:var(--vv-green)}
-.vv-auth-body .vv-type-picker label>i{color:var(--vv-green)}
-.vv-auth-body .vv-input-wrap .vc-input{font-size:13px;min-height:48px;color:var(--vv-ink)}
-.vv-auth-body .vv-input-wrap .vc-input::placeholder{color:#655D54;opacity:1}
-.vv-auth-body .vv-phone>span,.vv-auth-body .vv-label-row a,.vv-auth-body .vv-auth-link,.vv-auth-body .vv-checkbox,.vv-auth-body .vv-security-note p{font-size:12px}
-.vv-auth-body .vv-error,.vv-auth-body .vv-form-message{font-size:12px;color:var(--brand-dark)}
-.vv-auth-body .vv-password-rules span{font-size:11px;color:var(--vv-ink)}
-.vv-auth-body .vv-password-rules span.valid{background:#EEF1E5;color:var(--vv-green)}
-.vv-auth-body .vv-submit{min-height:48px;background:var(--brand);border-color:var(--brand);color:#fff}
-.vv-auth-body .vv-auth-link a,.vv-auth-body .vv-label-row a{color:var(--brand-dark)}
-@media(max-width:700px){.ci-role-vendor .ci-dash-page-title{font-size:18px}.ci-role-vendor .ci-dash-page-sub{display:block;font-size:12px}.vv-auth-body .vv-auth-panel-inner{padding:20px}}
+
+/* ==========================================
+   CONSCIOUS INDIA — CLEAN AUTH REDESIGN
+   Login + Signup | Responsive
+   ========================================== */
+
+.vv-auth-body {
+  --vv-green: #30391b;
+  --vv-orange: #a63d24;
+  --vv-ink: #302c26;
+  --vv-muted: #77736b;
+  --vv-line: #e8e3d9;
+  --vv-bg: #faf8f3;
+  background: var(--vv-bg);
+  font-family: "Poppins", sans-serif;
+}
+
+/* MAIN LAYOUT */
+.vv-auth-body .vv-auth-shell {
+  display: grid;
+  grid-template-columns: minmax(320px, 42%) minmax(0, 58%);
+  min-height: 100vh;
+}
+
+/* LEFT BRAND PANEL */
+.vv-auth-body .vv-auth-story {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(32px, 5vw, 72px);
+  background: #30391b;
+  color: #fff8e9;
+}
+
+.vv-auth-body .vv-auth-story::before,
+.vv-auth-body .vv-auth-story::after {
+  opacity: .25;
+}
+
+.vv-auth-body .vv-auth-logo {
+  gap: 12px;
+}
+
+.vv-auth-body .vv-auth-logo > span {
+  background: #a63d24;
+  border-radius: 12px;
+}
+
+.vv-auth-body .vv-auth-logo strong {
+  font-size: 20px;
+  letter-spacing: -.5px;
+}
+
+.vv-auth-body .vv-story-copy {
+  max-width: 440px;
+}
+
+.vv-auth-body .vv-story-copy h1 {
+  max-width: 13ch;
+  margin: 14px 0;
+  font-size: clamp(36px, 3.8vw, 56px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -.045em;
+}
+
+.vv-auth-body .vv-story-copy > p {
+  max-width: 35ch;
+  margin: 0;
+  color: #e0dfd2;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* SIMPLE BENEFITS — NO CARDS */
+.vv-auth-body .vv-story-points {
+  display: grid;
+  gap: 18px;
+  margin-top: 34px;
+}
+
+.vv-auth-body .vv-story-points article {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.vv-auth-body .vv-story-points article > i {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .09);
+  color: #efc4a3;
+  font-size: 13px;
+}
+
+.vv-auth-body .vv-story-points b {
+  color: #fff8e9;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.vv-auth-body .vv-story-points small {
+  display: none;
+}
+
+.vv-auth-body .vv-auth-safe {
+  font-size: 11px;
+  opacity: .75;
+}
+
+/* RIGHT FORM PANEL */
+.vv-auth-body .vv-auth-panel {
+  display: grid;
+  place-items: center;
+  padding: 48px clamp(24px, 5vw, 80px);
+  background: #faf8f3;
+}
+
+.vv-auth-body .vv-auth-panel-inner {
+  width: min(100%, 610px);
+  padding: clamp(24px, 3vw, 42px);
+  border: 1px solid #eee8de;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 14px 45px rgba(48, 57, 27, .045);
+}
+
+/* FORM HEADINGS */
+.vv-auth-body .vv-auth-heading h2 {
+  margin: 6px 0 7px;
+  color: #302c26;
+  font-size: clamp(25px, 2.5vw, 32px);
+  font-weight: 600;
+  letter-spacing: -.035em;
+}
+
+.vv-auth-body .vv-auth-heading p {
+  margin: 0 0 22px;
+  color: #77736b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.vv-auth-body .vv-eyebrow {
+  color: #a63d24;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1em;
+}
+
+/* REGISTRATION PROGRESS */
+.vv-auth-body .vv-step-progress {
+  display: flex;
+  gap: 0;
+  margin: 0 0 22px;
+  padding: 0;
+}
+
+.vv-auth-body .vv-step-progress li {
+  font-size: 12px;
+}
+
+.vv-auth-body .vv-step-progress li > span {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+.vv-auth-body .vv-step-progress li.active > span {
+  background: #30391b;
+  border-color: #30391b;
+}
+
+/* ROLE SELECTION */
+.vv-auth-body .vv-type-picker {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.vv-auth-body .vv-type-picker legend {
+  margin-bottom: 10px;
+  color: #302c26;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vv-auth-body .vv-type-picker label,
+.vv-auth-body .vv-type-picker label:last-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  min-height: 106px;
+  padding: 13px;
+  border: 1px solid #e8e3d9;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+
+.vv-auth-body .vv-type-picker label:hover {
+  border-color: #a3ad94;
+  background: #fafbf8;
+}
+
+.vv-auth-body .vv-type-picker label:has(input:checked) {
+  border-color: #4b572c;
+  background: #f3f5ee;
+  box-shadow: 0 0 0 1px #4b572c;
+}
+
+.vv-auth-body .vv-type-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border-radius: 9px;
+  background: #f3f0e9;
+  color: #5b634c;
+  font-size: 13px;
+}
+
+.vv-auth-body .vv-type-picker b {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.vv-auth-body .vv-type-picker small {
+  margin: 2px 0 0;
+  color: #77736b;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+/* FORM FIELDS */
+.vv-auth-body .vv-auth-form {
+  gap: 15px;
+}
+
+.vv-auth-body .vv-register-step {
+  gap: 17px;
+}
+
+.vv-auth-body .vv-register-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.vv-auth-body .vv-register-fields > .full {
+  grid-column: 1 / -1;
+}
+
+.vv-auth-body .vc-field label {
+  display: block;
+  margin-bottom: 7px;
+  color: #403b33;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.vv-auth-body .vv-input-wrap .vc-input {
+  width: 100%;
+  height: 46px;
+  min-height: 46px;
+  padding-right: 42px;
+  border: 1px solid #e5e1d8;
+  border-radius: 10px;
+  background: #fff;
+  color: #302c26;
+  font-size: 13px;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.vv-auth-body .vv-input-wrap .vc-input:focus {
+  outline: none;
+  border-color: #65754e;
+  box-shadow: 0 0 0 3px rgba(75, 87, 44, .09);
+}
+
+.vv-auth-body .vv-input-wrap .vc-input::placeholder {
+  color: #99948d;
+  font-size: 12px;
+}
+
+.vv-auth-body .vv-input-wrap > i {
+  color: #99948d;
+  font-size: 12px;
+}
+
+.vv-auth-body .vv-input-wrap > button {
+  cursor: pointer;
+}
+
+.vv-auth-body .vv-password-summary {
+  margin: 0;
+  color: #77736b;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* BUTTONS */
+.vv-auth-body .vv-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #a63d24;
+  border-radius: 10px;
+  background: #a63d24;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+
+.vv-auth-body .vv-submit:hover {
+  background: #87311d;
+  border-color: #87311d;
+  transform: translateY(-1px);
+}
+
+.vv-auth-body .vv-submit:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.vv-auth-body .vv-back {
+  min-height: 48px;
+  border-radius: 10px;
+}
+
+.vv-auth-body .vv-auth-link {
+  margin: 20px 0 0;
+  color: #77736b;
+  font-size: 12px;
+  text-align: center;
+}
+
+.vv-auth-body .vv-auth-link a,
+.vv-auth-body .vv-label-row a {
+  color: #a63d24;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.vv-auth-body .vv-auth-link a:hover,
+.vv-auth-body .vv-label-row a:hover {
+  text-decoration: underline;
+}
+
+/* ERRORS AND TERMS */
+.vv-auth-body .vv-error {
+  color: #ad382c;
+  font-size: 11px;
+}
+
+.vv-auth-body .vv-error[hidden],
+.vv-auth-body .vv-register-step[hidden],
+.vv-auth-body [data-creator-only][hidden],
+.vv-auth-body [data-vendor-only][hidden] {
+  display: none !important;
+}
+
+.vv-auth-body .vv-checkbox {
+  color: #77736b;
+  font-size: 12px;
+}
+
+.vv-auth-body .vv-checkbox input {
+  accent-color: #4b572c;
+}
+
+.vv-auth-body .vv-terms {
+  padding: 12px 0;
+  border-top: 1px solid #eee8de;
+}
+
+/* MOBILE AND TABLET */
+@media (max-width: 900px) {
+  .vv-auth-body .vv-auth-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .vv-auth-body .vv-auth-story {
+    min-height: auto;
+    padding: 22px 28px;
+  }
+
+  .vv-auth-body .vv-story-copy,
+  .vv-auth-body .vv-story-points,
+  .vv-auth-body .vv-auth-safe {
+    display: none;
+  }
+
+  .vv-auth-body .vv-auth-panel {
+    padding: 28px 20px;
+  }
+
+  .vv-auth-body .vv-auth-panel-inner {
+    width: min(100%, 620px);
+  }
+}
+
+@media (max-width: 600px) {
+  .vv-auth-body .vv-auth-story {
+    padding: 18px 20px;
+  }
+
+  .vv-auth-body .vv-auth-panel {
+    padding: 16px 12px 28px;
+  }
+
+  .vv-auth-body .vv-auth-panel-inner {
+    padding: 24px 18px;
+    border-radius: 15px;
+    box-shadow: none;
+  }
+
+  .vv-auth-body .vv-register-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .vv-auth-body .vv-register-fields > .full {
+    grid-column: auto;
+  }
+
+  .vv-auth-body .vv-type-picker {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .vv-auth-body .vv-type-picker label,
+  .vv-auth-body .vv-type-picker label:last-child {
+    grid-column: auto;
+    flex-direction: row;
+    align-items: center;
+    min-height: 62px;
+    padding: 9px 12px;
+  }
+
+  .vv-auth-body .vv-type-picker small {
+    font-size: 10px;
+  }
+
+  .vv-auth-body .vv-auth-heading h2 {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 360px) {
+  .vv-auth-body .vv-type-picker {
+    grid-template-columns: 1fr;
+  }
+
+  .vv-auth-body .vv-type-picker label,
+  .vv-auth-body .vv-type-picker label:last-child {
+    min-height: auto;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vv-auth-body .vv-submit,
+  .vv-auth-body .vv-type-picker label {
+    transition: none;
+  }
+}

@@ -22,6 +22,66 @@
   document.querySelectorAll('[data-password-toggle]').forEach(function(button){button.addEventListener('click',function(){var input=document.getElementById(button.dataset.passwordToggle);if(!input)return;var visible=input.type==='password';input.type=visible?'text':'password';button.setAttribute('aria-label',visible?'Hide password':'Show password');button.querySelector('i').className=visible?'fa-regular fa-eye-slash':'fa-regular fa-eye';});});
   document.querySelectorAll('.vv-password-rules').forEach(function(rules){var form=rules.closest('form'),password=form&&form.elements.password;if(!password)return;password.addEventListener('input',function(){var checks={length:password.value.length>=12,upper:/[A-Z]/.test(password.value),lower:/[a-z]/.test(password.value),number:/[0-9]/.test(password.value),special:/[^A-Za-z0-9\s]/.test(password.value)};Object.entries(checks).forEach(function(entry){var item=rules.querySelector('[data-rule="'+entry[0]+'"]');if(item)item.classList.toggle('valid',entry[1]);});});});
   var vendorType=document.querySelector('[data-vendor-register]');
+  function registerStep(step) {
+    if (!vendorType) return;
+    vendorType.querySelectorAll('[data-register-step]').forEach(function (panel) { panel.hidden = Number(panel.dataset.registerStep) !== step; });
+    vendorType.querySelectorAll('[data-progress-step]').forEach(function (item) {
+      var active = Number(item.dataset.progressStep) === step;
+      item.classList.toggle('active', active);
+      if (active) item.setAttribute('aria-current', 'step'); else item.removeAttribute('aria-current');
+    });
+    var heading = document.querySelector('[data-register-heading]');
+    if (heading) heading.textContent = step === 1 ? 'Join Conscious India' : 'One last detail';
+    var intro = document.querySelector('[data-register-intro]');
+    if (intro) intro.textContent = step === 1 ? 'Create your account in two short steps.' : 'Your profile details can be completed after verification.';
+  }
+  function registerError(name, message) {
+    var field = vendorType.elements.namedItem(name);
+    var hint = vendorType.querySelector('[data-error-for="' + name + '"]');
+    if (field && field instanceof HTMLElement) { field.setAttribute('aria-invalid', 'true'); field.setAttribute('data-inline-invalid', 'true'); }
+    if (hint) {
+      hint.textContent = message;
+      hint.hidden = false;
+      if (!hint.id) hint.id = 'register-error-' + name;
+      if (field && field instanceof HTMLElement) field.setAttribute('aria-describedby', hint.id);
+    }
+  }
+  function clearRegisterErrors() {
+    vendorType.querySelectorAll('[data-inline-invalid]').forEach(function (input) { input.removeAttribute('data-inline-invalid'); input.removeAttribute('aria-invalid'); input.removeAttribute('aria-describedby'); });
+    vendorType.querySelectorAll('.vv-error').forEach(function (hint) { hint.textContent = ''; hint.hidden = true; });
+    var message = vendorType.querySelector('[data-form-message]');
+    if (message) { message.textContent = ''; message.hidden = true; }
+  }
+  function validateRegisterStep(step) {
+    clearRegisterErrors();
+    var first = null;
+    if (step === 1 && !vendorType.querySelector('[name="registration_type"]:checked')) {
+      registerError('registration_type', 'Choose how you want to join.');
+      first = vendorType.querySelector('[name="registration_type"]');
+    }
+    var names = step === 1 ? ['owner_name', 'phone', 'email', 'password', 'confirm_password'] : [vendorType.elements.registration_type.value === 'influencer' ? 'handle' : 'display_name', 'terms'];
+    names.forEach(function (name) {
+      var input = vendorType.elements[name];
+      if (!input || input.disabled || input.checkValidity()) return;
+      var message = input.validity.valueMissing ? 'This field is required.' : (name === 'phone' ? 'Enter a valid 10-digit Indian mobile number.' : name === 'email' ? 'Enter a valid email address.' : name === 'handle' ? 'Use 3–100 letters, numbers, dots, underscores or hyphens.' : 'Please check this value.');
+      if (name === 'terms') message = 'Please agree to the terms to continue.';
+      registerError(name, message);
+      if (!first) first = input;
+    });
+    if (step === 1) {
+      var password = vendorType.elements.password.value;
+      if (password && !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s]).{12,}/.test(password)) {
+        registerError('password', 'Use 12+ characters with upper and lowercase, a number, and a symbol.');
+        if (!first) first = vendorType.elements.password;
+      }
+      if (vendorType.elements.confirm_password.value && password !== vendorType.elements.confirm_password.value) {
+        registerError('confirm_password', 'Passwords do not match.');
+        if (!first) first = vendorType.elements.confirm_password;
+      }
+    }
+    if (first) { first.focus(); return false; }
+    return true;
+  }
   function setRegisterType(type) {
     if (!vendorType) return;
     var creator = type === 'influencer';
@@ -38,38 +98,34 @@
     var emailLabel = vendorType.querySelector('[data-email-label]');
     if (emailLabel) emailLabel.textContent = creator ? 'Email address' : 'Business email';
     var terms = vendorType.querySelector('[data-terms-copy]');
-    if (terms) terms.textContent = creator
-      ? 'I agree to the Terms and Privacy Policy, and will clearly disclose paid partnerships.'
-      : 'I agree to the vendor application terms, privacy notice, prohibited-products rules and truthful-claims policy.';
+    if (terms) terms.textContent = 'I agree to the';
     var submit = vendorType.querySelector('[data-submit-copy]');
-    if (submit) submit.textContent = creator ? 'Create creator account' : 'Create account and start onboarding';
+    if (submit) submit.textContent = 'Create account';
     var loginLink = document.querySelector('[data-register-login]');
     if (loginLink) loginLink.href = creator ? '/conscious/creator/login' : '/conscious/partner/login';
     var eyebrow = document.querySelector('[data-register-eyebrow]');
     if (eyebrow) eyebrow.textContent = creator ? 'Creator registration' : 'Partner registration';
     var heading = document.querySelector('[data-register-heading]');
-    if (heading) heading.textContent = creator ? 'Start your creator journey' : 'Choose how you join';
+    if (heading) heading.textContent = 'Join Conscious India';
     var intro = document.querySelector('[data-register-intro]');
-    if (intro) intro.textContent = creator
-      ? 'Create your account now. Add your creator profile and audience details after email verification.'
-      : 'Select your role. The fields below will change to match your application.';
+    if (intro) intro.textContent = 'Create your account in two short steps.';
     var storyTitle = document.querySelector('.vv-story-copy h1');
-    if (storyTitle) storyTitle.textContent = creator ? 'Tell stories that make conscious choices matter.' : 'Turn your craft or brand into a trusted online store.';
+    if (storyTitle) storyTitle.textContent = creator ? 'Share stories that matter.' : 'Make more of what you love.';
     var storyIntro = document.querySelector('.vv-story-copy > p');
     if (storyIntro) storyIntro.textContent = creator
-      ? 'Collaborate with makers and brands, share transparent recommendations, and build a thoughtful creator profile.'
-      : 'Choose the seller profile that truly represents you. We will personalize verification, store setup and document requirements after account creation.';
+      ? 'Connect with Indian makers and conscious brands.'
+      : 'One place for your craft, customers and orders.';
     var storyPoints = document.querySelectorAll('.vv-story-points article');
     var pointContent = creator
       ? [
-          ['fa-solid fa-user-shield', 'Thoughtful creator review', 'Complete your profile before public visibility'],
-          ['fa-solid fa-handshake', 'Purpose-led partnerships', 'Connect with Indian makers and conscious brands'],
-          ['fa-solid fa-chart-line', 'Your creator workspace', 'Manage campaigns, packages and earnings']
+          ['fa-solid fa-user-shield', 'Verified profile', ''],
+          ['fa-solid fa-handshake', 'Brand partnerships', ''],
+          ['fa-solid fa-chart-line', 'Clear earnings', '']
         ]
       : [
-          ['fa-solid fa-user-shield', 'Purpose-built verification', 'Different checks for artisans and registered brands'],
-          ['fa-solid fa-truck-fast', 'Manual delivery control', 'You select couriers, rates and update every shipment'],
-          ['fa-solid fa-chart-line', 'One operating workspace', 'Catalogue, orders, payouts, events and customer care']
+          ['fa-solid fa-user-shield', 'Verified seller', ''],
+          ['fa-solid fa-truck-fast', 'Your delivery, your way', ''],
+          ['fa-solid fa-chart-line', 'One simple workspace', '']
         ];
     storyPoints.forEach(function (point, index) {
       var content = pointContent[index];
@@ -80,13 +136,18 @@
     });
     var studioLabel = document.querySelector('.vv-auth-logo small');
     if (studioLabel) studioLabel.textContent = creator ? 'Creator Studio' : 'Vendor Studio';
+    var stepTwoTitle = vendorType.querySelector('[data-step-two-title]');
+    if (stepTwoTitle) stepTwoTitle.textContent = creator ? 'Choose your creator handle' : 'Name your store';
+    var stepTwoDescription = vendorType.querySelector('[data-step-two-description]');
+    if (stepTwoDescription) stepTwoDescription.textContent = creator ? 'This appears on your public creator profile.' : 'This appears on your storefront.';
+    var stepTwoIcon = vendorType.querySelector('[data-step-two-icon]');
+    if (stepTwoIcon) stepTwoIcon.className = creator ? 'fa-solid fa-at' : 'fa-solid fa-store';
     document.title = creator ? 'Create creator account — Conscious India' : 'Create vendor account — Conscious India';
-    var message = vendorType.querySelector('[data-form-message]');
-    if (message) { message.hidden = true; message.textContent = ''; }
-    vendorType.querySelectorAll('[data-inline-invalid]').forEach(function (input) { input.removeAttribute('data-inline-invalid'); input.removeAttribute('aria-invalid'); });
-    vendorType.querySelectorAll('.ci-inline-error,.vv-error').forEach(function (error) { error.textContent = ''; error.hidden = true; });
+    clearRegisterErrors();
   }
   if (vendorType) {
+    vendorType.querySelector('[data-register-next]').addEventListener('click', function () { if (validateRegisterStep(1)) registerStep(2); });
+    vendorType.querySelector('[data-register-back]').addEventListener('click', function () { registerStep(1); });
     vendorType.querySelectorAll('[name="registration_type"]').forEach(function (input) {
       input.addEventListener('change', function () { setRegisterType(input.value); });
     });
@@ -114,10 +175,8 @@
   var register = document.querySelector('[data-vendor-register]');
   if (register) register.addEventListener('submit', async function (event) {
     event.preventDefault(); event.stopImmediatePropagation();
-    if (!register.checkValidity()) { register.reportValidity(); return; }
-    if (register.elements.password.value !== register.elements.confirm_password.value) {
-      show(register, 'Passwords do not match.'); return;
-    }
+    if (!validateRegisterStep(1)) { registerStep(1); return; }
+    if (!validateRegisterStep(2)) { registerStep(2); return; }
     busy(register, true);
     try {
       var type = register.elements.registration_type.value;
@@ -148,11 +207,10 @@
     } catch (error) {
       show(register, error.message);
       if (error.fields) Object.entries(error.fields).forEach(function (entry) {
-        var field = register.elements[entry[0]];
-        var hint = register.querySelector('[data-error-for="' + entry[0] + '"]');
-        if (field && field instanceof HTMLElement) { field.setAttribute('aria-invalid', 'true'); field.setAttribute('data-inline-invalid', 'true'); }
-        if (hint) { hint.textContent = String(entry[1]); hint.hidden = false; }
+        var name = entry[0] === 'full_name' ? 'owner_name' : entry[0] === 'mobile' ? 'phone' : entry[0] === 'vendor_type' ? 'registration_type' : entry[0];
+        registerError(name, String(entry[1]));
       });
+      if (error.fields && Object.keys(error.fields).some(function (name) { return ['full_name','mobile','vendor_type','owner_name','phone','email','password','confirm_password','registration_type'].includes(name); })) registerStep(1);
       busy(register, false);
     }
   }, true);

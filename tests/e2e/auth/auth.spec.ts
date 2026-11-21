@@ -185,11 +185,9 @@ test.describe('Partner Registration', () => {
   test('influencer option is selectable and shows creator fields', async ({ page }) => {
     await page.check('input[value="influencer"]');
     await expect(page.locator('input[value="influencer"]')).toBeChecked();
-    // [data-creator-only] may appear more than once (label + input wrapper)
-    // Check that at least one is no longer hidden
-    const creatorSections = page.locator('[data-creator-only]');
-    const firstSection = creatorSections.first();
-    await expect(firstSection).not.toHaveAttribute('hidden', { timeout: 3_000 });
+    await expect(page.locator('[data-creator-only]').first()).not.toHaveAttribute('hidden', { timeout: 3_000 });
+    await expect(page.locator('#creator-handle')).toBeAttached();
+    await expect(page.locator('#vendor-display-name')).toBeDisabled();
   });
 
   test('selecting artisan hides creator handle field', async ({ page }) => {
@@ -214,16 +212,23 @@ test.describe('Partner Registration', () => {
     await page.fill('#vendor-register-email', `test+${Date.now()}@playwright.local`);
     await page.fill('#vendor-register-phone', '9876543210');
     await page.fill('#vendor-register-password', VALID_PASSWORD);
+    await page.fill('#vendor-register-confirm', VALID_PASSWORD);
     // Advance to step 2 (type="button" doesn't submit, just moves to next step)
-    await page.locator('.vv-submit').first().click();
+    await page.locator('[data-register-next]').click();
     // Step 2 should now be visible
     await expect(page.locator('.vv-register-step').nth(1)).toBeVisible({ timeout: 3_000 });
     // Fill step 2 required fields but NOT the terms checkbox
-    await page.fill('#vendor-register-confirm', VALID_PASSWORD);
     await page.fill('#vendor-display-name', 'Test Store');
     // Submit without terms — form should stay on page / not navigate away
     await page.locator('button[type="submit"].vv-submit').click();
     await expect(page).toHaveURL(new RegExp(ROUTES.partnerRegister));
+  });
+
+  test('continue highlights missing account details before step 2', async ({ page }) => {
+    await page.locator('[data-register-next]').click();
+    await expect(page.locator('[data-register-step="1"]')).toBeVisible();
+    await expect(page.locator('[data-error-for="registration_type"]')).toBeVisible();
+    await expect(page.locator('#vendor-owner-name')).toHaveAttribute('aria-invalid', 'true');
   });
 
   test('password show-toggle works on partner register form', async ({ page }) => {
