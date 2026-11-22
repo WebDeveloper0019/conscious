@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   const api = '/conscious/api/vendor/';
-  const state = {csrf:'', products:[], current:null, variants:[], images:[]};
+  const state = {csrf:'', products:[], current:null, variants:[], images:[], readyToSell:false};
   const form = document.getElementById('catalog-form');
   const editor = document.getElementById('catalog-editor');
   const extras = document.getElementById('catalog-extras');
@@ -55,7 +55,7 @@
     form.querySelector('[type=submit]').disabled=!editable;
     document.getElementById('catalog-image-form').querySelector('[type=submit]').disabled=!['draft','changes_requested','rejected'].includes(state.current.status);
     document.getElementById('catalog-variant-form').hidden=!['draft','changes_requested','rejected'].includes(state.current.status);
-    document.getElementById('catalog-submit-review').disabled=!['draft','changes_requested','rejected'].includes(state.current.status);
+    document.getElementById('catalog-submit-review').disabled=!state.readyToSell||!['draft','changes_requested','rejected'].includes(state.current.status);
     editor.scrollIntoView({block:'start'});
   }
   function renderImages() {
@@ -103,7 +103,7 @@
     notice(result.message);await openProduct(state.current.id);
   });
   document.getElementById('catalog-submit-review').addEventListener('click',async event=>{
-    if(!state.current)return;
+    if(!state.current||!state.readyToSell)return;
     if(!confirm('Submit this product for admin review? You cannot edit it while review is pending.'))return;
     event.currentTarget.disabled=true;
     try {const result=await call('product-review.php','POST',{product_id:state.current.id});notice(result.message);await loadProducts();await openProduct(state.current.id);}
@@ -114,5 +114,5 @@
   document.getElementById('catalog-refresh').addEventListener('click',()=>loadProducts().catch(error=>notice(error.message,true)));
   document.getElementById('catalog-search').addEventListener('input',renderProducts);
   document.getElementById('catalog-filter').addEventListener('change',renderProducts);
-  (async()=>{try{const identity=await call('auth/me.php');state.csrf=identity.csrf_token;await loadProducts();if(location.hash==='#add-product')resetEditor();}catch(error){notice(error.message,true);}})();
+  (async()=>{try{const identity=await call('auth/me.php');state.csrf=identity.csrf_token;const vendor=identity.vendor||{};state.readyToSell=vendor.status==='active'&&['approved','demo_fixture'].includes(vendor.verification_status)&&vendor.onboarding_status==='completed';const reviewButton=document.getElementById('catalog-submit-review');if(!state.readyToSell){reviewButton.disabled=true;reviewButton.title='Finish seller setup and receive approval before submitting a listing.';reviewButton.insertAdjacentText('afterend',' Complete seller setup and receive approval before product review.');}await loadProducts();if(location.hash==='#add-product')resetEditor();}catch(error){notice(error.message,true);}})();
 })();

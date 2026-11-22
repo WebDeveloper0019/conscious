@@ -55,7 +55,7 @@ function vendor_payouts_v2(): void
         }
         $bankStmt = $db->prepare(
             'SELECT id FROM vendor_bank_accounts
-             WHERE id=:bank_id AND vendor_id=:bank_vendor AND verification_status="verified" FOR UPDATE'
+             WHERE id=:bank_id AND vendor_id=:bank_vendor AND is_primary=1 AND verification_status="verified" FOR UPDATE'
         );
         $bankStmt->execute(['bank_id' => $bankId, 'bank_vendor' => $vendorId]);
         if (!$bankStmt->fetch()) {

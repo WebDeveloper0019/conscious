@@ -1,0 +1,1 @@
+<?php $pageTitle='Vendor bank review';$pageSubtitle='Verify payout accounts after seller approval';$activePage='banks';$adminPageScript='assets/js/vendor-banks-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/bank-accounts.php';require __DIR__.'/layouts/foot.php';

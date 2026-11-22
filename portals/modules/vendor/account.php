@@ -1,1 +1,1 @@
-<?php $pageTitle='Account';$pageSubtitle='Identity, verification, payout readiness, and security';$activePage='account';$vendorPageScript='assets/js/account-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/account.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Account';$pageSubtitle='Identity, verification, payout readiness, and security';$activePage='account';$vendorPageScript='assets/js/account-live.js?v=20261121-1';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/account.php';require __DIR__.'/layouts/foot.php';

@@ -1,1 +1,1 @@
-<?php $pageTitle='Vendors, KYC & Certifications';$activePage='vendors';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/vendors.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Vendor applications';$pageSubtitle='Review real identity documents and send correction reasons';$activePage='vendors';$adminPageScript='assets/js/vendors-live.js?v=20261122-4';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/vendors-live.php';require __DIR__.'/layouts/foot.php';

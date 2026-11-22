@@ -15,6 +15,5 @@ function current_vendor_application(string $vendorId,bool $forUpdate=false): arr
     $sql='SELECT * FROM vendor_applications WHERE vendor_id=:vendor ORDER BY version DESC LIMIT 1'.($forUpdate?' FOR UPDATE':'');$stmt=get_db()->prepare($sql);$stmt->execute(['vendor'=>$vendorId]);$application=$stmt->fetch();if(!$application)throw new RuntimeException('Vendor application is missing.');return $application;
 }
 function vendor_next_route(array $vendor): string {
-    if(($vendor['verification_status']==='approved'||(APP_ENV==='local'&&$vendor['verification_status']==='demo_fixture'))&&$vendor['onboarding_status']==='completed'&&$vendor['status']==='active')return '../dashboard.php';
-    if(in_array($vendor['verification_status'],['submitted','under_review','changes_requested','rejected'],true))return 'status.php';return '../onboarding.php?type='.rawurlencode($vendor['vendor_type']);
+    return '../dashboard.php';
 }

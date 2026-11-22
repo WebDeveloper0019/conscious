@@ -10,4 +10,4 @@ if((int)$vendor['otp_attempts']>=5||empty($vendor['otp_expires_at'])||strtotime(
 if(empty($vendor['otp_hash'])||!password_verify($code,$vendor['otp_hash'])){$db->prepare('UPDATE vendors SET otp_attempts=otp_attempts+1 WHERE id=:id')->execute(['id'=>$vendor['id']]);json_response(400,['success'=>false,'message'=>'The verification code is incorrect.']);}
 $db->prepare('UPDATE vendors SET email_verified=1,otp_hash=NULL,otp_expires_at=NULL,otp_attempts=0,onboarding_status="in_progress",updated_at=UTC_TIMESTAMP() WHERE id=:id')->execute(['id'=>$vendor['id']]);
 $session=create_auth_session('vendor',$vendor['id'],false);audit_event('vendor.contact_verified','vendor',$vendor['id'],[],['type'=>'vendor','id'=>$vendor['id']]);
-json_response(200,['success'=>true,'message'=>'Contact verified. Continue vendor onboarding.','csrf_token'=>$session['csrf_token'],'vendor'=>public_vendor($vendor),'redirect'=>'../onboarding.php?type='.rawurlencode($vendor['vendor_type'])]);
+json_response(200,['success'=>true,'message'=>'Email verified. Set up your store when you are ready.','csrf_token'=>$session['csrf_token'],'vendor'=>public_vendor($vendor),'redirect'=>'../dashboard.php']);

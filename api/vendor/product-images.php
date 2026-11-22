@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__.'/../lib/helpers.php';require_once __DIR__.'/../lib/catalog.php';require_once __DIR__.'/../lib/upload.php';
-send_cors_headers();$context=require_vendor(true);$vendorId=$context['vendor']['id'];$db=get_db();$method=$_SERVER['REQUEST_METHOD']??'GET';$productId=trim((string)($_GET['product_id']??''));$product=vendor_product($productId,$vendorId);
+send_cors_headers();$context=require_vendor(false);$vendorId=$context['vendor']['id'];$db=get_db();$method=$_SERVER['REQUEST_METHOD']??'GET';$productId=trim((string)($_GET['product_id']??''));$product=vendor_product($productId,$vendorId);
 if($method!=='GET'&&!in_array($product['status'],['draft','changes_requested','rejected'],true))json_response(409,['success'=>false,'message'=>'Images can be changed only on a product draft.']);
 if($method==='POST'){$preAlt=trim((string)($_POST['alt_text']??$product['name']));if(mb_strlen($preAlt)<3||mb_strlen($preAlt)>220)json_response(422,['success'=>false,'message'=>'Image alt text must be between 3 and 220 characters.']);}
 if($method==='GET'){$stmt=$db->prepare('SELECT pi.id,pi.alt_text,pi.sort_order,pi.is_primary,f.id AS file_id,f.mime_type,f.size_bytes,f.scan_status,CONCAT("../files.php?id=",f.id) AS url FROM product_images pi JOIN file_assets f ON f.id=pi.file_asset_id WHERE pi.product_id=:product AND f.deleted_at IS NULL ORDER BY pi.is_primary DESC,pi.sort_order,pi.created_at');$stmt->execute(['product'=>$productId]);json_response(200,['success'=>true,'images'=>$stmt->fetchAll()]);}

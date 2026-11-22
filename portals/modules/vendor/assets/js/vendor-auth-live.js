@@ -31,9 +31,9 @@
       if (active) item.setAttribute('aria-current', 'step'); else item.removeAttribute('aria-current');
     });
     var heading = document.querySelector('[data-register-heading]');
-    if (heading) heading.textContent = step === 1 ? 'Join Conscious India' : 'One last detail';
+    if (heading) heading.textContent = step === 1 ? 'Create your seller account' : 'Complete your account';
     var intro = document.querySelector('[data-register-intro]');
-    if (intro) intro.textContent = step === 1 ? 'Create your account in two short steps.' : 'Your profile details can be completed after verification.';
+    if (intro) intro.textContent = step === 1 ? 'Create your account in two steps.' : 'Just a few details to finish.';
   }
   function registerError(name, message) {
     var field = vendorType.elements.namedItem(name);
@@ -59,7 +59,7 @@
       registerError('registration_type', 'Choose how you want to join.');
       first = vendorType.querySelector('[name="registration_type"]');
     }
-    var names = step === 1 ? ['owner_name', 'phone', 'email', 'password', 'confirm_password'] : [vendorType.elements.registration_type.value === 'influencer' ? 'handle' : 'display_name', 'terms'];
+    var names = step === 1 ? ['owner_name', 'phone', 'email', 'password'] : ['confirm_password', vendorType.elements.registration_type.value === 'influencer' ? 'handle' : 'display_name', 'terms'];
     names.forEach(function (name) {
       var input = vendorType.elements[name];
       if (!input || input.disabled || input.checkValidity()) return;
@@ -74,10 +74,10 @@
         registerError('password', 'Use 12+ characters with upper and lowercase, a number, and a symbol.');
         if (!first) first = vendorType.elements.password;
       }
-      if (vendorType.elements.confirm_password.value && password !== vendorType.elements.confirm_password.value) {
-        registerError('confirm_password', 'Passwords do not match.');
-        if (!first) first = vendorType.elements.confirm_password;
-      }
+    }
+    if (step === 2 && vendorType.elements.confirm_password.value && vendorType.elements.password.value !== vendorType.elements.confirm_password.value) {
+      registerError('confirm_password', 'Passwords do not match.');
+      if (!first) first = vendorType.elements.confirm_password;
     }
     if (first) { first.focus(); return false; }
     return true;
@@ -106,34 +106,9 @@
     var eyebrow = document.querySelector('[data-register-eyebrow]');
     if (eyebrow) eyebrow.textContent = creator ? 'Creator registration' : 'Partner registration';
     var heading = document.querySelector('[data-register-heading]');
-    if (heading) heading.textContent = 'Join Conscious India';
+    if (heading) heading.textContent = 'Create your seller account';
     var intro = document.querySelector('[data-register-intro]');
-    if (intro) intro.textContent = 'Create your account in two short steps.';
-    var storyTitle = document.querySelector('.vv-story-copy h1');
-    if (storyTitle) storyTitle.textContent = creator ? 'Share stories that matter.' : 'Make more of what you love.';
-    var storyIntro = document.querySelector('.vv-story-copy > p');
-    if (storyIntro) storyIntro.textContent = creator
-      ? 'Connect with Indian makers and conscious brands.'
-      : 'One place for your craft, customers and orders.';
-    var storyPoints = document.querySelectorAll('.vv-story-points article');
-    var pointContent = creator
-      ? [
-          ['fa-solid fa-user-shield', 'Verified profile', ''],
-          ['fa-solid fa-handshake', 'Brand partnerships', ''],
-          ['fa-solid fa-chart-line', 'Clear earnings', '']
-        ]
-      : [
-          ['fa-solid fa-user-shield', 'Verified seller', ''],
-          ['fa-solid fa-truck-fast', 'Your delivery, your way', ''],
-          ['fa-solid fa-chart-line', 'One simple workspace', '']
-        ];
-    storyPoints.forEach(function (point, index) {
-      var content = pointContent[index];
-      if (!content) return;
-      var icon = point.querySelector('i'); if (icon) icon.className = content[0];
-      var title = point.querySelector('b'); if (title) title.textContent = content[1];
-      var detail = point.querySelector('small'); if (detail) detail.textContent = content[2];
-    });
+    if (intro) intro.textContent = 'Create your account in two steps.';
     var studioLabel = document.querySelector('.vv-auth-logo small');
     if (studioLabel) studioLabel.textContent = creator ? 'Creator Studio' : 'Vendor Studio';
     var stepTwoTitle = vendorType.querySelector('[data-step-two-title]');
@@ -229,7 +204,7 @@
         var result = await post('verify-contact.php', { email: email, code: verify.elements.code.value.trim() });
         sessionStorage.removeItem('ci_vendor_pending_email');
         if (result.csrf_token) sessionStorage.setItem('ci_vendor_csrf_token', result.csrf_token);
-        location.assign('/conscious/partner/onboarding');
+        location.assign('/conscious/partner/dashboard');
       } catch (error) { show(verify, error.message); busy(verify, false); }
     }, true);
     if (!email && demoCallout) demoCallout.textContent = 'Start from registration to receive a verification code.';

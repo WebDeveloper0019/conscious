@@ -1,0 +1,311 @@
+/* Tabler-inspired vendor preview: clear navigation, compact header, quiet cards. */
+.ci-role-vendor {
+  --vt-ink: #263b30;
+  --vt-muted: #607167;
+  --vt-border: #dfe5df;
+  --vt-bg: #f5f7f5;
+  --vt-accent: #a63d24;
+  background: var(--vt-bg);
+  color: var(--vt-ink);
+}
+.ci-role-vendor .ci-dash-wrap {
+  display: grid;
+  grid-template-columns: 246px minmax(0, 1fr);
+  gap: 0;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  align-items: stretch;
+}
+.ci-role-vendor .ci-dash-sidebar {
+  position: sticky;
+  top: 0;
+  width: 246px;
+  height: 100vh;
+  border: 0;
+  border-right: 1px solid var(--vt-border);
+  border-radius: 0;
+  box-shadow: none;
+  background: #fff;
+}
+.ci-role-vendor .ci-sidebar-brand {
+  min-height: 72px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--vt-border);
+}
+.ci-role-vendor .ci-sidebar-user { padding: 12px 18px; }
+.ci-role-vendor .ci-sidebar-nav { padding: 10px 11px; }
+.ci-role-vendor .ci-sidebar-section-label {
+  margin: 16px 10px 6px;
+  color: #748278;
+  font-size: 10px;
+  letter-spacing: .11em;
+}
+.ci-role-vendor .ci-sidebar-nav-item {
+  min-height: 39px;
+  padding: 8px 11px;
+  border-radius: 7px;
+  font-size: 13px;
+}
+.ci-role-vendor .ci-sidebar-nav-item.active {
+  background: #eaf0e9;
+  color: var(--vt-ink);
+  box-shadow: inset 3px 0 var(--vt-accent);
+}
+.ci-role-vendor .ci-sidebar-nav-item.active i { color: var(--vt-accent); }
+.ci-role-vendor .ci-dash-main { min-width: 0; padding: 0; background: var(--vt-bg); }
+.ci-role-vendor .ci-dash-topbar {
+  position: relative;
+  top: 0;
+  min-height: 72px;
+  margin: 0;
+  padding: 10px clamp(18px, 2.5vw, 38px);
+  border: 0;
+  border-bottom: 1px solid var(--vt-border);
+  border-radius: 0;
+  background: #fff;
+  box-shadow: none;
+}
+.ci-role-vendor .vc-topbar-kicker { color: var(--vt-muted); letter-spacing: .04em; }
+.ci-role-vendor .ci-dash-page-title { color: var(--vt-ink); font-size: 20px; line-height: 1.25; }
+.ci-role-vendor .ci-dash-page-sub { color: var(--vt-muted); font-size: 12px; }
+.ci-role-vendor .vc-main { width: 100%; padding: 24px clamp(18px, 2.5vw, 38px) 42px; }
+.ci-role-vendor .vc-topbar-create { min-height: 38px; border-radius: 7px; }
+.ci-role-vendor .vc-profile-button, .ci-role-vendor .vc-icon-button { border-radius: 7px; }
+
+/* The setup view uses the same compact, light surfaces as Tabler's dashboards. */
+.ci-role-vendor .vs-hero {
+  display: flex;
+  min-height: 0;
+  margin: 0 0 24px;
+  padding: 24px 28px;
+  border: 1px solid var(--vt-border);
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(27, 51, 34, .035);
+  color: var(--vt-ink);
+}
+.ci-role-vendor .vs-hero-copy { width: min(100%, 760px); }
+.ci-role-vendor .vs-hero h2 { margin: 7px 0 5px; color: var(--vt-ink); font-size: clamp(24px, 2.4vw, 31px); line-height: 1.25; }
+.ci-role-vendor .vs-hero p { color: var(--vt-muted); }
+.ci-role-vendor .vs-hero-icon { width: 78px; height: 78px; border-radius: 12px; font-size: 34px; }
+.ci-role-vendor .vs-hero-icon > span { width: 25px; height: 25px; }
+.ci-role-vendor .vs-progress { height: 8px; border-radius: 20px; }
+.ci-role-vendor .vs-progress-label { color: var(--vt-ink); }
+.ci-role-vendor .vs-section-heading { margin-top: 0; }
+.ci-role-vendor .vs-section-heading h2 { color: var(--vt-ink); font-size: 22px; }
+.ci-role-vendor .vs-card,
+.ci-role-vendor .vs-next,
+.ci-role-vendor .vs-banner,
+.ci-role-vendor .vs-footer-action {
+  border: 1px solid var(--vt-border);
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(27, 51, 34, .035);
+}
+.ci-role-vendor .vs-card { min-height: 88px; padding: 15px 17px; }
+.ci-role-vendor .vs-card h3, .ci-role-vendor .vs-next h2 { color: var(--vt-ink); }
+.ci-role-vendor .vs-card p, .ci-role-vendor .vs-next p { color: var(--vt-muted); }
+.ci-role-vendor .vs-card-icon { border-radius: 8px; }
+.ci-role-vendor .vs-card-action { white-space: nowrap; }
+.ci-role-vendor .vs-next { margin-top: 20px; }
+
+/* Approved vendors get the same light dashboard treatment. */
+.ci-role-vendor .vc-dashboard-hero { border-radius: 9px; background: #fff; box-shadow: 0 1px 2px rgba(27, 51, 34, .035); }
+.ci-role-vendor .vc-dashboard-hero h2 { color: var(--vt-ink); }
+.ci-role-vendor .vc-dashboard-hero p { color: var(--vt-muted); }
+
+@media (max-width: 900px) {
+  .ci-role-vendor .ci-dash-wrap { display: block; }
+  .ci-role-vendor .ci-dash-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 100; width: min(290px, 88vw); height: 100vh; border-right: 1px solid var(--vt-border); transform: translateX(-105%); }
+  .ci-role-vendor .ci-dash-sidebar.open { transform: translateX(0); }
+  .ci-role-vendor .ci-dash-main { padding: 0; }
+  .ci-role-vendor .ci-dash-topbar { margin: 0; }
+  .ci-role-vendor .vc-main { padding: 18px 16px 32px; }
+}
+@media (max-width: 600px) {
+  .ci-role-vendor .ci-dash-topbar { min-height: 64px; padding: 10px 14px; }
+  .ci-role-vendor .vc-main { padding: 16px 12px 28px; }
+  .ci-role-vendor .vs-hero { padding: 20px; }
+  .ci-role-vendor .vs-hero-icon { display: none; }
+}
+
+/* Customer dashboard inspired navigation: one site header, one focused menu. */
+.ci-role-vendor .vc-global-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-height: 68px;
+  padding: 8px clamp(18px, 2.5vw, 38px);
+  border-bottom: 1px solid var(--vt-border);
+  background: #fff;
+}
+.ci-role-vendor .vc-global-brand { display: flex; align-items: center; min-width: 0; gap: 13px; }
+.ci-role-vendor .vc-global-brand > a { display: inline-flex; align-items: center; gap: 9px; color: var(--vt-ink); text-decoration: none; white-space: nowrap; }
+.ci-role-vendor .vc-global-brand img { width: 40px; height: 40px; object-fit: contain; }
+.ci-role-vendor .vc-global-brand strong { font-size: 17px; font-weight: 700; }
+.ci-role-vendor .vc-global-divider { height: 25px; border-left: 1px solid var(--vt-border); }
+.ci-role-vendor .vc-global-workspace { color: var(--vt-muted); font-size: 12px; white-space: nowrap; }
+.ci-role-vendor .vc-global-links { display: flex; align-items: center; gap: 25px; margin-left: auto; }
+.ci-role-vendor .vc-global-links a { color: #45594d; font-size: 13px; font-weight: 600; text-decoration: none; }
+.ci-role-vendor .vc-global-links a:hover { color: var(--vt-accent); }
+.ci-role-vendor .vc-global-account { display: inline-flex; align-items: center; gap: 8px; max-width: 205px; padding: 4px 9px 4px 4px; border: 1px solid var(--vt-border); border-radius: 9px; color: var(--vt-ink); text-decoration: none; }
+.ci-role-vendor .vc-global-account span { display: grid; place-items: center; width: 32px; height: 32px; flex: 0 0 32px; border-radius: 7px; background: #e6eee7; color: var(--vt-ink); font-size: 12px; font-weight: 700; }
+.ci-role-vendor .vc-global-account b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+.ci-role-vendor .vc-global-account i { font-size: 10px; color: var(--vt-muted); }
+.ci-role-vendor .ci-dash-wrap { grid-template-columns: 252px minmax(0, 1fr); min-height: calc(100vh - 68px); }
+.ci-role-vendor .ci-dash-sidebar { top: 68px; width: 252px; height: calc(100vh - 68px); background: #294333; color: #fff; border-right: 0; }
+.ci-role-vendor .ci-sidebar-brand { min-height: 60px; gap: 11px; padding: 13px 18px; border-bottom: 1px solid rgba(255,255,255,.14); background: transparent; }
+.ci-role-vendor .ci-sidebar-brand > i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,.12); color: #fff; font-size: 15px; }
+.ci-role-vendor .ci-sidebar-brand-name { color: #fff; font-size: 14px; }
+.ci-role-vendor .ci-sidebar-brand-role { color: #d4e3d5; }
+.ci-role-vendor .ci-sidebar-user { margin: 13px 12px 4px; padding: 11px; border: 1px solid rgba(255,255,255,.14); border-radius: 10px; background: rgba(255,255,255,.08); }
+.ci-role-vendor .ci-sidebar-avatar { background: #fff; color: #294333; }
+.ci-role-vendor .ci-sidebar-user-name { color: #fff; }
+.ci-role-vendor .ci-sidebar-user-email { color: #d5e2d6; }
+.ci-role-vendor .ci-sidebar-section-label { color: #b8cfbd; }
+.ci-role-vendor .ci-sidebar-nav-item { color: #e3ece3; }
+.ci-role-vendor .ci-sidebar-nav-item i { color: #c6d9ca; }
+.ci-role-vendor .ci-sidebar-nav-item:hover { background: rgba(255,255,255,.12); color: #fff; }
+.ci-role-vendor .ci-sidebar-nav-item.active { background: #fff; color: #294333; box-shadow: none; }
+.ci-role-vendor .ci-sidebar-nav-item.active i { color: var(--vt-accent); }
+.ci-role-vendor .vc-sidebar-foot { border-top: 1px solid rgba(255,255,255,.14); }
+.ci-role-vendor .ci-dash-topbar { min-height: 94px; padding-top: 15px; padding-bottom: 15px; background: transparent; border: 0; }
+.ci-role-vendor .vc-topbar-kicker { color: var(--vt-accent); }
+.ci-role-vendor .ci-dash-page-title { font-size: clamp(21px, 2vw, 27px); }
+.ci-role-vendor .vc-main { padding-top: 0; }
+.ci-role-vendor .ci-sidebar-hamburger { display: none; flex: 0 0 38px; width: 38px; height: 38px; place-items: center; border: 1px solid var(--vt-border); border-radius: 8px; background: #fff; color: var(--vt-ink); }
+/* Keep the menu pinned below the site header, including on long setup pages. */
+.ci-role-vendor .ci-dash-wrap { display: block; }
+.ci-role-vendor { padding-top: 68px; }
+.ci-role-vendor .vc-skip { position: fixed; left: 12px; top: -100px; z-index: 200; }
+.ci-role-vendor .vc-skip:focus { top: 12px; }
+.ci-role-vendor .ci-dash-sidebar {
+  position: fixed;
+  inset: 68px auto 0 0;
+  top: 68px;
+  bottom: 0;
+  width: 252px;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  transform: none;
+}
+.ci-role-vendor .ci-sidebar-brand { margin: 0; }
+.ci-role-vendor .ci-sidebar-nav { flex: 1 1 auto; min-height: 0; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.ci-role-vendor .ci-sidebar-nav::-webkit-scrollbar { display: none; }
+.ci-role-vendor .vc-sidebar-foot { flex: 0 0 auto; margin-top: 0; }
+.ci-role-vendor .ci-dash-main { width: calc(100% - 252px); margin: 0 0 0 252px; }
+@media (max-width: 1024px) {
+  .ci-role-vendor .ci-sidebar-hamburger { display: grid; }
+  .ci-role-vendor .ci-dash-sidebar { position: fixed; inset: 0 auto 0 0; top: 0; bottom: 0; z-index: 120; height: 100vh; width: min(290px, 88vw); transform: translateX(-105%); }
+  .ci-role-vendor .ci-dash-sidebar.open { transform: translateX(0); }
+  .ci-role-vendor .ci-dash-wrap { display: block; }
+  .ci-role-vendor .ci-dash-main { width: 100%; margin: 0; }
+}
+@media (max-width: 700px) {
+  .ci-role-vendor .vc-global-header { gap: 12px; padding: 9px 14px; }
+  .ci-role-vendor .vc-global-links, .ci-role-vendor .vc-global-divider, .ci-role-vendor .vc-global-workspace, .ci-role-vendor .vc-global-account b, .ci-role-vendor .vc-global-account i { display: none; }
+  .ci-role-vendor .vc-global-account { margin-left: auto; padding: 3px; }
+  .ci-role-vendor .vc-global-brand strong { font-size: 15px; }
+  .ci-role-vendor .ci-dash-topbar { min-height: 82px; padding: 14px; }
+}
+
+/* Keep document validation messages compact and aligned under the full upload control. */
+.ci-role-vendor .vo-doc-grid > label > .ci-inline-error,
+.ci-role-vendor .vo-doc-grid > label > .vc-field-error {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 2px 0 0 !important;
+  padding: 6px 9px;
+  border-radius: 6px;
+  background: #fff3ef;
+  color: #a2361f;
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+  white-space: normal;
+}
+
+.ci-role-vendor .vo-file-input-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+}
+.ci-role-vendor .vo-upload-file {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 3px;
+  padding: 9px 10px;
+  border: 1px solid #cddfd2;
+  border-radius: 8px;
+  background: #f3f8f4;
+}
+.ci-role-vendor .vo-upload-file.rejected { border-color: #edc8be; background: #fff4f1; }
+.ci-role-vendor .vo-upload-file-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 8px; background: #dfeee3; color: #2f7048; }
+.ci-role-vendor .vo-upload-file.rejected .vo-upload-file-icon { background: #f7ddd6; color: #a63d24; }
+.ci-role-vendor .vo-upload-file-copy { min-width: 0; }
+.ci-role-vendor .vo-upload-file-copy b,
+.ci-role-vendor .vo-upload-file-copy small { display: block; }
+.ci-role-vendor .vo-upload-file-copy b { overflow: hidden; color: #294333; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.ci-role-vendor .vo-upload-file-copy small { margin-top: 2px; color: #64746a; font-size: 11px; line-height: 1.4; }
+.ci-role-vendor .vo-upload-file-copy .vo-upload-reason { color: #a63d24; }
+.ci-role-vendor .vo-upload-file-actions { display: flex; align-items: center; gap: 7px; }
+.ci-role-vendor .vo-upload-file-actions :is(a,button) { padding: 6px 9px; border: 1px solid #c7d8cc; border-radius: 7px; background: #fff; color: #294333; font: inherit; font-size: 11px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.ci-role-vendor .vo-upload-file-actions :is(a,button):hover { border-color: #a63d24; color: #a63d24; }
+.ci-role-vendor .vo-correction-notice { display: flex; align-items: flex-start; gap: 12px; margin: 15px 0; padding: 14px 16px; border: 1px solid #edc4b8; border-radius: 9px; background: #fff3ef; color: #6f2e1f; }
+.ci-role-vendor .vo-correction-notice > span { display: grid; place-items: center; width: 34px; height: 34px; flex: 0 0 34px; border-radius: 8px; background: #f4d9d1; color: #a63d24; }
+.ci-role-vendor .vo-correction-notice b { display: block; font-size: 13px; }
+.ci-role-vendor .vo-correction-notice p { margin: 4px 0 0; font-size: 12px; line-height: 1.55; }
+.ci-role-vendor .vo-pending-actions { display: none !important; }
+@media (max-width: 560px) {
+  .ci-role-vendor .vo-upload-file { grid-template-columns: 34px minmax(0, 1fr); }
+  .ci-role-vendor .vo-upload-file-actions { grid-column: 1 / -1; }
+}
+
+/* Seller onboarding: show one bright, focused step and a moving progress cue. */
+.ci-role-vendor .vo-shell { max-width: 1050px; margin: 0; }
+.ci-role-vendor .vo-intro { min-height: 0; padding: 20px 24px; border: 1px solid var(--vt-border); border-radius: 10px; background: #fff; color: var(--vt-ink); box-shadow: none; }
+.ci-role-vendor .vo-intro h2 { color: var(--vt-ink); font-size: 23px; }
+.ci-role-vendor .vo-intro p { color: var(--vt-muted); font-size: 12px; }
+.ci-role-vendor .vo-kicker { color: var(--vt-accent); }
+.ci-role-vendor .vo-intro-side { display: none; }
+.ci-role-vendor .vo-steps { margin: 15px 0 4px; border-radius: 9px; box-shadow: none; }
+.ci-role-vendor .vo-steps button { padding: 7px; }
+.ci-role-vendor .vo-steps button > span { width: 35px; height: 35px; font-size: 12px; }
+.ci-role-vendor .vo-steps b { font-size: 11px; }
+.ci-role-vendor .vo-steps small { display: none; }
+.ci-role-vendor .vo-steps button:disabled { cursor: not-allowed; opacity: .5; }
+.ci-role-vendor .vo-steps button:disabled > span { background: #eef0eb; color: #758477; }
+.ci-role-vendor .vo-progress-track { height: 6px; margin-bottom: 15px; border-radius: 6px; background: #e5eae3; overflow: hidden; }
+.ci-role-vendor .vo-progress-track span { display: block; height: 100%; border-radius: inherit; background: var(--vt-accent); transition: width .5s ease; }
+.ci-role-vendor .vo-progress-track[hidden] { display: none; }
+.ci-role-vendor .vo-panel { border-radius: 10px; box-shadow: 0 1px 2px rgba(27,51,34,.035); }
+.ci-role-vendor .vo-panel > header { background: #fff; }
+.ci-role-vendor .vo-panel > header h2 { color: var(--vt-ink); }
+.ci-role-vendor .vo-panel > header p { display: none; }
+.ci-role-vendor .vo-panel > footer { background: #fff; }
+.ci-role-vendor .vo-type-reminder { display: none; }
+.ci-role-vendor .vo-alert { background: #f3f7f2; color: var(--vt-ink); }
+.ci-role-vendor .vo-alert.amber { background: #fff7ef; color: #73452f; }
+.ci-role-vendor .vo-shell .vc-field label { color: var(--vt-ink); font-size: 12px; }
+.ci-role-vendor .vo-shell .vc-input, .ci-role-vendor .vo-shell .vc-select, .ci-role-vendor .vo-shell .vc-textarea { color: var(--vt-ink); background: #fff; font-size: 13px; }
+.ci-role-vendor .vo-shell .vc-help { color: var(--vt-muted); }
+.ci-role-vendor .vs-pill.locked { display: inline-flex; align-items: center; gap: 5px; background: #f0f2ee; color: #607167; }
+.ci-role-vendor .vo-steps button[hidden], .ci-role-vendor .vo-steps > i[hidden], .ci-role-vendor .vo-grid[hidden], .ci-role-vendor .vo-subhead[hidden], .ci-role-vendor .vo-review-summary article[hidden], .ci-role-vendor .vc-field[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .ci-role-vendor .vo-progress-track span { transition: none; } }

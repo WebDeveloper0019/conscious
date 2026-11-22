@@ -1,0 +1,1 @@
+<?php $pageTitle='Vendor application review';$pageSubtitle='Inspect the complete onboarding submission and make an audited decision';$activePage='vendors';$adminPageScript='assets/js/vendor-review-live.js?v=20261122-3';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/vendor-review.php';require __DIR__.'/layouts/foot.php';

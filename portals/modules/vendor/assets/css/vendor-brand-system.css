@@ -140,6 +140,7 @@
   font-size: clamp(25px, 2.5vw, 32px);
   font-weight: 600;
   letter-spacing: -.035em;
+  text-transform: uppercase;
 }
 
 .vv-auth-body .vv-auth-heading p {
@@ -239,6 +240,7 @@
 .vv-auth-body .vv-type-picker b {
   font-size: 12px;
   font-weight: 600;
+  text-transform: uppercase;
 }
 
 .vv-auth-body .vv-type-picker small {
@@ -273,6 +275,7 @@
   color: #403b33;
   font-size: 12px;
   font-weight: 500;
+  text-transform: uppercase;
 }
 
 .vv-auth-body .vv-input-wrap .vc-input {
@@ -487,3 +490,37 @@
     transition: none;
   }
 }
+
+/* Shared design: olive editorial panel and quiet form card. */
+.vv-auth-body .vv-auth-shell{grid-template-columns:minmax(320px,41%) minmax(0,59%)}
+.vv-auth-body .vv-auth-story{position:relative;isolation:isolate;justify-content:flex-start;min-height:100vh;overflow:hidden;padding:clamp(36px,4vw,64px) clamp(36px,5vw,88px);background:radial-gradient(ellipse at 90% 32%,#516331 0%,transparent 48%),linear-gradient(135deg,#253318,#35441e 52%,#273519)}
+.vv-auth-body .vv-auth-story::before{z-index:-1;top:-20%;right:-24%;left:auto;bottom:auto;width:64%;height:60%;border:0;border-radius:0 0 0 65%;background:linear-gradient(145deg,#65774775,#26361915);transform:rotate(17deg);box-shadow:none;opacity:1}
+.vv-auth-body .vv-auth-story::after{z-index:-1;left:22%;bottom:-29%;width:120%;height:52%;border:0;border-radius:0;background:linear-gradient(135deg,#8c9b5b35,#202e1608);transform:rotate(-33deg);opacity:1}
+.vv-auth-body .vv-story-glow{position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 55% 44%,transparent 25%,#1c2a1350 100%);pointer-events:none}
+.vv-auth-body .vv-story-angle{position:absolute;top:0;right:0;width:24%;height:18%;background:#faf7f1;clip-path:polygon(100% 0,100% 100%,75% 72%);pointer-events:none}
+.vv-auth-body .vv-story-copy{width:100%;max-width:520px;margin:auto 0;padding:48px 0}
+.vv-auth-body .vv-story-copy h1{max-width:none;margin:22px 0 26px;font-size:clamp(39px,3.55vw,60px);line-height:1.19}
+.vv-auth-body .vv-story-copy>p{max-width:470px;margin-top:28px;color:#f0ede1;font-size:clamp(14px,1.2vw,17px);line-height:1.8}
+.vv-auth-body .vv-story-copy .vv-eyebrow{color:#e7d9b4;font-size:11px;letter-spacing:.16em}
+.vv-auth-body .vv-underline{position:relative;display:inline-block}
+.vv-auth-body .vv-underline::after{content:"";position:absolute;right:0;bottom:-8px;left:0;border-top:4px solid #c56543;border-radius:50%;transform:rotate(-2deg)}
+.vv-auth-body .vv-story-points{gap:16px;margin-top:36px}
+.vv-auth-body .vv-story-points article{gap:18px}
+.vv-auth-body .vv-story-points article>i{width:48px;height:48px;border-radius:13px;font-size:17px}
+.vv-auth-body .vv-story-points b{font-size:14px}
+.vv-auth-body .vv-story-leaves{position:absolute;bottom:-80px;left:-35px;width:270px;height:270px;pointer-events:none}
+.vv-auth-body .vv-story-leaves::before{content:"";position:absolute;bottom:0;left:65px;width:2px;height:220px;background:#8ba45a;transform:rotate(-25deg);transform-origin:bottom}
+.vv-auth-body .vv-story-leaves span{position:absolute;display:block;border:1px solid #a4ba7480;border-radius:0 95% 0 95%;background:linear-gradient(130deg,#ffffff1c,transparent 45%),linear-gradient(45deg,#243c19 5%,#65883d 52%,#a0b45d);box-shadow:inset 8px 2px 24px #c7d9951a}
+.vv-auth-body .vv-story-leaves span:nth-child(1){bottom:45px;left:0;width:105px;height:210px;transform:rotate(-20deg)}
+.vv-auth-body .vv-story-leaves span:nth-child(2){bottom:-8px;left:95px;width:88px;height:190px;transform:rotate(48deg)}
+.vv-auth-body .vv-story-leaves span:nth-child(3){bottom:-55px;left:5px;width:80px;height:150px;transform:rotate(-65deg)}
+.vv-auth-body .vv-auth-panel{min-height:100vh;background:radial-gradient(ellipse at 50% 48%,#fffdf9,#faf7f1 75%)}
+.vv-auth-body .vv-auth-panel-inner{width:min(100%,790px);padding:clamp(30px,3vw,54px);border-radius:32px;box-shadow:0 20px 65px #55463112}
+.vv-auth-body .vv-type-picker label,.vv-auth-body .vv-type-picker label:last-child{min-height:66px;flex-direction:row;align-items:center;padding:12px}
+.vv-auth-body .vv-register-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+.vv-auth-body .vv-register-fields>.full{grid-column:1/-1}
+.vv-auth-body .vv-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.vv-auth-body .vv-step-two-intro h3,.vv-auth-body .vv-type-picker legend,.vv-auth-body .vv-label-row label{text-transform:uppercase}
+@media(max-width:900px){.vv-auth-body .vv-auth-shell{grid-template-columns:1fr}.vv-auth-body .vv-auth-story{min-height:auto;padding:18px 24px}.vv-auth-body .vv-story-glow,.vv-auth-body .vv-story-angle,.vv-auth-body .vv-story-leaves{display:none}.vv-auth-body .vv-auth-panel{min-height:calc(100vh - 80px)}}
+@media(max-width:600px){.vv-auth-body .vv-register-fields{grid-template-columns:1fr}.vv-auth-body .vv-register-fields>.full{grid-column:auto}.vv-auth-body .vv-auth-panel-inner{border-radius:18px}}
+.ci-role-vendor .vo-form .vc-field-error { display: block; margin: 1px 0 0; color: #a63d24; font-size: 12px; font-weight: 600; line-height: 1.45; }

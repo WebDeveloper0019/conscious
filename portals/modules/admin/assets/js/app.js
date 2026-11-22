@@ -5,7 +5,6 @@
   var sidebar = document.querySelector('.ci-dash-sidebar');
   var menu = document.querySelector('[data-menu]');
   var overlay = document.querySelector('[data-overlay]');
-  var isLive = document.body.dataset.adminLive === 'true';
 
   function toast(message, type) {
     var item = document.createElement('div');
@@ -76,13 +75,7 @@
   });
 
   document.querySelectorAll('[data-demo-action]').forEach(function (button) {
-    if (!isLive) {
-      button.disabled = true; button.classList.add('ac-disabled-action');
-      button.setAttribute('title', 'Backend connection required');
-      button.setAttribute('aria-description', 'This preview control is unavailable until its authorized backend workflow is connected.');
-      return;
-    }
-    button.addEventListener('click', function () { toast('This action requires its authorized backend workflow.', 'error'); });
+    button.remove();
   });
 
   function prepareTable(table) {

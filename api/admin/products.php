@@ -47,6 +47,16 @@ if ($method === 'POST') {
         $map = ['pending_review'=>['under_review'],'under_review'=>['approved','changes_requested','rejected'],'approved'=>['suspended'],'active'=>['suspended'],'paused'=>['suspended'],'out_of_stock'=>['suspended']];
         assert_transition($product['status'],$next,$map);
         if ($decision === 'approve') {
+            $seller=$db->prepare('SELECT status,verification_status,onboarding_status FROM vendors WHERE id=:id FOR UPDATE');
+            $seller->execute(['id'=>$product['vendor_id']]);
+            $seller=$seller->fetch();
+            if(!$seller||$seller['status']!=='active'||!in_array($seller['verification_status'],APP_ENV==='local'?['approved','demo_fixture']:['approved'],true)||$seller['onboarding_status']!=='completed') json_response(422,['success'=>false,'message'=>'Approve the seller account before approving this product.']);
+            $store=$db->prepare('SELECT COUNT(*) FROM vendor_store_profiles WHERE vendor_id=:id AND description IS NOT NULL AND description<>"" AND support_email IS NOT NULL AND support_email<>""');
+            $store->execute(['id'=>$product['vendor_id']]);
+            if((int)$store->fetchColumn()<1) json_response(422,['success'=>false,'message'=>'The seller must complete the public store profile before product approval.']);
+            $delivery=$db->prepare('SELECT COUNT(*) FROM vendor_shipping_settings WHERE vendor_id=:id');
+            $delivery->execute(['id'=>$product['vendor_id']]);
+            if((int)$delivery->fetchColumn()<1) json_response(422,['success'=>false,'message'=>'The seller must complete delivery setup before product approval.']);
             $check = $db->prepare('SELECT COUNT(*) FROM product_images pi JOIN file_assets f ON f.id=pi.file_asset_id WHERE pi.product_id=:id AND f.scan_status="clean" AND f.deleted_at IS NULL');
             $check->execute(['id'=>$id]);
             if ((int)$check->fetchColumn()<1) json_response(422,['success'=>false,'message'=>'Product cannot be approved without a clean image.']);

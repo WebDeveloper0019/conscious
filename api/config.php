@@ -76,6 +76,12 @@ define('MAIL_TRANSPORT', getenv('MAIL_TRANSPORT') ?: (APP_ENV === 'local' ? 'log
 define('PRIVATE_STORAGE_PATH', getenv('PRIVATE_STORAGE_PATH') ?: dirname(__DIR__) . '/storage/private');
 define('MAX_UPLOAD_BYTES', (int)(getenv('MAX_UPLOAD_BYTES') ?: 10485760));
 define('CLAMAV_BINARY', getenv('CLAMAV_BINARY') ?: '');
+define('DOCUMENT_STORAGE_DRIVER', strtolower(trim((string)(getenv('DOCUMENT_STORAGE_DRIVER') ?: 'local'))));
+define('R2_ACCOUNT_ID', trim((string)(getenv('R2_ACCOUNT_ID') ?: '')));
+define('R2_ACCESS_KEY_ID', trim((string)(getenv('R2_ACCESS_KEY_ID') ?: '')));
+define('R2_SECRET_ACCESS_KEY', trim((string)(getenv('R2_SECRET_ACCESS_KEY') ?: '')));
+define('R2_BUCKET', trim((string)(getenv('R2_BUCKET') ?: '')));
+define('R2_ENDPOINT', rtrim(trim((string)(getenv('R2_ENDPOINT') ?: '')), '/'));
 define('PAYMENT_WEBHOOK_SECRET', getenv('PAYMENT_WEBHOOK_SECRET') ?: '');
 define('PAYMENT_GATEWAY', strtolower(getenv('PAYMENT_GATEWAY') ?: 'razorpay'));
 define('RAZORPAY_KEY_ID', getenv('RAZORPAY_KEY_ID') ?: '');
@@ -111,5 +117,17 @@ if (APP_ENV !== 'local' && MAIL_TRANSPORT !== 'resend') {
     http_response_code(500);
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['success' => false, 'message' => 'Production email transport is not configured.']);
+    exit;
+}
+if (!in_array(DOCUMENT_STORAGE_DRIVER, ['local', 'r2'], true)) {
+    http_response_code(500);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['success' => false, 'message' => 'Document storage driver is not supported.']);
+    exit;
+}
+if (DOCUMENT_STORAGE_DRIVER === 'r2' && (R2_ACCOUNT_ID === '' || R2_ACCESS_KEY_ID === '' || R2_SECRET_ACCESS_KEY === '' || R2_BUCKET === '')) {
+    http_response_code(500);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['success' => false, 'message' => 'R2 document storage is not fully configured.']);
     exit;
 }

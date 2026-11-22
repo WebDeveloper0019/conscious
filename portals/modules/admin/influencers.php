@@ -1,1 +1,1 @@
-<?php $pageTitle='Influencer Management';$activePage='influencers';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/influencers.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Creator Management';$pageSubtitle='Review real creator applications, campaigns and payouts';$activePage='influencers';$adminPageScripts=['assets/js/influencers-live.js','assets/js/influencer-operations.js'];require __DIR__.'/layouts/head.php';require __DIR__.'/pages/influencers.php';require __DIR__.'/layouts/foot.php';

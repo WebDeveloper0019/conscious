@@ -1,35 +1,35 @@
 <div class="vv-auth-heading vv-register-heading">
   <span class="vv-eyebrow" data-register-eyebrow>Partner registration</span>
-  <h2 data-register-heading>Join Conscious India</h2>
-  <p data-register-intro>Create your account in two short steps.</p>
+  <h2 data-register-heading>Create your seller account</h2>
+  <p data-register-intro>Create your account in two steps.</p>
 </div>
 
 <form class="vv-auth-form vv-register-form" data-vendor-register data-inline-managed novalidate>
   <div class="vv-form-message" data-form-message role="alert" tabindex="-1" hidden></div>
-  <ol class="vv-step-progress" aria-label="Registration progress">
+  <ol class="vv-step-progress vv-visually-hidden" aria-label="Registration progress">
     <li class="active" data-progress-step="1" aria-current="step"><span>1</span> Account</li>
     <li data-progress-step="2"><span>2</span> Finish</li>
   </ol>
 
   <section class="vv-register-step" data-register-step="1" aria-label="Account details">
     <fieldset class="vv-type-picker">
-      <legend>Join as</legend>
+      <legend class="vv-visually-hidden">Choose account type</legend>
       <label>
         <input type="radio" name="registration_type" value="artisan" required>
         <span class="vv-type-icon"><i class="fa-solid fa-hands" aria-hidden="true"></i></span>
-        <span><b>Artisan</b><small>Maker or artisan group</small></span>
+        <span><b>Artisan</b></span>
         <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
       </label>
       <label>
         <input type="radio" name="registration_type" value="brand" required>
         <span class="vv-type-icon"><i class="fa-solid fa-building" aria-hidden="true"></i></span>
-        <span><b>Business</b><small>Brand or enterprise</small></span>
+        <span><b>Business</b></span>
         <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
       </label>
       <label>
         <input type="radio" name="registration_type" value="influencer" required>
         <span class="vv-type-icon"><i class="fa-solid fa-camera" aria-hidden="true"></i></span>
-        <span><b>Creator</b><small>Content and partnerships</small></span>
+        <span><b>Creator</b></span>
         <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
       </label>
     </fieldset>
@@ -56,11 +56,6 @@
         <div class="vv-input-wrap"><i class="fa-solid fa-key" aria-hidden="true"></i><input class="vc-input" id="vendor-register-password" name="password" type="password" required minlength="12" maxlength="128" autocomplete="new-password" placeholder="Create a strong password"><button type="button" data-password-toggle="vendor-register-password" aria-label="Show password"><i class="fa-regular fa-eye" aria-hidden="true"></i></button></div>
         <small class="vv-error" data-error-for="password" hidden></small>
       </div>
-      <div class="vc-field">
-        <label for="vendor-register-confirm">Confirm password</label>
-        <div class="vv-input-wrap"><i class="fa-solid fa-lock" aria-hidden="true"></i><input class="vc-input" id="vendor-register-confirm" name="confirm_password" type="password" required minlength="12" maxlength="128" autocomplete="new-password" placeholder="Enter it again"><button type="button" data-password-toggle="vendor-register-confirm" aria-label="Show password"><i class="fa-regular fa-eye" aria-hidden="true"></i></button></div>
-        <small class="vv-error" data-error-for="confirm_password" hidden></small>
-      </div>
     </div>
     <p class="vv-password-summary"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> 12+ characters with upper and lowercase, a number, and a symbol.</p>
     <button class="vc-btn primary vv-submit" type="button" data-register-next>Continue <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
@@ -68,6 +63,7 @@
 
   <section class="vv-register-step" data-register-step="2" aria-label="Finish account setup" hidden>
     <div class="vv-step-two-intro"><span class="vv-step-two-icon"><i class="fa-solid fa-store" data-step-two-icon aria-hidden="true"></i></span><div><h3 data-step-two-title>Your public name</h3><p data-step-two-description>Choose the name customers will see.</p></div></div>
+    <div class="vc-field"><label for="vendor-register-confirm">Confirm password</label><div class="vv-input-wrap"><i class="fa-solid fa-lock" aria-hidden="true"></i><input class="vc-input" id="vendor-register-confirm" name="confirm_password" type="password" required minlength="12" maxlength="128" autocomplete="new-password" placeholder="Enter your password again"><button type="button" data-password-toggle="vendor-register-confirm" aria-label="Show password"><i class="fa-regular fa-eye" aria-hidden="true"></i></button></div><small class="vv-error" data-error-for="confirm_password" hidden></small></div>
     <div class="vc-field" data-vendor-only>
       <label for="vendor-display-name"><span data-name-label>Store or public name</span></label>
       <div class="vv-input-wrap"><i class="fa-solid fa-store" aria-hidden="true"></i><input class="vc-input" id="vendor-display-name" name="display_name" required minlength="2" maxlength="100" placeholder="e.g. Earth &amp; Loom"></div>

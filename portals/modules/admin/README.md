@@ -1,6 +1,6 @@
 # Conscious India admin frontend coverage
 
-This module is still largely a sample-data administrative workspace. Sign-in and MFA now call the backend, and workspace pages require an active admin session. Most operational forms and buttons are not yet connected to their backend APIs; do not treat displayed approvals, refunds, payouts, or reports as live data. Every sensitive action must be connected to an authorised endpoint with server-side validation, access control, CSRF protection, rate limiting and audit records.
+The administrator workspace only renders operational records on pages backed by live APIs. Sections whose backend workflows are not connected show an empty state; sample records and demo actions are not exposed in the admin UI. Every sensitive action must use an authorised endpoint with server-side validation, access control, CSRF protection, rate limiting and audit records.
 
 ## Legacy screen coverage
 

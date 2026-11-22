@@ -3,7 +3,7 @@ declare(strict_types=1);
 require_once __DIR__.'/../lib/helpers.php';
 require_once __DIR__.'/../lib/catalog.php';
 send_cors_headers();
-$vendorId = require_vendor(true)['vendor']['id'];
+$vendorId = require_vendor(false)['vendor']['id'];
 $db = get_db();
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $productId = trim((string)($_GET['product_id'] ?? ''));

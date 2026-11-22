@@ -13,6 +13,6 @@
 <script src="/conscious/assets/js/inline-form-feedback.js?v=20261031" defer></script>
 <script src="assets/js/app.js?v=20261024" defer></script>
 <?php if (!empty($vendorPageScript)): ?><script src="<?= htmlspecialchars($vendorPageScript, ENT_QUOTES, 'UTF-8') ?>" defer></script><?php endif; ?>
-<?php if (!empty($vendorOnboardingMode)): ?><script src="assets/js/vendor-onboarding-live.js?v=20261026-2" defer></script><?php endif; ?>
+<?php if (!empty($vendorOnboardingMode)): ?><script src="assets/js/vendor-onboarding-live.js?v=20261122-6" defer></script><?php endif; ?>
 </body>
 </html>

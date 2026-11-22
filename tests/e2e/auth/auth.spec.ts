@@ -212,12 +212,12 @@ test.describe('Partner Registration', () => {
     await page.fill('#vendor-register-email', `test+${Date.now()}@playwright.local`);
     await page.fill('#vendor-register-phone', '9876543210');
     await page.fill('#vendor-register-password', VALID_PASSWORD);
-    await page.fill('#vendor-register-confirm', VALID_PASSWORD);
     // Advance to step 2 (type="button" doesn't submit, just moves to next step)
     await page.locator('[data-register-next]').click();
     // Step 2 should now be visible
     await expect(page.locator('.vv-register-step').nth(1)).toBeVisible({ timeout: 3_000 });
     // Fill step 2 required fields but NOT the terms checkbox
+    await page.fill('#vendor-register-confirm', VALID_PASSWORD);
     await page.fill('#vendor-display-name', 'Test Store');
     // Submit without terms — form should stay on page / not navigate away
     await page.locator('button[type="submit"].vv-submit').click();

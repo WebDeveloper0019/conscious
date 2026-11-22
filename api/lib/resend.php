@@ -59,6 +59,31 @@ function send_vendor_otp_email(string $to,string $name,string $otp): array {
     return resend_send_email($to,'Verify your Conscious India vendor account',$html);
 }
 
+function send_vendor_application_review_email(string $to,string $name,string $reference,string $status,string $reason=''): array {
+    $safeName=htmlspecialchars($name,ENT_QUOTES,'UTF-8');
+    $safeReference=htmlspecialchars($reference,ENT_QUOTES,'UTF-8');
+    $safeReason=nl2br(htmlspecialchars($reason,ENT_QUOTES,'UTF-8'));
+    $labels=[
+        'changes_requested'=>'Changes are needed in your vendor application',
+        'rejected'=>'Your vendor application was not approved',
+        'approved'=>'Your vendor application was approved',
+    ];
+    $title=$labels[$status]??'Your vendor application was updated';
+    $action=$status==='changes_requested'
+        ? '<p>Sign in, open your application, replace the rejected document or correct the requested information, then submit it again for verification.</p>'
+        : '';
+    $reasonBlock=$reason!==''?'<div style="margin:20px 0;padding:16px;border-left:4px solid #A63D24;background:#fff4ef"><strong>Review reason</strong><p style="margin:8px 0 0">'.$safeReason.'</p></div>':'';
+    $base=APP_URL!==''?APP_URL:'/conscious';
+    $url=htmlspecialchars(rtrim($base,'/').'/partner/onboarding.php',ENT_QUOTES,'UTF-8');
+    $html='<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:32px;color:#20352a">'
+        .'<h2>'.$title.'</h2><p>Hello '.$safeName.',</p>'
+        .'<p>Application reference: <strong>'.$safeReference.'</strong></p>'
+        .$reasonBlock.$action
+        .($status==='changes_requested'?'<p><a href="'.$url.'" style="display:inline-block;padding:12px 18px;background:#A63D24;color:#fff;text-decoration:none;border-radius:8px">Correct and resubmit</a></p>':'')
+        .'<p>Conscious India will never ask for your password, OTP, or banking PIN during review.</p></div>';
+    return resend_send_email($to,$title.' — '.$safeReference,$html);
+}
+
 function send_influencer_otp_email(string $to,string $name,string $otp): array {
     $safeName=htmlspecialchars($name,ENT_QUOTES,'UTF-8');
     $html='<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:32px"><h2>Verify your Conscious India creator account</h2><p>Hello '.$safeName.',</p><p>Your six-digit verification code is:</p><div style="font-size:32px;font-weight:700;letter-spacing:8px;padding:18px 0">'.$otp.'</div><p>This code expires in 10 minutes. Never share your password or banking PIN.</p></div>';

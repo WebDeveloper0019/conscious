@@ -25,3 +25,4 @@ foreach (preg_split('/\s+/u', $vendorOwner) ?: [] as $part) {
     if (mb_strlen($vendorInitials) >= 2) break;
 }
 if ($vendorInitials === '') $vendorInitials = 'VD';
+$vendorSellingReady=$vendorView['status']==='active'&&in_array($vendorView['verification_status'],['approved','demo_fixture'],true)&&$vendorView['onboarding_status']==='completed';

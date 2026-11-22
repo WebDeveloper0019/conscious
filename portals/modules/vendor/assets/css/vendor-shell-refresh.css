@@ -1,0 +1,199 @@
+/* Seller workspace shell. Loaded after the shared dashboard styles. */
+.ci-role-vendor {
+  --vendor-shell-green: #294333;
+  --vendor-shell-rust: #a63d24;
+  --vendor-shell-cream: #f7f5ef;
+  --vendor-shell-line: #e7ded2;
+  background: var(--vendor-shell-cream);
+}
+
+.ci-role-vendor .ci-dash-wrap {
+  display: grid;
+  grid-template-columns: 238px minmax(0, 1fr);
+  gap: 18px;
+  width: calc(100% - 32px);
+  max-width: none;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 16px 0;
+  align-items: start;
+}
+
+.ci-role-vendor .ci-dash-sidebar {
+  position: sticky;
+  inset: auto;
+  top: 16px;
+  width: 238px;
+  height: calc(100vh - 32px);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--vendor-shell-line);
+  border-radius: 18px;
+  background: #fff;
+  color: var(--vendor-shell-green);
+  box-shadow: 0 12px 32px rgba(41, 67, 51, .055);
+}
+
+.ci-role-vendor .ci-sidebar-brand {
+  min-height: 78px;
+  margin: 0;
+  padding: 13px 17px;
+  border: 0;
+  border-bottom: 1px solid var(--vendor-shell-line);
+  border-radius: 0;
+  background: #fff;
+  box-shadow: none;
+}
+
+.ci-role-vendor .ci-sidebar-logo { width: 46px; height: 46px; }
+.ci-role-vendor .ci-sidebar-brand-name { font-size: 15px; font-weight: 700; color: var(--vendor-shell-green); }
+.ci-role-vendor .ci-sidebar-brand-role { color: var(--vendor-shell-rust); font-size: 10px; letter-spacing: .11em; }
+
+.ci-role-vendor .ci-sidebar-user {
+  min-width: 0;
+  margin: 0;
+  padding: 14px 17px;
+  border: 0;
+  border-bottom: 1px solid var(--vendor-shell-line);
+  border-radius: 0;
+  background: #fff;
+  box-shadow: none;
+}
+
+.ci-role-vendor .ci-sidebar-user-info { min-width: 0; }
+.ci-role-vendor .ci-sidebar-avatar { flex: 0 0 38px; background: #e8efe8; color: var(--vendor-shell-green); }
+.ci-role-vendor .ci-sidebar-user-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--vendor-shell-green); font-size: 12px; }
+.ci-role-vendor .ci-sidebar-user-email { color: #627367; font-size: 10px; }
+
+.ci-role-vendor .ci-sidebar-nav {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5cc transparent;
+}
+
+.ci-role-vendor .ci-sidebar-section-label {
+  margin: 13px 8px 5px;
+  padding: 4px 0;
+  color: #65766b;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  opacity: 1;
+}
+
+.ci-role-vendor .ci-sidebar-nav-item {
+  min-height: 42px;
+  margin: 2px 0;
+  padding: 10px 11px;
+  border: 0;
+  border-radius: 10px;
+  color: #405749;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: none;
+  transition: background .16s ease, color .16s ease;
+}
+
+.ci-role-vendor .ci-sidebar-nav-item i { width: 19px; color: #607466; font-size: 15px; }
+.ci-role-vendor .ci-sidebar-nav-item:hover { border: 0; background: #f2f5ef; color: var(--vendor-shell-green); box-shadow: none; }
+.ci-role-vendor .ci-sidebar-nav-item.active { border: 0; background: var(--vendor-shell-green); color: #fff; box-shadow: none; font-weight: 700; }
+.ci-role-vendor .ci-sidebar-nav-item.active i { color: #fff; }
+.ci-role-vendor .vc-sidebar-foot { padding: 10px; border-top: 1px solid var(--vendor-shell-line); }
+
+.ci-role-vendor .ci-dash-main { width: 100%; min-width: 0; margin: 0; }
+.ci-role-vendor .ci-dash-topbar {
+  position: relative;
+  top: auto;
+  display: flex;
+  min-height: 80px;
+  height: auto;
+  margin: 0 0 18px;
+  padding: 13px 19px;
+  gap: 14px;
+  border: 1px solid var(--vendor-shell-line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(41, 67, 51, .04);
+  backdrop-filter: none;
+}
+
+.ci-role-vendor .vc-topbar-kicker { display: block; margin-bottom: 2px; color: var(--vendor-shell-rust); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.ci-role-vendor .ci-dash-page-title { color: var(--vendor-shell-green); font-size: clamp(19px, 2vw, 25px); line-height: 1.25; text-transform: uppercase; }
+.ci-role-vendor .ci-dash-page-sub { margin-top: 2px; color: #627367; font-size: 11px; }
+.ci-role-vendor .vc-top-actions { flex: 0 0 auto; gap: 9px; }
+
+.ci-role-vendor .vc-topbar-create {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: var(--vendor-shell-rust);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ci-role-vendor .vc-topbar-create:hover { background: #87331e; color: #fff; }
+.ci-role-vendor .vc-icon-button { width: 40px; height: 40px; border-color: var(--vendor-shell-line); color: var(--vendor-shell-green); }
+.ci-role-vendor .vc-profile-button { max-width: 190px; height: 40px; padding: 4px 9px 4px 5px; border-color: var(--vendor-shell-line); border-radius: 10px; color: var(--vendor-shell-green); text-decoration: none; }
+.ci-role-vendor .vc-profile-button span { flex: 0 0 30px; background: #e8efe8; color: var(--vendor-shell-green); }
+.ci-role-vendor .vc-profile-button b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
+.ci-role-vendor .vc-profile-button > i { flex: 0 0 auto; font-size: 10px; }
+.ci-role-vendor .vc-main { max-width: none; margin: 0; padding: 0 0 32px; }
+
+/* Light, readable feature panels across the seller workspace. */
+.ci-role-vendor .vs-hero,
+.ci-role-vendor .vc-dashboard-hero {
+  border: 1px solid var(--vendor-shell-line);
+  background: linear-gradient(115deg, #fffaf1 0%, #fff 62%, #edf3ed 100%);
+  color: var(--vendor-shell-green);
+  box-shadow: 0 10px 30px rgba(41, 67, 51, .055);
+}
+.ci-role-vendor .vs-hero h2,
+.ci-role-vendor .vc-dashboard-hero h2 { color: var(--vendor-shell-green); }
+.ci-role-vendor .vs-hero p,
+.ci-role-vendor .vs-hero .vs-progress-label,
+.ci-role-vendor .vc-dashboard-hero p { color: #465a4b; }
+.ci-role-vendor .vs-hero .vs-kicker,
+.ci-role-vendor .vc-dashboard-eyebrow { color: var(--vendor-shell-rust); }
+.ci-role-vendor .vs-progress { background: #dfe8dc; }
+.ci-role-vendor .vs-progress span { background: var(--vendor-shell-rust); }
+.ci-role-vendor .vs-hero-icon { border-color: #d7e3d5; background: #edf3ed; color: var(--vendor-shell-green); }
+.ci-role-vendor .vc-dashboard-hero::after { border-color: #dce6d8; box-shadow: 0 0 0 50px rgba(41, 67, 51, .025), 0 0 0 100px rgba(41, 67, 51, .018); }
+.ci-role-vendor .vc-dashboard-hero .vc-btn:not(.primary) { border-color: var(--vendor-shell-line); background: #fff; color: var(--vendor-shell-green); }
+.ci-role-vendor .vc-dashboard-hero .vc-btn.primary,
+.ci-role-vendor .vc-btn.primary { border-color: var(--vendor-shell-rust); background: var(--vendor-shell-rust); color: #fff; }
+.ci-role-vendor .vc-dashboard-hero .vc-btn.primary:hover,
+.ci-role-vendor .vc-btn.primary:hover { background: #87331e; border-color: #87331e; color: #fff; }
+
+.ci-role-vendor :is(.ci-sidebar-nav-item, .vc-topbar-create, .vc-icon-button, .vc-profile-button):focus-visible {
+  outline: 3px solid #c88422;
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .ci-role-vendor .ci-dash-wrap { display: block; width: 100%; padding: 0; }
+  .ci-role-vendor .ci-dash-sidebar { position: fixed; inset: 0 auto 0 0; top: 0; z-index: 100; width: min(290px, 88vw); height: 100vh; border-radius: 0 18px 18px 0; transform: translateX(-105%); transition: transform .2s ease; }
+  .ci-role-vendor .ci-dash-sidebar.open { transform: translateX(0); }
+  .ci-role-vendor .ci-dash-main { padding: 12px 14px 32px; }
+  .ci-role-vendor .ci-dash-topbar { margin: 0 0 14px; }
+}
+
+@media (max-width: 600px) {
+  .ci-role-vendor .ci-dash-main { padding: 10px 10px 28px; }
+  .ci-role-vendor .ci-dash-topbar { min-height: 68px; padding: 10px 12px; }
+  .ci-role-vendor .vc-topbar-kicker, .ci-role-vendor .ci-dash-page-sub { display: none; }
+  .ci-role-vendor .ci-dash-page-title { font-size: 17px; }
+  .ci-role-vendor .vc-topbar-create { width: 39px; min-height: 39px; padding: 0; }
+  .ci-role-vendor .vc-topbar-create span { display: none; }
+  .ci-role-vendor .vc-profile-button { width: 39px; padding: 4px; }
+  .ci-role-vendor .vc-profile-button b, .ci-role-vendor .vc-profile-button > i { display: none; }
+}
