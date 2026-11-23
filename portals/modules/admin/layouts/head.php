@@ -22,32 +22,33 @@ $adminIsLive = !empty($adminPageScript) || !empty($adminPageScripts);
   <link rel="stylesheet" href="/conscious/admin/assets/css/app.css?v=20261122-1">
   <link rel="stylesheet" href="/conscious/shared/assets/css/customer-inspired-workspace.css?v=20261031-1">
   <link rel="stylesheet" href="/conscious/shared/assets/css/brand-typography.css?v=20261026">
-  <link rel="stylesheet" href="/conscious/admin/assets/css/admin-clean.css?v=20261122-7">
+  <link rel="stylesheet" href="/conscious/admin/assets/css/admin-clean.css?v=20261123-1">
 </head>
 <body class="ci-role-admin" data-admin-live="<?= $adminIsLive ? 'true' : 'false' ?>">
 <a class="ac-skip" href="#main-content">Skip to main content</a>
-<header class="ac-global-header">
-  <div class="ac-global-brand">
-    <button class="ac-menu" type="button" data-menu aria-label="Open admin navigation" aria-controls="ac-sidebar" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
-    <a href="/conscious/" aria-label="Conscious India home"><img src="/conscious/assets/images/logo-square.png" alt=""><strong>Conscious India</strong></a>
-    <span class="ac-global-divider" aria-hidden="true"></span>
-    <span class="ac-global-workspace">Admin workspace</span>
-  </div>
-  <nav class="ac-global-links" aria-label="Admin shortcuts">
-    <a href="/conscious/admin/">Dashboard</a>
-    <a href="/conscious/admin/queue">Work queue</a>
-    <a href="/conscious/admin/support">Support</a>
-  </nav>
-  <a class="ac-global-account" href="/conscious/admin/access" aria-label="Open your admin account">
-    <span><?= htmlspecialchars($adminInitials, ENT_QUOTES, 'UTF-8') ?></span>
-    <b><?= htmlspecialchars($adminDisplayName, ENT_QUOTES, 'UTF-8') ?></b>
-    <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
-  </a>
-</header>
 <div class="ci-dash-wrap">
   <?php require __DIR__.'/../components/sidebar.php'; ?>
   <div class="ci-sidebar-overlay" data-overlay></div>
   <div class="ci-dash-main">
+    <header class="ac-global-header">
+      <div class="ac-global-brand">
+        <button class="ac-menu" type="button" data-menu aria-label="Collapse admin navigation" aria-controls="ac-sidebar" aria-expanded="true"><i class="fa-solid fa-bars"></i></button>
+        <a href="/conscious/" aria-label="Conscious India home"><img src="/conscious/assets/images/logo-square.png" alt=""><strong>Conscious India</strong></a>
+        <span class="ac-global-divider" aria-hidden="true"></span>
+        <span class="ac-global-workspace">Admin workspace</span>
+      </div>
+      <nav class="ac-global-links" aria-label="Admin shortcuts">
+        <a href="/conscious/admin/">Dashboard</a>
+        <a href="/conscious/admin/queue">Work queue</a>
+        <a href="/conscious/admin/support">Support</a>
+      </nav>
+      <a class="ac-global-account" href="/conscious/admin/access" aria-label="Open your admin account">
+        <span><?= htmlspecialchars($adminInitials, ENT_QUOTES, 'UTF-8') ?></span>
+        <b><?= htmlspecialchars($adminDisplayName, ENT_QUOTES, 'UTF-8') ?></b>
+        <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+      </a>
+    </header>
+    <div class="ac-page-canvas">
     <header class="ci-dash-topbar">
       <div class="ac-title-group">
         <div>

@@ -118,6 +118,12 @@ RewriteRule ^creator/?$ portals/modules/influencer/index.php [L,QSA]
 RewriteRule ^creator/(login|forgot-password|reset-password|verify)/?$ portals/modules/influencer/auth/$1.php [L,QSA]
 RewriteRule ^admin/?$ portals/modules/admin/index.php [L,QSA]
 RewriteRule ^admin/(login|forgot-password|verify)/?$ portals/modules/admin/auth/$1.php [L,QSA]
+RewriteRule ^admin/vendors/([^/]+)/?$ portals/modules/admin/vendor-review.php?id=$1 [L,QSA]
+RewriteRule ^admin/catalog/([^/]+)/?$ portals/modules/admin/catalog-review.php?id=$1 [L,QSA]
+RewriteRule ^admin/customers/([^/]+)/?$ portals/modules/admin/customer-review.php?id=$1 [L,QSA]
+RewriteRule ^admin/influencers/([^/]+)/?$ portals/modules/admin/influencer-review.php?id=$1 [L,QSA]
+RewriteRule ^admin/banners/new/?$ portals/modules/admin/banner-editor.php [L,QSA]
+RewriteRule ^admin/banners/([^/]+)/edit/?$ portals/modules/admin/banner-editor.php?id=$1 [L,QSA]
 RewriteRule ^admin/([a-z-]+)/?$ portals/modules/admin/$1.php [L,QSA]
 
 # Retired top-level dashboard paths.

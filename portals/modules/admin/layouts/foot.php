@@ -1,1 +1,16 @@
-</main></div></div><div class="ac-toast-wrap" id="ac-toast-wrap" aria-live="polite"></div><script src="/conscious/assets/js/inline-form-feedback.js?v=20261031" defer></script><script src="/conscious/admin/assets/js/app.js?v=20261122-2" defer></script><script src="/conscious/admin/assets/js/session.js?v=20261122-1" defer></script><?php $adminScripts=!empty($adminPageScripts)?$adminPageScripts:(!empty($adminPageScript)?[$adminPageScript]:[]);foreach($adminScripts as $adminScript):?><script src="/conscious/admin/<?=htmlspecialchars(ltrim($adminScript,'/'),ENT_QUOTES,'UTF-8')?>" defer></script><?php endforeach;?></body></html>
+    </main>
+    </div>
+  </div>
+</div>
+<div class="ac-toast-wrap" id="ac-toast-wrap" aria-live="polite"></div>
+<script src="/conscious/assets/js/inline-form-feedback.js?v=20261031" defer></script>
+<script src="/conscious/admin/assets/js/app.js?v=20261123-1" defer></script>
+<script src="/conscious/admin/assets/js/session.js?v=20261122-1" defer></script>
+<?php
+$adminScripts = !empty($adminPageScripts) ? $adminPageScripts : (!empty($adminPageScript) ? [$adminPageScript] : []);
+foreach ($adminScripts as $adminScript):
+?>
+<script src="/conscious/admin/<?= htmlspecialchars(ltrim($adminScript, '/'), ENT_QUOTES, 'UTF-8') ?>" defer></script>
+<?php endforeach; ?>
+</body>
+</html>

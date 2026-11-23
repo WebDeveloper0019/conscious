@@ -1,0 +1,21 @@
+(function () {
+  'use strict';
+  var root = document.getElementById('if-review-record'); var message = document.getElementById('if-review-message');
+  if (!root || !message) return;
+  var creatorId = root.dataset.recordId; var current = null; var base = '/conscious/api/admin/';
+  function el(tag, value, className) { var node = document.createElement(tag); if (value !== undefined) node.textContent = value; if (className) node.className = className; return node; }
+  function show(value, error) { message.textContent = value; message.classList.toggle('danger', Boolean(error)); }
+  function csrf() { var cookie = document.cookie.match(/(?:^|;\s*)ci_csrf=([^;]+)/); return sessionStorage.getItem('ci_admin_csrf_token') || (cookie ? decodeURIComponent(cookie[1]) : ''); }
+  async function request(path, method, payload) { method = method || 'GET'; var response = await fetch(base + path, { method: method, credentials: 'same-origin', cache: 'no-store', headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'X-CSRF-Token': csrf() }, body: payload ? JSON.stringify(payload) : undefined }); var data = await response.json().catch(function () { return {}; }); if (!response.ok) throw new Error(data.message || 'Action failed.'); return data; }
+  async function load() {
+    if (!creatorId) throw new Error('Creator reference is missing.');
+    var result = await request('influencers.php'); current = (result.influencers || []).find(function (creator) { return String(creator.id) === creatorId; }); if (!current) throw new Error('Creator application was not found.');
+    document.getElementById('if-review-name').textContent = current.full_name || 'Creator'; document.getElementById('if-review-profile').textContent = (current.email || '—') + ' · ' + (current.handle || '—'); document.getElementById('if-review-state').textContent = current.status || 'unknown';
+    var documents = await request('influencer-documents.php?influencer_id=' + encodeURIComponent(current.id)); var box = document.getElementById('if-review-documents'); box.replaceChildren();
+    if (!documents.documents.length) box.append(el('p', 'No documents submitted.'));
+    documents.documents.forEach(function (documentRecord) { var row = el('div', '', 'ac-info-row'); row.append(el('strong', documentRecord.document_type.replaceAll('_', ' ') + ' · ' + documentRecord.scan_status + ' · ' + documentRecord.verification_status)); var link = el('a', 'Open private file'); link.href = '/conscious/api/files.php?id=' + encodeURIComponent(documentRecord.file_id); link.target = '_blank'; link.rel = 'noopener'; row.append(link); ['approve', 'reject'].forEach(function (decision) { var button = el('button', decision === 'approve' ? 'Approve' : 'Reject', 'ac-btn small'); button.type = 'button'; button.disabled = decision === 'approve' && documentRecord.scan_status !== 'clean'; button.addEventListener('click', async function () { var reason = document.getElementById('if-review-reason').value.trim(); if (decision === 'reject' && reason.length < 10) { show('Write a detailed document rejection reason.', true); return; } button.disabled = true; try { await request('influencer-documents.php', 'POST', { document_id: documentRecord.id, decision: decision, reason: reason }); show('Document review saved.'); await load(); } catch (error) { show(error.message, true); } finally { button.disabled = false; } }); row.append(button); }); box.append(row); });
+    show('Creator application loaded.');
+  }
+  document.querySelectorAll('[data-if-decision]').forEach(function (button) { button.addEventListener('click', async function () { if (!current) return; var action = button.dataset.ifDecision; var reason = document.getElementById('if-review-reason').value.trim(); if (!['approve', 'reactivate'].includes(action) && reason.length < 10) { show('Write a detailed reason before this decision.', true); return; } button.disabled = true; try { var data = await request('influencers.php', 'POST', { influencer_id: current.id, action: action, reason: reason }); show(data.message || 'Creator status updated.'); await load(); } catch (error) { show(error.message, true); } finally { button.disabled = false; } }); });
+  load().catch(function (error) { show(error.message, true); });
+})();

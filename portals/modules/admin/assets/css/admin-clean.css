@@ -518,3 +518,144 @@
 @media (max-width: 760px) {
   .ci-role-admin .avr-sections { grid-template-columns: 1fr; }
 }
+
+/* Admin workspace structure: fixed navigation, sticky command bar and centred page canvas. */
+.ci-role-admin { padding-top: 0; }
+.ci-role-admin .ci-dash-wrap { display: block; min-height: 100vh; }
+.ci-role-admin .ci-dash-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 280px;
+  height: 100dvh;
+  padding: 0;
+  transition: width .22s ease, transform .22s ease;
+}
+.ci-role-admin .ci-dash-main {
+  width: calc(100% - 280px);
+  min-width: 0;
+  margin-left: 280px;
+  transition: width .22s ease, margin-left .22s ease;
+}
+.ci-role-admin .ac-global-header {
+  position: sticky;
+  inset: 0 0 auto;
+  width: 100%;
+  min-height: 70px;
+}
+.ci-role-admin .ac-menu { display: grid; }
+.ci-role-admin .ac-page-canvas {
+  width: 100%;
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0 clamp(18px, 2.3vw, 36px) 60px;
+}
+.ci-role-admin .ci-dash-topbar { min-height: 100px; padding: 20px 0; }
+.ci-role-admin .ac-main { max-width: none; padding: 0; }
+.ci-role-admin .ci-sidebar-nav { display: grid; align-content: start; gap: 4px; padding: 10px 12px; }
+.ci-role-admin .ac-nav-group { display: grid; gap: 3px; }
+.ci-role-admin .ac-nav-group-toggle {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) 14px;
+  align-items: center;
+  width: 100%;
+  min-height: 42px;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 9px;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+.ci-role-admin .ac-nav-group-toggle:hover { background: rgba(255,255,255,.1); }
+.ci-role-admin .ac-nav-group-toggle > i:first-child { width: 20px; text-align: center; }
+.ci-role-admin .ac-nav-chevron { font-size: 9px; transition: transform .18s ease; }
+.ci-role-admin .ac-nav-group.is-open .ac-nav-chevron { transform: rotate(180deg); }
+.ci-role-admin .ac-nav-group-items { display: grid; gap: 2px; }
+.ci-role-admin .ac-nav-group-items[hidden] { display: none; }
+.ci-role-admin .ac-nav-group-items .ci-sidebar-nav-item { min-height: 38px; padding-left: 22px; }
+.ci-role-admin .ac-dashboard-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(270px, .82fr);
+  align-items: start;
+  gap: 18px;
+}
+.ci-role-admin .ac-dashboard-primary { min-width: 0; }
+.ci-role-admin .ac-dashboard-primary > .ac-section-heading { margin-top: 0; }
+.ci-role-admin .ac-dashboard-quick-panel { overflow: hidden; }
+.ci-role-admin .ac-dashboard-quick-panel .ac-head { min-height: 70px; }
+.ci-role-admin .ac-dashboard-quick-panel .ci-workspace-shortcuts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  padding: 6px 16px 16px;
+}
+.ci-role-admin .ac-dashboard-quick-panel .ci-workspace-shortcuts a { border-radius: 0; box-shadow: none; }
+.ci-role-admin .ac-record-back {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.ci-role-admin .ac-record-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(300px, .72fr);
+  align-items: start;
+  gap: 18px;
+}
+.ci-role-admin .ac-record-primary,
+.ci-role-admin .ac-record-aside { min-width: 0; overflow: hidden; }
+.ci-role-admin .ac-record-aside { position: sticky; top: 88px; }
+.ci-role-admin .ac-record-section + .ac-record-section { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--ac-line); }
+.ci-role-admin .ac-record-section h3 { margin: 0 0 14px; font-size: 15px; }
+.ci-role-admin .ac-record-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.ci-role-admin .ac-record-facts > div { min-width: 0; padding: 13px 14px; border: 1px solid var(--ac-line); border-radius: 10px; }
+.ci-role-admin .ac-record-facts small,
+.ci-role-admin .ac-record-facts strong { display: block; overflow-wrap: anywhere; }
+.ci-role-admin .ac-record-facts small { margin-bottom: 5px; color: var(--ac-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; }
+.ci-role-admin .ac-record-facts strong { font-size: 12px; line-height: 1.55; }
+.ci-role-admin .ac-record-aside .ac-form-actions { align-items: stretch; flex-direction: column; }
+.ci-role-admin .ac-record-aside .ac-form-actions :is(.ac-btn, a) { width: 100%; }
+
+@media (min-width: 1025px) {
+  .ci-role-admin.ac-sidebar-collapsed .ci-dash-sidebar { width: 90px; }
+  .ci-role-admin.ac-sidebar-collapsed .ci-dash-main { width: calc(100% - 90px); margin-left: 90px; }
+  .ci-role-admin.ac-sidebar-collapsed .ci-sidebar-brand,
+  .ci-role-admin.ac-sidebar-collapsed .ci-sidebar-user { justify-content: center; padding-inline: 12px; }
+  .ci-role-admin.ac-sidebar-collapsed .ci-sidebar-brand-text,
+  .ci-role-admin.ac-sidebar-collapsed .ci-sidebar-user-info,
+  .ci-role-admin.ac-sidebar-collapsed .ac-nav-group-toggle span,
+  .ci-role-admin.ac-sidebar-collapsed .ac-nav-chevron,
+  .ci-role-admin.ac-sidebar-collapsed .ac-nav-group-items,
+  .ci-role-admin.ac-sidebar-collapsed .ac-side-foot span { display: none; }
+  .ci-role-admin.ac-sidebar-collapsed .ac-nav-group-toggle {
+    display: flex;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px;
+  }
+  .ci-role-admin.ac-sidebar-collapsed .ac-side-foot .ci-sidebar-nav-item { justify-content: center; padding-inline: 10px; }
+}
+
+@media (max-width: 1024px) {
+  .ci-role-admin .ci-dash-sidebar { width: min(290px, 88vw); transform: translateX(-105%); }
+  .ci-role-admin .ci-dash-sidebar.open { transform: translateX(0); }
+  .ci-role-admin .ci-dash-main { width: 100%; margin-left: 0; }
+  .ci-role-admin .ac-page-canvas { padding-inline: clamp(14px, 3vw, 26px); }
+  .ci-role-admin .ac-dashboard-workspace { grid-template-columns: 1fr; }
+  .ci-role-admin .ac-record-layout { grid-template-columns: 1fr; }
+  .ci-role-admin .ac-record-aside { position: static; }
+}
+
+@media (max-width: 700px) {
+  .ci-role-admin .ac-global-header { min-height: 62px; }
+  .ci-role-admin .ci-dash-topbar { min-height: 86px; padding-block: 14px; }
+  .ci-role-admin .ac-record-facts { grid-template-columns: 1fr; }
+}
