@@ -30,6 +30,9 @@
       <a href="/conscious/admin/vendors"><i class="fa-solid fa-store" aria-hidden="true"></i><span><b>Vendors</b><small>Applications and approval</small></span></a>
       <a href="/conscious/admin/orders"><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i><span><b>Orders</b><small>Delivery and exceptions</small></span></a>
       <a href="/conscious/admin/banners"><i class="fa-regular fa-images" aria-hidden="true"></i><span><b>Hero banners</b><small>Manage home page slides</small></span></a>
+      <?php if (defined('APP_ENV') && APP_ENV === 'local'): ?>
+      <a href="/conscious/admin/settings"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i><span><b>Local scan settings</b><small>ClamAV testing control</small></span></a>
+      <?php endif; ?>
     </nav>
   </aside>
 </section>

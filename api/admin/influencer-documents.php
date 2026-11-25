@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require_once __DIR__.'/../lib/helpers.php';
 require_once __DIR__.'/../lib/admin.php';
+require_once __DIR__.'/../lib/malware-scan.php';
 send_cors_headers();
 $context=require_admin('influencers.manage');$db=get_db();$method=$_SERVER['REQUEST_METHOD']??'GET';
 if($method==='GET'){
@@ -16,7 +17,7 @@ if($method==='POST'){
     if(!in_array($decision,['approve','reject'],true)||($decision==='reject'&&mb_strlen($reason)<10))json_response(422,['success'=>false,'message'=>'Choose a valid decision and provide a detailed rejection reason.']);
     $stmt=$db->prepare('SELECT d.*,f.scan_status FROM influencer_documents d JOIN file_assets f ON f.id=d.file_asset_id WHERE d.id=:id AND f.deleted_at IS NULL LIMIT 1');$stmt->execute(['id'=>$id]);$document=$stmt->fetch();
     if(!$document)json_response(404,['success'=>false,'message'=>'Document not found.']);
-    if($decision==='approve'&&$document['scan_status']!=='clean')json_response(409,['success'=>false,'message'=>'The document must pass a security scan before approval.']);
+    if($decision==='approve'&&!malware_scan_status_is_reviewable((string)$document['scan_status'],$db))json_response(409,['success'=>false,'message'=>'The document is not available for review.']);
     $status=$decision==='approve'?'approved':'rejected';
     $db->prepare('UPDATE influencer_documents SET verification_status=:status,rejection_reason=:reason,reviewed_by=:admin,reviewed_at=UTC_TIMESTAMP(),updated_at=UTC_TIMESTAMP() WHERE id=:id')->execute(['status'=>$status,'reason'=>$decision==='reject'?$reason:null,'admin'=>$context['admin']['id'],'id'=>$id]);
     audit_event('admin.influencer_document_'.$decision,'influencer_document',$id,['creator_id'=>$document['influencer_id'],'reason'=>$reason]);

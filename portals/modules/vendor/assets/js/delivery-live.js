@@ -33,7 +33,9 @@
     message.hidden = false;
     message.classList.toggle('vc-delivery-error', Boolean(error));
     message.scrollIntoView({block:'nearest'});
+    if(typeof window.vendorToast==='function')window.vendorToast(value,error?'error':'success');
   }
+  function confirmSettingsSaved(value){const node=document.getElementById('dl-settings-confirmation');if(!node)return;node.hidden=false;node.replaceChildren();const icon=document.createElement('i');icon.className='fa-solid fa-circle-check';icon.setAttribute('aria-hidden','true');node.append(icon,document.createTextNode(value));clearTimeout(node._hideTimer);node._hideTimer=setTimeout(()=>{node.hidden=true;},6000);}
   function normalize(value) { return String(value || '').replaceAll('_', ' '); }
   function token() {
     const match = document.cookie.match(/(?:^|;\s*)ci_csrf=([^;]+)/);
@@ -164,6 +166,7 @@
       form.elements.free_above.value=data.settings.free_above??'';
       form.elements.processing_min_days.value=data.settings.processing_min_days;
       form.elements.processing_max_days.value=data.settings.processing_max_days;
+      form.elements.courier_partners.value=data.settings.courier_partners||'';
       form.elements.cod_enabled.checked=Number(data.settings.cod_enabled)===1;
       form.elements.fragile_handling.checked=Number(data.settings.fragile_handling)===1;
     } else {
@@ -199,9 +202,9 @@
   submit(document.getElementById('dl-settings-form'),async data=>{
     const min=Number(data.get('processing_min_days')),max=Number(data.get('processing_max_days'));
     if(max<min)throw Error('Maximum processing days must not be less than the minimum.');
-    const couriers=state.settings?.courier_partners?String(state.settings.courier_partners).split(',').map(part=>part.trim()).filter(Boolean):[];
+    const couriers=String(data.get('courier_partners')||'').split(',').map(part=>part.trim()).filter(Boolean);
     const result=await request('shipping-settings.php','PUT',{coverage_model:data.get('coverage_model'),base_charge:Number(data.get('base_charge')),free_above:data.get('free_above')===''?null:Number(data.get('free_above')),processing_min_days:min,processing_max_days:max,cod_enabled:data.has('cod_enabled'),fragile_handling:data.has('fragile_handling'),courier_partners:couriers});
-    announce(result.message);await loadSettings();
+    announce(result.message);confirmSettingsSaved(result.message);await loadSettings();
   });
   submit(document.getElementById('dl-zone-form'),async data=>{
     const type=String(data.get('rule_type'));
@@ -215,6 +218,10 @@
   });
   submit(document.getElementById('dl-quote-form'),async data=>{
     const params=new URLSearchParams(data);
+    const weightValue=Number(data.get('package_weight_value'));
+    const weightGrams=Math.round(weightValue*(data.get('package_weight_unit')==='kg'?1000:1));
+    if(!Number.isFinite(weightGrams)||weightGrams<1||weightGrams>500000)throw Error('Enter a packed shipment weight between 1 gram and 500 kilograms.');
+    params.delete('package_weight_value');params.delete('package_weight_unit');params.set('weight_grams',String(weightGrams));
     const result=await request('shipping-quote.php?'+params.toString());
     const box=document.getElementById('dl-quote-result');box.hidden=false;
     box.textContent=result.quote.serviceable?'Serviceable. Delivery charge: '+rupees.format(Number(result.quote.amount))+'.':'Not serviceable: '+result.quote.reason;

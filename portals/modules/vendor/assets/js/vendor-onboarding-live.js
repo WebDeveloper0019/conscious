@@ -100,6 +100,7 @@
     if(document.verification_status==='verified')return 'Verified';
     if(document.scan_status==='infected')return 'Security check failed';
     if(document.scan_status==='clean')return 'Uploaded · awaiting review';
+    if(document.scan_status==='bypassed')return 'Uploaded · available for local testing';
     return 'Uploaded · security scan pending';
   }
   function renderDocumentStatus(input){
@@ -123,7 +124,7 @@
     copy.append(title,meta);
     if(!selected.length&&uploadedDocument?.rejection_reason){const reason=document.createElement('small');reason.className='vo-upload-reason';reason.textContent=uploadedDocument.rejection_reason;copy.append(reason);}
     const actions=document.createElement('div');actions.className='vo-upload-file-actions';
-    if(!selected.length&&uploadedDocument?.file_id&&uploadedDocument.scan_status==='clean'){
+    if(!selected.length&&uploadedDocument?.file_id&&['clean','bypassed'].includes(uploadedDocument.scan_status)){
       const view=document.createElement('a');view.href='/conscious/api/files.php?id='+encodeURIComponent(uploadedDocument.file_id);view.target='_blank';view.rel='noopener';view.textContent='View';actions.append(view);
     }
     const replace=document.createElement('button');replace.type='button';replace.textContent=uploadedDocument?'Replace':'Choose file';replace.addEventListener('click',()=>input.click());actions.append(replace);

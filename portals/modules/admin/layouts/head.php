@@ -22,7 +22,8 @@ $adminIsLive = !empty($adminPageScript) || !empty($adminPageScripts);
   <link rel="stylesheet" href="/conscious/admin/assets/css/app.css?v=20261122-1">
   <link rel="stylesheet" href="/conscious/shared/assets/css/customer-inspired-workspace.css?v=20261031-1">
   <link rel="stylesheet" href="/conscious/shared/assets/css/brand-typography.css?v=20261026">
-  <link rel="stylesheet" href="/conscious/admin/assets/css/admin-clean.css?v=20261123-1">
+  <link rel="stylesheet" href="/conscious/admin/assets/css/admin-clean.css?v=20261126-2">
+  <link rel="stylesheet" href="/conscious/shared/assets/css/dialog-system.css?v=20261125-1">
 </head>
 <body class="ci-role-admin" data-admin-live="<?= $adminIsLive ? 'true' : 'false' ?>">
 <a class="ac-skip" href="#main-content">Skip to main content</a>

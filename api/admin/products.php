@@ -3,6 +3,7 @@ declare(strict_types=1);
 require_once __DIR__.'/../lib/helpers.php';
 require_once __DIR__.'/../lib/admin.php';
 require_once __DIR__.'/../lib/notifications.php';
+require_once __DIR__.'/../lib/malware-scan.php';
 send_cors_headers();
 $context = require_admin('products.review');
 $db = get_db();
@@ -19,7 +20,9 @@ if ($method === 'GET') {
         $versions->execute(['id'=>$id]);
         $images = $db->prepare('SELECT pi.*,f.scan_status,f.mime_type,f.id AS file_id FROM product_images pi JOIN file_assets f ON f.id=pi.file_asset_id WHERE pi.product_id=:id AND f.deleted_at IS NULL ORDER BY pi.is_primary DESC,pi.sort_order');
         $images->execute(['id'=>$id]);
-        json_response(200,['success'=>true,'product'=>$product,'versions'=>$versions->fetchAll(),'images'=>$images->fetchAll()]);
+        $imageRows=$images->fetchAll();
+        foreach($imageRows as &$image){$image['scan_reviewable']=malware_scan_status_is_reviewable((string)$image['scan_status'],$db);}unset($image);
+        json_response(200,['success'=>true,'product'=>$product,'versions'=>$versions->fetchAll(),'images'=>$imageRows]);
     }
     $status = trim((string)($_GET['status'] ?? 'pending_review'));
     $params = [];
@@ -57,10 +60,13 @@ if ($method === 'POST') {
             $delivery=$db->prepare('SELECT COUNT(*) FROM vendor_shipping_settings WHERE vendor_id=:id');
             $delivery->execute(['id'=>$product['vendor_id']]);
             if((int)$delivery->fetchColumn()<1) json_response(422,['success'=>false,'message'=>'The seller must complete delivery setup before product approval.']);
-            $check = $db->prepare('SELECT COUNT(*) FROM product_images pi JOIN file_assets f ON f.id=pi.file_asset_id WHERE pi.product_id=:id AND f.scan_status="clean" AND f.deleted_at IS NULL');
+            $check = $db->prepare('SELECT f.id,f.scan_status FROM product_images pi JOIN file_assets f ON f.id=pi.file_asset_id WHERE pi.product_id=:id AND f.deleted_at IS NULL');
             $check->execute(['id'=>$id]);
-            if ((int)$check->fetchColumn()<1) json_response(422,['success'=>false,'message'=>'Product cannot be approved without a clean image.']);
-            $db->prepare('UPDATE file_assets f JOIN product_images pi ON pi.file_asset_id=f.id SET f.visibility="public" WHERE pi.product_id=:id AND f.scan_status="clean"')->execute(['id'=>$id]);
+            $reviewableFiles=[];
+            foreach($check->fetchAll() as $image){if(malware_scan_status_is_reviewable((string)$image['scan_status'],$db))$reviewableFiles[]=(string)$image['id'];}
+            if (!$reviewableFiles) json_response(422,['success'=>false,'message'=>'Product cannot be approved without an available image.']);
+            $publish=$db->prepare('UPDATE file_assets SET visibility="public" WHERE id=:id');
+            foreach($reviewableFiles as $fileId)$publish->execute(['id'=>$fileId]);
         }
         $db->prepare('UPDATE products SET status=:status,rejection_reason=:notes,published_at=IF(:is_approved_at=1,COALESCE(published_at,UTC_TIMESTAMP()),published_at),published_version=IF(:is_approved_version=1,review_version,published_version),published_snapshot_json=IF(:is_approved_snapshot=1,(SELECT snapshot_json FROM product_versions WHERE product_id=products.id AND version_number=products.review_version),published_snapshot_json),updated_at=UTC_TIMESTAMP() WHERE id=:id')->execute(['status'=>$next,'notes'=>$decision==='approve'?null:$notes,'is_approved_at'=>$decision==='approve'?1:0,'is_approved_version'=>$decision==='approve'?1:0,'is_approved_snapshot'=>$decision==='approve'?1:0,'id'=>$id]);
         $db->prepare('UPDATE product_versions SET review_status=:status,reviewed_at=IF(:final=1,UTC_TIMESTAMP(),reviewed_at),reviewed_by=:admin,review_notes=:notes WHERE product_id=:id AND version_number=:version')->execute(['status'=>$next,'final'=>in_array($next,['approved','changes_requested','rejected'],true)?1:0,'admin'=>$context['admin']['id'],'notes'=>$notes?:null,'id'=>$id,'version'=>$product['review_version']]);

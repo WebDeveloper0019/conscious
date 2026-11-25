@@ -1,0 +1,1 @@
+<?php $pageTitle='Payout account review';$pageSubtitle='Inspect bank proof and make an audited payout decision';$activePage='banks';$adminPageScript='assets/js/bank-review-live.js?v=20261126-3';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/bank-review.php';require __DIR__.'/layouts/foot.php';

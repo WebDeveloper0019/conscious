@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__.'/object-storage.php';
+require_once __DIR__.'/malware-scan.php';
 function store_private_upload(array $file,string $ownerType,string $ownerId,string $purpose,array $allowedMime,int $maxBytes=MAX_UPLOAD_BYTES,string $storageProvider='local'): array {
     if(($file['error']??UPLOAD_ERR_NO_FILE)!==UPLOAD_ERR_OK)json_response(422,['success'=>false,'message'=>'The selected file could not be uploaded.']);
     $size=(int)($file['size']??0);if($size<1||$size>$maxBytes)json_response(422,['success'=>false,'message'=>'The selected file size is not allowed.']);
@@ -20,7 +21,8 @@ function store_private_upload(array $file,string $ownerType,string $ownerId,stri
         if(!is_dir($directory)&&!mkdir($directory,0750,true)&&!is_dir($directory))throw new RuntimeException('Private upload directory could not be created.');
         if(!move_uploaded_file($tmp,$absolute))throw new RuntimeException('Uploaded file could not be stored.');
     }
-    $stmt=get_db()->prepare('INSERT INTO file_assets (id,owner_type,owner_id,purpose,storage_provider,storage_key,original_name,mime_type,extension,size_bytes,sha256,visibility,scan_status,created_at) VALUES (:id,:owner_type,:owner_id,:purpose,:provider,:key,:name,:mime,:extension,:size,:sha,"private","pending",UTC_TIMESTAMP())');
-    try{$stmt->execute(['id'=>$id,'owner_type'=>$ownerType,'owner_id'=>$ownerId,'purpose'=>$purpose,'provider'=>$storageProvider,'key'=>$relative,'name'=>mb_substr(basename((string)($file['name']??'file')),0,255),'mime'=>$mime,'extension'=>$extensions[$mime],'size'=>$size,'sha'=>$sha]);}catch(Throwable $e){if($storageProvider==='r2'){try{r2_delete_object($relative);}catch(Throwable){} }elseif($absolute!==null){@unlink($absolute);}throw $e;}
-    return ['id'=>$id,'mime_type'=>$mime,'size_bytes'=>$size,'scan_status'=>'pending','storage_provider'=>$storageProvider];
+    $scanStatus=malware_scan_bypass_enabled(get_db())?'bypassed':'pending';
+    $stmt=get_db()->prepare('INSERT INTO file_assets (id,owner_type,owner_id,purpose,storage_provider,storage_key,original_name,mime_type,extension,size_bytes,sha256,visibility,scan_status,created_at) VALUES (:id,:owner_type,:owner_id,:purpose,:provider,:key,:name,:mime,:extension,:size,:sha,"private",:scan_status,UTC_TIMESTAMP())');
+    try{$stmt->execute(['id'=>$id,'owner_type'=>$ownerType,'owner_id'=>$ownerId,'purpose'=>$purpose,'provider'=>$storageProvider,'key'=>$relative,'name'=>mb_substr(basename((string)($file['name']??'file')),0,255),'mime'=>$mime,'extension'=>$extensions[$mime],'size'=>$size,'sha'=>$sha,'scan_status'=>$scanStatus]);}catch(Throwable $e){if($storageProvider==='r2'){try{r2_delete_object($relative);}catch(Throwable){} }elseif($absolute!==null){@unlink($absolute);}throw $e;}
+    return ['id'=>$id,'mime_type'=>$mime,'size_bytes'=>$size,'scan_status'=>$scanStatus,'storage_provider'=>$storageProvider];
 }

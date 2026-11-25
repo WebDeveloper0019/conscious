@@ -1,1 +1,1 @@
-<?php $pageTitle='Store profile';$pageSubtitle='Your storefront details, customer contact, and dispatch location';$activePage='store';$vendorPageScript='assets/js/store-live.js';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/store.php';require __DIR__.'/layouts/foot.php';
+<?php $pageTitle='Store profile';$pageSubtitle='Your public storefront details and customer contact';$activePage='store';$vendorPageScript='assets/js/store-live.js?v=20261125-2';require __DIR__.'/layouts/head.php';require __DIR__.'/pages/store.php';require __DIR__.'/layouts/foot.php';

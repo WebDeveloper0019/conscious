@@ -19,15 +19,16 @@ $activePage = $activePage ?? 'dashboard';
   <link rel="stylesheet" href="/conscious/assets/css/conscious-pages.css">
   <link rel="stylesheet" href="/conscious/shared/assets/css/tokens.css">
   
-  <link rel="stylesheet" href="assets/css/app.css?v=20261024">
-  <link rel="stylesheet" href="assets/css/vendor-experience.css?v=20261024">
-  <?php if (!empty($vendorPageCss)): ?><link rel="stylesheet" href="<?= htmlspecialchars($vendorPageCss, ENT_QUOTES, 'UTF-8') ?>"><?php endif; ?>
-  <?php if (!empty($vendorOnboardingMode)): ?><link rel="stylesheet" href="assets/css/onboarding-v2.css"><?php endif; ?>
+  <link rel="stylesheet" href="/conscious/partner/assets/css/app.css?v=20261024">
+  <link rel="stylesheet" href="/conscious/partner/assets/css/vendor-experience.css?v=20261125-4">
+  <?php if (!empty($vendorPageCss)): ?><?php $vendorCssUrl = str_starts_with((string)$vendorPageCss, '/') ? (string)$vendorPageCss : '/conscious/partner/'.ltrim((string)$vendorPageCss, '/'); ?><link rel="stylesheet" href="<?= htmlspecialchars($vendorCssUrl, ENT_QUOTES, 'UTF-8') ?>"><?php endif; ?>
+  <?php if (!empty($vendorOnboardingMode)): ?><link rel="stylesheet" href="/conscious/partner/assets/css/onboarding-v2.css"><?php endif; ?>
   <link rel="stylesheet" href="/conscious/shared/assets/css/customer-inspired-workspace.css?v=20261031-1">
   <link rel="stylesheet" href="/conscious/shared/assets/css/brand-typography.css?v=20261026">
   <link rel="stylesheet" href="/conscious/partner/assets/css/vendor-brand-system.css?v=20261122-3">
   <link rel="stylesheet" href="/conscious/partner/assets/css/vendor-shell-refresh.css?v=20261121-2">
   <link rel="stylesheet" href="/conscious/partner/assets/css/vendor-tabler-preview.css?v=20261122-3">
+  <link rel="stylesheet" href="/conscious/shared/assets/css/dialog-system.css?v=20261125-1">
 </head>
 <body class="ci-role-vendor">
 <a class="vc-skip" href="#main-content">Skip to main content</a>
@@ -49,7 +50,11 @@ $activePage = $activePage ?? 'dashboard';
       <div><span class="vc-topbar-kicker">YOUR WORKSPACE</span><h1 class="ci-dash-page-title"><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></h1><p class="ci-dash-page-sub"><?= htmlspecialchars($pageSubtitle ?? 'Manage your Conscious India store', ENT_QUOTES, 'UTF-8') ?></p></div>
     </div>
     <div class="vc-top-actions">
-      <a class="vc-topbar-create" href="/conscious/partner/catalog#add-product" aria-label="Add a product to your store" title="Add a product to your store"><i class="fa-solid fa-plus" aria-hidden="true"></i><span>Add product</span></a>
+      <?php if (!empty($catalogStandaloneEditor)): ?>
+        <a class="vc-topbar-create" href="/conscious/partner/catalog" aria-label="Back to products" title="Back to products"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i><span>Back to products</span></a>
+      <?php else: ?>
+        <a class="vc-topbar-create" href="/conscious/partner/catalog/new" aria-label="Add a product to your store" title="Add a product to your store"><i class="fa-solid fa-plus" aria-hidden="true"></i><span>Add product</span></a>
+      <?php endif; ?>
       <?php if (!empty($vendorSellingReady)): ?><a class="vc-icon-button" href="/conscious/partner/communication#notifications" aria-label="Notifications" title="Notifications"><i class="fa-regular fa-bell"></i></a><?php endif; ?>
     </div>
   </header>

@@ -347,6 +347,36 @@
   .ci-role-admin .ci-dash-topbar { min-height: 82px; padding: 14px; }
 }
 
+.ci-role-admin .ac-security-settings { max-width: 980px; }
+.ci-role-admin .ac-security-settings .ac-head p { margin: 6px 0 0; color: var(--ac-muted); }
+.ci-role-admin .ass-control-row { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-top: 18px; padding: 20px; border: 1px solid var(--ac-line); border-radius: 14px; background: #fff; }
+.ci-role-admin .ass-control-row h3 { margin: 0 0 5px; font-size: 15px; }
+.ci-role-admin .ass-control-row p { margin: 0; color: var(--ac-muted); font-size: 12px; line-height: 1.6; }
+.ci-role-admin .ass-switch { display: inline-flex; align-items: center; gap: 10px; flex: 0 0 auto; cursor: pointer; }
+.ci-role-admin .ass-switch input { position: absolute; opacity: 0; pointer-events: none; }
+.ci-role-admin .ass-switch span { position: relative; width: 46px; height: 26px; border-radius: 99px; background: #cad4ce; transition: .2s ease; }
+.ci-role-admin .ass-switch span::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.22); transition: .2s ease; }
+.ci-role-admin .ass-switch input:checked + span { background: #b64027; }
+.ci-role-admin .ass-switch input:checked + span::after { transform: translateX(20px); }
+.ci-role-admin .ass-switch input:focus-visible + span { outline: 3px solid rgba(47,112,78,.28); outline-offset: 3px; }
+.ci-role-admin .ass-switch input:disabled + span { opacity: .5; cursor: not-allowed; }
+.ci-role-admin .ass-switch b { min-width: 118px; font-size: 12px; }
+.ci-role-admin .ass-facts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 18px 0; }
+.ci-role-admin .ass-facts div { padding: 16px; border: 1px solid var(--ac-line); border-radius: 12px; background: var(--ac-soft); }
+.ci-role-admin .ass-facts dt { color: var(--ac-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.ci-role-admin .ass-facts dd { margin: 6px 0 0; font-size: 18px; font-weight: 700; }
+.ci-role-admin #ass-message { margin: 0 auto 0 0; color: var(--ac-muted); font-size: 12px; }
+.ci-role-admin #ass-message.is-error { color: #a52e1a; }
+.ci-role-admin .av-confirm-dialog { width: min(520px, calc(100vw - 24px)); }
+.ci-role-admin .av-confirm-dialog .ac-body { text-align: center; }
+.ci-role-admin .av-confirm-dialog .ac-body > p { margin: 12px auto 0; max-width: 420px; color: var(--ac-muted); line-height: 1.7; }
+.ci-role-admin .av-confirm-dialog .ac-callout { margin-top: 18px; text-align: left; }
+.ci-role-admin .av-confirm-icon { display: grid; place-items: center; width: 58px; height: 58px; margin: 0 auto; border-radius: 50%; color: #1f613d; background: #e7f3eb; font-size: 23px; }
+@media (max-width: 700px) {
+  .ci-role-admin .ass-control-row { align-items: flex-start; flex-direction: column; }
+  .ci-role-admin .ass-facts { grid-template-columns: 1fr; }
+}
+
 /* Vendor application review queue. */
 .ci-role-admin .av-shell { display: grid; gap: 18px; }
 .ci-role-admin .av-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
@@ -419,7 +449,14 @@
 .ci-role-admin .av-section-heading h3 { margin: 2px 0 0; font-size: 16px; }
 .ci-role-admin .av-section-heading > span { color: var(--ac-muted); font-size: 10px; }
 .ci-role-admin .av-document-list { display: grid; gap: 9px; }
-.ci-role-admin .av-document-card { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 13px 14px; border: 1px solid var(--ac-line); border-radius: 11px; background: #fff; }
+.ci-role-admin .av-document-card { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 13px 14px; border: 1px solid var(--ac-line); border-radius: 11px; background: #fff; }
+.ci-role-admin .av-document-preview { display: grid; place-items: center; width: 76px; height: 58px; overflow: hidden; border: 1px solid #dce6df; border-radius: 9px; color: #52685a; background: #edf3ef; text-decoration: none; }
+.ci-role-admin .av-document-preview.image { background: #18231d; }
+.ci-role-admin .av-document-preview img { width: 100%; height: 100%; object-fit: cover; transition: transform .18s ease; }
+.ci-role-admin .av-document-preview.image:hover img { transform: scale(1.05); }
+.ci-role-admin .av-document-preview.placeholder { gap: 3px; align-content: center; }
+.ci-role-admin .av-document-preview.placeholder i { font-size: 15px; }
+.ci-role-admin .av-document-preview.placeholder small { font-size: 8px; font-weight: 650; text-align: center; }
 .ci-role-admin .av-document-icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; color: #366b4a; background: #e7f0e9; }
 .ci-role-admin .av-document-copy { min-width: 0; }
 .ci-role-admin .av-document-copy h4 { margin: 0; color: var(--ac-ink); font-size: 12px; text-transform: capitalize; }
@@ -427,14 +464,27 @@
 .ci-role-admin .av-document-copy > div { display: flex; flex-wrap: wrap; gap: 5px; }
 .ci-role-admin .av-document-reason { display: block; margin-top: 7px; color: #9f3923; font-size: 10px; }
 .ci-role-admin .av-document-actions { display: flex; align-items: center; justify-content: flex-end; gap: 7px; flex-wrap: wrap; }
+.ci-role-admin .av-scan-notice { display: flex; align-items: flex-start; gap: 10px; padding: 11px 13px; border: 1px solid #e4d7ad; border-radius: 10px; color: #695418; background: #fff9e8; }
+.ci-role-admin .av-scan-notice i { margin-top: 2px; }
+.ci-role-admin .av-scan-notice p { margin: 0; font-size: 11px; line-height: 1.55; }
 .ci-role-admin .av-document-empty { margin: 0; padding: 30px; border: 1px dashed var(--ac-line); border-radius: 10px; color: var(--ac-muted); text-align: center; }
 .ci-role-admin .av-decision-box { margin-top: 20px; padding: 16px; border: 1px solid var(--ac-line); border-radius: 12px; background: #f8faf8; }
 .ci-role-admin .av-decision-box label { display: block; margin-bottom: 8px; }
 .ci-role-admin .av-decision-box label span { display: block; color: var(--ac-ink); font-size: 12px; font-weight: 700; }
 .ci-role-admin .av-decision-box label small { display: block; margin-top: 2px; color: var(--ac-muted); font-size: 10px; }
 .ci-role-admin .av-decision-box textarea { min-height: 90px; resize: vertical; }
+.ci-role-admin .av-decision-readiness { margin-top: 10px; padding: 9px 11px; border-radius: 8px; font-size: 10px; font-weight: 600; line-height: 1.5; }
+.ci-role-admin .av-decision-readiness.ready { color: #276440; background: #e7f3eb; }
+.ci-role-admin .av-decision-readiness.blocked { color: #73591c; background: #fff5d9; }
 .ci-role-admin .av-review-actions { display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
 .ci-role-admin .av-action-spacer { flex: 1; }
+.ci-role-admin .av-reason-dialog { width: min(590px,calc(100% - 28px)); }
+.ci-role-admin .av-reason-dialog .ac-dialog-head { align-items: flex-start; }
+.ci-role-admin .av-reason-dialog .ac-dialog-head h2 { margin: 3px 0 0; }
+.ci-role-admin .av-reason-description { margin: 0 0 14px; color: var(--ac-muted); font-size: 11px; line-height: 1.6; }
+.ci-role-admin .av-reason-dialog label > span { margin-bottom: 6px; color: var(--ac-ink); font-size: 11px; font-weight: 700; }
+.ci-role-admin .av-reason-dialog textarea { min-height: 120px; resize: vertical; }
+.ci-role-admin .av-dialog-actions { padding: 0 18px 18px; }
 
 @media (max-width: 1180px) {
   .ci-role-admin .av-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -450,7 +500,7 @@
   .ci-role-admin .av-avatar { width: 42px; height: 42px; }
   .ci-role-admin .av-progress-cell { grid-column: 2 / -1; }
   .ci-role-admin .av-identity-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .ci-role-admin .av-document-card { grid-template-columns: 38px minmax(0, 1fr); }
+  .ci-role-admin .av-document-card { grid-template-columns: 76px minmax(0, 1fr); }
   .ci-role-admin .av-document-actions { grid-column: 1 / -1; justify-content: flex-start; }
 }
 @media (max-width: 480px) {
@@ -623,6 +673,31 @@
 .ci-role-admin .ac-record-facts strong { font-size: 12px; line-height: 1.55; }
 .ci-role-admin .ac-record-aside .ac-form-actions { align-items: stretch; flex-direction: column; }
 .ci-role-admin .ac-record-aside .ac-form-actions :is(.ac-btn, a) { width: 100%; }
+.ci-role-admin .ac-toolbar { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(190px, 240px); gap: 12px; }
+.ci-role-admin .ac-search { position: relative; min-width: 0; }
+.ci-role-admin .ac-search > i { position: absolute; top: 50%; left: 14px; color: var(--ac-muted); transform: translateY(-50%); pointer-events: none; }
+.ci-role-admin .ac-search > input { width: 100%; min-height: 44px; padding: 10px 14px 10px 40px; border: 1px solid var(--ac-line); border-radius: 10px; background: #fff; color: var(--ac-ink); }
+.ci-role-admin .ac-toolbar .ac-select { min-height: 44px; }
+.ci-role-admin .ac-row-actions { white-space: nowrap; }
+.ci-role-admin .ac-row-actions .ac-btn + .ac-btn { margin-left: 6px; }
+.ci-role-admin .ac-table td > strong + small { display: block; margin-top: 4px; }
+.ci-role-admin .ac-record-page { max-width: 1320px; margin: 0 auto; }
+.ci-role-admin .ac-record-primary .ac-card,
+.ci-role-admin .ac-record-aside .ac-card { border-radius: 14px; }
+.ci-role-admin .ac-record-aside .ac-callout { margin-bottom: 16px; font-size: 11px; line-height: 1.55; }
+.ci-role-admin #abr-proof > .ac-btn + .ac-btn { margin-left: 8px; }
+.ci-role-admin .abr-proof-preview { display: block; width: min(100%, 640px); max-height: 430px; margin-top: 16px; border: 1px solid var(--ac-line); border-radius: 12px; object-fit: contain; background: #f5f7f4; }
+.ci-role-admin .abr-sensitive { display: grid; gap: 10px; margin: 0 0 16px; padding: 14px; border: 1px solid #d8b36a; border-radius: 12px; background: #fff8e8; }
+.ci-role-admin .abr-sensitive[hidden] { display: none; }
+.ci-role-admin .abr-sensitive-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.ci-role-admin .abr-sensitive > div:not(.abr-sensitive-head) { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 8px; padding: 10px; border-radius: 9px; background: #fff; }
+.ci-role-admin .abr-sensitive > div:not(.abr-sensitive-head) small { grid-column: 1/-1; color: var(--ac-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; }
+.ci-role-admin .abr-sensitive > div:not(.abr-sensitive-head) strong { overflow-wrap: anywhere; }
+.ci-role-admin #abr-history .ac-item:last-child { border-bottom: 0; }
+.ci-role-admin :is(#abr-decision-dialog,#abr-reveal-dialog) { position: fixed; inset: 0; margin: auto; max-height: min(620px, calc(100dvh - 32px)); }
+.ci-role-admin :is(#abr-decision-dialog,#abr-reveal-dialog) .ac-dialog-head { align-items: flex-start; }
+.ci-role-admin :is(#abr-decision-dialog,#abr-reveal-dialog) .ac-dialog-head h2 { margin: 3px 0 0; }
+.ci-role-admin :is(#abr-decision-dialog,#abr-reveal-dialog) .ac-form-actions { padding: 0 18px 18px; }
 
 @media (min-width: 1025px) {
   .ci-role-admin.ac-sidebar-collapsed .ci-dash-sidebar { width: 90px; }
@@ -658,4 +733,5 @@
   .ci-role-admin .ac-global-header { min-height: 62px; }
   .ci-role-admin .ci-dash-topbar { min-height: 86px; padding-block: 14px; }
   .ci-role-admin .ac-record-facts { grid-template-columns: 1fr; }
+  .ci-role-admin .ac-toolbar { grid-template-columns: 1fr; }
 }

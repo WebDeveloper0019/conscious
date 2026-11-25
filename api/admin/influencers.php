@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/admin.php';
 require_once __DIR__ . '/../lib/notifications.php';
+require_once __DIR__ . '/../lib/malware-scan.php';
 
 send_cors_headers();
 $context = require_admin('influencers.manage');
@@ -48,8 +49,8 @@ if ($action === 'approve') {
         if (!isset($latest[$document['document_type']])) $latest[$document['document_type']] = $document;
     }
     foreach (['identity', 'pan', 'social_ownership'] as $type) {
-        if (!isset($latest[$type]) || $latest[$type]['verification_status'] !== 'approved' || $latest[$type]['scan_status'] !== 'clean') {
-            json_response(409, ['success' => false, 'message' => 'Approve the latest clean identity, PAN and social ownership documents before approving this creator.']);
+        if (!isset($latest[$type]) || $latest[$type]['verification_status'] !== 'approved' || !malware_scan_status_is_reviewable((string)$latest[$type]['scan_status'],$db)) {
+            json_response(409, ['success' => false, 'message' => 'Approve the latest available identity, PAN and social ownership documents before approving this creator.']);
         }
     }
     $audience = json_decode((string)$creator['audience_json'], true);

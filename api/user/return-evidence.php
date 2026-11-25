@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/audit.php';
+require_once __DIR__ . '/../lib/malware-scan.php';
 
 send_cors_headers();
 
@@ -25,7 +26,7 @@ if ($method === 'GET') {
     $stmt = $db->prepare(
         'SELECT re.id, re.file_asset_id, re.caption, re.sort_order, re.created_at,
                 f.original_name, f.mime_type, f.size_bytes, f.scan_status,
-                CASE WHEN f.scan_status="clean" THEN CONCAT("../files.php?id=", f.id) ELSE NULL END AS url
+                f.id AS stored_file_id
          FROM return_evidence re
          JOIN file_assets f ON f.id = re.file_asset_id
          WHERE re.return_request_id = ?
@@ -39,7 +40,7 @@ if ($method === 'GET') {
         $evidence[] = [
             'id'          => $r['id'],
             'fileId'      => $r['file_asset_id'],
-            'url'         => $r['url'],
+            'url'         => malware_scan_status_is_reviewable((string)$r['scan_status'],$db) ? '../files.php?id=' . $r['stored_file_id'] : null,
             'caption'     => $r['caption'],
             'mimeType'    => $r['mime_type'],
             'byteSize'    => (int)$r['size_bytes'],
@@ -124,11 +125,12 @@ if (!empty($_FILES['file'])) {
     $createdAssetPath = $storedPath;
 
     try {
+        $scanStatus=malware_scan_bypass_enabled($db)?'bypassed':'pending';
         $db->prepare(
             'INSERT INTO file_assets
                (id, owner_type, owner_id, purpose, storage_key, original_name, mime_type,
                 extension, size_bytes, sha256, visibility, scan_status, created_at)
-             VALUES (?, "customer", ?, "return_evidence", ?, ?, ?, ?, ?, ?, "private", "pending", UTC_TIMESTAMP())'
+             VALUES (?, "customer", ?, "return_evidence", ?, ?, ?, ?, ?, ?, "private", ?, UTC_TIMESTAMP())'
         )->execute([
             $fileId,
             $userId,
@@ -138,6 +140,7 @@ if (!empty($_FILES['file'])) {
             $ext,
             (int)$uploaded['size'],
             hash_file('sha256', $storedPath),
+            $scanStatus,
         ]);
     } catch (Throwable $e) {
         @unlink($storedPath);
@@ -157,7 +160,7 @@ if (!empty($_FILES['file'])) {
     $chk = $db->prepare(
         'SELECT id FROM file_assets WHERE id = ? AND owner_type = "customer" AND owner_id = ?
          AND mime_type IN ("image/jpeg","image/png","image/webp","image/gif")
-         AND scan_status = "clean" AND deleted_at IS NULL LIMIT 1'
+         AND scan_status IN ("clean","bypassed") AND deleted_at IS NULL LIMIT 1'
     );
     $chk->execute([$fileId, $userId]);
     if (!$chk->fetchColumn()) json_response(404, ['success' => false, 'message' => 'File not found.']);
@@ -204,11 +207,11 @@ try {
 
     json_response(201, [
         'success'    => true,
-        'message'    => 'Evidence uploaded and queued for security scanning.',
+        'message'    => isset($scanStatus)&&$scanStatus==='bypassed' ? 'Evidence uploaded. Security scanning is disabled for local testing.' : 'Evidence uploaded and queued for security scanning.',
         'evidenceId' => $evidenceId,
         'fileId'     => $fileId,
-        'scanStatus' => $createdAssetPath !== null ? 'pending' : 'clean',
-        'url'        => $createdAssetPath !== null ? null : '../files.php?id=' . $fileId,
+        'scanStatus' => $createdAssetPath !== null ? ($scanStatus??'pending') : 'clean',
+        'url'        => $createdAssetPath !== null && ($scanStatus??'pending')!=='bypassed' ? null : '../files.php?id=' . $fileId,
     ]);
 } catch (PDOException $e) {
     if ($createdAssetPath !== null) {

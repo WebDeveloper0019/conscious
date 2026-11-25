@@ -11,8 +11,8 @@
 </dialog>
 <div class="vc-toast-wrap" id="vc-toast-wrap" aria-live="polite" aria-atomic="true"></div>
 <script src="/conscious/assets/js/inline-form-feedback.js?v=20261031" defer></script>
-<script src="assets/js/app.js?v=20261024" defer></script>
-<?php if (!empty($vendorPageScript)): ?><script src="<?= htmlspecialchars($vendorPageScript, ENT_QUOTES, 'UTF-8') ?>" defer></script><?php endif; ?>
-<?php if (!empty($vendorOnboardingMode)): ?><script src="assets/js/vendor-onboarding-live.js?v=20261122-6" defer></script><?php endif; ?>
+<script src="/conscious/partner/assets/js/app.js?v=20261125-1" defer></script>
+<?php if (!empty($vendorPageScript)): ?><?php $vendorScriptUrl = str_starts_with((string)$vendorPageScript, '/') ? (string)$vendorPageScript : '/conscious/partner/'.ltrim((string)$vendorPageScript, '/'); ?><script src="<?= htmlspecialchars($vendorScriptUrl, ENT_QUOTES, 'UTF-8') ?>" defer></script><?php endif; ?>
+<?php if (!empty($vendorOnboardingMode)): ?><script src="/conscious/partner/assets/js/vendor-onboarding-live.js?v=20261126-7" defer></script><?php endif; ?>
 </body>
 </html>

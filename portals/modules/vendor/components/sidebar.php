@@ -1,10 +1,10 @@
 <?php
 $navGroups = [
   'Workspace' => [['dashboard.php','dashboard','fa-house','Overview']],
-  'Set up your store' => [['store.php','store','fa-store','Store profile'],['account.php','account','fa-shield-halved','Application & account'],['sustainability.php','sustainability','fa-seedling','Claims & evidence']],
+  'Set up your store' => [['store.php','store','fa-store','Store profile'],['dispatch-address.php','dispatch_address','fa-location-dot','Dispatch address'],['account.php','account','fa-shield-halved','Application & account'],['sustainability.php','sustainability','fa-seedling','Claims & evidence']],
   'Sell & fulfil' => [['catalog.php','catalog','fa-box-open','Products'],['inventory.php','inventory','fa-warehouse','Inventory'],['orders.php','orders','fa-bag-shopping','Orders'],['delivery.php','delivery','fa-truck-fast','Shipping & delivery'],['returns.php','returns','fa-rotate-left','Returns']],
   'Grow' => [['promotions.php','promotions','fa-ticket','Offers'],['packages.php','packages','fa-bullhorn','Creator partnerships'],['events.php','events','fa-calendar-days','Events'],['analytics.php','analytics','fa-chart-column','Reports'],['upgrade.php','upgrade','fa-arrow-trend-up','Plans']],
-  'Money' => [['finance.php','finance','fa-indian-rupee-sign','Earnings & payouts']],
+  'Money' => [['payout-bank.php','payout_bank','fa-building-columns','Payout bank'],['finance.php','finance','fa-indian-rupee-sign','Earnings & payouts']],
   'Support' => [['communication.php','communication','fa-comments','Customer messages'],['support.php','support','fa-headset','Help centre']],
 ];
 if (!empty($vendorOnboardingMode)) {

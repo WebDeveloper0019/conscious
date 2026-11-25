@@ -31,6 +31,7 @@
     requestAnimationFrame(function () { item.classList.add('show'); });
     setTimeout(function () { item.classList.remove('show'); setTimeout(function () { item.remove(); }, 250); }, 3500);
   }
+  window.vendorToast = toast;
 
   function initSidebar() {
     var sidebar = document.getElementById('ci-sidebar');

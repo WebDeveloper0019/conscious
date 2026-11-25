@@ -3,3 +3,13 @@
 @media(max-width:700px){.vc-journey{grid-template-columns:1fr}.vc-start-guide .vc-card-head{align-items:flex-start}.vc-main{padding-bottom:80px}.vc-table{min-width:680px}}
 
 .vc-main{max-width:1500px}.vc-card{border-color:#E8DCC8}.vc-card-head{background:#FFFCF5}.vc-start-guide{border-color:#E2D2B9;background:linear-gradient(135deg,#fff,#FFF8E9)}.vc-journey>a{border-color:#E8DCC8;color:#4A210D}.vc-journey>a:hover{border-color:#A63D24;box-shadow:0 7px 20px rgba(74,33,13,.08)}.vc-journey>a>span{background:#FFF1E8;color:#A63D24}.vc-journey small{font-size:10px;color:#746D64}.vc-journey>a>i{color:#C88422}
+
+.vc-setup-journey{grid-template-columns:repeat(4,minmax(0,1fr))}
+.vc-setup-journey>a>div{flex:1 1 auto;min-width:0}
+.vc-setup-journey>a>b{flex:0 0 auto;min-width:44px;margin-left:auto;text-align:right;white-space:nowrap;font-size:12px}
+@media(max-width:1000px){.vc-setup-journey{grid-template-columns:1fr}}
+.vc-focused-form{max-width:880px}
+.vc-save-confirmation{display:inline-flex;align-items:center;gap:7px;margin-right:auto;color:#1f6b43;font-size:12px;font-weight:700}
+.vc-workflow-intro.single-task{grid-template-columns:auto minmax(260px,1fr)}
+.vc-measurement-input{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:8px}
+@media(max-width:600px){.vc-measurement-input{grid-template-columns:1fr}}

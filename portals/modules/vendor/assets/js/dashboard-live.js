@@ -54,7 +54,7 @@
       if (!tasks.childElementCount) {
         const empty = document.createElement('div'); empty.className = 'vc-empty'; empty.textContent = 'No urgent tasks from your live store records.'; tasks.append(empty);
       }
-      byId('vd-message').textContent = 'Showing live data for ' + (vendor.display_name || 'your store') + '. No preview orders or balances are included.';
+      byId('vd-message').textContent = 'Your store overview is up to date. Complete any setup items shown above to start selling.';
     } catch (error) {
       byId('vd-message').textContent = error.message;
       byId('vd-message').classList.add('warning');

@@ -1,0 +1,27 @@
+/* Shared viewport positioning for native modal dialogs across all portal shells. */
+dialog:modal,
+dialog[open] {
+  position: fixed !important;
+  inset: 0 !important;
+  margin: auto !important;
+  box-sizing: border-box;
+  max-width: calc(100vw - 24px) !important;
+  max-height: calc(100vh - 24px) !important;
+  max-height: calc(100dvh - 24px) !important;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+html:has(dialog:modal),
+body:has(dialog:modal) {
+  overflow: hidden;
+}
+
+@media (max-width: 640px), (max-height: 620px) {
+  dialog:modal,
+  dialog[open] {
+    max-width: calc(100vw - 12px) !important;
+    max-height: calc(100vh - 12px) !important;
+    max-height: calc(100dvh - 12px) !important;
+  }
+}

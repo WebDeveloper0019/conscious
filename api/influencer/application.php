@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__.'/../lib/malware-scan.php';
 
 require_once __DIR__ . '/../lib/helpers.php';
 require_once __DIR__ . '/../lib/crypto.php';
@@ -155,7 +156,7 @@ if ($method === 'POST') {
         }
         foreach (['identity', 'pan', 'social_ownership'] as $type) {
             if (!isset($latest[$type])) json_response(422, ['success' => false, 'message' => 'Upload identity, PAN and social ownership documents before submitting.']);
-            if ($latest[$type]['scan_status'] !== 'clean') json_response(422, ['success' => false, 'message' => 'Wait for every required document to pass the security scan.']);
+            if (!malware_scan_status_is_reviewable((string)$latest[$type]['scan_status'],$db)) json_response(422, ['success' => false, 'message' => 'Every required document must be available before submission.']);
             if ($latest[$type]['verification_status'] === 'rejected') json_response(422, ['success' => false, 'message' => 'Replace rejected documents before submitting again.']);
         }
         $db->prepare('UPDATE influencers SET status="pending_review",verification_status="submitted",updated_at=UTC_TIMESTAMP() WHERE id=:id')->execute(['id' => $id]);

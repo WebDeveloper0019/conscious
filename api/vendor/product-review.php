@@ -1,4 +1,43 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__.'/../lib/helpers.php';require_once __DIR__.'/../lib/catalog.php';require_once __DIR__.'/../lib/notifications.php';
-send_cors_headers();$context=require_vendor(true);if(($_SERVER['REQUEST_METHOD']??'')!=='POST')json_response(405,['success'=>false,'message'=>'Method not allowed.']);$id=trim((string)(get_json_body()['product_id']??''));$db=get_db();$db->beginTransaction();try{$product=vendor_product($id,$context['vendor']['id'],true);assert_transition($product['status'],'pending_review',['draft'=>['pending_review'],'changes_requested'=>['pending_review'],'rejected'=>['pending_review']]);$images=$db->prepare('SELECT COUNT(*) FROM product_images pi JOIN file_assets f ON f.id=pi.file_asset_id WHERE pi.product_id=:id AND f.scan_status="clean" AND f.deleted_at IS NULL');$images->execute(['id'=>$id]);if((int)$images->fetchColumn()<1)json_response(422,['success'=>false,'message'=>'Upload at least one clean product image before submission.']);$db->prepare('UPDATE products SET status="pending_review",updated_at=UTC_TIMESTAMP() WHERE id=:id')->execute(['id'=>$id]);$db->prepare('UPDATE product_versions SET review_status="pending_review",submitted_at=UTC_TIMESTAMP() WHERE product_id=:id AND version_number=:version')->execute(['id'=>$id,'version'=>$product['review_version']]);record_status_change('product',$id,$product['status'],'pending_review');audit_event('vendor.product_submitted','product',$id,['version'=>$product['review_version']]);$db->commit();json_response(200,['success'=>true,'message'=>'Product submitted for admin review.']);}catch(Throwable $e){if($db->inTransaction())$db->rollBack();throw $e;}
+
+require_once __DIR__.'/../lib/helpers.php';
+require_once __DIR__.'/../lib/catalog.php';
+require_once __DIR__.'/../lib/notifications.php';
+require_once __DIR__.'/../lib/malware-scan.php';
+
+send_cors_headers();
+$context=require_vendor(true);
+if(($_SERVER['REQUEST_METHOD']??'')!=='POST')json_response(405,['success'=>false,'message'=>'Method not allowed.']);
+
+$id=trim((string)(get_json_body()['product_id']??''));
+$db=get_db();
+$db->beginTransaction();
+try{
+    $product=vendor_product($id,$context['vendor']['id'],true);
+    assert_transition($product['status'],'pending_review',[
+        'draft'=>['pending_review'],
+        'changes_requested'=>['pending_review'],
+        'rejected'=>['pending_review'],
+    ]);
+    $images=$db->prepare('SELECT f.scan_status FROM product_images pi JOIN file_assets f ON f.id=pi.file_asset_id WHERE pi.product_id=:id AND f.deleted_at IS NULL');
+    $images->execute(['id'=>$id]);
+    $hasReviewableImage=false;
+    foreach($images->fetchAll() as $image){
+        if(malware_scan_status_is_reviewable((string)$image['scan_status'],$db)){
+            $hasReviewableImage=true;
+            break;
+        }
+    }
+    if(!$hasReviewableImage)json_response(422,['success'=>false,'message'=>'Upload at least one available product image before submission.']);
+
+    $db->prepare('UPDATE products SET status="pending_review",updated_at=UTC_TIMESTAMP() WHERE id=:id')->execute(['id'=>$id]);
+    $db->prepare('UPDATE product_versions SET review_status="pending_review",submitted_at=UTC_TIMESTAMP() WHERE product_id=:id AND version_number=:version')->execute(['id'=>$id,'version'=>$product['review_version']]);
+    record_status_change('product',$id,$product['status'],'pending_review');
+    audit_event('vendor.product_submitted','product',$id,['version'=>$product['review_version']]);
+    $db->commit();
+    json_response(200,['success'=>true,'message'=>'Product submitted for admin review.']);
+}catch(Throwable $e){
+    if($db->inTransaction())$db->rollBack();
+    throw $e;
+}

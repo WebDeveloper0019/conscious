@@ -26,7 +26,7 @@
     document.getElementById('admin-catalog-state').textContent = name(selected.status);
     var summary = document.getElementById('admin-catalog-summary');
     summary.replaceChildren();
-    [['SKU', selected.sku], ['Description', selected.description], ['Material', selected.material || 'Not supplied'], ['Origin', selected.origin_state || 'Not supplied'], ['MRP', '₹' + selected.mrp], ['Selling price', '₹' + selected.selling_price], ['GST', selected.gst_percent + '%'], ['Weight', selected.package_weight_grams + ' g']].forEach(function (item) { var fact = text('div', ''); fact.append(text('small', item[0]), text('strong', item[1])); summary.append(fact); });
+    [['SKU', selected.sku], ['Product description', selected.description], ['Product story', selected.product_story || 'Not supplied'], ['Material', selected.material || 'Not supplied'], ['Origin', selected.origin_state || 'Not supplied'], ['MRP', '₹' + selected.mrp], ['Selling price', '₹' + selected.selling_price], ['GST', selected.gst_percent + '%'], ['Weight', selected.package_weight_grams + ' g']].forEach(function (item) { var fact = text('div', ''); fact.append(text('small', item[0]), text('strong', item[1])); summary.append(fact); });
     var images = document.getElementById('admin-catalog-images');
     images.replaceChildren();
     if (!result.images.length) images.append(text('p', 'No images uploaded.'));
@@ -34,7 +34,7 @@
     var actions = document.getElementById('admin-catalog-actions');
     actions.replaceChildren();
     var possible = selected.status === 'pending_review' ? ['start_review'] : selected.status === 'under_review' ? ['approve', 'request_changes', 'reject'] : ['approved', 'active', 'paused', 'out_of_stock'].includes(selected.status) ? ['suspend'] : [];
-    possible.forEach(function (decision) { var button = text('button', name(decision), 'ac-btn ' + (decision === 'approve' ? 'primary' : '')); button.type = 'button'; button.disabled = decision === 'approve' && !result.images.some(function (image) { return image.scan_status === 'clean'; }); button.addEventListener('click', function () { decide(decision, button); }); actions.append(button); });
+    possible.forEach(function (decision) { var button = text('button', name(decision), 'ac-btn ' + (decision === 'approve' ? 'primary' : '')); button.type = 'button'; button.disabled = decision === 'approve' && !result.images.some(function (image) { return Boolean(image.scan_reviewable); }); button.addEventListener('click', function () { decide(decision, button); }); actions.append(button); });
     if (!possible.length) actions.append(text('p', 'No review action is available in this state.'));
     show('Product submission loaded.');
   }

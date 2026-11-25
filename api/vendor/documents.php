@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__.'/../lib/helpers.php';
 require_once __DIR__.'/../lib/vendor.php';
 require_once __DIR__.'/../lib/upload.php';
+require_once __DIR__.'/../lib/malware-scan.php';
 
 send_cors_headers();
 $context = require_vendor(false);
@@ -41,6 +42,11 @@ if ($method === 'POST') {
     );
 
     $db = get_db();
+    if (malware_scan_bypass_enabled($db)) {
+        $db->prepare('UPDATE file_assets SET scan_status="bypassed" WHERE id=:id AND scan_status="pending"')
+            ->execute(['id' => $asset['id']]);
+        $asset['scan_status'] = 'bypassed';
+    }
     $singleDocument = !in_array($type, ['product_sample', 'impact_evidence'], true);
     $replacedAssets = [];
     $documentId = uuid_string();
@@ -105,9 +111,9 @@ if ($method === 'POST') {
     );
     json_response(201, [
         'success' => true,
-        'message' => $replacedAssets
-            ? 'Document replaced securely and queued for security scanning.'
-            : 'Document uploaded securely and queued for security scanning.',
+        'message' => $asset['scan_status'] === 'bypassed'
+            ? ($replacedAssets ? 'Document replaced for local testing. Security scanning is bypassed.' : 'Document uploaded for local testing. Security scanning is bypassed.')
+            : ($replacedAssets ? 'Document replaced securely and queued for security scanning.' : 'Document uploaded securely and queued for security scanning.'),
         'document' => [
             'id' => $documentId,
             'document_type' => $type,
